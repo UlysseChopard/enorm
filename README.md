@@ -1,2 +1,3 @@
 # e-norm
-sand-box
+
+Mock-up d'une application de gestion. Dans un premier temps : gestion d'une BDD.
