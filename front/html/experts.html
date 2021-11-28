@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta name="author" content="e-norm"/>
+        <meta name="description" content="BDD management application"/>
+        <meta charset="utf-8"/>
+        <title>E-norm</title>
+
+        <link rel="stylesheet" type="text/css" href="css/index.css"/>
+        <script type="module" src="../js/experts.js"></script>
+    </head>
+    <body>
+        <header>
+            <p>Logo</p>
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Accueil</a></li>
+                    <li><a href="/html/experts.html">Experts</a></li>
+                    <li><a href="/html/organisations.html">Organisations</a></li>
+                    <li><a href="/html/votes.html">Votes</a></li>
+                </ul>
+            </nav>
+        </header>
+        <table id="producttable">
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Organisation</td>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- existing data could optionally be included here -->
+            </tbody>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required/>
+            <label for="organisation">Organisation</label>
+            <input type="text" id="organisation" name="organisation" required/>
+            <input type="submit" name="newExpert"/>
+          </table>
+          
+          <template id="productrow">
+            <tr>
+              <td class="record"></td>
+              <td></td>
+            </tr>
+          </template>
+        <footer>
+            <p>E-norm</p>
+        </footer>
+    </body>
+</html>
