@@ -5,24 +5,84 @@
         <meta name="description" content="BDD management application"/>
         <meta charset="utf-8"/>
         <title>E-norm</title>
-
-        <link rel="stylesheet" type="text/css" href="css/index.css"/>
-        <script type="module" src="js/index.js"></script>
+        <script defer src="/front/js/index.js"></script>
     </head>
     <body>
         <header>
-            <p>Logo</p>
-            <nav>
+            <h1>E-norm</h1>
+            <nav id="nav-main">
                 <ul>
-                    <li><a href="/index.html">Accueil</a></li>
-                    <li><a href="./html/experts.html">Experts</a></li>
-                    <li><a href="./html/organisations.html">Organisations</a></li>
-                    <li><a href="./html/votes.html">Votes</a></li>
+                    <li id="table-experts"><a href="" id="table-experts">Liste des experts</a></li>
+                    <li id="ballots"><a href="" id="ballots">Accès aux votes</a></li>
                 </ul>
             </nav>
         </header>
+
+        <main class="template-place">
+        </main>
+
+        <template id="table-experts-template">
+            <style>
+              /* Ajouter du style */
+            </style>
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2">Liste des experts</th>
+                </tr>
+                <tr>
+                  <th>Name</th>
+                  <th>Organisation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><slot name="name">Expert name</slot></td>
+                  <td><slot name="organisation">Expert organisation</slot></td>
+                  <td>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required/>
+                  </td>
+                  <td>
+                    <label for="organisation">Organisation</label>
+                    <input type="text" id="organisation" name="organisation" required/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </template>
+
+        <template id="ballots-template">
+            <style>
+                /* Ajouter du style */
+            </style>
+            <label for="commentaire">Commentaires :</label>
+            <textarea placeholder="According to me..."></textarea>
+            <button type="button">Voter !</button>
+        </template>
+
         <footer>
             <p>E-norm</p>
         </footer>
+
+        <script>
+            customElements.define("table-experts",
+              class extends HTMLElement {
+                constructor() {
+                  super();
+                  const template = document.getElementById("table-experts-template").content;
+                  const shadowRoot = this.attachShadow({ mode: "open" }).appendChild(template.cloneNode(true));
+                }
+            });
+            
+            customElements.define("ballots",
+            class extends HTMLElement {
+                constructor() {
+                    super();
+                    const template = document.getElementById("ballots-template".content);
+                    const shadowRoot = this.attachShadow({ mode: "open" }).appendChild(template.clodeNode(true));
+                }
+            })
+        </script>
     </body>
 </html>
