@@ -1,3 +1,12 @@
+tests/
+
+# Npm
+package-lock.js
+**/node_modules/
+
+# Secrets
+.env
+
 # Logs
 logs
 *.log

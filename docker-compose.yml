@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  backend:
+   build: ./backend
+   container_name: e-norm_backend
+   environment:
+    - MONGODB_CONNSTRING=mongodb://database:27017
+    - PORT:3000
+   volumes:
+    - ./backend:/app
+   ports:
+    - 3000:3000
+   networks:
+    - frontend
+    - backend
+   restart: always
+
+  frontend:
+   build: ./frontend
+   container_name: e-norm_frontend
+   volumes:
+    - ./frontend:/app
+   ports:
+    - 8080:8080
+   networks:
+    - frontend
+   restart: always
+
+  database:
+   image: mongo:latest
+   container_name: e-norm_db
+   restart: always
+   ports:
+    - 27017:27017
+   networks:
+    - backend
+
+networks:
+  backend:
+  frontend:
