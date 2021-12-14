@@ -14,7 +14,7 @@ services:
    networks:
     - frontend
     - backend
-   restart: always
+   restart: unless-stopped
 
   frontend:
    build: ./frontend
@@ -25,12 +25,12 @@ services:
     - 8080:8080
    networks:
     - frontend
-   restart: always
+   restart: unless-stopped
 
   database:
    image: mongo:latest
    container_name: e-norm_db
-   restart: always
+   restart: unless-stopped
    ports:
     - 27017:27017
    networks:
