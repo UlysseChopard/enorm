@@ -2,6 +2,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
 
 const userRoutes = require("./routes/user");
 const expertRoutes = require("./routes/expert");
@@ -10,7 +11,8 @@ const app = express();
 
 mongoose
   .connect(
-    process.env.MONGODB_CONNSTRING || "mongodb+srv://new-user_31:ke49kSUpyk0GpP6P@clustergf.uglrk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    process.env.MONGODB_CONNSTRING ||
+      "mongodb+srv://new-user_31:ke49kSUpyk0GpP6P@clustergf.uglrk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -21,6 +23,7 @@ mongoose
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 

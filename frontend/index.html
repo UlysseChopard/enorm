@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <script type="module" src="./js/index.js"></script>
     <title>E-norm</title>
   </head>
   <body>
     <header>
-      <h1>E-norm</h1>
-      <p>The Experts' Place</p>
-      <nav>
+      <div class="brand">
+        <h1 class="logo">[E-norm]</h1>
+        <p class="tagline">Caring for experts</p>
+      </div>
+      <nav class="mainNav">
         <ul>
-          <li><a href="./index.html">Home</a></li>
-          <li><a href="./experts.html">Experts list</a></li>
+          <li id="expertPage">Liste des experts</li>
+          <li id="homePage">Aide</li>
         </ul>
       </nav>
     </header>
-    <main>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium,
-        libero accusamus? Reprehenderit debitis tempore nobis perspiciatis
-        consectetur eligendi magni recusandae quo iusto nulla mollitia placeat
-        ipsam esse, earum cumque itaque.
-      </p>
-    </main>
+    <main></main>
     <footer>
       <ul>
-        <li href="mailto:chopard.ulysse@gmail.com">
-          Contact: chopard.ulysse@gmail.com
+        <li>
+          <!-- mailto:san@antonio.net
+  ?subject=Notre affaire
+  &cc=partenaire@antonio.net
+  &bcc=avocat@antonio.net
+  &body=Bonjour -->
+          <a href="mailto:chopard.ulysse@gmail.com">Nous contacter</a>
         </li>
+        <li><a>Dispositions légales</a></li>
       </ul>
     </footer>
   </body>

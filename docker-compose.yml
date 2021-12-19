@@ -7,8 +7,10 @@ services:
    environment:
     - MONGODB_CONNSTRING=mongodb://database:27017
     - PORT:3000
-   volumes:
-    - ./backend:/app
+  # Problème avec bcrypt
+  #  volumes:
+  #   - ./backend:/app
+    # - /backend/node_modules/
    ports:
     - 3000:3000
    networks:
@@ -22,7 +24,7 @@ services:
    volumes:
     - ./frontend:/app
    ports:
-    - 8080:8080
+    - 8080:80
    networks:
     - frontend
    restart: unless-stopped
@@ -30,11 +32,11 @@ services:
   database:
    image: mongo:latest
    container_name: e-norm_db
-   restart: unless-stopped
    ports:
     - 27017:27017
    networks:
     - backend
+   restart: unless-stopped
 
 networks:
   backend:
