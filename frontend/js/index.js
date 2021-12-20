@@ -1,11 +1,37 @@
+import configApi from "./config/api.js";
+
 import handleNavigation from "./utils/navigation.js";
-import displayExpertPage from "./experts.js";
-import displayHomePage from "./about.js";
+import attachEventListener from "./utils/listeners.js";
 
-document
-  .getElementById("homePage")
-  .addEventListener("click", handleNavigation(displayHomePage));
+import * as page from "./pages.js";
 
-document
-  .getElementById("expertPage")
-  .addEventListener("click", handleNavigation(displayExpertPage, expertsApi));
+attachEventListener({
+  elementId: "homePage",
+  events: ["clic", "dbclick"],
+  cb: handleNavigation(page.displayHomePage),
+});
+
+attachEventListener({
+  elementId: "expertPage",
+  events: ["click", "dblclick"],
+  cb: handleNavigation(page.displayExpertPage, configApi.experts),
+});
+
+attachEventListener({
+  elementId: "sessionPage",
+  events: ["click", "dblclick"],
+  cb: () => {},
+});
+
+// document
+//   .getElementById("homePage")
+//   .addEventListener("click", handleNavigation(page.displayHomePage));
+
+// document
+//   .getElementById("expertPage")
+//   .addEventListener(
+//     "click",
+//     handleNavigation(page.displayExpertPage, configApi.experts)
+//   );
+
+// document.getElementById("authPage").addEventListener("click");

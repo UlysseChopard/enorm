@@ -22,7 +22,7 @@ services:
    build: ./frontend
    container_name: e-norm_frontend
    volumes:
-    - ./frontend:/app
+    - ./frontend:/usr/share/nginx/html
    ports:
     - 8080:80
    networks:

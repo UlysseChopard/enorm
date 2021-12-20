@@ -3,25 +3,36 @@
   <head>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
+    <link rel="shortcut icon" type="image/jpg" href="./img/icon.png" />
     <script type="module" src="./js/index.js"></script>
     <title>E-norm</title>
   </head>
   <body>
     <header>
       <div class="brand">
-        <h1 class="logo">[E-norm]</h1>
-        <p class="tagline">Caring for experts</p>
+        <img
+          src="./img/icon.png"
+          alt="Logo d'E-norm"
+          width="70px"
+          height="70px"
+          class="brand__logo"
+        />
+        <div class="brand__text">
+          <h1 class="logo">[E-norm]</h1>
+          <p class="tagline">Caring for experts</p>
+        </div>
       </div>
       <nav class="mainNav">
         <ul>
           <li id="expertPage">Liste des experts</li>
           <li id="homePage">Aide</li>
+          <li id="authPage">Connexion</li>
         </ul>
       </nav>
     </header>
     <main></main>
     <footer>
-      <ul>
+      <ul class="legal">
         <li>
           <!-- mailto:san@antonio.net
   ?subject=Notre affaire

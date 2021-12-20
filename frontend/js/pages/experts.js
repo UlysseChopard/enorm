@@ -26,16 +26,14 @@ const createRows = (parent, ...rows) => {
 };
 
 const displayExpertPage = (parent, api) => {
-  // Test values
-
   fetch(api)
     .then((experts) => {
       const expertApp = document.createElement("table");
       expertApp.id = "app";
       const thead = document.createElement("thead");
-      thead.appendChild(createThead(...heads));
+      thead.appendChild(createThead(experts.heads));
       const tbody = document.createElement("tbody");
-      createRows(tbody, ...rows);
+      createRows(tbody, experts.data);
       expertApp.append(thead, tbody);
       parent.appendChild(expertApp);
     })
