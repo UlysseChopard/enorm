@@ -1,53 +1,41 @@
 version: "3.8"
 
 services:
-  backend:
-   build: ./backend
-   container_name: e-norm_backend
-   environment:
-    - MONGODB_CONNSTRING=mongodb://database:27017
-    - PORT:3000
-  # Problème avec bcrypt
-  #  volumes:
-  #   - ./backend:/app
-    # - /backend/node_modules/
+  api:
+   build: ./api
+   container_name: e-norm-api
    ports:
     - 3000:3000
    networks:
-    - frontend
-    - backend
+    - web
+    - database
    restart: unless-stopped
 
-  frontend:
-   build: ./frontend
-   container_name: e-norm_frontend
+  app:
+   build: ./app
+   container_name: e-norm-web-app
    volumes:
-    - ./frontend:/usr/share/nginx/html
+    - ./app:/usr/share/nginx/html
    ports:
     - 8080:80
    networks:
-    - frontend
+    - web
    restart: unless-stopped
 
-  database:
-   image: mongo:latest
-   container_name: e-norm_db
-   ports:
-    - 27017:27017
-   networks:
-    - backend
-   restart: unless-stopped
   db:
     image: postgres:latest
-    restart: always
+    container_name: e-norm-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
     ports:
      - 5432:5432
+    networks:
+      - database
 
 
 networks:
-  backend:
-  frontend:
+  database:
+  web:
