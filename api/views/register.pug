@@ -1,0 +1,16 @@
+extends template
+
+prepend nav-links 
+    a(href="/login") Login
+
+
+block content 
+    main.p-4
+        form.flex.flex-col.items-center.border.w-80.m-auto.rounded.drop-shadow(action="/accounts" method="post") 
+            label(for="name") Name 
+            input#name(type="text" name="username" autocomplete="username" required)
+            label(for="email") Email 
+            input#email(type="email" name="email" autocomplete="email" required)
+            label(for="password") Password (8 characters minimum) 
+            input#password(type="password" name="password" minlength=8 autocomplete="new-password" required)
+            button(type="submit") Register 

@@ -2,7 +2,7 @@ exports.create = (req, res, next) => {
   res.send("create");
 };
 
-exports.get = (req, res, next) => {
+exports.getById = (req, res, next) => {
   res.send("get");
 };
 
@@ -16,4 +16,9 @@ exports.modify = (req, res, next) => {
 
 exports.remove = (req, res, next) => {
   res.send("remove");
+};
+
+exports.authenticate = (req, res, next) => {
+  console.log(req.body.email);
+  res.send("authenticate");
 };

@@ -1,7 +1,7 @@
-const expert = require("./expert");
-// const manager = require("./manager");
+const accounts = require("./accounts");
+const views = require("./views");
 
 module.exports = (app) => {
-  app.use("/experts", expert);
-  //   app.use("/manager", manager);
+  app.use("/", views);
+  app.use("/accounts", accounts);
 };
