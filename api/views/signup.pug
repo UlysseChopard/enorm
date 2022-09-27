@@ -6,7 +6,7 @@ prepend nav-links
 
 block content 
     main.p-4
-        form.flex.flex-col.items-center.border.w-80.m-auto.rounded.drop-shadow(action="/accounts" method="post") 
+        form.flex.flex-col.items-center.border.w-80.m-auto.rounded.drop-shadow(action="/login/signup" method="post")
             label(for="name") Name 
             input#name(type="text" name="username" autocomplete="username" required)
             label(for="email") Email 

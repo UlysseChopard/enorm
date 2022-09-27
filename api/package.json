@@ -1,27 +1,29 @@
 {
-  "name": "backend",
+  "name": "api",
   "version": "1.0.0",
   "description": "premiere app",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server | bunyan",
-    "tailwind:css": "postcss public/styles/tailwind.css -o public/styles/style.css --config . -w"
+    "start": "nodemon -r dotenv/config server | bunyan",
+    "tailwind:css": "postcss public/styles/tailwind.css -o public/styles/style.css --config . -w",
+    "migrate": "node-pg-migrate -m ./db/migrations --envPath ./db/.env"
   },
   "author": "ucg",
   "license": "ISC",
   "dependencies": {
     "autoprefixer": "^10.4.12",
     "bcrypt": "^5.0.1",
-    "body-parser": "^1.20.0",
     "bunyan": "^1.8.15",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.3",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
     "mongoose-unique-validator": "^2.0.3",
     "multer": "^1.4.4",
+    "node-pg-migrate": "^6.2.2",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",

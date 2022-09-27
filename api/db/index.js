@@ -1,3 +1,4 @@
+const log = require("../utils/logs");
 const { Pool } = require("pg");
 
 const pool = new Pool();
@@ -7,7 +8,7 @@ module.exports = {
     const start = Date.now();
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
-    console.log("executed query", { text, duration, rows: res.rowCount });
+    log.info("executed query", { text, duration, rows: res.rowCount });
     return res;
   },
   async getClient() {
@@ -16,8 +17,8 @@ module.exports = {
     const release = client.release;
     // set a timeout of 5 seconds, after which we will log this client's last query
     const timeout = setTimeout(() => {
-      console.error("A client has been checked out for more than 5 seconds!");
-      console.error(
+      log.warn("A client has been checked out for more than 5 seconds!");
+      log.warn(
         `The last executed query on this client was: ${client.lastQuery}`
       );
     }, 5000);

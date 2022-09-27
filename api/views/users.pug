@@ -1,0 +1,14 @@
+extends template 
+
+block content 
+    h2 Hi #{connectedUser.name}
+    table 
+        thead 
+            tr 
+                th(scope="col") Name 
+                th(scope="col") Email
+        tbody 
+            each user in users
+                tr 
+                    td= user.name 
+                    td= user.email
