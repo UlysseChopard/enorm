@@ -1,11 +1,13 @@
 extends template
 
-prepend nav-links 
-    a(href="/login") Login
+block nav-links 
+    a(href="/login?role=expert") Expert dashboard
+    a(href="/login?role=manager") Manager dashboard
 
 
 block content 
     main.p-4
+        h2 Login as #{role}
         form.flex.flex-col.items-center.border.w-80.m-auto.rounded.drop-shadow(action="/login/signup" method="post")
             label(for="name") Name 
             input#name(type="text" name="username" autocomplete="username" required)

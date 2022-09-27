@@ -34,8 +34,13 @@ services:
      - 5432:5432
     networks:
       - database
+    volumes:
+      - database:/var/lib/postgresql/data
 
 
 networks:
   database:
   web:
+
+volumes:
+  database:
