@@ -18,9 +18,10 @@ exports.signup = async (req, res, next) => {
       "INSERT INTO users (name, password, email) VALUES ($1, $2, $3)",
       [username, password, email]
     );
-    req.login({ email, username }, (err) => {
+    req.login({ email, username }, async (err) => {
       if (err) return next(err);
-      res.redirect("/");
+      const { rows: users } = await db.query("SELECT * FROM users");
+      res.render("dashboard", { user: req.body, users });
     });
   } catch (err) {
     next(err);
