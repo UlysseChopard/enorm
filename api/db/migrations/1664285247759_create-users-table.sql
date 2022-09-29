@@ -3,7 +3,7 @@ CREATE TYPE app_role AS ENUM ('manager', 'expert');
 CREATE TABLE admin.users (
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL,
-    password VARCHAR(97) NOT NULL,
+    password TEXT NOT NULL,
     role APP_ROLE NOT NULL,
     UNIQUE(email, role)
 );

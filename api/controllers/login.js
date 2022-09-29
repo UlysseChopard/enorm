@@ -10,13 +10,12 @@ exports.logout = (req, res, next) => {
 };
 
 exports.signup = async (req, res, next) => {
-  const { email, username } = req.body;
   const password = await hash(req.body.password);
   console.log(password.toString());
   try {
     await db.query(
-      "INSERT INTO users (name, password, email) VALUES ($1, $2, $3)",
-      [username, password, email]
+      "INSERT INTO users (email, password, role) VALUES ($1, $2, $3)",
+      [req.body.email, password, req.query.role]
     );
     req.login({ email, username }, async (err) => {
       if (err) return next(err);
