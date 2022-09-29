@@ -1,29 +1,63 @@
 const fs = require("fs");
 const path = require("path");
+
 const { parse } = require("csv-parse");
-const { transform } = require("stream-transform");
-const db = require("../index");
 const format = require("pg-format");
+
+const db = require("../index");
+const country_codes = require("./country_codes.json");
 
 const parser = parse({
   delimiter: ";",
   trim: true,
   encoding: "latin1",
-  headers: true,
+  columns: true,
 });
 
 parser.on("readable", async () => {
   let record;
   while ((record = parser.read()) !== null) {
-    const parsedRecord = record.map((item) => {
-      if (item === "FAUX") return 0;
-      if (item === "VRAI") return 1;
-      let syndicate;
-      if ((syndicate = item.match(/\w+\s?=\s?(\d+)/i))) return syndicate[1];
-      return item;
-    });
+    let {
+      name,
+      members,
+      attached_to,
+      address_1,
+      address_2,
+      postcode,
+      city,
+      country_code,
+      phone_no,
+      fax_no,
+      misc,
+      status,
+    } = record;
+    country_code = country_codes.filter(
+      (elem) => elem.Name.toLowerCase() === country_code.toLowerCase()
+    )[0].Code;
+    if (members === "VRAI") members = 1;
+    else members = 0;
+    attached_to = attached_to.split(" = ")[0];
+    phone_no = phone_no.replace(/\s/g, "");
+    if (country_code === "FR" && phone_no?.charAt(0) === "0") {
+      phone_no = `+33${phone_no.slice(1)}`;
+    }
+
+    const parsedRecord = [
+      name,
+      members,
+      attached_to,
+      status,
+      address_1,
+      address_2,
+      postcode,
+      city,
+      country_code,
+      phone_no,
+      fax_no,
+      misc,
+    ];
     const query = format(
-      "INSERT INTO organisations (name, short_name, is_consultant, is_syndicate, society_name, client_name, syndicate_no, sector_act, status_part, person_in_charge, civil_name, civil_short_name, main_address, secondary_address, postcode, city, country, is_us_postcode, phone_no, fax, website) VALUES (%L)",
+      "INSERT INTO bnf_organisations (name, members, attached_to, status, address_1, address_2, postcode, city, country_code, phone_no, fax_no, misc) VALUES (%L)",
       parsedRecord
     );
     try {

@@ -6,7 +6,6 @@ CREATE TABLE admin.users (
     password TEXT NOT NULL,
     role APP_ROLE [] NOT NULL
 );
-ALTER TABLE admin.users OWNER TO admin;
 -- Down Migration
 DROP TABLE admin.users;
 DROP TYPE app_role;

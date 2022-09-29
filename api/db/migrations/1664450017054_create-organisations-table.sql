@@ -1,27 +1,18 @@
 -- Up Migration
-CREATE TABLE admin.organisations (
+CREATE TABLE admin.bnf_organisations (
+    id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    short_name TEXT NOT NULL,
-    is_consultant BOOLEAN NOT NULL DEFAULT FALSE,
-    is_syndicate BOOLEAN NOT NULL DEFAULT FALSE,
-    society_name TEXT NOT NULL,
-    client_name TEXT,
-    syndicate_no INTEGER DEFAULT 999,
-    sector_act TEXT,
-    status_part TEXT,
-    person_in_charge TEXT,
-    civil_name TEXT,
-    civil_short_name TEXT,
-    main_address TEXT NOT NULL,
-    secondary_address TEXT,
+    members BOOLEAN NOT NULL DEFAULT FALSE,
+    address_1 TEXT NOT NULL,
     postcode TEXT NOT NULL,
     city TEXT NOT NULL,
-    country TEXT NOT NULL,
-    is_us_postcode BOOLEAN NOT NULL DEFAULT FALSE,
+    attached_to TEXT,
+    country_code TEXT NOT NULL,
+    status TEXT,
+    address_2 TEXT,
     phone_no TEXT,
-    fax TEXT,
-    website TEXT
+    fax_no TEXT,
+    misc TEXT
 );
-ALTER TABLE admin.organisations OWNER TO admin;
 -- Down Migration
-DROP TABLE admin.organisations;
+DROP TABLE admin.bnf_organisations;
