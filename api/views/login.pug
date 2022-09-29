@@ -1,14 +1,9 @@
 extends template
 
 block nav-links 
-    a(href=`/signup?role=${role}`) Create #{role} account
+    +anchor(`/signup?role=${role}`, `Create ${role} account`)
 
 
 block content 
     main.p-4
-        form.flex.flex-col.items-center.border.w-80.m-auto.rounded.drop-shadow(action="/login?role=#{role}" method="post") 
-            label(for="email") Email 
-            input#email(type="email" name="email" autocomplete="email" required)
-            label(for="password") Password 
-            input#password(type="password" name="password" minlength=8 autocomplete="current-password" required)
-            button(type="submit") Login
+        +login(role)

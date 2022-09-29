@@ -1,16 +1,4 @@
 extends template
 
-block nav-links 
-    a(href="/login?role=expert") Expert dashboard
-    a(href="/login?role=manager") Manager dashboard
-
-
 block content 
-    main.p-4.flex.flex-col.items-center
-        h2.py-4 Logging in as #{role}
-        form.border.w-80.m-auto.rounded.drop-shadow(action="/login/signup" method="post")
-            label(for="email") Email 
-            input#email(type="email" name="email" autocomplete="email" required)
-            label(for="password") Password (8 characters minimum) 
-            input#password(type="password" name="password" minlength=8 autocomplete="new-password" required)
-            button(type="submit") Register 
+    +login(role, "signup")

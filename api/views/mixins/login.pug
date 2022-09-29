@@ -1,0 +1,16 @@
+mixin login(role, loginType)
+    - let label;
+    case loginType
+        when "signup"
+            - label = `Create ${role} account`;
+        default
+            - label = `Log is as ${role}`;
+    .flex.justify-center
+        form.border.w-80.m-auto.rounded.drop-shadow.m-auto.p-4(action="/login/signup" method="post")
+            .w-full.h-40.flex.flex-col.justify-between.items-start.space-evenly
+                label(for="email") Email 
+                input.w-full#email(type="email" name="email" autocomplete="email" required)
+                label(for="password") Password#{loginType === "signup" ? " (8 characters minimum)" : ""}
+                input.w-full#password(type="password" name="password" minlength=8 autocomplete=loginType === "signup" ? "new-password" : "current-password" required)
+                .mt-2.self-center
+                    +primary-btn(label, "submit")
