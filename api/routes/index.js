@@ -1,9 +1,9 @@
 const errors = require("../middlewares/errors");
-const login = require("./login");
+const auth = require("./auth");
 const views = require("./views");
 
 module.exports = (app) => {
   app.use("/", views);
-  app.use("/auth", login);
+  app.use("/auth", auth);
   app.use(errors);
 };

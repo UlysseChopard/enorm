@@ -4,26 +4,29 @@ const LocalStrategy = require("passport-local").Strategy;
 const db = require("../db");
 
 passport.use(
-  new LocalStrategy(async (username, password, cb) => {
+  new LocalStrategy({ usernameField: "email" }, async (email, password, cb) => {
     try {
       const {
         rows: [user],
-      } = await db.query("SELECT * FROM users WHERE name = $1", [username]);
+      } = await db.query(
+        "SELECT email, password, role FROM users WHERE email = $1",
+        [email]
+      );
       if (!user)
         return cb(null, false, {
           message: "Incorrect username or password",
         });
+      const validPassword = await verify(password, user.password);
+      if (!validPassword)
+        return cb(null, false, { message: "Incorrect username or password" });
+      cb(null, user);
     } catch (err) {
       cb(err);
     }
-    const validPassword = await verify(password, user.password);
-    if (!validPassword)
-      return cb(null, false, { message: "Incorrect username or password" });
-    cb(null, user);
   })
 );
 
-passport.serializeUser(function (user, cb) {
+passport.serializeUser((user, cb) => {
   process.nextTick(function () {
     return cb(null, {
       username: user.username,
@@ -32,7 +35,7 @@ passport.serializeUser(function (user, cb) {
   });
 });
 
-passport.deserializeUser(function (user, cb) {
+passport.deserializeUser((user, cb) => {
   process.nextTick(function () {
     return cb(null, user);
   });

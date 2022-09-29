@@ -8,5 +8,8 @@ exports.login = (req, res) => res.render("login", { role: req.query.role });
 
 exports.dashboard = async (req, res) => {
   const { rows } = await Users.getAll();
-  res.render("dashboard", { user: req.user, users: rows });
+  res.render("dashboard", {
+    user: req.user || { name: "unefined" },
+    users: rows,
+  });
 };

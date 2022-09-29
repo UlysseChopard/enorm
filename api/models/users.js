@@ -4,7 +4,7 @@ exports.create = ({ email, password, role }) =>
   db.query("INSERT INTO users (email, password, role) VALUES ($1, $2, $3)", [
     email,
     password,
-    role,
+    [role],
   ]);
 
 exports.getAll = () => db.query("SELECT email, password, role FROM users");

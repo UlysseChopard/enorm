@@ -18,7 +18,7 @@ exports.verify = (password, hash) => {
     const [salt, key] = hash.split(":");
     crypto.scrypt(password, salt, 32, (err, derivedKey) => {
       if (err) reject(err);
-      resolve(crypto.timingSafeEqual(key === derivedKey.toString("hex")));
+      resolve(crypto.timingSafeEqual(Buffer.from(key, "hex"), derivedKey));
     });
   });
 };

@@ -1,16 +1,15 @@
 const router = require("express").Router();
-const { login, signup, logout, getMe } = require("../controllers/login");
+const { signup, logout } = require("../controllers/auth");
 const passport = require("../utils/passport");
 
 router.post(
   "/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
-  }),
-  login
+    successRedirect: "/dashboard",
+  })
 );
 router.post("/signup", signup);
 router.post("/logout", logout);
-router.get("/me", getMe);
 
 module.exports = router;
