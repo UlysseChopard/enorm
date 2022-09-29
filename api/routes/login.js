@@ -3,7 +3,7 @@ const { login, signup, logout, getMe } = require("../controllers/login");
 const passport = require("../utils/passport");
 
 router.post(
-  "/",
+  "/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
   }),

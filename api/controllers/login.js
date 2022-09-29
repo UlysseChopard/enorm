@@ -1,7 +1,7 @@
 const db = require("../db");
 const { hash } = require("../utils/auth");
 const log = require("../utils/logs");
-const passport = require("passport");
+const Users = require("../models/users");
 
 exports.login = (req, res) => res.send(req.user);
 
@@ -13,14 +13,14 @@ exports.signup = async (req, res, next) => {
   const password = await hash(req.body.password);
   console.log(password.toString());
   try {
-    await db.query(
-      "INSERT INTO users (email, password, role) VALUES ($1, $2, $3)",
-      [req.body.email, password, req.query.role]
-    );
+    await Users.create({
+      email: req.body.email,
+      role: req.body.role,
+      password,
+    });
     req.login({ email, username }, async (err) => {
       if (err) return next(err);
-      const { rows: users } = await db.query("SELECT * FROM users");
-      res.render("dashboard", { user: req.body, users });
+      res.redirect("/dashboard");
     });
   } catch (err) {
     next(err);

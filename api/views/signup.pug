@@ -6,11 +6,9 @@ block nav-links
 
 
 block content 
-    main.p-4
-        h2 Login as #{role}
-        form.flex.flex-col.items-center.border.w-80.m-auto.rounded.drop-shadow(action="/login/signup" method="post")
-            label(for="name") Name 
-            input#name(type="text" name="username" autocomplete="username" required)
+    main.p-4.flex.flex-col.items-center
+        h2.py-4 Logging in as #{role}
+        form.border.w-80.m-auto.rounded.drop-shadow(action="/login/signup" method="post")
             label(for="email") Email 
             input#email(type="email" name="email" autocomplete="email" required)
             label(for="password") Password (8 characters minimum) 

@@ -1,10 +1,9 @@
-const errors = require("../middleware/errors");
+const errors = require("../middlewares/errors");
 const login = require("./login");
 const views = require("./views");
 
 module.exports = (app) => {
   app.use("/", views);
-  app.use("/login", login);
-  app.use("/restricted", (req, res) => res.send(req.user));
+  app.use("/auth", login);
   app.use(errors);
 };
