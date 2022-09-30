@@ -20,9 +20,11 @@ exports.signup = async (req, res, next) => {
     });
     req.login({ email, role }, (err) => {
       if (err) return next(err);
-      res.redirect("/dashboard");
+      log.info("User created", { user: { email, role } });
+      res.redirect(`/dashboard?role=${role}`);
     });
   } catch (err) {
-    next(err);
+    log.warn({ err });
+    res.redirect(`/signup?role=${role}&error=true`);
   }
 };

@@ -1,7 +1,13 @@
 extends template
 
 block nav-links 
-    +anchor(`/signup?role=${role}`, `Create ${role} account`)
+    +anchor(`/signup?role=${role}`, `Create ${role.slice(0, -1)} account`)
+    case role
+        when "managers"
+            +anchor(`/login?role=experts`, "Expert dashboard")
+        when "experts"
+            +anchor(`/login?role=managers`, "Manager dashboard")
+
 
 
 block content 

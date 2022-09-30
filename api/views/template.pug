@@ -1,6 +1,7 @@
-include mixins/login
+include mixins/banners
 include mixins/buttons 
 include mixins/anchors 
+include mixins/login
 
 doctype html
 html
@@ -13,11 +14,11 @@ html
     body
         nav.w-full.flex.justify-between.align-center.h-16.border.p-4
             p: a(href="/") E-Norm 
-            .inline-flex.w-80.justify-around
+            .inline-flex.w-96.justify-around
                 block nav-links
-                    +anchor("/login?role=manager", "Manager dashboard")
-                    +anchor("/login?role=expert", "Expert dashboard")
-        main.p-4
+                    +anchor("/login?role=managers", "Manager dashboard")
+                    +anchor("/login?role=experts", "Expert dashboard")
+        main.p-4.h-screen
             block content 
         block foot 
         block scripts

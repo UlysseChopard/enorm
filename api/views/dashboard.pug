@@ -1,13 +1,23 @@
 extends template 
 
+append nav-links 
+    +anchor("/auth/logout", "Log out")
+
 block content 
-    table 
-        thead 
-            tr 
-                th(scope="col") Email
-                th(scope="col") Role
-        tbody 
-            each user in users
-                tr 
-                    td= user.email
-                    td= user.role
+    .flex.flex-col.items-center.justify-around
+        #users.p-4
+            h2 All users
+            ul
+                each user in users 
+                    li= user.email
+        if organisations && organisations.length
+            #form.flex.flex-col.p-4
+                label(for="about-me") About me
+                form#about-me.flex.flex-col(action="/api/profile" method="post")
+                    .pl-4.flex.flex-col
+                        label(for="organisation") Home organisation
+                        select#organisation(name="organisation")
+                            option(value="") -- Please choose an organisation --
+                            each organisation in organisations 
+                                option(value=organisation.name)= organisation.name 
+                    +primary-btn("Send", "submit") 

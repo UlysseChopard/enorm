@@ -1,13 +1,16 @@
 const db = require("../db");
+const format = require("pg-format");
 
-exports.create = ({ email, password, role }) =>
-  db.query("INSERT INTO users (email, password, role) VALUES ($1, $2, $3)", [
+exports.create = ({ email, password, role = "experts" }) =>
+  db.query(format("INSERT INTO %I (email, password) VALUES ($1, $2)", role), [
     email,
     password,
-    [role],
   ]);
 
-exports.getAll = () => db.query("SELECT email, password, role FROM users");
+exports.getAll = (role = "experts") =>
+  db.query(format("SELECT email FROM %I", role));
 
-exports.getById = (id) =>
-  db.query("SELECT email, passord, role FROM users WHERE id = $1", [id]);
+exports.getById = (id, role = "experts") =>
+  db.query(format("SELECT email, password FROM %I WHERE email = $1", role), [
+    id,
+  ]);

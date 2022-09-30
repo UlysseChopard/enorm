@@ -3,10 +3,10 @@ mixin login(role, loginType)
     - let api;
     case loginType
         when "signup"
-            - label = `Create ${role} account`;
+            - label = `Create ${role.slice(0, -1)} account`;
             - api = `/auth/signup?role=${role}`;
         default
-            - label = `Log is as ${role}`;
+            - label = `Log is as ${role.slice(0, -1)}`;
             - api = `/auth/login?role=${role}`
     .flex.justify-center
         form.border.w-80.m-auto.rounded.drop-shadow.m-auto.p-4(action=api method="post")
@@ -17,3 +17,4 @@ mixin login(role, loginType)
                 input.w-full#password(type="password" name="password" minlength=8 autocomplete=loginType === "signup" ? "new-password" : "current-password" required)
                 .mt-2.self-center
                     +primary-btn(label, "submit")
+    +error-banner 

@@ -6,7 +6,7 @@ const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 
 const log = require("../utils/logs.js");
-const passport = require("../utils/passport");
+const passport = require("./passport");
 const { getPool } = require("../db");
 
 module.exports = (app, express) => {

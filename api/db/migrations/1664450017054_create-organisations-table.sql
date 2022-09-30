@@ -1,5 +1,5 @@
 -- Up Migration
-CREATE TABLE admin.bnf_organisations (
+CREATE TABLE admin.organisations (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     members BOOLEAN NOT NULL DEFAULT FALSE,
@@ -15,4 +15,4 @@ CREATE TABLE admin.bnf_organisations (
     misc TEXT
 );
 -- Down Migration
-DROP TABLE admin.bnf_organisations;
+DROP TABLE admin.organisations;

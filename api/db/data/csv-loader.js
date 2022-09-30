@@ -5,7 +5,47 @@ const { parse } = require("csv-parse");
 const format = require("pg-format");
 
 const db = require("../index");
-const country_codes = require("./country_codes.json");
+const countryCodes = require("./country_codes.json");
+
+const formatRow = (record) => {
+  let {
+    name,
+    members,
+    attached_to,
+    address_1,
+    address_2,
+    postcode,
+    city,
+    country_code,
+    phone_no,
+    fax_no,
+    misc,
+    status,
+  } = record;
+  country_code = countryCodes[country_code.toLowerCase()];
+  if (members === "VRAI") members = 1;
+  else members = 0;
+  attached_to = attached_to.split(" = ")[0];
+  phone_no = phone_no.replace(/\s/g, "");
+  if (country_code === "FR" && phone_no?.charAt(0) === "0") {
+    phone_no = `+33${phone_no.slice(1)}`;
+  }
+
+  return [
+    name,
+    members,
+    attached_to,
+    status,
+    address_1,
+    address_2,
+    postcode,
+    city,
+    country_code,
+    phone_no,
+    fax_no,
+    misc,
+  ];
+};
 
 const parser = parse({
   delimiter: ";",
@@ -17,48 +57,10 @@ const parser = parse({
 parser.on("readable", async () => {
   let record;
   while ((record = parser.read()) !== null) {
-    let {
-      name,
-      members,
-      attached_to,
-      address_1,
-      address_2,
-      postcode,
-      city,
-      country_code,
-      phone_no,
-      fax_no,
-      misc,
-      status,
-    } = record;
-    country_code = country_codes.filter(
-      (elem) => elem.Name.toLowerCase() === country_code.toLowerCase()
-    )[0].Code;
-    if (members === "VRAI") members = 1;
-    else members = 0;
-    attached_to = attached_to.split(" = ")[0];
-    phone_no = phone_no.replace(/\s/g, "");
-    if (country_code === "FR" && phone_no?.charAt(0) === "0") {
-      phone_no = `+33${phone_no.slice(1)}`;
-    }
-
-    const parsedRecord = [
-      name,
-      members,
-      attached_to,
-      status,
-      address_1,
-      address_2,
-      postcode,
-      city,
-      country_code,
-      phone_no,
-      fax_no,
-      misc,
-    ];
+    const formatedRecord = formatRow(record);
     const query = format(
-      "INSERT INTO bnf_organisations (name, members, attached_to, status, address_1, address_2, postcode, city, country_code, phone_no, fax_no, misc) VALUES (%L)",
-      parsedRecord
+      "INSERT INTO organisations (name, members, attached_to, status, address_1, address_2, postcode, city, country_code, phone_no, fax_no, misc) VALUES (%L)",
+      formatedRecord
     );
     try {
       await db.query(query);
