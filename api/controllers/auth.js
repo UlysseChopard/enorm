@@ -21,7 +21,7 @@ exports.signup = async (req, res, next) => {
     req.login({ email, role }, (err) => {
       if (err) return next(err);
       log.info("User created", { user: { email, role } });
-      res.redirect(`/dashboard?role=${role}`);
+      next();
     });
   } catch (err) {
     log.warn({ err });

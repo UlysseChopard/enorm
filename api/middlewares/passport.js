@@ -10,17 +10,18 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email", passReqToCallback: true },
     async (req, email, password, cb) => {
+      const role = req.query.role;
       try {
         const {
           rows: [user],
-        } = await Users.getById(email, req.query.role);
+        } = await Users.getById(email, role);
         if (!user)
           return cb(null, false, {
             message: ERROR_MSG,
           });
-        const validPassword = await verify(password, user.password);
-        if (!validPassword) return cb(null, false, { message: ERROR_MSG });
-        cb(null, user);
+        const isValidPassword = await verify(password, user.password);
+        if (!isValidPassword) return cb(null, false, { message: ERROR_MSG });
+        cb(null, { role, ...user });
       } catch (err) {
         cb(err);
       }
@@ -28,18 +29,19 @@ passport.use(
   )
 );
 
+passport.deserializeUser((user, cb) => {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
+
 passport.serializeUser((user, cb) => {
   process.nextTick(function () {
     return cb(null, {
       role: user.role,
       email: user.email,
+      organisation: user.organisation,
     });
-  });
-});
-
-passport.deserializeUser((user, cb) => {
-  process.nextTick(function () {
-    return cb(null, user);
   });
 });
 

@@ -3,7 +3,7 @@ CREATE TABLE admin.experts (
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    organisation INTEGER REFERENCES organisations (id),
+    organisation INTEGER REFERENCES admin.organisations (id)
 );
 -- Down Migration
 DROP TABLE admin.experts;

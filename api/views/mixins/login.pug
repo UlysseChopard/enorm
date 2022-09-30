@@ -4,10 +4,10 @@ mixin login(role, loginType)
     case loginType
         when "signup"
             - label = `Create ${role.slice(0, -1)} account`;
-            - api = `/auth/signup?role=${role}`;
+            - api = `/signup?role=${role}`;
         default
             - label = `Log is as ${role.slice(0, -1)}`;
-            - api = `/auth/login?role=${role}`
+            - api = `/login?role=${role}`
     .flex.justify-center
         form.border.w-80.m-auto.rounded.drop-shadow.m-auto.p-4(action=api method="post")
             .w-full.h-40.flex.flex-col.justify-between.items-start.space-evenly

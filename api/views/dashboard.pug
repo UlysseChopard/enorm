@@ -1,16 +1,12 @@
 extends template 
 
 append nav-links 
-    +anchor("/auth/logout", "Log out")
+    +anchor("/logout", "Log out")
 
 block content 
     .flex.flex-col.items-center.justify-around
-        #users.p-4
-            h2 All users
-            ul
-                each user in users 
-                    li= user.email
-        if organisations && organisations.length
+        p Hi #{user.email}
+        if organisations.length
             #form.flex.flex-col.p-4
                 label(for="about-me") About me
                 form#about-me.flex.flex-col(action="/api/profile" method="post")

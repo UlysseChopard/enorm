@@ -22,7 +22,7 @@ module.exports = (app, express) => {
       store: new pgSession({
         createTableIfMissing: true,
         pool: getPool(),
-        errorLog: log.info,
+        errorLog: log.warn,
       }),
       secret: process.env.SESSION_SECRET,
       resave: false,
@@ -30,6 +30,8 @@ module.exports = (app, express) => {
       cookie: { secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
     })
   );
+
+  app.use(passport.initialize());
 
   app.use(passport.authenticate("session"));
 };
