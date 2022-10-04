@@ -16,29 +16,32 @@ const Signup = () => {
   const [roles, setRoles] = useState([]);
   const [message, setMessage] = useState("");
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    const res = await fetch("http://localhost:4000/api/signup", {
-      method: "POST",
-      body: {
-        firstName: firstName.current,
-        lastName: lastName.current,
-        email: email.current,
-        password: password.current,
-        roles,
-      },
-    });
-    console.log(firstName.current, roles);
-    if (res.ok) {
-      router.push("/dashboard");
-    }
-    const data = await res.json();
-    setMessage(data.message);
-  }, []);
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const res = await fetch("http://localhost:4000/api/signup", {
+        method: "POST",
+        body: {
+          firstName: firstName.current,
+          lastName: lastName.current,
+          email: email.current,
+          password: password.current,
+          roles,
+        },
+      });
+      console.log(firstName.current, roles);
+      if (res.ok) {
+        router.push("/dashboard");
+      }
+      const data = await res.json();
+      setMessage(data.message);
+    },
+    [roles]
+  );
 
   useEffect(() => {
     router.prefetch("/dashboard");
-  }, [roles]);
+  }, []);
   return (
     <>
       <form
