@@ -3,28 +3,28 @@ const log = require("../utils/logs");
 const Users = require("../models/users");
 
 exports.logout = (req, res, next) => {
-  req.logout((err) => (err ? next(err) : res.redirect("/")));
+  req.logout((err) => (err ? next(err) : res.status(200)));
 };
 
 exports.signup = async (req, res, next) => {
+  log.info({ body: req.body });
   const password = await hash(req.body.password);
-  const {
-    query: { role },
-    body: { email },
-  } = req;
+  const { roles, email, firstName, lastName } = req.body;
   try {
     await Users.create({
+      roles,
       email,
-      role,
+      firstName,
+      lastName,
       password,
     });
-    req.login({ email, role }, (err) => {
+    req.login({ email, firstName, lastName, roles }, (err) => {
       if (err) return next(err);
-      log.info("User created", { user: { email, role } });
-      next();
+      log.info("User created", { user: req.body });
+      res.status(201);
     });
   } catch (err) {
     log.warn({ err });
-    res.redirect(`/signup?role=${role}&error=true`);
+    res.status(500).json({ type: "error", message: err.message });
   }
 };

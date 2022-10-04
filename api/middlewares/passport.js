@@ -7,26 +7,22 @@ const Users = require("../models/users");
 const ERROR_MSG = "Incorrect email or password";
 
 passport.use(
-  new LocalStrategy(
-    { usernameField: "email", passReqToCallback: true },
-    async (req, email, password, cb) => {
-      const role = req.query.role;
-      try {
-        const {
-          rows: [user],
-        } = await Users.getById(email, role);
-        if (!user)
-          return cb(null, false, {
-            message: ERROR_MSG,
-          });
-        const isValidPassword = await verify(password, user.password);
-        if (!isValidPassword) return cb(null, false, { message: ERROR_MSG });
-        cb(null, { role, ...user });
-      } catch (err) {
-        cb(err);
-      }
+  new LocalStrategy({ usernameField: "email" }, async (email, password, cb) => {
+    try {
+      const {
+        rows: [user],
+      } = await Users.getByEmail(email);
+      if (!user)
+        return cb(null, false, {
+          message: ERROR_MSG,
+        });
+      const isValidPassword = await verify(password, user.password);
+      if (!isValidPassword) return cb(null, false, { message: ERROR_MSG });
+      cb(null, user);
+    } catch (err) {
+      cb(err);
     }
-  )
+  })
 );
 
 passport.deserializeUser((user, cb) => {
@@ -35,14 +31,18 @@ passport.deserializeUser((user, cb) => {
   });
 });
 
-passport.serializeUser((user, cb) => {
-  process.nextTick(function () {
-    return cb(null, {
-      role: user.role,
-      email: user.email,
-      organisation: user.organisation,
+passport.serializeUser(
+  ({ roles, email, firstName, lastName, organisation }, cb) => {
+    process.nextTick(function () {
+      return cb(null, {
+        roles,
+        email,
+        organisation,
+        firstName,
+        lastName,
+      });
     });
-  });
-});
+  }
+);
 
 module.exports = passport;

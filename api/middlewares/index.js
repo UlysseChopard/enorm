@@ -1,21 +1,20 @@
 const cors = require("cors");
 const helmet = require("helmet");
-const path = require("path");
-const session = require("express-session");
-
-const pgSession = require("connect-pg-simple")(session);
 
 const log = require("../utils/logs.js");
+const logger = require("./logger");
+
+const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
 const passport = require("./passport");
 const { getPool } = require("../db");
 
 module.exports = (app, express) => {
-  app.use(express.static(path.join(__dirname, "../public")));
-
   app.use(helmet());
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
+  app.use(logger);
 
   app.use(
     session({

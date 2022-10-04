@@ -4,5 +4,5 @@ exports.isAuthenticated = (req, res, next) => {
   log.info({ isAuthenticated: req.isAuthenticated() });
   req.isAuthenticated()
     ? next()
-    : res.redirect(`/login?role=${req.query.role || "experts"}`);
+    : res.json({ type: "error", message: "unauthorized" });
 };
