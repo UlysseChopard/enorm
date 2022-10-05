@@ -5,13 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon -r dotenv/config server | bunyan",
-    "tailwind:css": "postcss public/styles/tailwind.css -o public/styles/style.css --config . -w",
     "migrate": "node-pg-migrate -m ./db/migrations"
   },
   "author": "ucg",
   "license": "ISC",
   "dependencies": {
-    "autoprefixer": "^10.4.12",
     "bcrypt": "^5.0.1",
     "bunyan": "^1.8.15",
     "connect-pg-simple": "^7.0.0",
@@ -28,11 +26,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
-    "pg-format": "^1.0.4",
-    "postcss": "^8.4.16",
-    "postcss-cli": "^10.0.0",
-    "pug": "^3.0.2",
-    "tailwindcss": "^3.1.8"
+    "pg-format": "^1.0.4"
   },
   "devDependencies": {
     "csv-parse": "^5.3.0",

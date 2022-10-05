@@ -22,14 +22,11 @@ const Login = () => {
       },
     });
     if (res.ok) {
+      console.log("user", res.data);
       router.push("/dashboard");
     } else {
       setMessage("Email or password are wrong");
     }
-  }, []);
-
-  useEffect(() => {
-    router.prefetch("/dashboard");
   }, []);
   return (
     <>

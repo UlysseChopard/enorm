@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const { signup, logout } = require("../controllers/auth");
+const { signup, logout, login } = require("../controllers/auth");
 const passport = require("../middlewares/passport");
 
-router.post("/login", passport.authenticate("local"));
+router.post("/login", passport.authenticate("local"), login);
 router.post("/signup", signup);
 router.get("/logout", logout);
 

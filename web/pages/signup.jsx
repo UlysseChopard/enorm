@@ -1,10 +1,10 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import Input from "components/forms/Input";
 import Checkboxes from "components/forms/Checkboxes";
 import Submit from "components/forms/Submit";
-import { useCallback, useEffect, useRef, useState } from "react";
-import fetch from "lib/fetch";
-import { useRouter } from "next/router";
 import Back from "components/forms/Back";
+import fetch from "lib/fetch";
 
 const Signup = () => {
   const router = useRouter();
@@ -29,19 +29,13 @@ const Signup = () => {
           roles,
         },
       });
-      console.log(firstName.current, roles);
       if (res.ok) {
         router.push("/dashboard");
       }
-      const data = await res.json();
-      setMessage(data.message);
+      setMessage("Something went wrong");
     },
     [roles]
   );
-
-  useEffect(() => {
-    router.prefetch("/dashboard");
-  }, []);
   return (
     <>
       <form
