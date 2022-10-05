@@ -2,6 +2,7 @@ const passport = require("passport");
 const { verify } = require("../utils/auth");
 const LocalStrategy = require("passport-local").Strategy;
 const Users = require("../models/users");
+const log = require("../utils/logs");
 
 const ERROR_MSG = "Incorrect email or password";
 
@@ -17,6 +18,7 @@ passport.use(
         });
       const isValidPassword = await verify(password, user.password);
       if (!isValidPassword) return cb(null, false, { message: ERROR_MSG });
+      log.info("login", { user });
       cb(null, user);
     } catch (err) {
       cb(err);
@@ -29,7 +31,7 @@ passport.deserializeUser(async (id, cb) => {
     const {
       rows: [user],
     } = await Users.getById(id);
-    console.log("deserialize", user);
+    log.info("deserialize", user);
     cb(null, user);
   } catch (err) {
     cb(err);
@@ -37,7 +39,7 @@ passport.deserializeUser(async (id, cb) => {
 });
 
 passport.serializeUser((user, cb) => {
-  console.log("serialize", user);
+  log.info("serialize", user);
   process.nextTick(() => cb(null, user.id));
 });
 

@@ -3,17 +3,17 @@ const log = require("../utils/logs");
 const Users = require("../models/users");
 
 exports.logout = (req, res, next) => {
+  req.session.destroy();
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
 };
 
 exports.signup = async (req, res, next) => {
   const password = await hash(req.body.password);
-  const { roles, email, firstName, lastName } = req.body;
+  const { email, firstName, lastName } = req.body;
   try {
     const {
       rows: [user],
     } = await Users.create({
-      roles,
       email,
       firstName,
       lastName,
@@ -30,4 +30,4 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.login = (req, res) => res.status(200).json({ user: req.user });
+exports.login = (_req, res) => res.sendStatus(200);

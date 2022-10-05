@@ -27,3 +27,15 @@ exports.insert = (data) =>
   );
 
 exports.getAll = () => db.query("SELECT * FROM organisations");
+
+exports.createParent = ({ name, address }) =>
+  db.query("INSERT INTO organisations (name, address) VALUES ($1, $2)", [
+    name,
+    address,
+  ]);
+
+exports.createChild = ({ name, address, parent }) =>
+  db.query(
+    "INSERT INTO organisations (name, address, parent) VALUES ($1, $2, $3)",
+    [name, address, parent]
+  );
