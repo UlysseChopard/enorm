@@ -4,16 +4,20 @@ import Logout from "./Logout";
 import Manager from "./Manager";
 import Expert from "./Expert";
 
-const NavBar = ({ noBack }) => {
+const NavBar = ({ backBtn = true, accountManagement = true }) => {
   return (
-    <div className="absolute top-0 left-0 right-0 h-16 border-b flex items-center justify-around">
-      {noBack ? <div /> : <Back />}
+    <div className="sticky z-10 top-0 bg-sky-100 w-full h-16 border-b flex items-center justify-around">
+      {backBtn ? <Back /> : <div />}
       <Home />
-      <div className="flex items-center justify-around w-32">
-        <Expert />
-        <Manager />
-        <Logout />
-      </div>
+      {accountManagement ? (
+        <div className="flex items-center justify-around w-32">
+          <Expert />
+          <Manager />
+          <Logout />
+        </div>
+      ) : (
+        <div />
+      )}
     </div>
   );
 };

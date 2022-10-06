@@ -1,7 +1,7 @@
 const Submit = ({ label = "Submit" }) => {
   return (
     <button
-      className="text-2xl bg-orange-200 rounded mt-4 p-4 hover:opacity-80 focus:opacity-80"
+      className="drop-shadow text-2xl uppercase bg-orange-600 rounded-full mt-2 p-2 text-sky-50 hover:opacity-80 focus:opacity-80"
       type="submit"
     >
       {label}

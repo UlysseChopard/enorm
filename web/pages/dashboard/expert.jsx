@@ -1,5 +1,4 @@
 import Button from "components/forms/Button";
-import Main from "components/layout/Main";
 import { useCallback, useState } from "react";
 import { OrganisationForm, ExpertForm } from "components/pages/manager";
 
@@ -7,7 +6,7 @@ const Expert = () => {
   const [form, setForm] = useState("");
   const goToDashboard = useCallback(() => setForm(""), []);
   return (
-    <Main>
+    <>
       <h1 className="text-2xl font-bold my-4">Manager dashboard</h1>
       {!form && (
         <>
@@ -27,7 +26,7 @@ const Expert = () => {
       {form === "expert" && (
         <ExpertForm onSuccess={goToDashboard} onCancel={goToDashboard} />
       )}
-    </Main>
+    </>
   );
 };
 

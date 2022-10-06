@@ -8,7 +8,7 @@ const Form = ({ onSubmit, children, onCancel, submitLabel }) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col w-96 border rounded-xl p-4 drop-shadow"
+      className="flex flex-col flex-wrap w-96 border rounded-xl p-4 m-4 text-left drop-shadow"
       method="post"
     >
       {children.map((child) => {

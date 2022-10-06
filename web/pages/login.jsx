@@ -1,4 +1,3 @@
-import Main from "components/layout/Main";
 import { LoginForm } from "components/pages/login";
 import Head from "next/head";
 
@@ -8,9 +7,7 @@ const Signup = () => {
       <Head>
         <title>Log in</title>
       </Head>
-      <Main>
-        <LoginForm />
-      </Main>
+      <LoginForm />
     </>
   );
 };

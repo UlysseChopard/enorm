@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Main from "components/layout/Main";
 import { RolesButtons } from "components/pages/roles";
 import { useEffect, useState } from "react";
 import { getUser } from "lib/api/auth";
@@ -22,10 +21,8 @@ const Roles = () => {
       <Head>
         <title>Select your role</title>
       </Head>
-      <Main>
-        <RolesButtons />
-        <code>{JSON.stringify(user, null, 2)}</code>
-      </Main>
+      <RolesButtons />
+      <code>{JSON.stringify(user, null, 2)}</code>
     </>
   );
 };
