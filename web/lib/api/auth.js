@@ -9,6 +9,7 @@ export const login = ({ email, password }) => {
       email,
       password,
     }),
+    credentials: "include",
   });
 };
 export const logout = () => fetch("http://localhost:4000/api/logout");
@@ -19,6 +20,7 @@ export const signup = ({ firstName, lastName, email, password }) =>
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({
       firstName,
       lastName,
@@ -27,4 +29,6 @@ export const signup = ({ firstName, lastName, email, password }) =>
     }),
   });
 export const getUser = () =>
-  fetch("http://localhost:4000/api/users").then((res) => res.json());
+  fetch("http://localhost:4000/api/users", { credentials: "include" }).then(
+    (res) => res.json()
+  );

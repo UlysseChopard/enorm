@@ -1,6 +1,7 @@
 import { Html, Head, Main, NextScript } from "next/document";
 import Page from "components/layout/Page";
 import Link from "next/link";
+import NavBar from "components/navigation/NavBar";
 
 export default function Document() {
   return (
@@ -8,6 +9,7 @@ export default function Document() {
       <Head />
       <body>
         <Page>
+          <NavBar />
           <Main />
         </Page>
         <footer className="flex h-24 w-full items-center justify-center border-t">

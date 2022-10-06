@@ -20,7 +20,7 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days: 30 * 24 * 60 * 60 * 1000
-    sameSite: "same-origin",
+    sameSite: "lax",
     secure: false,
   },
 };

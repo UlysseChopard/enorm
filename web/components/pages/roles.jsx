@@ -1,15 +1,10 @@
 import Button from "components/forms/Button";
-import Link from "next/link";
 
 export const RolesButtons = () => {
   return (
     <>
-      <Link href="/dashboard/expert">
-        <Button onClick={console.log} label="Expert" role="expert" />
-      </Link>
-      <Link href="/dashboard/manager">
-        <Button onClick={console.log} label="Manager" role="manager" />
-      </Link>
+      <Button href="/dashboard/expert" label="Expert" role="expert" />
+      <Button href="/dashboard/manager" label="Manager" role="manager" />
     </>
   );
 };

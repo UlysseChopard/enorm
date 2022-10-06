@@ -1,4 +1,4 @@
-import 'styles/globals.css';
+import "styles/globals.css";
 import fetcher from "lib/fetcher";
 import { SWRConfig } from "swr";
 

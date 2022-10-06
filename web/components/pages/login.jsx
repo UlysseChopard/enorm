@@ -1,5 +1,4 @@
 import Input from "components/forms/Input";
-import Submit from "components/forms/Submit";
 import Form from "components/forms/Form";
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -30,11 +29,7 @@ export const LoginForm = () => {
   }, []);
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      onCancel={() => router.replace("/")}
-      submitLabel="Log In"
-    >
+    <Form onSubmit={handleSubmit} submitLabel="Log In">
       <Input
         name="email"
         label="Email"

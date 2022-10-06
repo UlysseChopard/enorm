@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function Button({ onClick, label, description, role = "" }) {
+const Button = ({ onClick, label, description, href, role }) => {
   const [bgColor, setBgColor] = useState("");
   useEffect(() => {
     if (role === "manager") {
@@ -9,14 +10,24 @@ export default function Button({ onClick, label, description, role = "" }) {
       setBgColor("bg-blue-200");
     }
   }, [role]);
+  const className = `m-6 w-96 rounded-xl border p-6 text-left hover:opacity-80 focus:opacity-80 ${bgColor}`;
+
+  if (href) {
+    return (
+      <Link href={href}>
+        <button type="button" className={className}>
+          <h3 className="text-2xl font-bold">{label} &rarr;</h3>
+          <p className="mt-4 text-xl">{description}</p>
+        </button>
+      </Link>
+    );
+  }
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`m-6 w-96 rounded-xl border p-6 text-left hover:opacity-80 focus:opacity-80 ${bgColor}`}
-    >
+    <button type="button" onClick={onClick} className={className}>
       <h3 className="text-2xl font-bold">{label} &rarr;</h3>
       <p className="mt-4 text-xl">{description}</p>
     </button>
   );
-}
+};
+
+export default Button;

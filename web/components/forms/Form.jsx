@@ -1,8 +1,9 @@
 import Cancel from "./Cancel";
 import Submit from "./Submit";
-import { useState } from "react";
+import { useRouter } from "next/router";
 
 const Form = ({ onSubmit, children, onCancel, submitLabel }) => {
+  const router = useRouter();
   let i = 0;
   return (
     <form
@@ -19,7 +20,7 @@ const Form = ({ onSubmit, children, onCancel, submitLabel }) => {
         );
       })}
       <div className="flex items-center justify-around">
-        <Cancel onClick={onCancel} />
+        <Cancel onClick={onCancel || router.back} />
         <Submit label={submitLabel} />
       </div>
     </form>

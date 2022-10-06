@@ -1,13 +1,11 @@
 import Form from "components/forms/Form";
 import Input from "components/forms/Input";
-import Submit from "components/forms/Submit";
 import Select from "components/forms/Select";
-import { getAll } from "lib/api/organisations";
-import { create as createOrganisation } from "lib/api/organisations";
-import { create as createExpert } from "lib/api/experts";
+import { getAll, create as createOrganisation } from "lib/api/organisations";
+import { create as createUser } from "lib/api/users";
 import { useCallback, useState, useRef, useEffect } from "react";
 
-export const OrganisationForm = ({ onSuccess, onCancel }) => {
+export const CreateOrganisationForm = ({ onSuccess, onCancel }) => {
   const name = useRef();
   const address = useRef();
   const parent = useRef();
@@ -90,11 +88,18 @@ export const OrganisationForm = ({ onSuccess, onCancel }) => {
   );
 };
 
-export const ExpertForm = ({ onSuccess, onCancel }) => {
+export const LinkUserForm = ({ role, onSuccess, onCancel }) => {
   const [message, setMessage] = useState("");
   const email = useRef();
   const organisation = useRef();
   const [organisations, setOrganisations] = useState([]);
+  const displayedRole = role.charAt(0).toUpperCase() + role.slice(1);
+  const successMessage = `${displayedRole} added to ${
+    organisation.current
+      ? organisations.filter((org) => organisation.current === org.value)[0]
+          .label
+      : "your main organisation"
+  }`;
   useEffect(() => {
     const fillOrganisations = async () => {
       try {
@@ -119,12 +124,13 @@ export const ExpertForm = ({ onSuccess, onCancel }) => {
 
   const handleSubmit = useCallback(async () => {
     try {
-      const res = await createExpert({
+      const res = await createUser({
+        role,
         email: email.current,
         organisation: organisation.current,
       });
       if (res.ok) {
-        setMessage("Expert linked to your organisation");
+        setMessage(successMessage);
         setTimeout(onSuccess, 500);
       } else {
         setMessage("An error occurred, please try again");
