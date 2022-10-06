@@ -12,7 +12,8 @@ export const login = ({ email, password }) => {
     credentials: "include",
   });
 };
-export const logout = () => fetch("http://localhost:4000/api/logout");
+export const logout = () =>
+  fetch("http://localhost:4000/api/logout", { credentials: "include" });
 export const signup = ({ firstName, lastName, email, password }) =>
   fetch("http://localhost:4000/api/signup", {
     method: "POST",

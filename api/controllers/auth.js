@@ -3,8 +3,8 @@ const log = require("../utils/logs");
 const Users = require("../models/users");
 
 exports.logout = (req, res, next) => {
-  req.session.destroy();
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
+  req.session.destroy();
 };
 
 exports.signup = async (req, res, next) => {

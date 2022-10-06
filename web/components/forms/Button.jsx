@@ -7,10 +7,12 @@ const Button = ({ onClick, label, description, href, role }) => {
     if (role === "manager") {
       setBgColor("bg-red-200");
     } else if (role === "expert") {
-      setBgColor("bg-blue-200");
+      setBgColor("bg-sky-200");
+    } else {
+      setBgColor("bg-white");
     }
   }, [role]);
-  const className = `m-6 w-96 rounded-xl border p-6 text-left hover:opacity-80 focus:opacity-80 ${bgColor}`;
+  const className = `drop-shadow m-6 w-96 rounded-xl border p-6 text-left hover:opacity-80 focus:opacity-80 ${bgColor}`;
 
   if (href) {
     return (

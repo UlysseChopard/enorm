@@ -4,7 +4,7 @@ const useUser = () => {
   const { data, error } = useSWR("http://localhost:4000/api/users");
 
   return {
-    user: data,
+    user: data?.user,
     isLoading: !error && !data,
     isError: error,
   };

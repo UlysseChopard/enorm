@@ -11,7 +11,7 @@ const Input = ({
     <>
       <Label htmlFor={name}>{label}</Label>
       <input
-        className="text-xl p-2"
+        className="text-xl p-2 rounded"
         id={name}
         name={name}
         type={type}

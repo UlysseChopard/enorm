@@ -9,9 +9,9 @@ const experts = require("./experts");
 
 module.exports = (app) => {
   app.use("/api", auth);
-  app.use("/api", users);
-  app.use("/api", organisations);
-  app.use("/api", experts);
+  app.use("/api", isAuthenticated, users);
+  app.use("/api", isAuthenticated, organisations);
+  app.use("/api", isAuthenticated, experts);
   app.use("*", catchAll);
   app.use(errors);
 };

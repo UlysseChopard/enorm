@@ -6,6 +6,25 @@ import ManagerLayout from "components/layout/Manager";
 const Manager = () => {
   const [form, setForm] = useState("");
   const goToDashboard = useCallback(() => setForm(""), []);
+  if (form === "organisation") {
+    return (
+      <CreateOrganisationForm
+        onSuccess={goToDashboard}
+        onCancel={goToDashboard}
+      />
+    );
+  }
+
+  if (form) {
+    return (
+      <LinkUserForm
+        role={form}
+        onSuccess={goToDashboard}
+        onCancel={goToDashboard}
+      />
+    );
+  }
+
   return (
     <>
       <h1 className="text-2xl font-bold my-4">
@@ -26,18 +45,6 @@ const Manager = () => {
             onClick={() => setForm("manager")}
           />
         </>
-      )}
-      {form === "organisation" ? (
-        <CreateOrganisationForm
-          onSuccess={goToDashboard}
-          onCancel={goToDashboard}
-        />
-      ) : (
-        <LinkUserForm
-          role={form}
-          onSuccess={goToDashboard}
-          onCancel={goToDashboard}
-        />
       )}
     </>
   );

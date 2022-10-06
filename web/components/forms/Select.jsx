@@ -8,7 +8,7 @@ const Select = ({ name, label, options, onChange, required = true }) => {
         name={name}
         required={required}
         onChange={onChange}
-        className="text-xl p-2"
+        className="text-xl p-2 rounded"
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value} className="text-xl p-2">
