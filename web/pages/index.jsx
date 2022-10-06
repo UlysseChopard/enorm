@@ -9,7 +9,6 @@ const Home = () => {
         <title>E-norm</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Main>
         <h1 className="text-6xl font-bold">Welcome to E-norm</h1>
 

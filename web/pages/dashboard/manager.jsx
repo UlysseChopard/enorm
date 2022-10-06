@@ -1,4 +1,3 @@
-import Back from "components/forms/Back";
 import Button from "components/forms/Button";
 import Main from "components/layout/Main";
 import { useCallback, useState } from "react";
@@ -40,7 +39,6 @@ const Manager = () => {
           onCancel={goToDashboard}
         />
       )}
-      <Back />
     </Main>
   );
 };
