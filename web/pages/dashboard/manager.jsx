@@ -1,6 +1,7 @@
 import Button from "components/forms/Button";
 import { useCallback, useState } from "react";
 import { CreateOrganisationForm, LinkUserForm } from "components/pages/manager";
+import ManagerLayout from "components/layout/Manager";
 
 const Manager = () => {
   const [form, setForm] = useState("");
@@ -41,5 +42,7 @@ const Manager = () => {
     </>
   );
 };
+
+Manager.Layout = ManagerLayout;
 
 export default Manager;

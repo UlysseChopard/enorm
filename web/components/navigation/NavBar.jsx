@@ -6,7 +6,7 @@ import Expert from "./Expert";
 
 const NavBar = ({ backBtn = true, accountManagement = true }) => {
   return (
-    <div className="sticky z-10 top-0 bg-sky-100 w-full h-16 border-b flex items-center justify-around">
+    <div className="sticky z-10 bg-white top-0 w-full h-16 border-b-2 flex items-center justify-around">
       {backBtn ? <Back /> : <div />}
       <Home />
       {accountManagement ? (

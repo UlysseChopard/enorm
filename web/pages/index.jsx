@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Button from "components/forms/Button";
-import Main from "components/layout/Main";
+import Main from "components/layout/Root";
 
 const Home = () => {
   return (

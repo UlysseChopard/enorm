@@ -125,13 +125,13 @@ export const LinkUserForm = ({ role, onSuccess, onCancel }) => {
   const handleSubmit = useCallback(async () => {
     try {
       const res = await createUser({
-        role,
+        roles: [role],
         email: email.current,
         organisation: organisation.current,
       });
       if (res.ok) {
         setMessage(successMessage);
-        setTimeout(onSuccess, 500);
+        setTimeout(onSuccess, 800);
       } else {
         setMessage("An error occurred, please try again");
       }

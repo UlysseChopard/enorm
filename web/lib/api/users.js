@@ -1,4 +1,4 @@
-export const create = ({ email, organisation, role }) =>
+export const create = ({ email, organisation, roles }) =>
   fetch("http://localhost:4000/api/users", {
     method: "POST",
     headers: {
@@ -6,7 +6,7 @@ export const create = ({ email, organisation, role }) =>
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      role,
+      roles,
       email,
       organisation,
     }),

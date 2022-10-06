@@ -1,5 +1,6 @@
 import { SignupForm } from "components/pages/signup";
 import Head from "next/head";
+import LoginLayout from "components/layout/Login";
 
 const Signup = () => {
   return (
@@ -11,5 +12,7 @@ const Signup = () => {
     </>
   );
 };
+
+Signup.Layout = LoginLayout;
 
 export default Signup;

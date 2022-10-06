@@ -1,7 +1,8 @@
 import { LoginForm } from "components/pages/login";
 import Head from "next/head";
+import LoginLayout from "components/layout/Login";
 
-const Signup = () => {
+const Login = () => {
   return (
     <>
       <Head>
@@ -12,4 +13,6 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+Login.Layout = LoginLayout;
+
+export default Login;

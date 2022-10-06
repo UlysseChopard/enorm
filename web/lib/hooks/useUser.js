@@ -1,8 +1,7 @@
 import useSWR from "swr";
-import fetcher from "lib/fetcher";
 
 const useUser = () => {
-  const { data, error } = useSWR("http://localhost:4000/api/users", fetcher);
+  const { data, error } = useSWR("http://localhost:4000/api/users");
 
   return {
     user: data,
