@@ -12,9 +12,20 @@ export const login = ({ email, password }) => {
     credentials: "include",
   });
 };
+
 export const logout = () =>
   fetch("http://localhost:4000/api/logout", { credentials: "include" });
-export const signup = ({ firstName, lastName, email, password }) =>
+
+export const signup = ({
+  firstName,
+  lastName,
+  email,
+  civility,
+  phoneNumber,
+  password,
+  isManager,
+  isExpert,
+}) =>
   fetch("http://localhost:4000/api/signup", {
     method: "POST",
     headers: {
@@ -25,11 +36,11 @@ export const signup = ({ firstName, lastName, email, password }) =>
     body: JSON.stringify({
       firstName,
       lastName,
+      civility,
+      phoneNumber,
       email,
       password,
+      isManager,
+      isExpert,
     }),
   });
-export const getUser = () =>
-  fetch("http://localhost:4000/api/users", { credentials: "include" }).then(
-    (res) => res.json()
-  );

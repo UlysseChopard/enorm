@@ -16,9 +16,9 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.getAll = async (_req, res) => {
+exports.getAll = async (req, res) => {
   try {
-    const { rows } = await Organisations.getAll();
+    const { rows } = await Organisations.getAll(req.user.id);
     res.json({ organisations: rows });
   } catch (err) {
     log.warn({ err });

@@ -4,30 +4,66 @@ const Users = require("../models/users");
 
 exports.logout = (req, res, next) => {
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
-  req.session.destroy();
 };
 
 exports.signup = async (req, res, next) => {
   const password = await hash(req.body.password);
-  const { email, firstName, lastName } = req.body;
+  const {
+    email,
+    firstName,
+    lastName,
+    phoneNumber,
+    civility,
+    isExpert,
+    isManager,
+  } = req.body;
+  log.info({ body: req.body });
   try {
-    const {
-      rows: [user],
-    } = await Users.create({
-      email,
-      firstName,
-      lastName,
-      password,
-    });
-    req.login(user, (err) => {
-      if (err) return next(err);
-      log.info("User created", { user });
-      res.sendStatus(201);
-    });
+    let user;
+    if (isExpert) {
+      const {
+        rows: [expert],
+      } = await Users.getByEmail(email);
+      const {
+        rows: [updatedExpert],
+      } = await Users.activeAccount(expert.id, {
+        firstName,
+        lastName,
+        phoneNumber,
+        civility,
+      });
+      user = updatedExpert;
+    } else if (isManager) {
+      const {
+        rows: [manager],
+      } = await Users.createAccount({
+        email,
+        firstName,
+        lastName,
+        password,
+        isExpert,
+        isManager,
+        phoneNumber,
+        civility,
+      });
+      user = manager;
+    }
+    if (user) {
+      req.login(user, (err) => {
+        if (err) return next(err);
+        log.info("User created", { user });
+        res.status(201).json({ user });
+      });
+    } else {
+      throw new Error("Bad request");
+    }
   } catch (err) {
-    log.warn({ err });
-    res.sendStatus(500);
+    next(err);
   }
 };
 
-exports.login = (_req, res) => res.sendStatus(200);
+exports.login = (req, res) => res.json({ user: req.user });
+
+exports.sendUser = (req, res) => {
+  res.json({ user: req.user });
+};

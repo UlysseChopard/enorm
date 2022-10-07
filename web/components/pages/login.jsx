@@ -18,8 +18,18 @@ export const LoginForm = () => {
         email: email.current,
         password: password.current,
       });
+      console.log("res", res);
       if (res.ok) {
-        router.push("/roles");
+        const {
+          user: { is_manager, is_expert },
+        } = await res.json();
+        if (is_expert) {
+          router.push("/dashboard/expert");
+        } else if (is_manager) {
+          router.push("/dashboard/manager");
+        } else {
+          throw new Error("An error occurred, please try again");
+        }
       } else {
         setMessage("Incorrect email or password");
       }

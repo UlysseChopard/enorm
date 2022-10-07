@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const { fillProfile } = require("../controllers/experts");
+const { fillProfile, declareExpert } = require("../controllers/experts");
 
-router.post("/experts", fillProfile);
+router.patch("/experts", fillProfile);
+router.post("/experts", declareExpert);
 
 module.exports = router;

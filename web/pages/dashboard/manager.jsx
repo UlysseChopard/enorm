@@ -1,26 +1,38 @@
 import Button from "components/forms/Button";
 import { useCallback, useState } from "react";
-import { CreateOrganisationForm, LinkUserForm } from "components/pages/manager";
+import CreateExpert from "components/pages/manager/CreateExpert";
+import CreateOrganisation from "components/pages/manager/CreateOrganisation";
 import ManagerLayout from "components/layout/Manager";
+import useUser from "lib/hooks/useUser";
 
 const Manager = () => {
+  const { user, isLoading, isError } = useUser();
   const [form, setForm] = useState("");
   const goToDashboard = useCallback(() => setForm(""), []);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>An error occurred, please try to log in</p>;
+  }
+
   if (form === "organisation") {
     return (
-      <CreateOrganisationForm
+      <CreateOrganisation
         onSuccess={goToDashboard}
         onCancel={goToDashboard}
+        user={user}
       />
     );
   }
 
-  if (form) {
+  if (form === "expert") {
     return (
-      <LinkUserForm
-        role={form}
+      <CreateExpert
         onSuccess={goToDashboard}
         onCancel={goToDashboard}
+        user={user}
       />
     );
   }

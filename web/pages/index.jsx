@@ -14,7 +14,7 @@ const Home = () => {
 
         <div className="my-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
           <Button label="Log in" href="/login" />
-          <Button label="Sign up" href="/signup" />
+          <Button label="Sign up" href="/signup?isManager=true" />
         </div>
       </Main>
     </>

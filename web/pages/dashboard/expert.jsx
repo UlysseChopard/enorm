@@ -1,13 +1,10 @@
 import Button from "components/forms/Button";
-import { useCallback, useState } from "react";
 import { FillInfosForm } from "components/pages/expert";
 import ExpertLayout from "components/layout/Expert";
 import useUser from "lib/hooks/useUser";
 
 const Expert = () => {
   const { user, isLoading, isError } = useUser();
-  const [form, setForm] = useState("");
-  const goToDashboard = useCallback(() => setForm(""), []);
   if (isLoading) {
     return <p>Loading...</p>;
   }

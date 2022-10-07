@@ -26,7 +26,8 @@ exports.insert = (data) =>
     )
   );
 
-exports.getAll = () => db.query("SELECT * FROM organisations");
+exports.getAll = (manager) =>
+  db.query("SELECT * FROM organisations WHERE manager = $1", [manager]);
 
 exports.createParent = ({ name, address }) =>
   db.query("INSERT INTO organisations (name, address) VALUES ($1, $2)", [

@@ -6,9 +6,11 @@ import { signup } from "lib/api/auth";
 
 export const SignupForm = () => {
   const router = useRouter();
+  const { isManager, isExpert } = router.query;
 
   const firstName = useRef();
   const lastName = useRef();
+  const phoneNumber = useRef();
   const email = useRef();
   const password = useRef();
 
@@ -22,9 +24,22 @@ export const SignupForm = () => {
         lastName: lastName.current,
         email: email.current,
         password: password.current,
+        phoneNumber: phoneNumber.current,
+        civility: "H",
+        isManager,
+        isExpert,
       });
       if (res.ok) {
-        router.push("/roles");
+        const {
+          user: { is_manager, is_expert },
+        } = await res.json();
+        if (is_expert) {
+          router.push("/dashboard/expert");
+        } else if (is_manager) {
+          router.push("/dashboard/manager");
+        } else {
+          throw new Error("An error occurred, please try again");
+        }
       } else {
         setMessage("Something went wrong");
       }
@@ -46,6 +61,12 @@ export const SignupForm = () => {
         label="Last name"
         autoComplete="family-name"
         onChange={(e) => (lastName.current = e.target.value)}
+      />
+      <Input
+        name="phone-number"
+        label="Phone number"
+        autoComplete="phone"
+        onChange={(e) => (phoneNumber.current = e.target.value)}
       />
       <Input
         name="email"
