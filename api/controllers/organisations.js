@@ -4,10 +4,11 @@ const Organisations = require("../models/organisations");
 exports.create = async (req, res) => {
   try {
     const { name, address, parent } = req.body;
+    const manager = req.user.id;
     if (parent) {
-      await Organisations.createChild({ name, address, parent });
+      await Organisations.createChild(manager, { name, address, parent });
     } else {
-      await Organisations.createParent({ name, address });
+      await Organisations.createParent(manager, { name, address });
     }
     res.sendStatus(201);
   } catch (err) {
