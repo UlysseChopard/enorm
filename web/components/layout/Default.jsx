@@ -1,11 +1,11 @@
 import Main from "./elements/Main";
-import NavBar from "components/navigation/NavBar";
+import NavBar from "./elements/NavBar";
 import Footer from "./elements/Footer";
 
 const Default = ({ children }) => {
   return (
     <>
-      <NavBar backBtn={false} accountManagement={false} />
+      <NavBar accountManagement={false} />
       <Main>{children}</Main>
       <Footer />
     </>

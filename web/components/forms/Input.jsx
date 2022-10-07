@@ -6,6 +6,7 @@ const Input = ({
   label,
   required = true,
   onChange,
+  ...props
 }) => {
   return (
     <>
@@ -18,6 +19,7 @@ const Input = ({
         autoComplete={autoComplete}
         required={required}
         onChange={onChange}
+        {...props}
       />
     </>
   );

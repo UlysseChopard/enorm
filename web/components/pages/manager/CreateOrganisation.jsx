@@ -1,25 +1,14 @@
-import useOrganisations from "lib/hooks/useOrganisations";
-import { useRef, useState, useCallback, useMemo } from "react";
+import { useRef, useState, useCallback } from "react";
 import Form from "components/forms/Form";
 import Input from "components/forms/Input";
 import Select from "components/forms/Select";
 import { create as createOrganisation } from "lib/api/organisations";
 
-const CreateOrganisation = ({ onSuccess, onCancel, user }) => {
+const CreateOrganisation = ({ onSuccess, onCancel, organisationsOpts }) => {
   const name = useRef();
   const address = useRef();
   const parent = useRef();
   const [message, setMessage] = useState("");
-
-  const { organisations } = useOrganisations({ userId: user.id });
-
-  const opts = useMemo(
-    () =>
-      organisations?.map(({ id, name }) => ({ label: name, value: id })) || [
-        { value: "", label: "-- No organisation --" },
-      ],
-    [organisations]
-  );
 
   const handleSubmit = useCallback(async () => {
     try {
@@ -30,7 +19,7 @@ const CreateOrganisation = ({ onSuccess, onCancel, user }) => {
       });
       if (res.ok) {
         setMessage("Main organisation created");
-        setTimeout(onSuccess, 500);
+        setTimeout(onSuccess, 800);
       } else {
         setMessage("An error occurred, please try again");
       }
@@ -50,13 +39,13 @@ const CreateOrganisation = ({ onSuccess, onCancel, user }) => {
         label="Address"
         onChange={(e) => (address.current = e.target.value)}
       />
-      <Select
+      {organisationsOpts.length ? <Select
         name="parent"
         label="Parent organisation"
-        options={opts}
+        options={organisationsOpts}
         onChange={(e) => (parent.current = e.target.value)}
         required={false}
-      />
+      /> : null}
       <p>{message}</p>
     </Form>
   );

@@ -5,31 +5,23 @@ exports.createAccount = ({
   password,
   firstName,
   lastName,
-  isExpert,
-  isManager,
   phoneNumber,
   civility,
-  organisation,
 }) =>
   db.query(
-    "INSERT INTO users (email, password, first_name, last_name, is_expert, is_manager, phone_no, civility, organisation) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, email, first_name, last_name, phone_no, civility, is_expert, is_manager, organisation",
+    "INSERT INTO users (email, password, first_name, last_name, phone_no, civility, organisation, is_expert, is_manager) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, email, first_name, last_name, phone_no, civility",
     [
       email,
       password,
       firstName,
       lastName,
-      isExpert,
-      isManager,
       phoneNumber,
       civility,
-      organisation,
+      false,
+      true,
     ]
   );
 
-exports.getAll = () => db.query("SELECT email FROM users");
-
-exports.getByOrganisation = (organisation) =>
-  db.query("SELECT * FROM users WHERE organisation = $1", [organisation]);
 
 exports.getByEmail = (email) =>
   db.query(
@@ -54,19 +46,4 @@ exports.updateOrganisation = (id, organisation) =>
   db.query("UPDATE users SET organisation = $1 WHERE id = $2", [
     organisation,
     id,
-  ]);
-
-exports.activeAccount = (
-  id,
-  { firstName, lastName, civility, phoneNumber, password }
-) =>
-  db.query(
-    "UPDATE users SET first_name = $1, last_name = $2, civility = $3, phone_no = $4, password = $5 WHERE id = $6",
-    [firstName, lastName, civility, phoneNumber, password, id]
-  );
-
-exports.declareExpert = ({ email, organisation }) =>
-  db.query("INSERT INTO users (email, organisation) VALUES ($1, $2)", [
-    email,
-    organisation,
   ]);

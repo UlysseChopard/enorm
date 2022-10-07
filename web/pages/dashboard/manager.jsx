@@ -1,19 +1,27 @@
 import Button from "components/forms/Button";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 import CreateExpert from "components/pages/manager/CreateExpert";
 import CreateOrganisation from "components/pages/manager/CreateOrganisation";
 import ManagerLayout from "components/layout/Manager";
 import useUser from "lib/hooks/useUser";
+import useOrganisations from "lib/hooks/useOrganisations";
 
 const Manager = () => {
-  const { user, isLoading, isError } = useUser();
+  const { user, isLoading: isUserLoading, isError: isUserError } = useUser();
+  const { organisations, isLoading: isOrgLoading, isError: isOrgError } = useOrganisations();
   const [form, setForm] = useState("");
   const goToDashboard = useCallback(() => setForm(""), []);
-  if (isLoading) {
+
+  const organisationsOpts = useMemo(
+    () => organisations?.map(({ id, name }) => ({ label: name, value: id })),
+    [organisations]
+  );
+
+  if (isUserLoading || isOrgLoading) {
     return <p>Loading...</p>;
   }
 
-  if (isError) {
+  if (isUserError || isOrgError) {
     return <p>An error occurred, please try to log in</p>;
   }
 
@@ -22,7 +30,7 @@ const Manager = () => {
       <CreateOrganisation
         onSuccess={goToDashboard}
         onCancel={goToDashboard}
-        user={user}
+        organisationsOpts={organisationsOpts}
       />
     );
   }
@@ -32,7 +40,7 @@ const Manager = () => {
       <CreateExpert
         onSuccess={goToDashboard}
         onCancel={goToDashboard}
-        user={user}
+        organisationsOpts={organisationsOpts}
       />
     );
   }
@@ -40,7 +48,7 @@ const Manager = () => {
   return (
     <>
       <h1 className="text-2xl font-bold my-4">
-        {form ? `Add ${form}` : "Manager dashboard"}
+        {form ? `Add ${form}` : `Hi ${user.first_name}!`}
       </h1>
       {!form && (
         <>
@@ -48,14 +56,10 @@ const Manager = () => {
             label="Create an organisation"
             onClick={() => setForm("organisation")}
           />
-          <Button
+          {organisations.length ? <Button
             label="Add an expert to an organisation"
             onClick={() => setForm("expert")}
-          />
-          <Button
-            label="Add a manager to an organisation"
-            onClick={() => setForm("manager")}
-          />
+          /> : null}
         </>
       )}
     </>

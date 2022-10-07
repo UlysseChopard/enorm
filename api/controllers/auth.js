@@ -1,6 +1,7 @@
 const { hash } = require("../utils/auth");
 const log = require("../utils/logs");
 const Users = require("../models/users");
+const Experts = require("../models/experts");
 
 exports.logout = (req, res, next) => {
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
@@ -26,7 +27,7 @@ exports.signup = async (req, res, next) => {
       } = await Users.getByEmail(email);
       const {
         rows: [updatedExpert],
-      } = await Users.activeAccount(expert.id, {
+      } = await Experts.activeAccount(expert.id, {
         firstName,
         lastName,
         phoneNumber,
@@ -36,13 +37,11 @@ exports.signup = async (req, res, next) => {
     } else if (isManager) {
       const {
         rows: [manager],
-      } = await Users.createAccount({
+      } = await Managers.createAccount({
         email,
         firstName,
         lastName,
         password,
-        isExpert,
-        isManager,
         phoneNumber,
         civility,
       });
