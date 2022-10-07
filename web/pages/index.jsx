@@ -1,8 +1,19 @@
 import Head from "next/head";
 import Button from "components/forms/Button";
 import Main from "components/layout/Root";
+import useUser from "lib/hooks/useUser";
+import { useRouter } from "next/router";
 
 const Home = () => {
+  const { user } = useUser();
+  const router = useRouter();
+  if (user) {
+    if (user.is_manager) {
+      router.replace("/dashboard/manager");
+    } else if (user.is_expert) {
+      router.replace("/dashboard/expert");
+    }
+  }
   return (
     <>
       <Head>
