@@ -1,7 +1,7 @@
 import Button from "components/forms/Button";
-import { FillInfosForm } from "components/pages/expert";
 import ExpertLayout from "components/layout/Expert";
 import useUser from "lib/hooks/useUser";
+import FillProfile from "components/pages/expert/FillProfile";
 
 const Expert = () => {
   const { user, isLoading, isError } = useUser();
@@ -25,7 +25,7 @@ const Expert = () => {
         </>
       )}
       {form === "infos" && (
-        <FillInfosForm onSuccess={goToDashboard} onCancel={goToDashboard} />
+        <FillProfile onSuccess={goToDashboard} onCancel={goToDashboard} />
       )}
     </>
   );
