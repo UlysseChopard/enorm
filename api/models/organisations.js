@@ -1,6 +1,6 @@
 const db = require("../db");
 
-exports.getAll = (manager) =>
+exports.getByManager = (manager) =>
   db.query("SELECT * FROM organisations WHERE manager = $1", [manager]);
 
 exports.createParent = (manager, { name, address }) =>

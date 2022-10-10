@@ -1,61 +1,60 @@
 const { hash } = require("../utils/auth");
 const log = require("../utils/logs");
 const Users = require("../models/users");
-const Experts = require("../models/experts");
 
 exports.logout = (req, res, next) => {
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
 };
 
-exports.signup = async (req, res, next) => {
-  const password = await hash(req.body.password);
-  const {
-    email,
-    firstName,
-    lastName,
-    phoneNumber,
-    civility,
-    isExpert,
-    isManager,
-  } = req.body;
-  log.info({ body: req.body });
+exports.activateExpert = async (req, res, next) => {
+  const { isExpert, isManager } = req.body;
   try {
-    let user;
-    if (isExpert) {
-      const {
-        rows: [expert],
-      } = await Users.getByEmail(email);
-      const {
-        rows: [updatedExpert],
-      } = await Experts.activeAccount(expert.id, {
-        firstName,
-        lastName,
-        phoneNumber,
-        civility,
-      });
-      user = updatedExpert;
-    } else if (isManager) {
-      const {
-        rows: [manager],
-      } = await Managers.createAccount({
-        email,
-        firstName,
-        lastName,
-        password,
-        phoneNumber,
-        civility,
-      });
-      user = manager;
+    if (isManager) {
+      return next();
     }
-    if (user) {
-      req.login(user, (err) => {
-        if (err) return next(err);
-        log.info("User created", { user });
-        res.status(201).json({ user });
-      });
-    } else {
-      throw new Error("Bad request");
-    }
+    const { firstName, lastName, phoneNumber, civility } = req.body;
+    const password = await hash(req.body.password);
+    const {
+      rows: [user],
+    } = await Users.activateExpertAccount(req.body.email, {
+      firstName,
+      lastName,
+      phoneNumber,
+      civility,
+      password,
+      isExpert,
+    });
+    req.login(user, (err) => {
+      if (err) return next(err);
+      log.info("Expert activated", { user });
+      res.status(201).json({ user });
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.signupManager = async (req, res, next) => {
+  try {
+    const { email, firstName, lastName, phoneNumber, civility, isManager } =
+      req.body;
+    const password = await hash(req.body.password);
+    const {
+      rows: [user],
+    } = await Users.createManagerAccount({
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+      civility,
+      password,
+      isManager,
+    });
+    req.login(user, (err) => {
+      if (err) return next(err);
+      log.info("Manager account created", { user });
+      res.status(201).json({ user });
+    });
   } catch (err) {
     next(err);
   }

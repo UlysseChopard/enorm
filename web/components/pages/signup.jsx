@@ -6,7 +6,7 @@ import { signup } from "lib/api/auth";
 
 export const SignupForm = () => {
   const router = useRouter();
-  const { isManager, isExpert } = router.query;
+  const { isExpert, isManager, email: expertEmail } = router.query;
 
   const firstName = useRef();
   const lastName = useRef();
@@ -26,8 +26,8 @@ export const SignupForm = () => {
         password: password.current,
         phoneNumber: phoneNumber.current,
         civility: "H",
-        isManager,
         isExpert,
+        isManager,
       });
       if (res.ok) {
         const {
@@ -68,13 +68,17 @@ export const SignupForm = () => {
         autoComplete="phone"
         onChange={(e) => (phoneNumber.current = e.target.value)}
       />
-      <Input
-        name="email"
-        label="Email"
-        type="email"
-        autoComplete="email"
-        onChange={(e) => (email.current = e.target.value)}
-      />
+      {expertEmail ? (
+        <Input label="Email" defaultValue={expertEmail} disabled />
+      ) : (
+        <Input
+          name="email"
+          label="Email"
+          type="email"
+          autoComplete="email"
+          onChange={(e) => (email.current = e.target.value)}
+        />
+      )}
       <Input
         name="password"
         label="Password"

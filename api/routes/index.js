@@ -8,8 +8,8 @@ const experts = require("./experts");
 
 module.exports = (app) => {
   app.use("/api", auth);
-  app.use("/api", isAuthenticated, organisations);
-  app.use("/api", isAuthenticated, experts);
+  app.use("/api/organisations", isAuthenticated, organisations);
+  app.use("/api/experts", isAuthenticated, experts);
   app.use("*", catchAll);
   app.use(errors);
 };

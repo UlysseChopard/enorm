@@ -18,7 +18,9 @@ const CreateOrganisation = ({ onSuccess, onCancel, organisationsOpts }) => {
         parent: parent.current,
       });
       if (res.ok) {
-        setMessage("Main organisation created");
+        setMessage(
+          parent.current ? "Added establishement" : "Main organisation created"
+        );
         setTimeout(onSuccess, 800);
       } else {
         setMessage("An error occurred, please try again");
@@ -39,13 +41,15 @@ const CreateOrganisation = ({ onSuccess, onCancel, organisationsOpts }) => {
         label="Address"
         onChange={(e) => (address.current = e.target.value)}
       />
-      {organisationsOpts.length ? <Select
-        name="parent"
-        label="Parent organisation"
-        options={organisationsOpts}
-        onChange={(e) => (parent.current = e.target.value)}
-        required={false}
-      /> : null}
+      {organisationsOpts.length ? (
+        <Select
+          name="parent"
+          label="Parent organisation"
+          options={organisationsOpts}
+          onChange={(e) => (parent.current = e.target.value)}
+          required={false}
+        />
+      ) : null}
       <p>{message}</p>
     </Form>
   );

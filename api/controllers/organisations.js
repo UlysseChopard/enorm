@@ -1,28 +1,32 @@
 const log = require("../utils/logs");
 const Organisations = require("../models/organisations");
+const Users = require("../models/users");
 
-exports.create = async (req, res) => {
+exports.create = async (req, res, next) => {
   try {
     const { name, address, parent } = req.body;
     const manager = req.user.id;
     if (parent) {
       await Organisations.createChild(manager, { name, address, parent });
     } else {
-      await Organisations.createParent(manager, { name, address });
+      const {
+        rows: [organisation],
+      } = await Organisations.createParent(manager, { name, address });
+      await Users.updateOrganisation(manager, {
+        organisation: organisation.id,
+      });
     }
     res.sendStatus(201);
   } catch (err) {
-    log.warn({ err });
-    res.sendStatus(500);
+    next(err);
   }
 };
 
-exports.getAll = async (req, res) => {
+exports.getAll = async (req, res, next) => {
   try {
-    const { rows } = await Organisations.getAll(req.user.id);
+    const { rows } = await Organisations.getByManager(req.user.id);
     res.json({ organisations: rows });
   } catch (err) {
-    log.warn({ err });
-    res.sendStatus(500);
+    next(err);
   }
 };

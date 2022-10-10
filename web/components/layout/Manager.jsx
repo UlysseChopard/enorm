@@ -2,7 +2,7 @@ import Main from "./elements/Main";
 import NavBar from "./elements/NavBar";
 import Footer from "./elements/Footer";
 
-const Default = ({ children }) => {
+const Manager = ({ children }) => {
   return (
     <>
       <NavBar bgColor="bg-red-200" accountManagement={true} />
@@ -12,4 +12,4 @@ const Default = ({ children }) => {
   );
 };
 
-export default Default;
+export default Manager;

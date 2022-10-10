@@ -1,11 +1,13 @@
 import useSWR from "swr";
 
-const useOrganisations = () => {
-  const { data, error } = useSWR("http://localhost:4000/api/organisations");
+const useOrganisations = (cond = true) => {
+  const { data, error } = useSWR(
+    cond ? "http://localhost:4000/api/organisations" : null
+  );
 
   return {
     organisations: data?.organisations,
-    isLoading: !error && !data,
+    isLoading: !error && !data?.organisations,
     isError: error,
   };
 };

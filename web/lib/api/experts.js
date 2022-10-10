@@ -9,7 +9,7 @@ export const fillProfile = (infos) =>
     body: JSON.stringify(infos),
   });
 
-export const declareExpert = ({ email, organisation }) =>
+export const declareExpert = ({ email, organisation, manager }) =>
   fetch("http://localhost:4000/api/experts", {
     method: "POST",
     credentials: "include",
@@ -20,5 +20,6 @@ export const declareExpert = ({ email, organisation }) =>
     body: JSON.stringify({
       email,
       organisation,
+      manager,
     }),
   });

@@ -6,6 +6,7 @@ import DefaultLayout from "components/layout/Default";
 
 function App({ Component, pageProps }) {
   const Layout = Component.Layout || DefaultLayout;
+
   return (
     <SWRConfig value={{ fetcher }}>
       <RootLayout>

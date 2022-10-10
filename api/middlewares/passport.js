@@ -12,12 +12,15 @@ passport.use(
       const {
         rows: [user],
       } = await Users.getByEmail(email);
-      if (!user)
+      if (!user) {
         return cb(null, false, {
           message: ERROR_MSG,
         });
+      }
       const isValidPassword = await verify(password, user.password);
-      if (!isValidPassword) return cb(null, false, { message: ERROR_MSG });
+      if (!isValidPassword) {
+        return cb(null, false, { message: ERROR_MSG });
+      }
       log.info("login", { user });
       cb(null, user);
     } catch (err) {

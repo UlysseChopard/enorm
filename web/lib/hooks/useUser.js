@@ -1,12 +1,13 @@
 import useSWR from "swr";
 
-const useUser = () => {
-  const { data, error } = useSWR("http://localhost:4000/api/user");
-
+const useUser = (cond = true) => {
+  const { data, error } = useSWR(
+    cond ? "http://localhost:4000/api/user" : null
+  );
   return {
-    user: data?.user,
     isLoading: !error && !data,
     isError: error,
+    user: data?.user,
   };
 };
 

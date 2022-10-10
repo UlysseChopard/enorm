@@ -1,10 +1,13 @@
 const nodemailer = require("nodemailer");
-const transport = nodemailer.createTransport("SMTP", {
-  // [1]
-  service: "Gmail",
+const log = require("./logs.js");
+
+const transport = nodemailer.createTransport({
+  host: "smtp.laposte.net",
+  port: 587,
+  secure: true,
   auth: {
-    user: "gmail.user@gmail.com",
-    pass: "userpass",
+    user: "ulysse.chopard",
+    pass: process.env.MAIL_PASS,
   },
 });
 
@@ -26,3 +29,29 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
+
+exports.sendMail = ({ from, to, subject, text }) =>
+  transport.sendMail(
+    {
+      from,
+      to,
+      subject,
+      text,
+    },
+    (err) => {
+      log.warn({ err });
+    }
+  );
+
+exports.sendInvitation = ({ from, to, link }) => {
+  transport.sendMail(
+    {
+      from,
+      to,
+      subject: "You have been invited to join E-norm",
+      text: `Please click here to create your account : ${link}`,
+      html: `<p>Please click <a href=${link}>here</a> to create your account</p>`,
+    },
+    (err) => log.warn({ err })
+  );
+};
