@@ -1,6 +1,7 @@
 import { LoginForm } from "components/pages/login";
 import Head from "next/head";
 import LoginLayout from "components/layout/Login";
+import Link from "next/link";
 
 const Login = () => {
   return (
@@ -9,6 +10,7 @@ const Login = () => {
         <title>Log in</title>
       </Head>
       <LoginForm />
+      <Link href="/signup">No account yet ?</Link>
     </>
   );
 };

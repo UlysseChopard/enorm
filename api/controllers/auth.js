@@ -7,9 +7,9 @@ exports.logout = (req, res, next) => {
 };
 
 exports.activateExpert = async (req, res, next) => {
-  const { isExpert, isManager } = req.body;
+  const { isExpert } = req.body;
   try {
-    if (isManager) {
+    if (!isExpert) {
       return next();
     }
     const { firstName, lastName, phoneNumber, civility } = req.body;
@@ -36,8 +36,7 @@ exports.activateExpert = async (req, res, next) => {
 
 exports.signupManager = async (req, res, next) => {
   try {
-    const { email, firstName, lastName, phoneNumber, civility, isManager } =
-      req.body;
+    const { email, firstName, lastName, phoneNumber, civility } = req.body;
     const password = await hash(req.body.password);
     const {
       rows: [user],
@@ -48,8 +47,8 @@ exports.signupManager = async (req, res, next) => {
       phoneNumber,
       civility,
       password,
-      isManager,
     });
+    console.log(user);
     req.login(user, (err) => {
       if (err) return next(err);
       log.info("Manager account created", { user });
