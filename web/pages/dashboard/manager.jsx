@@ -49,6 +49,7 @@ const Manager = () => {
         onSuccess={goToDashboard}
         onCancel={goToDashboard}
         organisationsOpts={organisationsOpts}
+        manager={user.id}
       />
     );
   }
@@ -58,7 +59,7 @@ const Manager = () => {
       <h1 className="text-2xl font-bold my-4">
         {form ? `Add ${form}` : `Hi ${user.first_name}!`}
       </h1>
-      <div>
+      <div className="flex-1">
         <Button
           label={
             organisations.length
@@ -74,7 +75,7 @@ const Manager = () => {
           />
         ) : null}
       </div>
-      <div>
+      <div className="flex-1">
         <ViewExperts experts={experts} />
         <ViewOrganisations organisations={organisations} />
       </div>

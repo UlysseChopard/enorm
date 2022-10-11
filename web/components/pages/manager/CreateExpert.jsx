@@ -4,11 +4,7 @@ import Select from "components/forms/Select";
 import { declareExpert } from "lib/api/experts";
 import { useCallback, useState, useRef } from "react";
 
-const CreateExpert = ({
-  onSuccess,
-  onCancel,
-  organisationsOpts
-}) => {
+const CreateExpert = ({ onSuccess, onCancel, organisationsOpts, manager }) => {
   const [message, setMessage] = useState("");
   const email = useRef();
   const [organisation, setOrganisation] = useState(organisationsOpts[0].value);
@@ -18,6 +14,7 @@ const CreateExpert = ({
       const res = await declareExpert({
         email: email.current,
         organisation: organisation,
+        manager,
       });
       if (res.ok) {
         onSuccess();

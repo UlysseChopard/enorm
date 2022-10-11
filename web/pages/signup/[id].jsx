@@ -12,7 +12,7 @@ const Signup = () => {
         <title>Sign up</title>
       </Head>
       <ExpertSignupForm
-        onSuccess={() => router.replace("/dashboard/experts")}
+        onSuccess={() => router.replace("/dashboard/expert")}
         onCancel={() => router.push("/")}
         id={router.query.id}
       />

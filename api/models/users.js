@@ -1,7 +1,7 @@
 const db = require("../db");
 
 const INFOS =
-  "users.id, users.email, users.password, users.first_name, users.last_name, users.civility, users.is_manager, users.is_expert, users.manager, users.organisation";
+  "id, email, password, first_name, last_name, civility, is_manager, is_expert, manager, organisation";
 
 exports.getByOrganisation = (organisation) =>
   db.query(`SELECT ${INFOS} FROM users WHERE organisation = $1`, [
@@ -10,7 +10,7 @@ exports.getByOrganisation = (organisation) =>
 
 exports.getByManager = (manager) =>
   db.query(
-    `SELECT ${INFOS} FROM users LEFT JOIN organisations ON organisations.id = users.organisation WHERE users.manager = $1`,
+    `SELECT u.id, u.email, u.first_name, u.last_name, u.civility, o.name AS organisation_name FROM users u LEFT JOIN organisations o ON u.organisation = o.id WHERE u.manager = $1`,
     [manager]
   );
 

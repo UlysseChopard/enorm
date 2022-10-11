@@ -2,7 +2,7 @@ const db = require("../db");
 
 exports.getByManager = (manager) =>
   db.query(
-    "SELECT o1.* FROM organisations o1 LEFT JOIN organisations o2 ON o1.parent = o2.id  WHERE o1.manager = $1",
+    "SELECT o1.id, o1.name, o1.address, o1.parent, o2.name AS parent_name FROM organisations o1 LEFT JOIN organisations o2 ON o1.parent = o2.id  WHERE o1.manager = $1",
     [manager]
   );
 

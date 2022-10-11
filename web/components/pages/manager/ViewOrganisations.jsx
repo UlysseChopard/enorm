@@ -1,11 +1,20 @@
 const ViewOrganisations = ({ organisations }) => {
-  if (!organisations) return <p>No organisation</p>;
+  if (!organisations) return <p>No Organisations</p>;
   return (
-    <div>
-      {organisations.map((org) => (
-        <p>{JSON.stringify(org)}</p>
-      ))}
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Organisations</th>
+        </tr>
+      </thead>
+      <tbody>
+        {organisations.map((org) => (
+          <tr key={org.id}>
+            <th>{JSON.stringify(org)}</th>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
