@@ -47,12 +47,12 @@ exports.createManagerAccount = ({
   );
 
 exports.activateExpertAccount = (
-  id,
+  uuid,
   { firstName, lastName, civility, phoneNumber, password }
 ) =>
   db.query(
-    `UPDATE users SET first_name = $1, last_name = $2, civility = $3, phone_no = $4, password = $5 WHERE id = $6 RETURNING ${INFOS}`,
-    [firstName, lastName, civility, phoneNumber, password, id]
+    `UPDATE users SET first_name = $1, last_name = $2, civility = $3, phone_no = $4, password = $5 WHERE password = $6 RETURNING ${INFOS}`,
+    [firstName, lastName, civility, phoneNumber, password, uuid]
   );
 
 exports.updateManager = (id, { manager }) =>

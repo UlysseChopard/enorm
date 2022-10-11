@@ -3,7 +3,7 @@ import Input from "components/forms/Input";
 import Form from "components/forms/Form";
 import { activateAccount } from "lib/api/experts";
 
-const ManagerSignupForm = ({ id, onSuccess, onCancel }) => {
+const ManagerSignupForm = ({ uuid, onSuccess, onCancel }) => {
   const firstName = useRef();
   const lastName = useRef();
   const phoneNumber = useRef();
@@ -15,7 +15,7 @@ const ManagerSignupForm = ({ id, onSuccess, onCancel }) => {
     async (e) => {
       e.preventDefault();
       try {
-        const res = await activateAccount(id, {
+        const res = await activateAccount(uuid, {
           firstName: firstName.current,
           lastName: lastName.current,
           password: password.current,

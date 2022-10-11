@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require("uuid");
 const log = require("../utils/logs");
 const Users = require("../models/users");
 const { sendInvitation } = require("../utils/emails");
@@ -16,15 +17,15 @@ exports.fillProfile = async (req, res, next) => {
 exports.declareExpert = async (req, res, next) => {
   try {
     const { email, organisation, manager } = req.body;
-    const {
-      rows: [expert],
-    } = await Users.createExpertAccount({
+    const uuid = uuidv4();
+    await Users.createExpertAccount({
       email,
       organisation,
       manager,
+      password: uuid,
     });
     log.info("Expert account created", { email, organisation, manager });
-    const link = encodeURI(`http://localhost:3000/signup/${expert.id}`);
+    const link = encodeURI(`http://localhost:3000/signup/${uuid}`);
     log.info({ link });
     sendInvitation({
       from: `${req.user.first_name} ${req.user.last_name} <${req.user.email}>`,

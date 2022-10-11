@@ -25,10 +25,10 @@ export const declareExpert = ({ email, organisation, manager }) =>
   });
 
 export const activateAccount = (
-  id,
+  uuid,
   { firstName, lastName, civility, phoneNumber, password }
 ) =>
-  fetch(`http://localhost:4000/api/signup/experts/${id}`, {
+  fetch(`http://localhost:4000/api/signup/experts/${uuid}`, {
     method: "PATCH",
     credentials: "include",
     headers: {

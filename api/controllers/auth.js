@@ -26,7 +26,6 @@ exports.signupManager = async (req, res, next) => {
       civility,
       password,
     });
-    console.log(user);
     req.login(user, (err) => {
       if (err) return next(err);
       log.info("Manager account created", { user });
@@ -39,12 +38,12 @@ exports.signupManager = async (req, res, next) => {
 
 exports.activateExpert = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const uuid = req.params.uuid;
     const { firstName, lastName, phoneNumber, civility } = req.body;
     const password = await hash(req.body.password);
     const {
       rows: [user],
-    } = await Users.activateExpertAccount(id, {
+    } = await Users.activateExpertAccount(uuid, {
       firstName,
       lastName,
       phoneNumber,
