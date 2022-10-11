@@ -41,7 +41,7 @@ const CreateOrganisation = ({ onSuccess, onCancel, organisationsOpts }) => {
         label="Address"
         onChange={(e) => (address.current = e.target.value)}
       />
-      {organisationsOpts.length ? (
+      {organisationsOpts?.length ? (
         <Select
           name="parent"
           label="Parent organisation"

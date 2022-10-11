@@ -3,7 +3,7 @@ const log = require("./logs.js");
 
 const transport = nodemailer.createTransport({
   host: "smtp.laposte.net",
-  port: 587,
+  port: 465,
   secure: true,
   auth: {
     user: "ulysse.chopard",

@@ -16,18 +16,18 @@ exports.fillProfile = async (req, res, next) => {
 exports.declareExpert = async (req, res, next) => {
   try {
     const { email, organisation, manager } = req.body;
-    await Users.createExpertAccount({
+    const {
+      rows: [expert],
+    } = await Users.createExpertAccount({
       email,
       organisation,
       manager,
     });
     log.info("Expert account created", { email, organisation, manager });
-    const link = encodeURI(
-      `http://localhost:3000/signup?isExpert=true&email=${email}`
-    );
+    const link = encodeURI(`http://localhost:3000/signup/${expert.id}`);
     log.info({ link });
     sendInvitation({
-      from: req.user.email,
+      from: `${req.user.first_name} ${req.user.last_name} <${req.user.email}>`,
       to: email,
       link,
     });

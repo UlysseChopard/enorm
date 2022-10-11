@@ -1,7 +1,7 @@
 const db = require("../db");
 
 const INFOS =
-  "id, email, password, first_name, last_name, civility, is_manager, is_expert";
+  "users.id, users.email, users.password, users.first_name, users.last_name, users.civility, users.is_manager, users.is_expert, users.manager, users.organisation";
 
 exports.getByOrganisation = (organisation) =>
   db.query(`SELECT ${INFOS} FROM users WHERE organisation = $1`, [
@@ -9,7 +9,10 @@ exports.getByOrganisation = (organisation) =>
   ]);
 
 exports.getByManager = (manager) =>
-  db.query(`SELECT ${INFOS} FROM users WHERE manager = $1`, [manager]);
+  db.query(
+    `SELECT ${INFOS} FROM users LEFT JOIN organisations ON organisations.id = users.organisation WHERE users.manager = $1`,
+    [manager]
+  );
 
 exports.getByEmail = (email) =>
   db.query(`SELECT ${INFOS} FROM users WHERE email = $1`, [email]);
@@ -44,12 +47,12 @@ exports.createManagerAccount = ({
   );
 
 exports.activateExpertAccount = (
-  email,
+  id,
   { firstName, lastName, civility, phoneNumber, password }
 ) =>
   db.query(
-    `UPDATE users SET first_name = $1, last_name = $2, civility = $3, phone_no = $4, password = $5 WHERE email = $6 RETURNING ${INFOS}`,
-    [firstName, lastName, civility, phoneNumber, password, email]
+    `UPDATE users SET first_name = $1, last_name = $2, civility = $3, phone_no = $4, password = $5 WHERE id = $6 RETURNING ${INFOS}`,
+    [firstName, lastName, civility, phoneNumber, password, id]
   );
 
 exports.updateManager = (id, { manager }) =>

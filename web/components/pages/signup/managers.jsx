@@ -2,12 +2,10 @@ import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Input from "components/forms/Input";
 import Form from "components/forms/Form";
-import { signup } from "lib/api/auth";
+import { signup } from "lib/api/managers";
 
-export const SignupForm = () => {
+const ExpertSignupForm = () => {
   const router = useRouter();
-  const { isExpert, isManager, email: expertEmail } = router.query;
-
   const firstName = useRef();
   const lastName = useRef();
   const phoneNumber = useRef();
@@ -26,20 +24,9 @@ export const SignupForm = () => {
         password: password.current,
         phoneNumber: phoneNumber.current,
         civility: "H",
-        isExpert,
-        isManager,
       });
       if (res.ok) {
-        const {
-          user: { is_manager, is_expert },
-        } = await res.json();
-        if (is_expert) {
-          router.push("/dashboard/expert");
-        } else if (is_manager) {
-          router.push("/dashboard/manager");
-        } else {
-          throw new Error("An error occurred, please try again");
-        }
+        router.push("/dashboard/manager");
       } else {
         setMessage("Something went wrong");
       }
@@ -68,17 +55,13 @@ export const SignupForm = () => {
         autoComplete="phone"
         onChange={(e) => (phoneNumber.current = e.target.value)}
       />
-      {expertEmail ? (
-        <Input label="Email" defaultValue={expertEmail} disabled />
-      ) : (
-        <Input
-          name="email"
-          label="Email"
-          type="email"
-          autoComplete="email"
-          onChange={(e) => (email.current = e.target.value)}
-        />
-      )}
+      <Input
+        name="email"
+        label="Email"
+        type="email"
+        autoComplete="email"
+        onChange={(e) => (email.current = e.target.value)}
+      />
       <Input
         name="password"
         label="Password"
@@ -90,3 +73,5 @@ export const SignupForm = () => {
     </Form>
   );
 };
+
+export default ExpertSignupForm;

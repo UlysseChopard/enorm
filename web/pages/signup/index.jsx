@@ -1,4 +1,4 @@
-import { SignupForm } from "components/pages/signup";
+import ManagerSignupForm from "components/pages/signup/managers";
 import Head from "next/head";
 import LoginLayout from "components/layout/Login";
 import Link from "next/link";
@@ -9,7 +9,7 @@ const Signup = () => {
       <Head>
         <title>Sign up</title>
       </Head>
-      <SignupForm />
+      <ManagerSignupForm />
       <Link href="/login">Already have an account ?</Link>
     </>
   );

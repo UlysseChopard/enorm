@@ -34,7 +34,6 @@ passport.deserializeUser(async (id, cb) => {
     const {
       rows: [user],
     } = await Users.getById(id);
-    log.info("deserialize", user);
     cb(null, user);
   } catch (err) {
     cb(err);
@@ -42,7 +41,6 @@ passport.deserializeUser(async (id, cb) => {
 });
 
 passport.serializeUser((user, cb) => {
-  log.info("serialize", user);
   process.nextTick(() => cb(null, user.id));
 });
 

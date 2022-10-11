@@ -6,8 +6,13 @@ exports.create = async (req, res, next) => {
   try {
     const { name, address, parent } = req.body;
     const manager = req.user.id;
-    if (parent) {
-      await Organisations.createChild(manager, { name, address, parent });
+    const parentOrganisation = parent || req.user.organisation;
+    if (parentOrganisation) {
+      await Organisations.createChild(manager, {
+        name,
+        address,
+        parent: parentOrganisation,
+      });
     } else {
       const {
         rows: [organisation],

@@ -5,8 +5,8 @@ const {
   getAll,
 } = require("../controllers/experts");
 
-router.patch("/", fillProfile);
 router.post("/", declareExpert);
 router.get("/", getAll);
+router.patch("/", fillProfile);
 
 module.exports = router;
