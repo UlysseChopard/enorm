@@ -5,7 +5,7 @@ const useUser = (cond = true) => {
     cond ? "http://localhost:4000/api/user" : null
   );
   return {
-    isLoading: !error && !data,
+    isLoading: !error && !data?.user,
     isError: error,
     user: data?.user,
   };

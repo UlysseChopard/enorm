@@ -3,8 +3,10 @@ import ExpertLayout from "components/layout/Expert";
 import useUser from "lib/hooks/useUser";
 import FillProfile from "components/pages/expert/FillProfile";
 import { useState, useCallback } from "react";
+import { useRouter } from "next/router";
 
 const Expert = () => {
+  const router = useRouter();
   const { user, isLoading, isError } = useUser();
   const [form, setForm] = useState("");
   const goToDashboard = useCallback(() => setForm(""), []);
@@ -15,6 +17,10 @@ const Expert = () => {
 
   if (isError) {
     return <p>An error occurred, please try to log in</p>;
+  }
+
+  if (!user?.is_expert) {
+    router.replace("/login");
   }
 
   return (

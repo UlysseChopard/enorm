@@ -6,10 +6,13 @@ import ManagerLayout from "components/layout/Manager";
 import useUser from "lib/hooks/useUser";
 import useExperts from "lib/hooks/useExperts";
 import useOrganisations from "lib/hooks/useOrganisations";
-import ViewExperts from "components/pages/manager/ViewExperts";
-import ViewOrganisations from "components/pages/manager/ViewOrganisations";
+import ViewExperts from "components/pages/manager/Views/ViewExperts";
+import ViewOrganisations from "components/pages/manager/Views/ViewOrganisations";
+import Views from "components/pages/manager/Views";
+import { useRouter } from "next/router";
 
 const Manager = () => {
+  const router = useRouter();
   const [form, setForm] = useState("");
   const {
     organisations,
@@ -17,7 +20,6 @@ const Manager = () => {
     isError: isOrgError,
   } = useOrganisations();
   const { user, isLoading, isError } = useUser();
-  const { experts } = useExperts();
   const goToDashboard = useCallback(() => setForm(""), []);
 
   const organisationsOpts = useMemo(
@@ -32,6 +34,10 @@ const Manager = () => {
   if (isLoading || isOrgLoading) return <p>Loading...</p>;
 
   if (isError || isOrgError) return <p>An error occurred, please retry</p>;
+
+  if (!user?.is_manager) {
+    router.replace("/login");
+  }
 
   if (form === "organisation") {
     return (
@@ -59,25 +65,28 @@ const Manager = () => {
       <h1 className="text-2xl font-bold my-4">
         {form ? `Add ${form}` : `Hi ${user.first_name}!`}
       </h1>
-      <div className="flex-1">
-        <Button
-          label={
-            organisations.length
-              ? "Add an establishment"
-              : "Create your main organisation"
-          }
-          onClick={() => setForm("organisation")}
-        />
-        {organisations.length ? (
+      <div className="flex justify-around">
+        <div className="flex-1">
           <Button
-            label="Create an expert account"
-            onClick={() => setForm("expert")}
+            label={
+              organisations.length
+                ? "Add an establishment"
+                : "Create your main organisation"
+            }
+            onClick={() => setForm("organisation")}
           />
+          {organisations.length ? (
+            <Button
+              label="Create an expert account"
+              onClick={() => setForm("expert")}
+            />
+          ) : null}
+        </div>
+        {organisations.length ? (
+          <div className="flex-auto w-96">
+            <Views />
+          </div>
         ) : null}
-      </div>
-      <div className="flex-1">
-        <ViewExperts experts={experts} />
-        <ViewOrganisations organisations={organisations} />
       </div>
     </>
   );

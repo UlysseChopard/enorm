@@ -33,7 +33,7 @@ const ManagerSignupForm = ({ uuid, onSuccess, onCancel }) => {
         setMessage("An error occurred, please retry");
       }
     },
-    [id]
+    [uuid]
   );
 
   return (
