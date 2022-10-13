@@ -1,6 +1,20 @@
+const { v4: uuidv4 } = require("uuid");
 const log = require("../utils/logs");
 const Users = require("../models/users");
 const { hash } = require("../utils/auth");
+const { sendVerification } = require("../utils/emails");
+
+exports.sendEmailConfirmation = (req, res) => {
+  try {
+    sendVerification({
+      to: req.user.email,
+      link: `http://localhost:3000/confirm/${req.user.uuid}`,
+    });
+    res.sendStatus(201);
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.logout = (req, res, next) => {
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
@@ -12,10 +26,11 @@ exports.sendUser = (req, res) => {
   res.json({ user: req.user });
 };
 
-exports.signupManager = async (req, res, next) => {
+exports.signupManager = async (req, _res, next) => {
   try {
     const { email, firstName, lastName, phoneNumber, civility } = req.body;
     const password = await hash(req.body.password);
+    const uuid = uuidv4();
     const {
       rows: [user],
     } = await Users.createManagerAccount({
@@ -25,11 +40,12 @@ exports.signupManager = async (req, res, next) => {
       phoneNumber,
       civility,
       password,
+      uuid,
     });
     req.login(user, (err) => {
       if (err) return next(err);
       log.info("Manager account created", { user });
-      res.status(201).json({ user });
+      next();
     });
   } catch (err) {
     next(err);

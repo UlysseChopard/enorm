@@ -55,3 +55,13 @@ exports.sendInvitation = ({ from, to, link }) => {
     (err) => log.warn({ err })
   );
 };
+
+exports.sendVerification = ({ to, link }) => {
+  transport.sendMail({
+    from: "E-norm <ulysse.chopard@laposte.net>",
+    to,
+    subject: "Please activate your account",
+    text: `To activate your account, please click here : ${link}`,
+    html: `<p>To activate your account please click <a href=${link}>here</a></p>`,
+  });
+};

@@ -22,7 +22,7 @@ exports.declareExpert = async (req, res, next) => {
       email,
       organisation,
       manager,
-      password: uuid,
+      uuid,
     });
     log.info("Expert account created", { email, organisation, manager });
     const link = encodeURI(`http://localhost:3000/signup/${uuid}`);

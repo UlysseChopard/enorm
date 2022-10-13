@@ -25,6 +25,7 @@
     "node-pg-migrate": "^6.2.2",
     "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
+    "passport-hash": "^0.6.1",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
     "pg-format": "^1.0.4",

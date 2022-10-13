@@ -2,6 +2,7 @@
 CREATE TABLE admin.users (
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
+    uuid UUID NOT NULL UNIQUE,
     manager INTEGER REFERENCES admin.users (id),
     organisation INTEGER REFERENCES admin.organisations (id),
     password TEXT NOT NULL,

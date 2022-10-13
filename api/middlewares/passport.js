@@ -1,6 +1,7 @@
 const passport = require("passport");
 const { verify } = require("../utils/auth");
 const LocalStrategy = require("passport-local").Strategy;
+const HashStrategy = require("passport-hash").Strategy;
 const Users = require("../models/users");
 const log = require("../utils/logs");
 
@@ -25,6 +26,21 @@ passport.use(
       cb(null, user);
     } catch (err) {
       cb(err);
+    }
+  })
+);
+
+passport.use(
+  new HashStrategy({ hashParam: "uuid" }, async (uuid, cb) => {
+    try {
+      const {
+        rows: [user],
+      } = await Users.getByUUID(uuid);
+      if (!user) cb(null, false, { message: ERROR_MSG });
+      log.info("mail confirmed", { user });
+      cb(null, user);
+    } catch (err) {
+      done(err);
     }
   })
 );
