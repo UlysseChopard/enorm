@@ -26,7 +26,7 @@ const ExpertSignupForm = () => {
         civility: "H",
       });
       if (res.ok) {
-        router.push("/dashboard/manager");
+        router.replace("/confirm");
       } else {
         setMessage("Something went wrong");
       }

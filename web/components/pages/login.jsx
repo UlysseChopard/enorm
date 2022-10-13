@@ -18,12 +18,13 @@ export const LoginForm = () => {
         email: email.current,
         password: password.current,
       });
-      console.log("res", res);
       if (res.ok) {
         const {
-          user: { is_manager, is_expert },
+          user: { is_manager, is_expert, is_activated },
         } = await res.json();
-        if (is_expert) {
+        if (!is_activated) {
+          router.replace("/confirm");
+        } else if (is_expert) {
           router.push("/dashboard/expert");
         } else if (is_manager) {
           router.push("/dashboard/manager");
