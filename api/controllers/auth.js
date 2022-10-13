@@ -75,3 +75,12 @@ exports.activateExpert = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.activateManager = async (req, _res, next) => {
+  try {
+    await Users.activateManagerAccount(req.user.id);
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
