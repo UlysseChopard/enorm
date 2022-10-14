@@ -1,0 +1,39 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "premiere app",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon -r dotenv/config server | bunyan",
+    "migrate": "node-pg-migrate -m ./db/migrations"
+  },
+  "author": "ucg",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bunyan": "^1.8.15",
+    "connect-pg-simple": "^7.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.3",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.5",
+    "mongoose-unique-validator": "^2.0.3",
+    "multer": "^1.4.4",
+    "node-pg-migrate": "^6.2.2",
+    "nodemailer": "^6.8.0",
+    "passport": "^0.6.0",
+    "passport-hash": "^0.6.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.8.0",
+    "pg-format": "^1.0.4",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "csv-parse": "^5.3.0",
+    "data.js": "^0.12.11",
+    "nodemon": "^2.0.20"
+  }
+}
