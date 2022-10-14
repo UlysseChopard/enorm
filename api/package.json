@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server",
     "start:dev": "nodemon -r dotenv/config server | bunyan",
-    "migrate": "node-pg-migrate -m ./db/migrations",
-    "deploy": "git subtree push --prefix api heroku dev"
+    "migrate": "node-pg-migrate -m ./db/migrations"
   },
   "author": "ucg",
   "license": "ISC",
