@@ -1,5 +1,5 @@
 export const create = ({ name, address, parent }) =>
-  fetch("http://localhost:4000/api/organisations", {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/organisations`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -10,6 +10,6 @@ export const create = ({ name, address, parent }) =>
   });
 
 export const getAll = () =>
-  fetch("http://localhost:4000/api/organisations", {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/organisations`, {
     credentials: "include",
   }).then((res) => res.json());

@@ -1,5 +1,5 @@
 export const fillProfile = (infos) =>
-  fetch("http://localhost:4000/api/experts/description", {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/experts/description`, {
     method: "PATCH",
     credentials: "include",
     headers: {
@@ -10,7 +10,7 @@ export const fillProfile = (infos) =>
   });
 
 export const declareExpert = ({ email, organisation, manager }) =>
-  fetch("http://localhost:4000/api/experts", {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/experts`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -28,7 +28,7 @@ export const activateAccount = (
   uuid,
   { firstName, lastName, civility, phoneNumber, password }
 ) =>
-  fetch(`http://localhost:4000/api/signup/experts/${uuid}`, {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup/experts/${uuid}`, {
     method: "PATCH",
     credentials: "include",
     headers: {
