@@ -1,5 +1,5 @@
 -- Up Migration
-CREATE TABLE admin.users (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
     uuid UUID NOT NULL UNIQUE,
@@ -15,4 +15,4 @@ CREATE TABLE admin.users (
     is_activated BOOLEAN NOT NULl DEFAULT FALSE
 );
 -- Down Migration
-DROP TABLE admin.users;
+DROP TABLE users;
