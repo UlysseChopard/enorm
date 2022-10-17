@@ -17,8 +17,8 @@ if (process.env.NODE_ENV === "production") {
     console.error(er.stack); // [3]
     transport.sendMail(
       {
-        from: "alerts@mycompany.com",
-        to: "alert@mycompany.com",
+        from: "E-norm alerts <ulysse.chopard@laposte.net>",
+        to: "ulysse.chopard@laposte.net",
         subject: er.message,
         text: er.stack, // [4]
       },
