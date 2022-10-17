@@ -1,8 +1,8 @@
 tests/
+.vscode
 
 # Npm
-package-lock.js
-**/node_modules/
+**/node_modules
 
 # Secrets
 .env
