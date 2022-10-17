@@ -1,5 +1,6 @@
 tests/
 .vscode
+**/db/data/
 
 # Npm
 **/node_modules
