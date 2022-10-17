@@ -1,7 +1,16 @@
 const log = require("../utils/logs");
 const { Pool } = require("pg");
 
-const pool = new Pool();
+const pool = new Pool(
+  process.env.DATABASE_URL
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }
+    : null
+);
 
 module.exports = {
   async query(text, params) {

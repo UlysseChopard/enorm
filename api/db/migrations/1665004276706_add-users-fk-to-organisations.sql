@@ -1,5 +1,5 @@
 -- Up Migration
-ALTER TABLE admin.organisations
-ADD COLUMN manager INTEGER REFERENCES admin.users;
+ALTER TABLE organisations
+ADD COLUMN manager INTEGER REFERENCES users;
 -- Down Migration
-ALTER TABLE admin.organisations DROP COLUMN manager;
+ALTER TABLE organisations DROP COLUMN manager;

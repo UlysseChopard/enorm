@@ -8,7 +8,7 @@ exports.sendEmailConfirmation = (req, res) => {
   try {
     sendVerification({
       to: req.user.email,
-      link: `http://localhost:3000/confirm/${req.user.uuid}`,
+      link: `${process.env.WEB_URL}/confirm/${req.user.uuid}`,
     });
     res.sendStatus(201);
   } catch (err) {

@@ -25,7 +25,7 @@ exports.declareExpert = async (req, res, next) => {
       uuid,
     });
     log.info("Expert account created", { email, organisation, manager });
-    const link = encodeURI(`http://localhost:3000/signup/${uuid}`);
+    const link = encodeURI(`${process.env.WEB_URL}/signup/${uuid}`);
     log.info({ link });
     sendInvitation({
       from: `${req.user.first_name} ${req.user.last_name} <${req.user.email}>`,

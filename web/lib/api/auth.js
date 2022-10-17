@@ -1,5 +1,5 @@
 export const login = ({ email, password }) => {
-  return fetch("http://localhost:4000/api/login", {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -14,7 +14,7 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () =>
-  fetch("http://localhost:4000/api/logout", {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout`, {
     method: "POST",
     credentials: "include",
   });

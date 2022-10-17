@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 const useOrganisations = (cond = true) => {
   const { data, error } = useSWR(
-    cond ? "http://localhost:4000/api/organisations" : null
+    cond ? `${process.env.NEXT_PUBLIC_API_URL}/organisations` : null
   );
 
   return {

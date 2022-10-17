@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 const useUser = (cond = true) => {
   const { data, error } = useSWR(
-    cond ? "http://localhost:4000/api/user" : null
+    cond ? `${process.env.NEXT_PUBLIC_API_URL}/user` : null
   );
   return {
     isLoading: !error && !data?.user,

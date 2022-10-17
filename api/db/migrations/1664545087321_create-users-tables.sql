@@ -1,10 +1,10 @@
 -- Up Migration
-CREATE TABLE admin.users (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
     uuid UUID NOT NULL UNIQUE,
-    manager INTEGER REFERENCES admin.users (id),
-    organisation INTEGER REFERENCES admin.organisations (id),
+    manager INTEGER REFERENCES users (id),
+    organisation INTEGER REFERENCES organisations (id),
     password TEXT NOT NULL,
     first_name TEXT,
     last_name TEXT,
@@ -15,4 +15,4 @@ CREATE TABLE admin.users (
     is_activated BOOLEAN NOT NULl DEFAULT FALSE
 );
 -- Down Migration
-DROP TABLE admin.users;
+DROP TABLE users;

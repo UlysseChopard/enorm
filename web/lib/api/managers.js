@@ -6,7 +6,7 @@ export const signup = ({
   phoneNumber,
   password,
 }) =>
-  fetch("http://localhost:4000/api/signup/managers", {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup/managers`, {
     method: "POST",
     headers: {
       Accept: "application/json",
