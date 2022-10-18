@@ -77,6 +77,7 @@ exports.activateExpert = async (req, res, next) => {
 };
 
 exports.activateManager = async (req, _res, next) => {
+  console.log("userId", req.user.id);
   try {
     await Users.activateManagerAccount(req.user.id);
     next();
