@@ -4,10 +4,7 @@ import CreateExpert from "components/pages/manager/CreateExpert";
 import CreateOrganisation from "components/pages/manager/CreateOrganisation";
 import ManagerLayout from "components/layout/Manager";
 import useUser from "lib/hooks/useUser";
-import useExperts from "lib/hooks/useExperts";
 import useOrganisations from "lib/hooks/useOrganisations";
-import ViewExperts from "components/pages/manager/Views/ViewExperts";
-import ViewOrganisations from "components/pages/manager/Views/ViewOrganisations";
 import Views from "components/pages/manager/Views";
 import { useRouter } from "next/router";
 
