@@ -37,6 +37,7 @@ module.exports = (app, express) => {
 
   if (process.env.NODE_ENV === "production") {
     app.set("trust proxy", 1); // trust first proxy
+    sessionConfig.cookie.sameSite = "none"; // allow cors
     sessionConfig.cookie.secure = true; // serve secure cookies
   }
 
