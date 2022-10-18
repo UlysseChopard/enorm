@@ -8,7 +8,7 @@ const ConfirmPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
   const { validated, isError } = useEmailValidation({ uuid });
-  if (validated) router.push(NEXT_PAGE);
+  if (validated) setTimeout(() => router.push(NEXT_PAGE), 2000);
   if (isError) return <p>An error occurred, please try again</p>;
   return (
     <div>
