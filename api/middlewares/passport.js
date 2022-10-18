@@ -40,7 +40,7 @@ passport.use(
       log.info("mail confirmed", { user });
       cb(null, user);
     } catch (err) {
-      done(err);
+      cb(err);
     }
   })
 );
