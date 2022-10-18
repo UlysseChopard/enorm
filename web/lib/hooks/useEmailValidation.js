@@ -2,10 +2,7 @@ import useSWR from "swr";
 
 const useEmailValidation = ({ uuid }) => {
   const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/confirm/${uuid}`,
-    {
-      refreshInterval: 2000,
-    }
+    `${process.env.NEXT_PUBLIC_API_URL}/confirm/${uuid}`
   );
   return {
     validated: data?.user,
