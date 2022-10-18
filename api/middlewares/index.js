@@ -25,9 +25,12 @@ const sessionConfig = {
   },
 };
 
+const CORS_OPTS = { origin: true, credentials: true };
+
 module.exports = (app, express) => {
   app.use(helmet());
-  app.use(cors({ origin: true, credentials: true }));
+  app.use(cors(CORS_OPTS));
+  app.option(cors(CORS_OPTS));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   // app.use(logger);
