@@ -1,7 +1,0 @@
-{
-  "extends": ["next/babel", "next/core-web-vitals"],
-  "rules": {
-    "sort-keys": ["error", "asc"],
-    "quotes": ["error", "double"]
-  }
-}
