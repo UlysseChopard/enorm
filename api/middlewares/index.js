@@ -13,7 +13,7 @@ const sessionConfig = {
   store: new pgSession({
     createTableIfMissing: true,
     pool: getPool(),
-    errorLog: log.warn,
+    errorLog: log.warn.bind(log),
   }),
   secret: process.env.SESSION_SECRET,
   resave: false,
