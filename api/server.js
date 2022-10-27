@@ -37,5 +37,5 @@ const errorHandler = (error) => {
 app.listen(port, (err) => {
   if (err) return errorHandler(err);
   const bind = typeof address === "string" ? "pipe " + address : "port " + port;
-  console.log(`Listening on ${bind}`);
+  log.info(`Listening on ${bind}`);
 });
