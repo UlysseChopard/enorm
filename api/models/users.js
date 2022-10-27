@@ -10,7 +10,7 @@ exports.getByOrganisation = (organisation) =>
 
 exports.getByManager = (manager) =>
   db.query(
-    `SELECT u.id, u.email, u.first_name, u.last_name, u.civility, o.name AS organisation_name FROM users u LEFT JOIN organisations o ON u.organisation = o.id WHERE u.manager = $1`,
+    "SELECT u.id, u.email, u.first_name, u.last_name, u.civility, o.name AS organisation_name FROM users u LEFT JOIN organisations o ON u.organisation = o.id WHERE u.manager = $1",
     [manager]
   );
 
@@ -23,19 +23,7 @@ exports.getById = (id) =>
 exports.getByUUID = (uuid) =>
   db.query(`SELECT ${INFOS} FROM users WHERE uuid = $1`, [uuid]);
 
-exports.createExpertAccount = ({
-  email,
-  manager,
-  organisation,
-  uuid,
-  isExpert = true,
-}) =>
-  db.query(
-    "INSERT INTO users (email, password, manager, organisation, is_expert, uuid) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
-    [email, "not created", manager, organisation, isExpert, uuid]
-  );
-
-exports.createManagerAccount = ({
+exports.createAccount = ({
   email,
   password,
   firstName,
@@ -43,20 +31,10 @@ exports.createManagerAccount = ({
   phoneNumber,
   civility,
   uuid,
-  isManager = true,
 }) =>
   db.query(
-    `INSERT INTO users (email, password, first_name, last_name, phone_no, civility, is_manager, uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING ${INFOS}`,
-    [
-      email,
-      password,
-      firstName,
-      lastName,
-      phoneNumber,
-      civility,
-      isManager,
-      uuid,
-    ]
+    `INSERT INTO users (email, password, first_name, last_name, phone_no, civility, uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING ${INFOS}`,
+    [email, password, firstName, lastName, phoneNumber, civility, uuid]
   );
 
 exports.activateExpertAccount = (
