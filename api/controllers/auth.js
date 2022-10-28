@@ -6,11 +6,11 @@ exports.logout = (req, res, next) => {
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
 };
 
-exports.login = (req, res) => res.json({ user: req.user });
-
 exports.sendUser = (req, res) => {
   res.json({ user: req.user });
 };
+
+exports.login = (_req, res) => res.sendStatus(200);
 
 exports.signup = async (req, res, next) => {
   try {
