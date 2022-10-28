@@ -2,7 +2,7 @@ const log = require("../utils/logs");
 const { sendVerification } = require("../utils/emails");
 const { v4: uuidv4 } = require("uuid");
 
-exports.sendEmailConfirmation = (req, res, next) => {
+exports.sendEmailValidation = (req, res, next) => {
   const uuid = uuidv4();
   res.locals.uuid = uuid;
   try {
