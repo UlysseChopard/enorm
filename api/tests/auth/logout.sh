@@ -1,3 +1,3 @@
 #!/bin/bash
 
-curl "http://localhost:3000/api/logout" -b cookies
+curl -X POST "http://localhost:3000/api/logout" -b cookies

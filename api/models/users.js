@@ -37,8 +37,11 @@ exports.createAccount = ({
     [email, password, firstname, lastname, phonenumber, civility, uuid]
   );
 
-exports.validateEmail = ({ email }) =>
-  db.query("UPDATE users SET is_activated = TRUE WHERE email = $1", [email]);
+exports.activateAccount = (uuid) =>
+  db.query(
+    "UPDATE users SET is_activated = TRUE WHERE uuid = $1 RETURNING id",
+    [uuid]
+  );
 
 exports.updateManager = (id, { manager }) =>
   db.query("UPDATE users SET manager = $1 WHERE id = $2", [manager, id]);

@@ -11,7 +11,7 @@ const passport = require("../middlewares/passport");
 
 router.post("/signup", sendEmailValidation, signup);
 router.post("/login", passport.authenticate("local"), login);
-router.get("/confirm/:uuid", activateAccount);
+router.get("/activate/:uuid", activateAccount);
 router.post("/logout", isAuthenticated, logout);
 router.get("/user", isAuthenticated, sendUser);
 

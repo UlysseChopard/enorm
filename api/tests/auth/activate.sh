@@ -1,3 +1,4 @@
 #!/bin/bash
 
-curl "http://localhost:3000/api/confirm/$1" -b cookies -c cookies
+echo $1
+curl http://localhost:3000/api/activate/"$1" -b cookies -c cookies

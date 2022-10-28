@@ -42,8 +42,9 @@ exports.activateAccount = async (req, res, next) => {
   try {
     const {
       rows: [user],
-    } = await Users.getByUUID(req.params.uuid);
-    if (!user) res.sendStatus(401);
+    } = await Users.activateAccount(req.params.uuid);
+    console.log(user);
+    if (!user) return res.sendStatus(401);
     res.sendStatus(200);
   } catch (err) {
     next(err);
