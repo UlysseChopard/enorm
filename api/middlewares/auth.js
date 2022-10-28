@@ -7,10 +7,22 @@ exports.sendEmailValidation = (req, res, next) => {
   res.locals.uuid = uuid;
   try {
     sendVerification({
-      to: req.user.email,
+      to: req.body.email,
       link: `${process.env.WEB_URL}/confirm/${uuid}`,
     });
     next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.activateAccount = async (req, res, next) => {
+  try {
+    const {
+      rows: [user],
+    } = await Users.getByUUID(req.params.uuid);
+    if (!user) res.sendStatus(401);
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }

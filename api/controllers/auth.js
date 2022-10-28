@@ -15,15 +15,16 @@ exports.sendUser = (req, res) => {
 exports.signup = async (req, res, next) => {
   try {
     const { uuid } = res.locals;
-    const { email, firstName, lastName, civility } = req.body;
+    const { email, firstname, lastname, civility, phonenumber } = req.body;
     const password = await hash(req.body.password);
     const {
       rows: [user],
     } = await Users.createAccount({
       email,
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       civility,
+      phonenumber,
       password,
       uuid,
     });
@@ -37,35 +38,13 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.activateExpert = async (req, res, next) => {
+exports.activateAccount = async (req, res, next) => {
   try {
-    const uuid = req.params.uuid;
-    const { firstName, lastName, phoneNumber, civility } = req.body;
-    const password = await hash(req.body.password);
     const {
       rows: [user],
-    } = await Users.activateExpertAccount(uuid, {
-      firstName,
-      lastName,
-      phoneNumber,
-      civility,
-      password,
-    });
-    req.login(user, (err) => {
-      if (err) return next(err);
-      log.info("Expert activated", { user });
-      res.json({ user });
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.activateManager = async (req, _res, next) => {
-  console.log("userId", req.user.id);
-  try {
-    await Users.activateManagerAccount(req.user.id);
-    next();
+    } = await Users.getByUUID(req.params.uuid);
+    if (!user) res.sendStatus(401);
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }

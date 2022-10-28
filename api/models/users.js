@@ -1,7 +1,7 @@
 const db = require("../db");
 
 const INFOS =
-  "id, email, password, first_name, last_name, civility, is_manager, is_expert, manager, organisation, uuid, is_activated";
+  "id, email, password, first_name, last_name, civility, manager, organisation, uuid, is_activated";
 
 exports.getByOrganisation = (organisation) =>
   db.query(`SELECT ${INFOS} FROM users WHERE organisation = $1`, [
@@ -26,31 +26,19 @@ exports.getByUUID = (uuid) =>
 exports.createAccount = ({
   email,
   password,
-  firstName,
-  lastName,
-  phoneNumber,
+  firstname,
+  lastname,
+  phonenumber,
   civility,
   uuid,
 }) =>
   db.query(
-    `INSERT INTO users (email, password, first_name, last_name, phone_no, civility, uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING ${INFOS}`,
-    [email, password, firstName, lastName, phoneNumber, civility, uuid]
+    `INSERT INTO users (email, password, first_name, last_name, phone_no, civility, uuid) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING ${INFOS}`,
+    [email, password, firstname, lastname, phonenumber, civility, uuid]
   );
 
-exports.activateExpertAccount = (
-  uuid,
-  { firstName, lastName, civility, phoneNumber, password }
-) =>
-  db.query(
-    `UPDATE users SET first_name = $1, last_name = $2, civility = $3, phone_no = $4, password = $5, is_activated = TRUE WHERE uuid = $6 RETURNING ${INFOS}`,
-    [firstName, lastName, civility, phoneNumber, password, uuid]
-  );
-
-exports.activateManagerAccount = (id) =>
-  db.query(
-    `UPDATE users SET is_activated = TRUE WHERE id = $1 RETURNING ${INFOS}`,
-    [id]
-  );
+exports.validateEmail = ({ email }) =>
+  db.query("UPDATE users SET is_activated = TRUE WHERE email = $1", [email]);
 
 exports.updateManager = (id, { manager }) =>
   db.query("UPDATE users SET manager = $1 WHERE id = $2", [manager, id]);
