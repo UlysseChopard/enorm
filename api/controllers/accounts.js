@@ -60,7 +60,7 @@ exports.activateAccount = async (req, res, next) => {
 exports.deleteAccount = async (req, res, next) => {
   try {
     await Users.deleteAccount(req.user.id);
-    res.logout();
+    req.logout((err) => (err ? next(err) : res.sendStatus(200)));
   } catch (err) {
     next(err);
   }

@@ -1,12 +1,12 @@
 import { Link, redirect, Form } from "react-router-dom";
-import { login } from "../api/user";
-import StyledInput from "../components/StyledInput.jsx";
+import { login } from "../api/accounts";
+import StyledInput from "../components/StyledInput";
 
 export async function action({ request }) {
   const formData = await request.formData();
   const userInfos = Object.fromEntries(formData);
-  await login(userInfos);
-  return redirect("/");
+  const res = await login(userInfos);
+  if (res.ok) return redirect("/");
 }
 
 const Login = () => {

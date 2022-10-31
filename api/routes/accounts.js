@@ -6,16 +6,17 @@ const {
   login,
   sendUser,
   activateAccount,
-  sendEmailValidation,
-} = require("../controllers/auth");
+} = require("../controllers/accounts");
 const { isAuthenticated } = require("../middlewares/auth");
 const passport = require("../middlewares/passport");
 
-router.post("/signup", sendEmailValidation, signup);
-router.post("/login", passport.authenticate("local"), login);
 router.get("/:uuid/activate", activateAccount);
-router.post("/logout", isAuthenticated, logout);
-router.get("/user", isAuthenticated, sendUser);
+router.get("/", isAuthenticated, sendUser);
+
+router.post("/signup", signup);
+router.post("/login", passport.authenticate("local"), login);
+router.post("/logout", logout);
+
 router.delete("/", isAuthenticated, deleteAccount);
 
 module.exports = router;

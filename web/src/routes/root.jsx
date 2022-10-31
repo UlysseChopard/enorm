@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { redirect, Outlet, useLoaderData, Link } from "react-router-dom";
-import { getUser } from "../api/user.js";
+import { getUser } from "../api/accounts";
 
 export async function loader() {
-  const user = await getUser();
-  // if (!user) return redirect("/login");
+  const res = await getUser();
+  if (!res.ok) return redirect("login");
+  const user = await res.json();
   return { user };
 }
 
 const Root = () => {
   const { user } = useLoaderData();
   const [sidebar, setSidebar] = useState(false);
-  console.log("usr", user, sidebar.current);
   return (
     <div id="root">
       <div
@@ -24,7 +24,9 @@ const Root = () => {
           </button>
         </div>
         <h1 className="text-2xl font-bold">E-norm</h1>
-        <div />
+        <div id="account">
+          <Link to="logout">Logout</Link>
+        </div>
       </div>
       <div
         id="sidebar"
@@ -39,6 +41,7 @@ const Root = () => {
       <div id="main">
         <Outlet />
       </div>
+      <div>{JSON.stringify(user, null, 2)}</div>
     </div>
   );
 };
