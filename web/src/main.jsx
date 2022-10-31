@@ -2,19 +2,36 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root, { loader as rootLoader } from "./routes/root.jsx";
-import ErrorPage from "./error-page.jsx";
-import Login, { action as loginAction } from "./routes/login.jsx";
-import Signup, { action as signupAction } from "./routes/signup.jsx";
-import Logout, { loader as logoutLoader } from "./routes/logout.jsx";
-import Activate, { loader as activateLoader } from "./routes/activate.jsx";
+import Home, { loader as homeLoader } from "./routes/home";
+import ErrorPage from "./error-page";
+import Login, { action as loginAction } from "./routes/login";
+import Signup, { action as signupAction } from "./routes/signup";
+import Logout, { loader as logoutLoader } from "./routes/logout";
+import Activate, { loader as activateLoader } from "./routes/activate";
+import Account, {
+  loader as accountLoader,
+  action as accountAction,
+} from "./routes/home/account";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <Home />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
+    loader: homeLoader,
+    children: [
+      {
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "account",
+            element: <Account />,
+            loader: accountLoader,
+            action: accountAction,
+          },
+        ],
+      },
+    ],
   },
   {
     path: "/login",
@@ -37,9 +54,11 @@ const router = createBrowserRouter([
   {
     path: "/activate",
     element: <Activate />,
+    loader: activateLoader,
     children: [
       {
         path: ":uuid",
+        element: <Activate />,
         loader: activateLoader,
       },
     ],

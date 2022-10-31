@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { redirect, Outlet, useLoaderData, Link } from "react-router-dom";
-import { getUser } from "../api/accounts";
+import { getUser } from "../../api/accounts";
 
 export async function loader() {
   const res = await getUser();
-  if (!res.ok) return redirect("login");
+  if (!res.ok) return redirect("/login");
   const user = await res.json();
   return { user };
 }
 
-const Root = () => {
+export default function Home() {
   const { user } = useLoaderData();
   const [sidebar, setSidebar] = useState(false);
   return (
@@ -25,6 +25,7 @@ const Root = () => {
         </div>
         <h1 className="text-2xl font-bold">E-norm</h1>
         <div id="account">
+          <Link to="account">Account</Link>
           <Link to="logout">Logout</Link>
         </div>
       </div>
@@ -41,9 +42,6 @@ const Root = () => {
       <div id="main">
         <Outlet />
       </div>
-      <div>{JSON.stringify(user, null, 2)}</div>
     </div>
   );
-};
-
-export default Root;
+}

@@ -12,8 +12,8 @@ export async function action({ request }) {
 const SignupForm = () => {
   return (
     <Form method="post" id="signup-form">
-      <StyledInput label="First name" name="first" />
-      <StyledInput label="Last name" name="last" />
+      <StyledInput label="First name" name="firstname" />
+      <StyledInput label="Last name" name="lastname" />
       <StyledInput label="Email" type="email" name="email" />
       <StyledInput label="Password" name="password" type="password" />
       <button type="submit">Sign up</button>
