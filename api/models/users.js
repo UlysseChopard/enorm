@@ -57,3 +57,6 @@ exports.updateDescription = (id, { description }) =>
     description,
     id,
   ]);
+
+exports.deleteAccount = (id) =>
+  db.query("DELETE FROM users WHERE id = $1", [id]);

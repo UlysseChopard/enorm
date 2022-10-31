@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo $1
-curl http://localhost:3000/api/activate/"$1" -b cookies -c cookies
+echo "Activate account $1"
+curl http://localhost:3000/api/accounts/"$1"/activate -b cookies -c cookies
