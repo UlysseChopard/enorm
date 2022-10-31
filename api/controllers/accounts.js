@@ -2,25 +2,46 @@ const log = require("../utils/logs");
 const Users = require("../models/users");
 const { hash } = require("../utils/auth");
 const { v4: uuidv4 } = require("uuid");
-const { sendVerification } = require("../utils/emails");
+const { sendActivation: sendMail } = require("../utils/emails");
+
+exports.sendAuthStatus = (req, res) =>
+  res.sendStatus(req.isAuthenticated ? 200 : 401);
+
+exports.update = async (req, res, next) => {
+  try {
+    await Users.updateAccount(req.body);
+    res.sendStatus(203);
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.logout = (req, res, next) => {
   req.logout((err) => (err ? next(err) : res.sendStatus(200)));
 };
 
 exports.sendUser = (req, res) => {
-  res.json({ user: req.user });
+  res.json({
+    email: req.user.email,
+    firstname: req.user.first_name,
+    lastname: req.user.last_name,
+    civility: req.user.civility,
+  });
 };
 
 exports.login = (_req, res) => res.sendStatus(200);
 
+exports.sendActivation = async (req, res, next) => {
+  try {
+    await sendMail({ to: req.user.email, uuid: req.user.uuid });
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.signup = async (req, res, next) => {
   try {
-    const uuid = uuidv4();
-    sendVerification({
-      to: req.body.email,
-      link: `${process.env.WEB_URL}/confirm/${uuid}`,
-    });
     const { email, firstname, lastname, civility, phonenumber } = req.body;
     const password = await hash(req.body.password);
     const {
@@ -32,7 +53,7 @@ exports.signup = async (req, res, next) => {
       civility,
       phonenumber,
       password,
-      uuid,
+      uuid: uuidv4(),
     });
     req.login(user, (err) => {
       if (err) return next(err);
@@ -51,6 +72,7 @@ exports.activateAccount = async (req, res, next) => {
     } = await Users.activateAccount(req.params.uuid);
     console.log(user);
     if (!user) return res.sendStatus(401);
+    log.info("Activated account", { uuid: req.params.uuid });
     res.sendStatus(200);
   } catch (err) {
     next(err);

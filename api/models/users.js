@@ -58,5 +58,11 @@ exports.updateDescription = (id, { description }) =>
     id,
   ]);
 
+exports.updateAccount = (id, { email, firstname, lastname }) =>
+  db.query(
+    "UPDATE users SET email = $1, first_name = $2, last_name = $3 WHERE id = $4",
+    [email, firstname, lastname, id]
+  );
+
 exports.deleteAccount = (id) =>
   db.query("DELETE FROM users WHERE id = $1", [id]);

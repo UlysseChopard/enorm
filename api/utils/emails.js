@@ -56,8 +56,9 @@ exports.sendInvitation = ({ from, to, link }) => {
   );
 };
 
-exports.sendVerification = ({ to, link }) => {
-  transport.sendMail({
+exports.sendActivation = ({ to, uuid }) => {
+  const link = `${process.env.WEB_URL}/activate/${uuid}`;
+  return transport.sendMail({
     from: "E-norm <ulysse.chopard@laposte.net>",
     to,
     subject: "Please activate your account",
