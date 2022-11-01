@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { redirect, Outlet, useLoaderData, Link } from "react-router-dom";
-import { getUser } from "../../api/accounts";
+import { redirect, Outlet, Link } from "react-router-dom";
+import { authStatus } from "../../api/accounts";
 
 export async function loader() {
-  const res = await getUser();
+  const res = await authStatus();
   if (!res.ok) return redirect("/login");
-  const user = await res.json();
-  return { user };
 }
 
 export default function Home() {
-  const { user } = useLoaderData();
   const [sidebar, setSidebar] = useState(false);
   return (
     <div id="root">

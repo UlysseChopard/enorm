@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import {
   useActionData,
   useNavigate,
   Form,
   useLoaderData,
 } from "react-router-dom";
-import { getUser, update } from "../../api/accounts";
+import { getUser, update, updatePassword } from "../../api/accounts";
 
 export async function loader() {
   const res = await getUser();
@@ -15,9 +16,17 @@ export async function loader() {
 
 export async function action({ request }) {
   const data = await request.formData();
-  const infos = Object.fromEntries(data);
-  const res = await update(infos);
-  if (!res.ok) throw new Error("An error occured please try again");
+  const { email, firstname, lastname, oldpass, newpass } =
+    Object.fromEntries(data);
+  if (oldpass && newpass) {
+    const resPass = await updatePassword(oldpass, newpass);
+    if (!resPass.ok) throw new Error("Could not update profile");
+  }
+  const res = await update({ email, firstname, lastname });
+  if (!res.ok)
+    throw new Error(
+      "Password has been correctly updated but the rest of the infos could not"
+    );
   return true;
 }
 
@@ -26,18 +35,44 @@ export default function Account() {
   const navigate = useNavigate();
   const { user } = useLoaderData();
   return (
-    <Form action="post">
+    <Form autoComplete="on" method="post">
       <label>
         First name
-        <input type="text" name="firstname" placeholder={user.firstname} />
+        <input
+          type="text"
+          name="firstname"
+          autoComplete="given-name"
+          placeholder={user.firstname}
+          defaultValue={user.firstname}
+        />
       </label>
       <label>
         Last name
-        <input type="text" name="lastname" placeholder={user.lastname} />
+        <input
+          type="text"
+          name="lastname"
+          autoComplete="family-name"
+          placeholder={user.lastname}
+          defaultValue={user.lastname}
+        />
       </label>
       <label>
         Email
-        <input type="email" name="email" placeholder={user.email} />
+        <input
+          type="email"
+          name="email"
+          autoComplete="email"
+          placeholder={user.email}
+          defaultValue={user.email}
+        />
+      </label>
+      <label>
+        Current password
+        <input type="password" name="oldpass" autoComplete="current-password" />
+      </label>
+      <label>
+        New password
+        <input type="password" name="newpass" autoComplete="new-password" />
       </label>
       <div>
         <button type="button" onClick={() => navigate(-1)}>

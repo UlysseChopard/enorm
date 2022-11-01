@@ -21,8 +21,8 @@ export function login(infos) {
   return fetch("/api/accounts/login", {
     method: "POST",
     credentials: "include",
-    body: JSON.stringify(infos),
     headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(infos),
   });
 }
 
@@ -42,14 +42,23 @@ export function deleteAccount() {
 }
 
 export function sendActivation() {
-  return fetch("/api/accounts/activate", { ccredentials: "include" });
+  return fetch("/api/accounts/activate", { credentials: "include" });
 }
 
 export function update(infos) {
   return fetch("/api/accounts", {
     method: "PATCH",
     credentials: "include",
-    body: JSON.stringify(infos),
     headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(infos),
+  });
+}
+
+export function updatePassword(oldpass, newpass) {
+  return fetch("/api/accounts/password", {
+    method: "PUT",
+    credentials: "include",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify({ oldpass, newpass }),
   });
 }

@@ -17,9 +17,23 @@ const Login = () => {
     >
       <div id="presentation">E-norm</div>
       <div id="login-form">
-        <Form method="post" className="flex flex-col rounded-lg bg-white">
-          <StyledInput type="email" name="email" label="Email" />
-          <StyledInput type="password" name="password" label="Password" />
+        <Form
+          autoComplete="on"
+          method="post"
+          className="flex flex-col rounded-lg bg-white"
+        >
+          <StyledInput
+            type="email"
+            name="email"
+            label="Email"
+            autoComplete="email"
+          />
+          <StyledInput
+            type="password"
+            name="password"
+            label="Password"
+            autoComplete="current-password"
+          />
           <p>
             <button type="submit">Sign up</button>
             <button type="button">Cancel</button>
