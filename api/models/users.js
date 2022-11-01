@@ -43,6 +43,8 @@ exports.activateAccount = (uuid) =>
     [uuid]
   );
 
+exports.updateUUID = (id, uuid) =>
+  db.query("UPDATE users SET uuid = $1 WHERE id = $2", [uuid, id]);
 exports.updatePassword = (id, hash) =>
   db.query("UPDATE users SET password = $1 WHERE id = $2", [hash, id]);
 
@@ -69,3 +71,10 @@ exports.updateAccount = (id, { email, firstname, lastname }) =>
 
 exports.deleteAccount = (id) =>
   db.query("DELETE FROM users WHERE id = $1", [id]);
+
+exports.resetPassword = (currentUuid, { hash, uuid }) =>
+  db.query("UPDATE users SET password = $1, uuid = $2 WHERE uuid = $3", [
+    hash,
+    uuid,
+    currentUuid,
+  ]);

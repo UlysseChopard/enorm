@@ -12,9 +12,12 @@ import Account, {
   loader as accountLoader,
   action as accountAction,
 } from "./routes/home/account";
-import ForgotPassword, {
-  action as forgotPasswordAction,
-} from "./routes/forgot-password";
+import SendResetPasswordLink, {
+  action as sendResetPasswordLinkAction,
+} from "./routes/reset-password/send-link";
+import ResetPassword, {
+  action as resetPasswordAction,
+} from "./routes/reset-password";
 
 const router = createBrowserRouter([
   {
@@ -43,10 +46,20 @@ const router = createBrowserRouter([
     action: loginAction,
   },
   {
-    path: "/forgot-password",
-    element: <ForgotPassword />,
+    path: "/reset-password",
     errorElement: <ErrorPage />,
-    action: forgotPasswordAction,
+    children: [
+      {
+        path: "",
+        element: <SendResetPasswordLink />,
+        action: sendResetPasswordLinkAction,
+      },
+      {
+        path: ":uuid",
+        action: resetPasswordAction,
+        element: <ResetPassword />,
+      },
+    ],
   },
   {
     path: "/signup",

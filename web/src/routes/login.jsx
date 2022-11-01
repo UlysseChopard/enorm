@@ -41,7 +41,7 @@ const Login = () => {
         >
           Sign up
         </button>
-        <Link to="/forgot-password">
+        <Link to="/reset-password">
           <p className="text-center">Forgot your password ?</p>
         </Link>
         <div className="w-4/5 h-px border self-center" />

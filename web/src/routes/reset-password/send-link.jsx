@@ -1,9 +1,10 @@
 import { Form, redirect } from "react-router-dom";
+import { sendResetPasswordLink } from "../../api/accounts";
 
 export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
-  const res = await newPassword(email);
+  const res = await sendResetPasswordLink(email);
   if (res.ok) return redirect("/login");
   return false;
 }

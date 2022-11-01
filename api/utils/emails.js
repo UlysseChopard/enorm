@@ -66,3 +66,14 @@ exports.sendActivation = ({ to, uuid }) => {
     html: `<p>To activate your account please click <a href=${link}>here</a></p>`,
   });
 };
+
+exports.sendMagicLink = ({ to, uuid }) => {
+  const link = `${process.env.WEB_URL}/reset-password/${uuid}`;
+  return transport.sendMail({
+    from: "E-norm <ulysse.chopard@laposte.net>",
+    to,
+    subject: "You asked to reset your password",
+    text: `To reset your password, please click on the link below.\r\n\r\n${link}`,
+    html: `<h3>Reset your password</h3><p>Please click on the link below</p><a href=${link}>Reset your password</a>`,
+  });
+};

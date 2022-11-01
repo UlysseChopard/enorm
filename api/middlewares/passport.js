@@ -1,7 +1,8 @@
 const passport = require("passport");
-const { verify } = require("../utils/auth");
 const LocalStrategy = require("passport-local").Strategy;
+const MagicLinkStrategy = require("passport-magic-link").Strategy;
 const Users = require("../models/users");
+const { verify } = require("../utils/auth");
 const log = require("../utils/logs");
 
 const ERROR_MSG = "Incorrect email or password";

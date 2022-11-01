@@ -62,3 +62,19 @@ export function updatePassword(oldpass, newpass) {
     body: JSON.stringify({ oldpass, newpass }),
   });
 }
+
+export function sendResetPasswordLink(email) {
+  return fetch("/api/accounts/password/reset", {
+    method: "POST",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+}
+
+export function resetPassword(infos) {
+  return fetch("/api/accounts/password/reset", {
+    method: "PUT",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(infos),
+  });
+}
