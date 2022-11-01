@@ -43,6 +43,9 @@ exports.activateAccount = (uuid) =>
     [uuid]
   );
 
+exports.updatePassword = (id, hash) =>
+  db.query("UPDATE users SET password = $1 WHERE id = $2", [hash, id]);
+
 exports.updateManager = (id, { manager }) =>
   db.query("UPDATE users SET manager = $1 WHERE id = $2", [manager, id]);
 

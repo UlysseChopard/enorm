@@ -33,7 +33,7 @@ module.exports = (app, express) => {
   app.options("*", cors(CORS_OPTS));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  //  app.use(logger);
+  app.use(logger);
 
   if (process.env.NODE_ENV === "production") {
     app.set("trust proxy", 1); // trust first proxy

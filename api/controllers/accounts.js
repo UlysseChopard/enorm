@@ -1,6 +1,6 @@
+const { verify, hash } = require("../utils/auth");
 const log = require("../utils/logs");
 const Users = require("../models/users");
-const { hash } = require("../utils/auth");
 const { v4: uuidv4 } = require("uuid");
 const { sendActivation: sendMail } = require("../utils/emails");
 
@@ -9,8 +9,24 @@ exports.sendAuthStatus = (req, res) =>
 
 exports.update = async (req, res, next) => {
   try {
-    await Users.updateAccount(req.body);
-    res.sendStatus(203);
+    await Users.updateAccount(req.user.id, req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updatePassword = async (req, res, next) => {
+  try {
+    const { oldpass, newpass } = req.body;
+    const correctOldPass = await verify(oldpass, req.user.password);
+    if (correctOldPass) {
+      const newPassHashed = await hash(newpass);
+      await Users.updatePassword(req.user.id, newPassHashed);
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(403);
+    }
   } catch (err) {
     next(err);
   }
