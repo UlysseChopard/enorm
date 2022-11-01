@@ -41,8 +41,11 @@ const SignupForm = () => {
 
 const Signup = () => {
   return (
-    <div id="signup">
-      <h1>Signup</h1>
+    <div
+      id="signup"
+      className="flex flex-col h-screen justify-around items-center bg-slate-50"
+    >
+      <h1 className="text-4xl font-bold">Account creation</h1>
       <SignupForm />
       <Link to="/login">Already have an account ? Please click here</Link>
     </div>

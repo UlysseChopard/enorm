@@ -12,6 +12,9 @@ import Account, {
   loader as accountLoader,
   action as accountAction,
 } from "./routes/home/account";
+import ForgotPassword, {
+  action as forgotPasswordAction,
+} from "./routes/forgot-password";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +41,12 @@ const router = createBrowserRouter([
     element: <Login />,
     errorElement: <ErrorPage />,
     action: loginAction,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+    errorElement: <ErrorPage />,
+    action: forgotPasswordAction,
   },
   {
     path: "/signup",

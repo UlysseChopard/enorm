@@ -15,32 +15,40 @@ const Login = () => {
       id="login"
       className="flex items-center justify-around w-full h-screen bg-slate-50"
     >
-      <div id="presentation">E-norm</div>
-      <div id="login-form">
-        <Form
-          autoComplete="on"
-          method="post"
-          className="flex flex-col rounded-lg bg-white"
-        >
-          <StyledInput
-            type="email"
-            name="email"
-            label="Email"
-            autoComplete="email"
-          />
-          <StyledInput
-            type="password"
-            name="password"
-            label="Password"
-            autoComplete="current-password"
-          />
-          <p>
-            <button type="submit">Sign up</button>
-            <button type="button">Cancel</button>
-          </p>
-        </Form>
-        <Link to="/signup">No account yet ? Click here</Link>
+      <div id="presentation">
+        <h1 className="text-4xl font-bold">E-norm</h1>
       </div>
+      <Form
+        autoComplete="on"
+        method="post"
+        className="flex flex-col justify-around rounded-lg bg-white p-2 shadow-lg w-1/3 h-3/5"
+      >
+        <StyledInput
+          type="email"
+          name="email"
+          label="Email"
+          autoComplete="email"
+        />
+        <StyledInput
+          type="password"
+          name="password"
+          label="Password"
+          autoComplete="current-password"
+        />
+        <button
+          type="submit"
+          className="bg-green-400 text-white rounded-full m-2 h-14"
+        >
+          Sign up
+        </button>
+        <Link to="/forgot-password">
+          <p className="text-center">Forgot your password ?</p>
+        </Link>
+        <div className="w-4/5 h-px border self-center" />
+        <Link to="/signup" className="m-2 hover:text-sky-800">
+          <p className="text-center">No account yet ? Click here</p>
+        </Link>
+      </Form>
     </div>
   );
 };
