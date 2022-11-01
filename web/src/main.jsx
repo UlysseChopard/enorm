@@ -18,6 +18,10 @@ import SendResetPasswordLink, {
 import ResetPassword, {
   action as resetPasswordAction,
 } from "./routes/reset-password";
+import Experts, {
+  action as expertsAction,
+  loader as expertsLoader,
+} from "./routes/experts";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +38,12 @@ const router = createBrowserRouter([
             element: <Account />,
             loader: accountLoader,
             action: accountAction,
+          },
+          {
+            path: "experts",
+            element: <Experts />,
+            loader: expertsLoader,
+            action: expertsAction,
           },
         ],
       },

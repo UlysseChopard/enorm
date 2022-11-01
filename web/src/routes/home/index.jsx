@@ -28,11 +28,11 @@ export default function Home() {
       </div>
       <div
         id="sidebar"
-        className={`fixed left-0 h-screen bg-slate-700 text-white flex flex-col p-4 ${
-          sidebar ? "" : "hidden"
+        className={`transition-[width] fixed left-0 h-screen bg-slate-700 text-white flex flex-col p-4 ${
+          sidebar ? "visible w-48" : "invisible w-0"
         }`}
       >
-        <Link>Lien 1</Link>
+        <Link to="experts">Experts</Link>
         <Link>Lien 2</Link>
         <Link>Lien 3</Link>
       </div>
