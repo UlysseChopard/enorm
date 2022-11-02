@@ -1,6 +1,5 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const MagicLinkStrategy = require("passport-magic-link").Strategy;
 const Users = require("../models/users");
 const { verify } = require("../utils/auth");
 const log = require("../utils/logs");
