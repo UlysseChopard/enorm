@@ -7,5 +7,41 @@
     "submit": "Sign up",
     "title": "Account creation",
     "login": "Already ready have an account ?"
+  },
+  "login": {
+    "brandname": "E-norm",
+    "email": "Email adress",
+    "password": "Password",
+    "submit": "Log in",
+    "resetPassword": "Forgot your password ?",
+    "signup": "Sign up"
+  },
+  "logout": {
+    "msg": "Logging out..."
+  },
+  "activate": {
+    "title": "Account activation",
+    "instructions": "Please check your email adress and  click on the activation link we sent to you"
+  },
+  "errorPage": {
+    "title": "An error occurred",
+    "subtitle": "If necessary, contact us about what happened"
+  },
+  "home": {
+    "sidebar": "Sidebar",
+    "brandname": "E-norm",
+    "account": "Account",
+    "logout": "Log out",
+    "experts": "Experts management"
+  },
+  "account": {
+    "firstname": "First name",
+    "lastname": "Last name",
+    "email": "Email adress",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "cancel": "Cancel",
+    "submit": "Modify my account",
+    "successNotif": "Successfully updated"
   }
 }

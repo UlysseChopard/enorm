@@ -7,5 +7,41 @@
     "submit": "S'inscrire",
     "title": "Créez votre compte",
     "login": "Déjà un compte ?"
+  },
+  "login": {
+    "brandname": "E-norm",
+    "email": "Adresse mail",
+    "password": "Mot de passe",
+    "submit": "Se connecter",
+    "resetPassword": "Mot de passe oublié ?",
+    "signup": "Créer un compte"
+  },
+  "logout": {
+    "msg": "Déconnexion..."
+  },
+  "activate": {
+    "title": "Activation du compte",
+    "instructions": "Veuillez vérifier votre boîte mail et cliquer sur le lien que nous venons de vous envoyer"
+  },
+  "errorPage": {
+    "title": "Une erreur vient d'arriver",
+    "subtitle": "En cas de nécessité, veuillez contacter le service client"
+  },
+  "home": {
+    "sidebar": "Menu latéral",
+    "brandname": "E-norm",
+    "account": "Compte",
+    "logout": "Se déconnecter",
+    "experts": "Gestion des experts"
+  },
+  "account": {
+    "firstname": "Prénom",
+    "lastname": "Nom",
+    "email": "Adresse mail",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "cancel": "Annuler",
+    "submit": "Modifier mes informations",
+    "successNotif": "Mise à jour réussie"
   }
 }

@@ -14,12 +14,11 @@ export async function loader({ params }) {
 }
 export default function Activate() {
   const mailSent = useLoaderData();
+  const { t } = useTranslation(null, { keyPrefix: "activate" });
   return (
     <>
-      <p>Please activate your account</p>
-      {mailSent && (
-        <p>You should receive an email with an authentication link soon</p>
-      )}
+      <h1>{t("title")}</h1>
+      {mailSent && <p>{t("instructions")}</p>}
     </>
   );
 }

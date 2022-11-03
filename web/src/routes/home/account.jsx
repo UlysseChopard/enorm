@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import StyledInput from "../../components/StyledInput";
 import {
   useActionData,
   useNavigate,
@@ -32,56 +32,50 @@ export async function action({ request }) {
 }
 
 export default function Account() {
+  const { t } = useTranslation(null, { keyPrefix: "account" });
   const updated = useActionData();
   const navigate = useNavigate();
   const { user } = useLoaderData();
   return (
     <Form autoComplete="on" method="post">
-      <label>
-        First name
-        <input
-          type="text"
-          name="firstname"
-          autoComplete="given-name"
-          placeholder={user.firstname}
-          defaultValue={user.firstname}
-        />
-      </label>
-      <label>
-        Last name
-        <input
-          type="text"
-          name="lastname"
-          autoComplete="family-name"
-          placeholder={user.lastname}
-          defaultValue={user.lastname}
-        />
-      </label>
-      <label>
-        Email
-        <input
-          type="email"
-          name="email"
-          autoComplete="email"
-          placeholder={user.email}
-          defaultValue={user.email}
-        />
-      </label>
-      <label>
-        Current password
-        <input type="password" name="oldpass" autoComplete="current-password" />
-      </label>
-      <label>
-        New password
-        <input type="password" name="newpass" autoComplete="new-password" />
-      </label>
+      <StyledInput
+        name="firstname"
+        label={t("firstname")}
+        autoComplete="given-name"
+        defaultValue={user.firstname}
+      />
+      <StyledInput
+        name="lastname"
+        label={t("lastname")}
+        autoComplete="family-name"
+        defaultValue={user.lastname}
+      />
+      <StyledInput
+        name="email"
+        label={t("email")}
+        autoComplete="email"
+        defaultValue={user.email}
+        type="email"
+      />
+      <StyledInput
+        name="oldpass"
+        label={t("currentPassword")}
+        autoComplete="current-password"
+        type="password"
+      />
+      <StyledInput
+        name="newpass"
+        label={t("newPassword")}
+        autoComplete="new-password"
+        type="password"
+      />
       <div>
         <button type="button" onClick={() => navigate(-1)}>
-          Go back
+          {t("cancel")}
         </button>
-        <button type="submit">Edit profile</button>
+        <button type="submit">{t("submit")}</button>
       </div>
-      {updated && <p>Successfully updated</p>}
+      {updated && <p>{t("successNotif")}</p>}
     </Form>
   );
 }

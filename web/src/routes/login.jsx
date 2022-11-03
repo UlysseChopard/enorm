@@ -11,13 +11,14 @@ export async function action({ request }) {
 }
 
 const Login = () => {
+  const { t } = useTranslation(null, { keyPrefix: "login" });
   return (
     <div
       id="login"
       className="flex items-center justify-around w-full h-screen bg-slate-50"
     >
       <div id="presentation">
-        <h1 className="text-4xl font-bold">E-norm</h1>
+        <h1 className="text-4xl font-bold">{t("brandname")}</h1>
       </div>
       <Form
         autoComplete="on"
@@ -27,27 +28,27 @@ const Login = () => {
         <StyledInput
           type="email"
           name="email"
-          label="Email"
+          label={t("email")}
           autoComplete="email"
         />
         <StyledInput
           type="password"
           name="password"
-          label="Password"
+          label={t("password")}
           autoComplete="current-password"
         />
         <button
           type="submit"
           className="bg-green-400 text-white rounded-full m-2 h-14"
         >
-          Sign up
+          {t("submit")}
         </button>
         <Link to="/reset-password">
-          <p className="text-center">Forgot your password ?</p>
+          <p className="text-center">{t("resetPassword")}</p>
         </Link>
         <div className="w-4/5 h-px border self-center" />
         <Link to="/signup" className="m-2 hover:text-sky-800">
-          <p className="text-center">No account yet ? Click here</p>
+          <p className="text-center">{t("signup")}</p>
         </Link>
       </Form>
     </div>

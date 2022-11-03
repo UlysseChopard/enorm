@@ -9,6 +9,7 @@ export async function loader() {
 }
 
 export default function Home() {
+  const { t } = useTranslation(null, { keyPrefix: "home" });
   const [sidebar, setSidebar] = useState(false);
   return (
     <div id="root">
@@ -18,13 +19,13 @@ export default function Home() {
       >
         <div className="mx-4">
           <button onClick={() => setSidebar(!sidebar)} className="mx-auto">
-            Sidebar
+            {t("sidebar")}
           </button>
         </div>
-        <h1 className="text-2xl font-bold">E-norm</h1>
+        <h1 className="text-2xl font-bold">{t("brandname")}</h1>
         <div id="account">
-          <Link to="account">Account</Link>
-          <Link to="logout">Logout</Link>
+          <Link to="account">{t("account")}</Link>
+          <Link to="logout">{t("logout")}</Link>
         </div>
       </div>
       <div
@@ -33,7 +34,7 @@ export default function Home() {
           sidebar ? "visible w-48" : "invisible w-0"
         }`}
       >
-        <Link to="experts">Experts</Link>
+        <Link to="experts">{t("experts")}</Link>
         <Link>Lien 2</Link>
         <Link>Lien 3</Link>
       </div>

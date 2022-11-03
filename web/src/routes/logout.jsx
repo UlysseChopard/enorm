@@ -15,5 +15,6 @@ export async function loader() {
 }
 
 export default function Logout() {
-  return <p>Logging out...</p>;
+  const { t } = useTranslation(null, { keyPrefix: "logout" });
+  return <p>{t("msg")}</p>;
 }
