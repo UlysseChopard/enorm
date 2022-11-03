@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useLoaderData, redirect } from "react-router-dom";
 import { sendActivation, activate } from "../api/accounts";
 

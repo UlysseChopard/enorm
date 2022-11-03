@@ -1,4 +1,5 @@
 import { Link, redirect, Form } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { login } from "../api/accounts";
 import StyledInput from "../components/StyledInput";
 

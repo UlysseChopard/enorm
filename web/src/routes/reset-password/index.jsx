@@ -1,4 +1,5 @@
 import { redirect, Form } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import StyledInput from "../../components/StyledInput";
 import { resetPassword } from "../../api/accounts";
 

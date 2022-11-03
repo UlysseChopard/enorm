@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { redirect, Outlet, Link } from "react-router-dom";
 import { authStatus } from "../../api/accounts";
 

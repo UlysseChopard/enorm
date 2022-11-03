@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 export async function loader() {}
 
 export async function action() {}

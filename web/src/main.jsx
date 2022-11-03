@@ -1,6 +1,7 @@
+import "./index.css";
+import "./utils/i18n";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home, { loader as homeLoader } from "./routes/home";
 import ErrorPage from "./routes/error-page";

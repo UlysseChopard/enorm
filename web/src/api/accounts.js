@@ -34,7 +34,7 @@ export function logout() {
 }
 
 export function activate(uuid) {
-  return fetch(`api/accounts/${uuid}/activate`, { credentials: "include" });
+  return fetch(`/api/accounts/${uuid}/activate`, { credentials: "include" });
 }
 
 export function deleteAccount() {

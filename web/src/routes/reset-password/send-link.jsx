@@ -1,4 +1,5 @@
 import { Form, redirect } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { sendResetPasswordLink } from "../../api/accounts";
 
 export async function action({ request }) {

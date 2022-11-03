@@ -1,0 +1,11 @@
+{
+  "signup": {
+    "firstname": "Prénom",
+    "lastname": "Nom",
+    "email": "Adresse mail",
+    "password": "Mot de passe",
+    "submit": "S'inscrire",
+    "title": "Créez votre compte",
+    "login": "Déjà un compte ?"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "signup": {
+    "firstname": "First name",
+    "lastname": "Last name",
+    "email": "Email adress",
+    "password": "Password",
+    "submit": "Sign up",
+    "title": "Account creation",
+    "login": "Already ready have an account ?"
+  }
+}
