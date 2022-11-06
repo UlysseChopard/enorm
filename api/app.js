@@ -6,6 +6,6 @@ const mountRoutes = require("./routes");
 const app = express();
 
 mountMiddlewares(app, express);
-mountRoutes(app, express);
+mountRoutes(app);
 
 module.exports = app;

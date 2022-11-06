@@ -1,7 +1,7 @@
 import "./index.css";
 import "./utils/i18n";
-import React from "react";
-import ReactDOM from "react-dom/client";
+import * as ReactDOM from "react-dom/client";
+import React, { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home, { loader as homeLoader } from "./routes/home";
 import ErrorPage from "./routes/error-page";
@@ -100,6 +100,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Suspense fallback={<p>Loading...</p>}>
+      <RouterProvider router={router} />
+    </Suspense>
   </React.StrictMode>
 );

@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 const ErrorPage = () => {
   const { t } = useTranslation(null, { keyPrefix: "errorPage" });
   const error = useRouteError();
-  console.error(error);
   return (
     <div id="error-page">
       <h1>{t("title")}</h1>
