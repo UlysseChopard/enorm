@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SwitchLng from "../../components/SwitchLng";
 import { useTranslation } from "react-i18next";
 import { redirect, Outlet, Link } from "react-router-dom";
 import { authStatus } from "../../api/accounts";
@@ -41,6 +42,9 @@ export default function Home() {
       <div id="main">
         <Outlet />
       </div>
+      <footer>
+        <SwitchLng />
+      </footer>
     </div>
   );
 }

@@ -1,38 +1,38 @@
-const { v4: uuidv4 } = require("uuid");
 const log = require("../utils/logs");
+const Experts = require("../models/experts");
 const Users = require("../models/users");
 const { sendInvitation } = require("../utils/emails");
+const busboy = require("busboy");
 
-exports.fillProfile = async (req, res, next) => {
+exports.declareExpert = async (req, res, next) => {
   try {
-    await Users.updateDescription(req.user.id, {
-      description: req.description,
-    });
-    res.sendStatus(201);
+    const { email } = req.body;
+    const {
+      rows: [user],
+    } = await Users.getByEmail(email);
+    await Experts.save({ manager: req.user.id, email, user: user?.id });
+    if (!user) {
+      await sendInvitation({ to: email, link: process.env.WEB_URL });
+    }
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }
 };
 
-exports.declareExpert = async (req, res, next) => {
+exports.uploadExperts = async (req, res, next) => {
   try {
-    const { email, organisation, manager } = req.body;
-    const uuid = uuidv4();
-    await Users.createExpertAccount({
-      email,
-      organisation,
-      manager,
-      uuid,
+    const bb = busboy({ headers: req.headers });
+    bb.on("file", (name, file, info) => {
+      // const { filename, encoding, mimeType } = info;
+      log.info("Experts upload", { name, file, info });
     });
-    log.info("Expert account created", { email, organisation, manager });
-    const link = encodeURI(`${process.env.WEB_URL}/signup/${uuid}`);
-    log.info({ link });
-    sendInvitation({
-      from: `${req.user.first_name} ${req.user.last_name} <${req.user.email}>`,
-      to: email,
-      link,
+    bb.on("close", () => {
+      log.info("Done parsing");
+      res.writeHead(200, { Connection: "close" });
+      res.end();
     });
-    res.sendStatus(201);
+    req.pipe(bb);
   } catch (err) {
     next(err);
   }
@@ -40,8 +40,18 @@ exports.declareExpert = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
   try {
-    const { rows: experts } = await Users.getByManager(req.user.id);
+    const { rows: experts } = await Experts.get(req.user.id);
     res.json({ experts });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteExpert = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    await Experts.deleteByEmailAndManager({ email, manager: req.user.id });
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }

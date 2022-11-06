@@ -43,5 +43,8 @@
     "cancel": "Cancel",
     "submit": "Modify my account",
     "successNotif": "Successfully updated"
+  },
+  "experts": {
+    "title": "Experts"
   }
 }

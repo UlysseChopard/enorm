@@ -43,5 +43,8 @@
     "cancel": "Annuler",
     "submit": "Modifier mes informations",
     "successNotif": "Mise à jour réussie"
+  },
+  "experts": {
+    "title": "Experts"
   }
 }

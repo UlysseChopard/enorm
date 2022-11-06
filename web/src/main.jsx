@@ -22,7 +22,7 @@ import ResetPassword, {
 import Experts, {
   action as expertsAction,
   loader as expertsLoader,
-} from "./routes/experts";
+} from "./routes/home/experts";
 
 const router = createBrowserRouter([
   {
