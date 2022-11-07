@@ -1,21 +1,16 @@
 import { useTranslation } from "react-i18next";
 
+const lngs = ["en", "fr"];
+
 export default function SwitchLng() {
   const { i18n } = useTranslation();
   return (
-    <label>
-      select your language
-      <select name="lng">
-        {i18n.languages.map((lng) => (
-          <option
-            key={lng}
-            value={lng}
-            onClick={() => i18n.changeLanguage(lng)}
-          >
-            {lng}
-          </option>
-        ))}
-      </select>
-    </label>
+    <select name="lng" onChange={(e) => i18n.changeLanguage(e.target.value)}>
+      {lngs.map((lng) => (
+        <option key={lng} value={lng}>
+          {lng}
+        </option>
+      ))}
+    </select>
   );
 }
