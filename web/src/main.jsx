@@ -19,10 +19,13 @@ import SendResetPasswordLink, {
 import ResetPassword, {
   action as resetPasswordAction,
 } from "./routes/reset-password";
-import Experts, {
-  action as expertsAction,
-  loader as expertsLoader,
-} from "./routes/home/experts";
+import Experts, { loader as expertsLoader } from "./routes/home/experts";
+import DeclareExpert, {
+  action as declareExpertAction,
+} from "./routes/home/experts/declare.jsx";
+import UploadExperts, {
+  action as uploadExpertsAction,
+} from "./routes/home/experts/upload.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +47,18 @@ const router = createBrowserRouter([
             path: "experts",
             element: <Experts />,
             loader: expertsLoader,
-            action: expertsAction,
+            children: [
+              {
+                path: "declare",
+                element: <DeclareExpert />,
+                action: declareExpertAction,
+              },
+              {
+                path: "upload",
+                element: <UploadExperts />,
+                action: uploadExpertsAction,
+              },
+            ],
           },
         ],
       },
