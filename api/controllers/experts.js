@@ -3,6 +3,7 @@ const Experts = require("../models/experts");
 const Users = require("../models/users");
 const { sendInvitation } = require("../utils/emails");
 const busboy = require("busboy");
+const { parse } = require("csv-parse");
 
 exports.declareExpert = async (req, res, next) => {
   try {
@@ -25,7 +26,11 @@ exports.uploadExperts = async (req, res, next) => {
     const bb = busboy({ headers: req.headers });
     bb.on("file", (name, file, info) => {
       // const { filename, encoding, mimeType } = info;
-      log.info("Experts upload", { name, file, info });
+      log.info("Experts upload", { name, info });
+      file
+        .pipe(parse())
+        .on("data", console.log)
+        .on("end", () => {});
     });
     bb.on("close", () => {
       log.info("Done parsing");
