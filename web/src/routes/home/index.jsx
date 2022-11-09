@@ -36,6 +36,7 @@ export default function Home() {
         }`}
       >
         <Link to="experts">{t("experts")}</Link>
+        <Link to="managers">{t("managers")}</Link>
       </div>
       <div id="main">
         <Outlet />

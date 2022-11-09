@@ -1,4 +1,12 @@
-// const router = require("express").Router();
-// const {} = require("../controllers/managers");
+const router = require("express").Router();
 
-// module.exports = router;
+const { declare, getAll, upload, del } = require("../controllers/managers");
+
+router.post("/upload", upload);
+router.post("/", declare);
+
+router.get("/", getAll);
+
+router.delete("/", del);
+
+module.exports = router;
