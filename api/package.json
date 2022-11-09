@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "start:dev": "nodemon -r dotenv/config server | bunyan",
+    "dev": "nodemon -r dotenv/config server | bunyan",
     "migrate": "node-pg-migrate -m ./db/migrations"
   },
   "author": "ucg",

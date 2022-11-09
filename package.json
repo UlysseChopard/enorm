@@ -1,0 +1,28 @@
+{
+  "name": "e-norm",
+  "version": "1.0.0",
+  "description": "Web app for expert subscription to standard committees",
+  "main": "index.js",
+  "scripts": {
+    "dev": "run-p -r api web",
+    "api": "npm run dev -w api",
+    "web": "npm run dev -w web"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UlysseChopard/next.git"
+  },
+  "author": "UCG",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UlysseChopard/next/issues"
+  },
+  "homepage": "https://github.com/UlysseChopard/next#readme",
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
