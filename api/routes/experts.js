@@ -1,17 +1,12 @@
 const router = require("express").Router();
 
-const {
-  declareExpert,
-  getAll,
-  uploadExperts,
-  deleteExpert,
-} = require("../controllers/experts");
+const { declare, getAll, upload, del } = require("../controllers/experts");
 
-router.post("/upload", uploadExperts);
-router.post("/", declareExpert);
+router.post("/upload", upload);
+router.post("/", declare);
 
 router.get("/", getAll);
 
-router.delete("/", deleteExpert);
+router.delete("/", del);
 
 module.exports = router;

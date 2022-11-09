@@ -5,12 +5,12 @@ export function getExperts() {
   });
 }
 
-export function declareExpert(email) {
+export function declareExpert(emails) {
   return fetch("/api/experts", {
     credentials: "include",
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ emails }),
   });
 }
 

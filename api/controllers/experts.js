@@ -5,31 +5,34 @@ const { sendInvitation } = require("../utils/emails");
 const busboy = require("busboy");
 const { parse } = require("csv-parse");
 
-exports.declareExpert = async (req, res, next) => {
+const save = async (email, manager) => {
+  if (!email) return;
+  const {
+    rows: [user],
+  } = await Users.getByEmail(email);
+  if (!user) {
+    await sendInvitation({ to: email, link: process.env.WEB_URL });
+  }
+  await Experts.save({ manager, email, user: user?.id });
+};
+
+exports.declare = async (req, res, next) => {
   try {
-    const { email } = req.body;
-    const {
-      rows: [user],
-    } = await Users.getByEmail(email);
-    await Experts.save({ manager: req.user.id, email, user: user?.id });
-    if (!user) {
-      await sendInvitation({ to: email, link: process.env.WEB_URL });
-    }
+    await Promise.all(req.body.emails.map((email) => save(email, req.user.id)));
     res.sendStatus(200);
   } catch (err) {
     next(err);
   }
 };
 
-exports.uploadExperts = async (req, res, next) => {
+exports.upload = async (req, res, next) => {
   try {
     const bb = busboy({ headers: req.headers });
     bb.on("file", (name, file, info) => {
-      // const { filename, encoding, mimeType } = info;
       log.info("Experts upload", { name, info });
       file
         .pipe(parse())
-        .on("data", console.log)
+        .on("data", ([email]) => save(email, req.user.id))
         .on("end", () => {});
     });
     bb.on("close", () => {
@@ -52,7 +55,7 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
-exports.deleteExpert = async (req, res, next) => {
+exports.del = async (req, res, next) => {
   try {
     const { email } = req.body;
     await Experts.deleteByEmailAndManager({ email, manager: req.user.id });
