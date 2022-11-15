@@ -26,9 +26,6 @@ import DeclareExpert, {
 import UploadExperts, {
   action as uploadExpertsAction,
 } from "./routes/home/experts/upload.jsx";
-import Managers, { loader as managersLoader } from "./routes/home/managers";
-import DeclareManager, { action as declareManagerAction } from "./routes/home/managers/declare";
-import UploadManagers, { action as uploadManagersAction } from "./routes/home/managers/upload";
 
 const router = createBrowserRouter([
   {
@@ -60,23 +57,6 @@ const router = createBrowserRouter([
                 path: "upload",
                 element: <UploadExperts />,
                 action: uploadExpertsAction,
-              },
-            ],
-          },
-          {
-            path: "managers",
-            element: <Managers />,
-            loader: managersLoader,
-            children: [
-              {
-                path: "declare",
-                element: <DeclareManager />,
-                action: declareManagerAction,
-              },
-              {
-                path: "upload",
-                element: <UploadManagers />,
-                action: uploadManagersAction,
               },
             ],
           },

@@ -1,9 +1,9 @@
 const db = require("../db");
 
-exports.save = ({ manager, email, user, readOnly = true }) =>
+exports.save = ({ manager, email, user }) =>
   db.query(
-    "INSERT INTO experts (manager_id, email, user_id, read_only) VALUES ($1, $2, $3, $4)",
-    [manager, email, user, readOnly]
+    "INSERT INTO experts (manager_id, email, user_id) VALUES ($1, $2, $3)",
+    [manager, email, user]
   );
 
 exports.get = (id) =>
