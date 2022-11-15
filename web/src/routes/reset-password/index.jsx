@@ -1,7 +1,7 @@
 import { redirect, Form } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import StyledInput from "../../components/StyledInput";
-import { resetPassword } from "../../api/accounts";
+import StyledInput from "@/components/StyledInput";
+import { resetPassword } from "@/api/accounts";
 
 export async function action({ params, request }) {
   const formData = await request.formData();
@@ -11,6 +11,7 @@ export async function action({ params, request }) {
 }
 
 export default function ResetPassword() {
+  const { t } = useTranslation(null, { keyPrefix: "resetPassword" });
   return (
     <Form method="post" autoComplete="on">
       <StyledInput
@@ -19,7 +20,7 @@ export default function ResetPassword() {
         type="password"
         autoComplete="new-password"
       />
-      <button type="submit">Reset password</button>
+      <button type="submit">{t("submit")}</button>
     </Form>
   );
 }

@@ -1,6 +1,6 @@
 import { Form, redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { sendResetPasswordLink } from "../../api/accounts";
+import { sendResetPasswordLink } from "@/api/accounts";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -11,6 +11,7 @@ export async function action({ request }) {
 }
 
 export default function ForgotPassword() {
+  const { t } = useTranslation(null, { keyPrefix: "resetPassword.form" });
   return (
     <Form
       autoComplete="on"
@@ -18,8 +19,8 @@ export default function ForgotPassword() {
       className="flex flex-col items-center justify-center h-screen"
     >
       <div className="my-2">
-        <h1 className="text-4xl font-bold mb-2">Forgot your password ?</h1>
-        <p>We will send you a link to reset your password</p>
+        <h1 className="text-4xl font-bold mb-2">{t("title")}</h1>
+        <p>{t("description")}</p>
       </div>
       <label className="flex flex-col">
         <span>Email</span>
@@ -30,7 +31,7 @@ export default function ForgotPassword() {
           className="rounded-lg"
         />
       </label>
-      <button type="submit">Submit</button>
+      <button type="submit">{t("submit")}</button>
     </Form>
   );
 }
