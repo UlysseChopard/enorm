@@ -16,7 +16,9 @@ const save = async (email, sender) => {
 
 exports.declare = async (req, res, next) => {
   try {
-    await Promise.all(req.body.emails.map((email) => save(email, req.user.id)));
+    const { emails } = req.body;
+    const emailsArr = emails.split(" ");
+    await Promise.all(emailsArr((email) => save(email, req.user.id)));
     res.sendStatus(200);
   } catch (err) {
     next(err);
