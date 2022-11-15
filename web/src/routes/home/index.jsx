@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import SwitchLng from "../../components/SwitchLng";
 import { useTranslation } from "react-i18next";
 import { redirect, Outlet, Link } from "react-router-dom";
-import { authStatus } from "../../api/accounts";
+import { authStatus } from "@/api/accounts";
+import SwitchLng from "@/components/SwitchLng";
 
 export async function loader() {
   const res = await authStatus();
@@ -35,7 +35,7 @@ export default function Home() {
           sidebar ? "visible w-48" : "invisible w-0"
         }`}
       >
-        <Link to="experts">{t("experts")}</Link>
+        <Link to="roles">{t("roles")}</Link>
       </div>
       <div id="main">
         <Outlet />

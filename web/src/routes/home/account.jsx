@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
-import StyledInput from "../../components/StyledInput";
 import {
   useActionData,
   useNavigate,
   Form,
   useLoaderData,
 } from "react-router-dom";
-import { getUser, update, updatePassword } from "../../api/accounts";
+import { getUser, update, updatePassword } from "@/api/accounts";
+import StyledInput from "@/components/StyledInput";
 
 export async function loader() {
   const res = await getUser();

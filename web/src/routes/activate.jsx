@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useLoaderData, redirect } from "react-router-dom";
-import { sendActivation, activate } from "../api/accounts";
+import { sendActivation, activate } from "@/api/accounts";
 
 export async function loader({ params }) {
   const { uuid } = params;

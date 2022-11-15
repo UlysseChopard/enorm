@@ -1,7 +1,7 @@
 import { Form, Link, redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import StyledInput from "../components/StyledInput";
-import { signup } from "../api/accounts";
+import StyledInput from "@/components/StyledInput";
+import { signup } from "@/api/accounts";
 
 export async function action({ request }) {
   const formData = await request.formData();

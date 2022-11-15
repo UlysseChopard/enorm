@@ -1,8 +1,7 @@
 const router = require("express").Router();
 
-const { declare, getAll, upload, del } = require("../controllers/experts");
+const { declare, getAll, del } = require("../controllers/roles");
 
-router.post("/upload", upload);
 router.post("/", declare);
 
 router.get("/", getAll);

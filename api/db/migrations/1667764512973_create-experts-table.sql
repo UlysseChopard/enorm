@@ -1,9 +1,11 @@
 -- Up Migration
-CREATE TABLE experts (
+CREATE TABLE roles (
   id SERIAL PRIMARY KEY,
   email TEXT NOT NULL,
   user_id INTEGER REFERENCES users (id),
-  manager_id INTEGER REFERENCES users (id)
+  sender_id INTEGER REFERENCES users (id),
+  can_join_wg BOOLEAN NOT NULL DEFAULT FALSE,
+  can_propose_wg BOOLEAN NOT NULL DEFAULT FALSE
 );
 -- Down Migration
-DROP TABLE experts;
+DROP TABLE roles;
