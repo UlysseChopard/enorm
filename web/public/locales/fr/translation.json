@@ -28,11 +28,10 @@
     "subtitle": "En cas de nécessité, veuillez contacter le service client"
   },
   "home": {
-    "sidebar": "Menu latéral",
+    "roles": "Mes relations",
     "brandname": "E-norm",
     "account": "Compte",
-    "logout": "Se déconnecter",
-    "experts": "Gestion des experts"
+    "logout": "Se déconnecter"
   },
   "account": {
     "firstname": "Prénom",
@@ -44,7 +43,13 @@
     "submit": "Modifier mes informations",
     "successNotif": "Mise à jour réussie"
   },
-  "experts": {
-    "title": "Experts"
+  "roles": {
+    "connect": "Ajouter des relations",
+    "empty": "Ajoutez votre première relation",
+    "declare": {
+      "label": "Ajout des emails",
+      "cancel": "Annuler",
+      "submit": "Envoyer les demandes de connexion"
+    }
   }
 }

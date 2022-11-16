@@ -12,8 +12,7 @@ export default function Roles() {
   const { roles } = useLoaderData();
   return (
     <>
-      <h1 className="text-center">{t("title")}</h1>
-      <div className="flex items-center justify-end">
+      <div className="flex w-full items-center justify-end">
         <Link to="declare">{t("connect")}</Link>
       </div>
       <Outlet />
@@ -25,7 +24,7 @@ export default function Roles() {
             </tr>
           ))}
         </tbody>
-      </table> : <p>No user connected until now</p>}
+      </table> : <p>{t("empty")}</p>}
     </>
   );
 }

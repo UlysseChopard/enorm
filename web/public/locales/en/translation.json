@@ -28,11 +28,10 @@
     "subtitle": "If necessary, contact us about what happened"
   },
   "home": {
-    "sidebar": "Sidebar",
     "brandname": "E-norm",
     "account": "Account",
     "logout": "Log out",
-    "experts": "Experts management"
+    "roles": "Relations"
   },
   "account": {
     "firstname": "First name",
@@ -44,7 +43,13 @@
     "submit": "Modify my account",
     "successNotif": "Successfully updated"
   },
-  "experts": {
-    "title": "Experts"
+  "roles": {
+    "connect": "Add relations",
+    "empty": "Add your first relation",
+    "declare": {
+      "label": "Add email addresses",
+      "cancel": "Cancel",
+      "submit": "Send invitations"
+    }
   }
 }

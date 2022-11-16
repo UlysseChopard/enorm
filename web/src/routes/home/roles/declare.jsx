@@ -18,12 +18,17 @@ export default function DeclareRole() {
     e.target.value = e.target.value.replace(/[\s;|]+/g, " ");
   });
   return (
-    <dialog open className="absolute w-full h-full bg-slate-100 opacity-7">
-      <Form method="post">
-        <StyledInput label={t("label")} type="textarea" name="emails" onChange={handleChange} />
-        <Link to="/roles">{t("cancel")}</Link>
-        <button type="submit">{t("submit")}</button>
-      </Form>
-    </dialog>
+    <>
+      <div className="absolute w-screen h-screen inset-0 opacity-5 bg-slate-50" />
+      <dialog open className="bg-slate-50 rounded-lg flex items-center justify-center">
+        <Form method="post" className="w-72 ">
+          <StyledInput label={t("label")} type="textarea" name="emails" onChange={handleChange} />
+          <div className="flex justify-around">
+            <Link to="/roles" className="rounded-lg bg-white p-2 border-transparent border-2 hover:border-solid hover:border-sky-800">{t("cancel")}</Link>
+            <button type="submit" className="p-2 rounded-lg bg-green-400 text-white border-2 border-transparent hover:border-green-800">{t("submit")}</button>
+          </div>
+        </Form>
+      </dialog>
+    </>
   );
 }

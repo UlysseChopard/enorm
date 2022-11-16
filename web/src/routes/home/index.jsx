@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { redirect, Outlet, Link } from "react-router-dom";
+import { redirect, Outlet, NavLink } from "react-router-dom";
 import { authStatus } from "@/api/accounts";
 import SwitchLng from "@/components/SwitchLng";
 
@@ -9,38 +9,34 @@ export async function loader() {
   if (!res.ok) return redirect("/login");
 }
 
+const linkStyle = ({ isActive }) => isActive ? "font-bold mx-4" : "mx-4";
+
 export default function Home() {
   const { t } = useTranslation(null, { keyPrefix: "home" });
-  const [sidebar, setSidebar] = useState(false);
   return (
     <div id="root">
       <div
         id="app-banner"
         className="h-12 bg-slate-200 flex items-center justify-between"
       >
-        <div className="mx-4">
-          <button onClick={() => setSidebar(!sidebar)} className="mx-auto">
-            {t("sidebar")}
-          </button>
-        </div>
-        <h1 className="text-2xl font-bold">{t("brandname")}</h1>
+        <h1 className="text-2xl font-bold mx-4">{t("brandname")}</h1>
         <div id="account">
-          <Link to="account">{t("account")}</Link>
-          <Link to="logout">{t("logout")}</Link>
+          <NavLink to="account" className={linkStyle}>{t("account")}</NavLink>
+          <NavLink to="logout" className={linkStyle}>{t("logout")}</NavLink>
         </div>
       </div>
-      <div
-        id="sidebar"
-        className={`transition-[width] fixed left-0 h-screen bg-slate-700 text-white flex flex-col p-4 ${
-          sidebar ? "visible w-48" : "invisible w-0"
-        }`}
-      >
-        <Link to="roles">{t("roles")}</Link>
+      <div id="content" className="flex">
+        <div
+          id="sidebar"
+          className="h-screen bg-sky-700 text-white flex flex-col p-4 width-48"
+        >
+          <NavLink to="roles" className={linkStyle}>{t("roles")}</NavLink>
+        </div>
+        <div id="main" className="w-full mx-4 h-screen">
+          <Outlet />
+        </div>
       </div>
-      <div id="main">
-        <Outlet />
-      </div>
-      <footer>
+      <footer className="h-32 bg-sky-900 flex items-center justify-center">
         <SwitchLng />
       </footer>
     </div>
