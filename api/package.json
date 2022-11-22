@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon -r dotenv/config server | bunyan",
-    "migrate": "node-pg-migrate -m ./db/migrations"
+    "migrate": "node-pg-migrate -m ./db/migrations",
+    "swagger-autogen": "node swagger.js"
   },
   "author": "ucg",
   "license": "ISC",
@@ -26,12 +27,15 @@
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
     "pg-format": "^1.0.4",
-    "uuid": "^9.0.0"
+    "swagger-ui-express": "^4.6.0",
+    "uuid": "^9.0.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "csv-parse": "^5.3.1",
     "eslint": "^8.26.0",
     "heroku": "^7.65.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "swagger-autogen": "^2.22.0"
   }
 }
