@@ -1,5 +1,5 @@
-const app = require("./app");
-const log = require("./utils/logs");
+const app = require("./v1/app");
+const log = require("./v1/utils/logs");
 
 const normalizePort = (val) => {
   const normalizedPort = parseInt(val, 10);
@@ -23,14 +23,14 @@ const errorHandler = (error) => {
   const bind =
     typeof address === "string" ? "pipe " + address : "port: " + port;
   switch (error.code) {
-    case "EACCES":
-      log.error(bind + " requires elevated privileges.");
-      process.exit(1);
-    case "EADDRINUSE":
-      log.error(bind + " is already in use.");
-      process.exit(1);
-    default:
-      throw error;
+  case "EACCES":
+    log.error(bind + " requires elevated privileges.");
+    process.exit(1);
+  case "EADDRINUSE":
+    log.error(bind + " is already in use.");
+    process.exit(1);
+  default:
+    throw error;
   }
 };
 

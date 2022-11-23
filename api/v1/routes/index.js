@@ -3,13 +3,13 @@ const catchAll = require("../middlewares/catch-all");
 const { isAuthenticated } = require("../middlewares/auth");
 
 const accounts = require("./accounts");
-const relations = require("./relations");
-const passwords = require("./passwords");
+const organisations = require("./organisations");
+const roles = require("./roles");
 
 module.exports = (app) => {
   app.use("/api/accounts", accounts);
-  app.use("/api/relations", isAuthenticated, relations);
-  app.use("/api/passwords", isAuthenticated, passwords);
+  app.use("/api/organisations", isAuthenticated, organisations);
+  app.use("/api/roles", isAuthenticated, roles);
   app.use("*", catchAll);
   app.use(errors);
 };

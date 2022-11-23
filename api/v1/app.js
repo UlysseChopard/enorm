@@ -4,7 +4,6 @@ const YAML = require("yamljs");
 
 const mountMiddlewares = require("./middlewares");
 const mountRoutes = require("./routes");
-// const doc = require("./swagger.json");
 const doc = YAML.load("./spec.yml");
 
 const app = express();

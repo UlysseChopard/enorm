@@ -7,7 +7,7 @@ const logger = require("./logger");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const passport = require("./passport");
-const { getPool } = require("../db");
+const { getPool } = require("../../db");
 
 const sessionConfig = {
   store: new pgSession({

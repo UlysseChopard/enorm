@@ -1,0 +1,13 @@
+openapi: 3.1.0
+info:
+  title: E-norm API
+  description: Provide a way to manage experts' inscriptions in standards working groups
+  version: 0.1.0
+ servers:
+  - url: http://localhost:3000/v0
+    description: Dev server
+paths:
+  /accounts/{id}:
+    get:
+  /accounts:
+    post:
