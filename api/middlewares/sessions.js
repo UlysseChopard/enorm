@@ -1,10 +1,11 @@
 const session = require("express-session");
 const Store = require("connect-pg-simple")(session);
-const { db: { pool } } = require("../utils");
+const { db: { pool }, log } = require("../utils");
 
 const store = new Store({
   pool,
-  tableName: "sessions"
+  tableName: "sessions",
+  errorLog: log.error
 });
 
 const opts = {
