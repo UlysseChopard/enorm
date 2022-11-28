@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon -r dotenv/config server | bunyan",
-    "migrate": "node-pg-migrate -m ./db/migrations",
-    "swagger-autogen": "node swagger.js"
+    "migrate": "node-pg-migrate -m ./migrations",
+    "swagger": "node swagger.js"
   },
   "author": "ucg",
   "license": "ISC",
