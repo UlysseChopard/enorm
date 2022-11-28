@@ -4,9 +4,10 @@
   "description": "Web app for expert subscription to standard committees",
   "main": "index.js",
   "scripts": {
-    "dev": "run-p -r api web",
+    "dev": "run-p -r db api web",
     "api": "npm run dev -w api",
     "web": "npm run dev -w web",
+    "db": "docker compose up db",
     "depcheck": "depcheck ./api ./web ."
   },
   "repository": {
