@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "run-p -r api web",
     "api": "npm run dev -w api",
-    "web": "npm run dev -w web"
+    "web": "npm run dev -w web",
+    "depcheck": "depcheck ./api ./web ."
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
   ],
   "dependencies": {
     "npm-run-all": "^4.1.5"
+  },
+  "devDependencies": {
+    "depcheck": "^1.4.3"
   }
 }
