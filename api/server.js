@@ -1,5 +1,5 @@
-const app = require("./v1/app");
-const log = require("./v1/utils/logs");
+const app = require("./app");
+const log = require("./utils/logs");
 
 const normalizePort = (val) => {
   const normalizedPort = parseInt(val, 10);
