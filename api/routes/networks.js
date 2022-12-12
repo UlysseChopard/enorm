@@ -1,9 +1,7 @@
-const { get, add, remove, accept, deny } = require("../middlewares/networks");
+const { get, add, remove } = require("../middlewares/networks");
 
 module.exports = (router) => {
-  router.get("/", get);
-  router.put("/", add);
-  router.delete("/", remove);
-  router.put("/:id", accept);
-  router.delete("/:id", deny);
+  router.get("/:from", get);
+  router.put("/:from/:to", add);
+  router.delete("/:from/:to", remove);
 };

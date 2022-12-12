@@ -1,9 +1,28 @@
-const { get, add, remove, accept, deny } = require("../middlewares/networks");
+const Networks = require("../models/networks");
 
-module.exports = (router) => {
-  router.get("/", get);
-  router.put("/", add);
-  router.delete("/", remove);
-  router.put("/:id", accept);
-  router.delete("/:id", deny);
+exports.get = async (req, res, next) => {
+  try {
+    const networks = await Networks.get(req.params.from);
+    res.json(networks);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.add = async (req, res, next) => {
+  try {
+    const network = await Networks.add(req.params.from, req.params.to);
+    res.status(201).json(network);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.remove = async (req, res, next) => {
+  try {
+    await Networks.remove(req.params.from, req.params.to);
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
 };

@@ -1,6 +1,7 @@
-const { open, close } = require("../middlewares/sessions");
+const { login, logout, register } = require("../controllers/sessions");
 
 module.exports = (router) => {
-  router.put("/", open);
-  router.delete("/:id", close);
+  router.post("/", register);
+  router.put("/", login);
+  router.delete("/", logout);
 };
