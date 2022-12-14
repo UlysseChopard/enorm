@@ -1,5 +1,7 @@
 {
   "eslint.workingDirectories": [
         { "mode": "auto" }
-]
+],
+"eslint.format.enable": true,
+"eslint.codeActionsOnSave.mode": "all",
 }
