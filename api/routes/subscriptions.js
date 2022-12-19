@@ -3,15 +3,15 @@ const {
   getSent,
   send,
   cancel,
-  allow,
-  block,
-} = require("../middlewares/subscriptions");
+  accept,
+  deny,
+} = require("../controllers/subscriptions");
 
 module.exports = (router) => {
   router.get("/received", getReceived);
   router.get("/sent", getSent);
   router.put("/:wg/:path", send);
   router.delete("/:wg/:path", cancel);
-  router.put("/:id", allow);
-  router.delete("/:id", block);
+  router.put("/:id", accept);
+  router.delete("/:id", deny);
 };

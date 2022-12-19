@@ -1,4 +1,4 @@
-const { get, add, remove } = require("../middlewares/networks");
+const { get, add, remove } = require("../controllers/networks");
 
 module.exports = (router) => {
   router.get("/:from", get);

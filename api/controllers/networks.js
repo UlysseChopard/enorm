@@ -1,4 +1,4 @@
-const Networks = require("../models/networks");
+const { Networks } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -12,7 +12,7 @@ exports.get = async (req, res, next) => {
 exports.add = async (req, res, next) => {
   try {
     const network = await Networks.add(req.params.from, req.params.to);
-    res.status(201).json(network);
+    res.status(201).json({ network });
   } catch (err) {
     next(err);
   }
@@ -20,8 +20,8 @@ exports.add = async (req, res, next) => {
 
 exports.remove = async (req, res, next) => {
   try {
-    await Networks.remove(req.params.from, req.params.to);
-    res.sendStatus(204);
+    const network = await Networks.remove(req.params.from, req.params.to);
+    res.json({ network });
   } catch (err) {
     next(err);
   }

@@ -1,3 +1,5 @@
+exports.mail = require("./mail");
+
 exports.jwt = require("./jwt");
 
 exports.db = require("./db");
