@@ -2,7 +2,7 @@
   "name": "api",
   "version": "1.0.0",
   "description": "premiere app",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app",
     "dev": "nodemon -r dotenv/config app | bunyan",

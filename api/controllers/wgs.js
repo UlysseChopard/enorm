@@ -1,21 +1,83 @@
-const {
-  get,
-  create,
-  update,
-  remove,
-  addMembers,
-  removeMembers,
-  addAdmins,
-  removeAdmins,
-} = require("../middlewares/wgs");
+const { Wgs } = require("../models");
 
-module.exports = (router) => {
-  router.get("/", get);
-  router.delete("/:id/members", removeMembers);
-  router.put("/:id/members", addMembers);
-  router.delete("/:id/admins", removeAdmins);
-  router.put("/:id/admins", addAdmins);
-  router.post("/", create);
-  router.patch("/:id", update);
-  router.delete("/:id", remove);
+exports.getAll = async (_req, res, next) => {
+  try {
+    const wgs  = await Wgs.getAll();
+    res.json(wgs);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.create = async (req, res, next) => {
+  try {
+    const wg = await Wgs.create(req.wg);
+    res.status(201).json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.update = async (req, res, next) => {
+  try {
+    const wg = await Wgs.update(req.params.id, req.body.wg);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.remove = async (req, res, next) => {
+  try {
+    const wg = Wgs.remove(req.params.id);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.get = async (req, res, next) => {
+  try {
+    const wg = await Wgs.get(req.params.id);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.addMembers = async (req, res, next) => {
+  try {
+    const wg = Wgs.addMembers(req.params.id, req.body.ids);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.removeMembers = async (req, res, next) => {
+  try {
+    const wg = Wgs.removeMembers(req.params.id, req.body.ids);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.addAdmins = async (req, res, next) => {
+  try {
+    const wg = Wgs.addAdmins(req.params.id, req.body.ids);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+exports.removeAdmins = async (req, res, next) => {
+  try {
+    const wg = Wgs.removeAdmins(req.params.id, req.body.ids);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
 };

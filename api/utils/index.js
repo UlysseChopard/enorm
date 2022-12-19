@@ -1,6 +1,7 @@
-module.exports = {
-  jwt: require("./jwt"),
-  db: require("./db"),
-  log: require("./logs"),
-  crypt: require("./crypt")
-};
+exports.jwt = require("./jwt");
+
+exports.db = require("./db");
+
+exports.log = require("./log");
+
+exports.crypt = require("./crypt");
