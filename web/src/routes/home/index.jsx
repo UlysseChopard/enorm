@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { redirect, Outlet, NavLink } from "react-router-dom";
 import { authStatus } from "@/api/accounts";
