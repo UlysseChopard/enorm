@@ -38,7 +38,7 @@ const Login = () => {
           <TextField variant="filled" label={t("password")} autoComplete="current-password" fullWidth/>
           <Button variant="contained" type="submit" fullWidth>{t("submit")}</Button>
           <Button variant="text"  href="/signup" fullWidth>{t("signup")}</Button>
-          <Link href="/reset-password" fullWidth>{t("resetPassword")}</Link>
+          <Link href="/reset-password">{t("resetPassword")}</Link>
         </Stack>
       </Form>
     </Box>
