@@ -2,7 +2,6 @@ import { redirect, Form } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { login } from "@/api/accounts";
 import TextField from "@mui/material/TextField";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -35,9 +34,9 @@ const Login = () => {
       >
         <Stack spacing={2} alignItems="center" minWidth="50vw">
           <TextField variant="filled" label={t("email")} autoComplete="email" fullWidth/>
-          <TextField variant="filled" label={t("password")} autoComplete="current-password" fullWidth/>
+          <TextField variant="filled" type="password" label={t("password")} autoComplete="current-password" fullWidth/>
           <Button variant="contained" type="submit" fullWidth>{t("submit")}</Button>
-          <Button variant="text"  href="/signup" fullWidth>{t("signup")}</Button>
+          <Button variant="text" href="/signup" fullWidth>{t("signup")}</Button>
           <Link href="/reset-password">{t("resetPassword")}</Link>
         </Stack>
       </Form>
