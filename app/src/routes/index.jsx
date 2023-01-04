@@ -1,7 +1,6 @@
 import Home, { loader as homeLoader } from "@/routes/home";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
-import Signup, { action as signupAction } from "@/routes/signup";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
 import Activate, { loader as activateLoader } from "@/routes/activate";
 import Account, {
@@ -72,12 +71,6 @@ export default [
         element: <ResetPassword />,
       },
     ],
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-    errorElement: <ErrorPage />,
-    action: signupAction,
   },
   {
     path: "/logout",
