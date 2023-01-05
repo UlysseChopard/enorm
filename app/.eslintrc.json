@@ -6,7 +6,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "prettier"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -18,30 +19,7 @@
     }
   },
   "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 80
-      }
-    ],
-    "no-undef": "off",
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": 0,
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "double"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ]
+    "react/prop-types": 0
   }
 }

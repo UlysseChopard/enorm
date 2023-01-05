@@ -1,35 +1,15 @@
 {
-  "env": {
-    "node": true,
-    "commonjs": true,
-    "es2021": true
-  },
-  "extends": "eslint:recommended",
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "prettier"
+  ],
   "parserOptions": {
     "ecmaVersion": "latest"
   },
   "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 80
-      }
-    ],
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "double"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ]
+    "sort-imports": "error",
+    "sort-vars": "error",
+    "sort-keys": "error"
   }
 }
