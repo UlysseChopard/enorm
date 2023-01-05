@@ -1,13 +1,14 @@
 const express = require("express");
 const { log } = require("./utils");
-const middlewares = require("./middlewares");
+const { preMiddlewares, postMiddlewares } = require("./middlewares");
 const routes = require("./routes");
 const PORT = process.env.PORT ?? 3000;
 
 const app = express();
 
-middlewares(express, app);
+preMiddlewares(express, app);
 routes(express, app);
+postMiddlewares(express, app);
 
 app.listen(PORT, (err) => {
   if (err) return log.error(err);

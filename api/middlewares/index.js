@@ -1,13 +1,18 @@
 const compression = require("compression");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
-const { log } = require("../utils");
+const logger = require("./logger");
+const errorHandler = require("./error-handler");
 
-module.exports = (express, app) => {
+exports.preMiddlewares = (express, app) => {
   app.use(compression());
   app.use(helmet());
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(log);
+  app.use(logger);
+};
+
+exports.postMiddlewares = (_express, app) => {
+  app.use(errorHandler);
 };
