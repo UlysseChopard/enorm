@@ -1,14 +1,14 @@
-const log = require("../utils/logs");
+const log = require("./log");
 const { Pool } = require("pg");
 
 const pool = new Pool(
   process.env.DATABASE_URL
     ? {
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-          rejectUnauthorized: false,
-        },
-      }
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    }
     : null
 );
 
@@ -24,7 +24,8 @@ module.exports = {
     const client = await pool.connect();
     const query = client.query;
     const release = client.release;
-    // set a timeout of 5 seconds, after which we will log this client's last query
+    // set a timeout of 5 seconds,
+    // after which we will log this client's last query
     const timeout = setTimeout(() => {
       log.warn("A client has been checked out for more than 5 seconds!");
       log.warn(
