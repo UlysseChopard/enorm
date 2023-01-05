@@ -1,10 +1,10 @@
-import { useTranslation } from "react-i18next";
-import { redirect, Outlet, NavLink } from "react-router-dom";
-import { authStatus } from "@/api/accounts";
+import { NavLink, Outlet, redirect } from "react-router-dom";
 import SwitchLng from "@/components/SwitchLng";
+import { getSessionStatus } from "@/api/sessions";
+import { useTranslation } from "react-i18next";
 
 export async function loader() {
-  const res = await authStatus();
+  const res = await getSessionStatus();
   if (!res.ok) return redirect("/login");
 }
 

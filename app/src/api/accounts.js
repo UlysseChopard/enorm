@@ -1,31 +1,31 @@
-export function getAccount() {
+export function get() {
   return fetch("/api/accounts", { credentials: "include" });
 }
 
-export function updateAccount(id, infos) {
+export function update(id, infos) {
   return fetch(`/api/accounts/${id}`, {
-    method: "PUT",
-    credentials: "include",
     body: JSON.stringify(infos),
+    credentials: "include",
     headers: { Accept: "application/json",
-      "Content-Type": "application/json" }
+      "Content-Type": "application/json" },
+    method: "PUT",
   });
 }
 
-export function createAccount(infos) {
+export function create(infos) {
   return fetch("/api/accounts", {
-    method: "POST",
     body: JSON.stringify(infos),
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
-    }
+    },
+    method: "POST",
   });
 }
 
-export function deleteAccount(id) {
+export function close(id) {
   return fetch(`/api/accounts/${id}`, {
-    method: "DELETE",
     credentials: "include",
+    method: "DELETE",
   });
 }

@@ -1,20 +1,22 @@
-import { useState } from "react";
-import { redirect, Form } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { login, signup } from "@/api/accounts";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import { Form, redirect } from "react-router-dom";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
 import SignupDialog from "@/components/signup";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { create } from "@/api/accounts";
+import { login } from "@/api/sessions";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export async function action({ request }) {
   const formData = await request.formData();
   console.log(formData);
   const userInfos = Object.fromEntries(formData);
-  const res = userInfos?.firstname ? await signup(userInfos) : await login(userInfos);
+  if (userInfos.lastname) await create(userInfos);
+  const res = await login(userInfos);
   if (res.ok) return redirect("/");
 }
 
