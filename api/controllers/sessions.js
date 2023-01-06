@@ -5,6 +5,8 @@ const { Accounts, Sessions } = require("../models");
 exports.login = async (req, res, next) => {
   try {
     const account = await Accounts.getByEmail(req.body.email);
+    // temporary
+    account.hash = await crypt.hash(account.password);
     const isCorrectPassword = await crypt.compare(req.body.password, account.hash);
     if (!isCorrectPassword) return res.sendStatus(401);
     const uuid = uuidV4();
