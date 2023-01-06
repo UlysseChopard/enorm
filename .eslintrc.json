@@ -6,10 +6,5 @@
   ],
   "parserOptions": {
     "ecmaVersion": "latest"
-  },
-  "rules": {
-    "sort-imports": "error",
-    "sort-vars": "error",
-    "sort-keys": "error"
   }
 }
