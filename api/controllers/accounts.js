@@ -9,18 +9,27 @@ exports.get = async (req, res, next) => {
   }
 };
 
-exports.set = async (req, res, next) => {
+exports.update = async (req, res, next) => {
   try {
-    const user = await Accounts.set(req.params.id, req.body);
+    const user = await Accounts.update(req.params.id, req.body);
     res.json({ user });
   } catch (err) {
     next(err);
   }
 };
 
-exports.remove = async (req, res, next) => {
+exports.create = async (req, res, next) => {
   try {
-    const user = await Accounts.remove(req.params.id);
+    const user = await Accounts.create(req.body);
+    res.json({ user });
+  } catch (err) {
+    next(err)
+  }
+}
+
+exports.close = async (req, res, next) => {
+  try {
+    const user = await Accounts.close(req.params.id);
     res.json({ user });
   } catch (err) {
     next(err);
