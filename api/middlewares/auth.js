@@ -1,6 +1,6 @@
 const { jwt } = require("../utils");
 
-exports.isAuthenticated = ({ role, roles }) => (req, res, next) => {
+module.exports = ({ role, roles }) => (req, res, next) => {
   const token = req.cookie[jwt.key];
   if (!token) return res.sendStatus(401);
   try {

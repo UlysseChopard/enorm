@@ -8,7 +8,7 @@ exports.login = async (req, res, next) => {
     const isCorrectPassword = await crypt.compare(req.body.password, account.hash);
     if (!isCorrectPassword) return res.sendStatus(401);
     const uuid = uuidV4();
-    const session = await Sessions.setUuid(account.id, uuid);
+    const session = await Sessions.open(account.id, uuid);
     const token = jwt.sign({ uuid });
     res.cookie(jwt.key, token, { httpOnly: true, maxAge: jwt.maxAge, secure: process.env.NODE === "production" });
     res.json({ session }); 
@@ -23,3 +23,5 @@ exports.logout = async (req, res) => {
   res.cookie(jwt.key, "", { maxAge: "1" });
   res.json({ session });
 };
+
+exports.getStatus = (_req, res) => res.json({ status: "authenticated" });

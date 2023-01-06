@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { logout } from "@/api/accounts";
+import { logout } from "@/api/sessions";
 
 export async function loader() {
   try {

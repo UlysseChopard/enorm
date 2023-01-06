@@ -1,19 +1,19 @@
-export function getSessionStatus() {
-  return fetch("/api/sessions", { credentials: true });
+export function getStatus() {
+  return fetch("/api/sessions", { credentials: "include" });
 }
 
 export function login(infos) {
-  return fetch("/api/accounts/login", {
+  return fetch("/api/sessions", {
     body: JSON.stringify(infos),
     credentials: "include",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
-    method: "POST",
+    method: "PUT",
   });
 }
 
 export function logout() {
-  return fetch("/api/accounts/logout", {
+  return fetch("/api/sessions", {
     credentials: "include",
-    method: "POST",
+    method: "DELETE",
   });
 }

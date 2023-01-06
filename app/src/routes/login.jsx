@@ -12,12 +12,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export async function action({ request }) {
+  try {
   const formData = await request.formData();
   console.log(formData);
   const userInfos = Object.fromEntries(formData);
   if (userInfos.lastname) await create(userInfos);
   const res = await login(userInfos);
   if (res.ok) return redirect("/");
+  } catch (err) {
+    return null
+  }
 }
 
 
@@ -41,8 +45,8 @@ const Login = () => {
         method="post"
       >
         <Stack spacing={2} alignItems="center" width="400px">
-          <TextField variant="filled" label={t("email")} autoComplete="email" type="email" fullWidth required/>
-          <TextField variant="filled" type="password" label={t("password")} autoComplete="current-password" fullWidth required helperText={<Link href="/reset-password">{t("resetPassword")}</Link>}/>
+          <TextField name="email" variant="filled" label={t("email")} autoComplete="email" type="email" fullWidth required/>
+          <TextField name="password" variant="filled" type="password" label={t("password")} autoComplete="current-password" fullWidth required helperText={<Link href="/reset-password">{t("resetPassword")}</Link>}/>
           <Button variant="contained" type="submit" fullWidth>{t("submit")}</Button>
           <Button variant="text" onClick={() => setOpen(true)} fullWidth>{t("signup")}</Button>
         </Stack>
