@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import mainTheme from "@/themes";
 import CssBaseline from "@mui/material/CssBaseline";
 import routes from "@/routes";
+import SpinningLoader from "@/components/SpinningLoader";
 
 const router = createBrowserRouter(routes);
 const theme = createTheme(mainTheme);
@@ -19,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
     <CssBaseline />
     <ThemeProvider theme={theme}>
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<SpinningLoader />}>
         <RouterProvider router={router} />
       </Suspense>
     </ThemeProvider>
