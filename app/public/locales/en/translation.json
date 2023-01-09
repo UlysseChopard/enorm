@@ -27,11 +27,11 @@
     "title": "An error occurred",
     "subtitle": "If necessary, contact us about what happened"
   },
-  "home": {
-    "brandname": "E-norm",
-    "account": "Account",
-    "logout": "Log out",
-    "roles": "Relations"
+  "navbar": {
+    "profile": "Profile",
+    "registrations": "Registrations",
+    "community": "Community",
+    "parameters": "Parameters"
   },
   "account": {
     "firstname": "First name",
@@ -43,13 +43,4 @@
     "submit": "Modify my account",
     "successNotif": "Successfully updated"
   },
-  "roles": {
-    "connect": "Add relations",
-    "empty": "Add your first relation",
-    "declare": {
-      "label": "Add email addresses",
-      "cancel": "Cancel",
-      "submit": "Send invitations"
-    }
-  }
 }

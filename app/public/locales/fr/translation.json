@@ -30,11 +30,11 @@
     "title": "Une erreur vient d'arriver",
     "subtitle": "En cas de nécessité, veuillez contacter le service client"
   },
-  "home": {
-    "roles": "Mes relations",
-    "brandname": "E-norm",
-    "account": "Compte",
-    "logout": "Se déconnecter"
+  "navbar": {
+    "profile": "Profil",
+    "registrations": "Inscriptions",
+    "community": "Réseau",
+    "parameters": "Paramètres"
   },
   "account": {
     "firstname": "Prénom",
@@ -45,14 +45,5 @@
     "cancel": "Annuler",
     "submit": "Modifier mes informations",
     "successNotif": "Mise à jour réussie"
-  },
-  "roles": {
-    "connect": "Ajouter des relations",
-    "empty": "Ajoutez votre première relation",
-    "declare": {
-      "label": "Ajout des emails",
-      "cancel": "Annuler",
-      "submit": "Envoyer les demandes de connexion"
-    }
   }
 }
