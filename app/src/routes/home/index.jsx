@@ -1,6 +1,7 @@
 import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import { get } from "@/api/accounts";
 import LeftNavbar from "@/components/LeftNavbar";
+import Container from "@mui/material/Container";
 
 export async function loader() {
   const res = await get();
@@ -13,7 +14,9 @@ export default function Home() {
   return (
     <>
       <LeftNavbar user={user} />
-      <Outlet />
+      <Container sx={{ left: 240, position: "relative", top: 24 }} >
+        <Outlet />
+      </Container>
     </>
   );
 }

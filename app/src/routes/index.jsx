@@ -1,4 +1,5 @@
 import Home, { loader as homeLoader } from "@/routes/home";
+import Profile, { loader as profileLoader } from "@/routes/home/profile";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -10,6 +11,11 @@ export default [
     errorElement: <ErrorPage />,
     loader: homeLoader,
     children: [
+      {
+        path: "profile",
+        element: <Profile />,
+        loader: profileLoader
+      }
     ],
   },
   {
