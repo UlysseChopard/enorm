@@ -31,7 +31,7 @@
     "profile": "Profile",
     "registrations": "Registrations",
     "community": "Community",
-    "parameters": "Parameters"
+    "settings": "Settings"
   },
   "account": {
     "firstname": "First name",
@@ -42,5 +42,5 @@
     "cancel": "Cancel",
     "submit": "Modify my account",
     "successNotif": "Successfully updated"
-  },
+  }
 }

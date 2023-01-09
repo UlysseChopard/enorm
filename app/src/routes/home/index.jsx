@@ -1,18 +1,19 @@
-import { Outlet, redirect } from "react-router-dom";
-import { getStatus } from "@/api/sessions";
+import { Outlet, redirect, useLoaderData } from "react-router-dom";
+import { get } from "@/api/accounts";
 import LeftNavbar from "@/components/LeftNavbar";
 
 export async function loader() {
-  const res = await getStatus();
+  const res = await get();
   if (!res.ok) return redirect("/login");
   return res.json();
 }
 
 export default function Home() {
+  const { user } = useLoaderData();
   return (
-    <div>
-      <LeftNavbar />
+    <>
+      <LeftNavbar user={user} />
       <Outlet />
-    </div>
+    </>
   );
 }
