@@ -21,10 +21,11 @@ exports.update = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ message: "missing property" });
+    const { email, password } = req.body;
+    if (!password || !email) return res.status(400).json({ message: "missing property" });
     const hash = await crypt.hash(password);
-    const { rows: [user] } = await Accounts.create({ firstname, lastname, email, hash });
+    delete req.password;
+    const { rows: [user] } = await Accounts.create({ ...req.body, hash });
     res.json({ user });
   } catch (err) {
     next(err);

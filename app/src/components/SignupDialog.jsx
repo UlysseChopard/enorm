@@ -1,4 +1,4 @@
-import { redirect, Form } from "react-router-dom";
+import { Form } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -8,15 +8,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
-export async function action({ request }) {
-  const formData = await request.formData();
-  const userInfos = Object.fromEntries(formData);
-  const res = await signup(userInfos);
-  if (res.ok) return redirect("/activate");
-}
-
-const Signup = ({ onClose, open = true }) => {
+const SignupDialog = ({ onClose, open = true }) => {
   const { t } = useTranslation(null, { keyPrefix: "signup" });
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
@@ -55,6 +53,17 @@ const Signup = ({ onClose, open = true }) => {
               autoComplete="new-password"
               fullWidth
             />
+            <FormControl>
+             <FormLabel id="gender">{t("gender")}</FormLabel> 
+              <RadioGroup
+                aria-labelledby="gender"
+                defaultValue="male"
+                name="gender"
+              >
+                <FormControlLabel value="male" control={<Radio />} label={t("male")} />
+                <FormControlLabel value="female" control={<Radio />} label={t("female")} />
+              </RadioGroup>
+            </FormControl>
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -66,4 +75,4 @@ const Signup = ({ onClose, open = true }) => {
   );
 };
 
-export default Signup;
+export default SignupDialog;
