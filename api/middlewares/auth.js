@@ -1,12 +1,12 @@
 const { jwt } = require("../utils");
 
-module.exports = (roles) => (req, res, next) => {
+module.exports = (req, res, next) => {
   const token = req.cookies[jwt.key];
-  if (!token) return res.sendStatus(401);
+  if (!token) return next();
   try {
     const decoded = jwt.verify(token); 
-    if (!decoded) return res.sendStatus(401);
-    if (roles && !roles.includes(decoded.role)) return res.sendStatus(403);
+    if (!decoded) return next();
+    res.locals.userId = decoded.uuid;
     next();
   } catch (err) {
     next(err);
