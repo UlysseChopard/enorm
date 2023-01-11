@@ -1,23 +1,23 @@
 {
   "signup": {
+    "cancel": "Cancel",
     "firstname": "First name",
     "lastname": "Last name",
     "email": "Email adress",
     "password": "Password",
     "submit": "Sign up",
     "title": "Account creation",
+    "text": "Please answer these questions to open your account",
     "login": "Already ready have an account ?"
   },
   "login": {
+    "presentation": "Your time, our money",
     "brandname": "E-norm",
     "email": "Email adress",
     "password": "Password",
     "submit": "Log in",
     "resetPassword": "Forgot your password ?",
     "signup": "Sign up"
-  },
-  "logout": {
-    "msg": "Logging out..."
   },
   "activate": {
     "title": "Account activation",
@@ -42,5 +42,13 @@
     "cancel": "Cancel",
     "submit": "Modify my account",
     "successNotif": "Successfully updated"
+  },
+  "registrations": {
+    "member": "Member",
+    "reference": "Reference",
+    "label": "Label",
+    "since": "Since",
+    "expiration": "Expiration",
+    "status": "Status"
   }
 }

@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <LeftNavbar user={user} />
-      <Container sx={{ left: 240, position: "relative", top: 24 }} >
+      <Container sx={{ left: 240, position: "fixed", top: 24 }} >
         <Outlet />
       </Container>
     </>

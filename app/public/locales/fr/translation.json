@@ -19,9 +19,6 @@
     "resetPassword": "Mot de passe oublié ?",
     "signup": "Créer un compte"
   },
-  "logout": {
-    "msg": "Déconnexion..."
-  },
   "activate": {
     "title": "Activation du compte",
     "instructions": "Veuillez vérifier votre boîte mail et cliquer sur le lien que nous venons de vous envoyer"
@@ -45,5 +42,13 @@
     "cancel": "Annuler",
     "submit": "Modifier mes informations",
     "successNotif": "Mise à jour réussie"
+  },
+  "registrations": {
+    "member": "Membre",
+    "reference": "Réference",
+    "label": "Intitulé",
+    "since": "Début",
+    "expiration": "Fin",
+    "status": "État"
   }
 }
