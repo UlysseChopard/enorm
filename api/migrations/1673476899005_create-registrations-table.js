@@ -7,8 +7,10 @@ exports.up = pgm => {
 
   pgm.createTable("registrations", {
     id: "id",
-    tc: "text",
-    wg: "text",
+    reference: {
+      type: "text",
+      notNull: true
+    },
     label: "text",
     start: "date",
     end: "date",
