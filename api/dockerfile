@@ -6,3 +6,26 @@ RUN npm i
 COPY . .
 EXPOSE 3000
 CMD [ "node", "server" ]
+FROM node:lts-alpine
+
+ENV NODE_ENV=production
+
+RUN apk add dumb-init
+
+RUN mkdir -p /usr/src/app/node_modules && chown -R node:node /usr/src/app
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json ./
+
+RUN npm ci --production
+
+COPY --chown=node:node . .
+
+EXPOSE 3000
+
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
+
+CMD [ "node", "app" ]
+
+USER node
