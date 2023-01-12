@@ -3,9 +3,8 @@ const { Accounts } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
-    console.log(res.locals);
     const { rows: [user] } = await Accounts.getById(res.locals.userId);
-    if (!user) return res.json({ message: "user not found" });
+    if (!user) return res.status(401).json({ message: "user not found" });
     res.json({ user });
   } catch (err) {
     next(err);
