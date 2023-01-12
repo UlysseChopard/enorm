@@ -3,7 +3,7 @@
 exports.shorthands = undefined;
 
 exports.up = pgm => {
-  pgm.createType("status", ["idle", "requested", "delisted", "approved", "denied"]);
+  pgm.createType("status", ["canceled", "requested", "delisted", "approved", "denied"]);
 
   pgm.createTable("registrations", {
     id: "id",
@@ -16,10 +16,10 @@ exports.up = pgm => {
     end: "date",
     status: {
       type: "status",
-      default: "idle"
+      default: "requested"
     },
     user_id: {
-      type: "id",
+      type: "userId",
       references: "accounts"
     }
   });
