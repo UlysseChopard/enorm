@@ -1,12 +1,13 @@
 # e-norm
 
-Mock-up d'une application de gestion. Dans un premier temps : gestion d'une BDD.
+## Description
 
-## Première étape : création d'un compte par une interface web
+Management app for experts subscriptions in working groups
 
-* BDD : `Postgres`
-* API : `Node.js`
-  * BDD-driver : `pg`
-  * Logging : `Bunyan`
-  * Authentification :  `Passport`
-* Web app : `React` avec `Next.js`
+**Under development**
+
+## Technical stack
+
+* Database: `Postgres`
+* API Server: `Node.js`
+* Web application: `React`
