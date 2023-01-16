@@ -1,19 +1,19 @@
 import { useTranslation } from "react-i18next";
 import Drawer from "@mui/material/Drawer";
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import PersonIcon from "@mui/icons-material/Person2";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import HubIcon from '@mui/icons-material/Hub';
-import SettingsIcon from '@mui/icons-material/Settings';
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import HubIcon from "@mui/icons-material/Hub";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const WIDTH = 240;
 

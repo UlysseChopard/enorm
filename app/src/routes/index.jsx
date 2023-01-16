@@ -7,8 +7,9 @@ import Logout, { loader as logoutLoader } from "@/routes/logout";
 
 export default [
   {
-    path: "/*",
+    path: "/",
     element: <Home />,
+    shouldRevalidate: () => false,
     errorElement: <ErrorPage />,
     loader: homeLoader,
     children: [

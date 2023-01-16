@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import { get } from "@/api/accounts";
 import LeftNavbar from "@/components/LeftNavbar";
@@ -16,9 +15,7 @@ export default function Home() {
     <>
       <LeftNavbar user={account} />
       <Container sx={{ left: 240, position: "absolute", top: 24, right: 0, width: "initial" }} >
-        <Suspense fallback={<div />}>
-          <Outlet />
-        </Suspense>
+        <Outlet />
       </Container>
     </>
   );
