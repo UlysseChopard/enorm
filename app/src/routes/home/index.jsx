@@ -10,10 +10,10 @@ export async function loader() {
 }
 
 export default function Home() {
-  const { user } = useLoaderData();
+  const { account } = useLoaderData();
   return (
     <>
-      <LeftNavbar user={user} />
+      <LeftNavbar user={account} />
       <Container sx={{ left: 240, position: "fixed", top: 24 }} >
         <Outlet />
       </Container>

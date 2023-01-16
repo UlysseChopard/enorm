@@ -2,8 +2,8 @@ export function get() {
   return fetch("/api/accounts", { credentials: "include" });
 }
 
-export function update(id, infos) {
-  return fetch(`/api/accounts/${id}`, {
+export function update(infos) {
+  return fetch("/api/accounts", {
     body: JSON.stringify(infos),
     credentials: "include",
     headers: { Accept: "application/json",
@@ -23,8 +23,8 @@ export function create(infos) {
   });
 }
 
-export function close(id) {
-  return fetch(`/api/accounts/${id}`, {
+export function close() {
+  return fetch("/api/accounts", {
     credentials: "include",
     method: "DELETE",
   });
