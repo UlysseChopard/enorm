@@ -7,7 +7,7 @@ import Logout, { loader as logoutLoader } from "@/routes/logout";
 
 export default [
   {
-    path: "/",
+    path: "/*",
     element: <Home />,
     errorElement: <ErrorPage />,
     loader: homeLoader,

@@ -22,6 +22,13 @@ export async function action({ request }) {
   return res.json();
 }
 
+const DefaultInput = ({ label, name, defaultValue }) => (
+  <>
+    <FormLabel>{label}</FormLabel>
+    <TextField name={name} variant="filled" defaultValue={defaultValue} />
+  </>
+);
+
 const CATEGORIES = [
   {
     name: "id",
@@ -59,7 +66,7 @@ const CATEGORIES = [
         name: "email"
       },
       {
-        name: "cell",
+        name: "cellphone",
       },
       {
         name: "phone",
@@ -80,10 +87,9 @@ export default function Profile() {
           <Form method="PUT">
             <Typography>{t(name)}</Typography>
             <Stack spacing={2}>
-            {fields.map(({ name, Element = () => <TextField variant="filled" /> }) => (
+            {fields.map(({ name, Element }) => (
               <FormControl key={name}>
-                <FormLabel>{t(name)}</FormLabel>
-              <Element variant="filled" label={t(name)} name={name} defaultValue={account[name]} />
+                {Element ? <Element name={name} defaultValue={account[name]} /> : <DefaultInput label={t(name)} name={name} defaultValue={account[name]} />}
               </FormControl>
              ))}
             </Stack>
