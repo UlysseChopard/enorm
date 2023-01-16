@@ -1,8 +1,10 @@
-import { Form, redirect } from "react-router-dom";
+import { useEffect } from "react";
+import { Form, redirect, useActionData } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import SignupDialog from "@/components/SignupDialog";
+import Snackbar from "@/components/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -12,22 +14,24 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export async function action({ request }) {
-  try {
   const formData = await request.formData();
-  console.log(formData);
   const userInfos = Object.fromEntries(formData);
   if (userInfos.lastname) await create(userInfos);
   const res = await login(userInfos);
   if (res.ok) return redirect("/");
-  } catch (err) {
-    return null
-  }
+  return "failed";
 }
 
 
 const Login = () => {
+  const status = useActionData();
   const [open, setOpen] = useState(false);
+  const [failure, setFailure] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "login" });
+  useEffect(() => {
+    if (status === "failed") setFailure(true);
+    setTimeout(() => setFailure(false), 2000);
+  });
 
   return (
     <Box
@@ -52,6 +56,7 @@ const Login = () => {
         </Stack>
       </Form>
       <SignupDialog open={open} onClose={() => setOpen(false)} />
+      <Snackbar severity="warning" msg="Could not log in" open={failure} />
     </Box>
   );
 };

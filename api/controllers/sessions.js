@@ -4,6 +4,7 @@ const { Accounts } = require("../models");
 exports.login = async (req, res, next) => {
   try {
     const { rows: [account] } = await Accounts.getByEmail(req.body.email);
+    if (!account) res.sendStatus(401);
     const isCorrectPassword = await crypt.compare(req.body.password, account.hash);
     if (!isCorrectPassword) return res.sendStatus(401);
     const token = jwt.sign({ uuid: account.id });
