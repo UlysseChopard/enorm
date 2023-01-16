@@ -50,5 +50,23 @@
     "since": "Début",
     "expiration": "Fin",
     "status": "État"
+  },
+  "genderRadio": {
+    "male": "Monsieur",
+    "female": "Madame",
+    "gender": "Civilité"
+  },
+  "profile": {
+    "id": "Identité",
+    "firstname": "Prénom",
+    "lastname": "Nom de famille",
+    "company": "Établissement",
+    "name": "Nom",
+    "address": "Adresse",
+    "sponsor": "Sponsor",
+    "contact": "Contact",
+    "email": "Adresse mail",
+    "cell": "Téléphone portable",
+    "phone": "Téléphone fixe"
   }
 }

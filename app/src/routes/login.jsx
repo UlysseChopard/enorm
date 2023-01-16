@@ -18,8 +18,8 @@ export async function action({ request }) {
   const userInfos = Object.fromEntries(formData);
   if (userInfos.lastname) await create(userInfos);
   const res = await login(userInfos);
-  if (res.ok) return redirect("/");
-  return "failed";
+  if (!res.ok) return res.status;
+  return redirect("/");
 }
 
 
@@ -29,10 +29,9 @@ const Login = () => {
   const [failure, setFailure] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "login" });
   useEffect(() => {
-    if (status === "failed") setFailure(true);
+    if (status === 401) setFailure(true);
     setTimeout(() => setFailure(false), 2000);
   });
-
   return (
     <Box
       display="flex"

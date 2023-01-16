@@ -8,11 +8,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import GenderRadioGroup from "@/components/GenderRadioGroup";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 const SignupDialog = ({ onClose, open = true }) => {
   const { t } = useTranslation(null, { keyPrefix: "signup" });
@@ -53,17 +54,7 @@ const SignupDialog = ({ onClose, open = true }) => {
               autoComplete="new-password"
               fullWidth
             />
-            <FormControl>
-             <FormLabel id="gender">{t("gender")}</FormLabel> 
-              <RadioGroup
-                aria-labelledby="gender"
-                defaultValue="male"
-                name="gender"
-              >
-                <FormControlLabel value="male" control={<Radio />} label={t("male")} />
-                <FormControlLabel value="female" control={<Radio />} label={t("female")} />
-              </RadioGroup>
-            </FormControl>
+            <GenderRadioGroup />
           </Stack>
         </DialogContent>
         <DialogActions>

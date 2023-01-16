@@ -50,5 +50,23 @@
     "since": "Since",
     "expiration": "Expiration",
     "status": "Status"
+  },
+  "genderRadio": {
+    "male": "Male",
+    "female": "Female",
+    "gender": "Gender"
+  },
+  "profile": {
+    "id": "Identity",
+    "firstname": "First name",
+    "lastname": "Last name",
+    "company": "Company",
+    "name": "Name",
+    "address": "Address",
+    "sponsor": "Sponsor",
+    "contact": "Contact",
+    "email": "Email address",
+    "cell": "Cell phone",
+    "phone": "Phone"
   }
 }

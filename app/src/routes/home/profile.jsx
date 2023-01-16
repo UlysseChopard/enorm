@@ -5,28 +5,9 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import GenderRadioGroup from "@/components/GenderRadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-
-const GenderRadioGroup = () => {
-  return (
-    <FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-buttons-group"
-      >
-        <FormControlLabel value="female" control={<Radio />} label="Female" />
-        <FormControlLabel value="male" control={<Radio />} label="Male" />
-      </RadioGroup>
-    </FormControl>
-   );
-};
 
 export async function loader() {
   const res = await get();
@@ -100,7 +81,10 @@ export default function Profile() {
             <Typography>{t(name)}</Typography>
             <Stack spacing={2}>
             {fields.map(({ name, Element = () => <TextField variant="filled" /> }) => (
-              <Element key={name} variant="filled" label={t(name)} name={name} defaultValue={account[name]} />
+              <FormControl key={name}>
+                <FormLabel>{t(name)}</FormLabel>
+              <Element variant="filled" label={t(name)} name={name} defaultValue={account[name]} />
+              </FormControl>
              ))}
             </Stack>
           </Form>
