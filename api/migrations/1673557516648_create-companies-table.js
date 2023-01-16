@@ -12,7 +12,7 @@ exports.up = pgm => {
     company: {
       primaryKey: false,
       references: "companies",
-      type: "id"
+      type: "integer"
     }
   });
 };
