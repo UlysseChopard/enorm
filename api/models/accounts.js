@@ -1,6 +1,6 @@
 const { db  } = require("../utils");
 
-const SAFE_DATA  = "firstname, lastname, gender, email, cell, phone";
+const SAFE_DATA  = "firstname, lastname, gender, email, cellphone, phone";
 
 exports.getByEmail = email => db.query("SELECT * FROM accounts WHERE email = $1", [email]);
 
