@@ -6,8 +6,10 @@ export function update(infos) {
   return fetch("/api/accounts", {
     body: JSON.stringify(infos),
     credentials: "include",
-    headers: { Accept: "application/json",
-      "Content-Type": "application/json" },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
     method: "PUT",
   });
 }

@@ -1,6 +1,6 @@
 import Home, { loader as homeLoader } from "@/routes/home";
 import Registrations, { loader as registrationsLoader } from "@/routes/home/registrations";
-import Profile, { loader as profileLoader } from "@/routes/home/profile";
+import Profile, { loader as profileLoader, action as profileAction } from "@/routes/home/profile";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -16,7 +16,8 @@ export default [
       {
         path: "profile",
         element: <Profile />,
-        loader: profileLoader
+        loader: profileLoader,
+        action: profileAction
       },
       {
         path: "registrations",

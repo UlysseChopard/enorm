@@ -1,5 +1,6 @@
+import { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, useActionData, Form } from "react-router-dom";
+import { useLoaderData, useActionData, Form, useSubmit } from "react-router-dom";
 import { get, update } from "@/api/accounts";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -8,6 +9,9 @@ import TextField from "@mui/material/TextField";
 import GenderRadioGroup from "@/components/GenderRadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
+import Snackbar from "@mui/material/Snackbar";
 
 export async function loader() {
   const res = await get();
@@ -17,15 +21,16 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const res = update(formData);
+  console.log(formData);
+  const res = await update(formData);
   if (!res.ok) return res.status;
   return res.json();
 }
 
-const DefaultInput = ({ label, name, defaultValue }) => (
+const DefaultInput = ({ label, name, defaultValue, form }) => (
   <>
-    <FormLabel>{label}</FormLabel>
-    <TextField name={name} variant="filled" defaultValue={defaultValue} />
+    <FormLabel htmlFor={name} >{label}</FormLabel>
+    <TextField id={name} name={name} variant="filled" defaultValue={defaultValue} form={form} />
   </>
 );
 
@@ -77,14 +82,24 @@ const CATEGORIES = [
 
 export default function Profile() {
   const { account } = useLoaderData();
-  // const res = useActionData();
+  const res = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "profile" });
-  console.log(account);
+  const [message, setMessage] = useState("");
+  const submitRef = useRef();
+  const submit = useSubmit();
+
+  useEffect(() => {
+    if (!res) return;
+    if (!res.account) setMessage(t("error"));
+    else setMessage(t("success"));
+    setTimeout(() => setMessage(""), 3000);
+  }, [res, t]);
+
   return (
     <Stack spacing={2}>
-      {CATEGORIES.map(({ name, fields }) => (
-        <Paper variant="outlined" key={name}>
-          <Form method="PUT">
+      <Form method="post" id="profile-form" >
+        {CATEGORIES.map(({ name, fields }) => (
+          <Paper variant="outlined" key={name} sx={{ padding: 2, marginY: 2 }} >
             <Typography>{t(name)}</Typography>
             <Stack spacing={2}>
             {fields.map(({ name, Element }) => (
@@ -93,9 +108,11 @@ export default function Profile() {
               </FormControl>
              ))}
             </Stack>
-          </Form>
-        </Paper>
-      ))}
+          </Paper>
+        ))}
+        <Button variant="contained" endIcon={<SendIcon />} type="submit">{t("submit")}</Button>
+      </Form>
+      <Snackbar open={!!message} autoHideDuration={800} message={message} onClose={() => setMessage("")} action={<Button onClick={() => submit(submitRef.current)}>{t("retry")}</Button>} />
     </Stack>
-);
+  );
 }
