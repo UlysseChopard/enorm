@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HubIcon from "@mui/icons-material/Hub";
+import ProfileMenu from "@/components/ProfileMenu";
 
 const WIDTH = 240;
 
@@ -64,6 +65,9 @@ const LeftNavbar = ({ user }) => {
             </ListItemIcon>
             <ListItemText primary={`${user?.firstname ?? ""} ${user.lastname ?? ""}`} />
           </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ProfileMenu avatar={`${user.firstname.charAt(0)}${user.lastname.charAt(0)}`} name={`${user?.firstname ?? ""} ${user.lastname ?? ""}`} />
         </ListItem>
       </List>
     </Drawer>);
