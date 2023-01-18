@@ -67,6 +67,7 @@
     "contact": "Contact",
     "email": "Adresse mail",
     "cellphone": "Téléphone portable",
-    "phone": "Téléphone fixe"
+    "phone": "Téléphone fixe",
+    "submit": "Soumettre"
   }
 }

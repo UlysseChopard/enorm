@@ -1,5 +1,5 @@
 import Home, { loader as homeLoader } from "@/routes/home";
-import Registrations, { loader as registrationsLoader } from "@/routes/home/registrations";
+import Dashboard, { loader as dashboardLoader } from "@/routes/home/dashboard";
 import Profile, { loader as profileLoader, action as profileAction } from "@/routes/home/profile";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
@@ -20,16 +20,13 @@ export default [
         action: profileAction
       },
       {
-        path: "registrations",
-        element: <Registrations />,
-        loader: registrationsLoader
+        element: <Dashboard />,
+        loader: dashboardLoader,
+        index: true
       },
       {
         path: "community"
       },
-      {
-        path: "settings"
-      }
     ],
   },
   {

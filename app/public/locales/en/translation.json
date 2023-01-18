@@ -67,6 +67,7 @@
     "contact": "Contact",
     "email": "Email address",
     "cellphone": "Cell phone",
-    "phone": "Phone"
+    "phone": "Phone",
+    "submit": "Submit"
   }
 }
