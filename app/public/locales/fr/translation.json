@@ -68,6 +68,17 @@
     "email": "Adresse mail",
     "cellphone": "Téléphone portable",
     "phone": "Téléphone fixe",
-    "submit": "Soumettre"
+    "submit": "Soumettre",
+    "gender": "Civilité",
+    "male": "Homme",
+    "female": "Femme",
+    "password": "Mot de passe",
+    "newPassword": "Nouveau",
+    "oldPassword": "Ancien"
+  },
+  "profileMenu": {
+    "profile": "Compte",
+    "settings": "Paramètres",
+    "logout": "Déconnection"
   }
 }

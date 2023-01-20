@@ -68,6 +68,17 @@
     "email": "Email address",
     "cellphone": "Cell phone",
     "phone": "Phone",
-    "submit": "Submit"
+    "submit": "Submit",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "password": "Password",
+    "newPassword": "New",
+    "oldPassword": "Previous"
+  },
+  "profileMenu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out"
   }
 }

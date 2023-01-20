@@ -6,12 +6,11 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import GenderRadioGroup from "@/components/GenderRadioGroup";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Snackbar from "@mui/material/Snackbar";
+import MenuItem from "@mui/material/MenuItem";
+import Grid from "@mui/material/Unstable_Grid2";
 
 export async function loader() {
   const res = await get();
@@ -21,18 +20,11 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  console.log(formData);
-  const res = await update(formData);
+  const objData = Object.fromEntries(formData);
+  const res = await update(objData);
   if (!res.ok) return res.status;
   return res.json();
 }
-
-const DefaultInput = ({ label, name, defaultValue, form }) => (
-  <>
-    <FormLabel htmlFor={name} >{label}</FormLabel>
-    <TextField id={name} name={name} variant="filled" defaultValue={defaultValue} form={form} />
-  </>
-);
 
 const CATEGORIES = [
   {
@@ -40,27 +32,34 @@ const CATEGORIES = [
     fields: [
       {
         name: "firstname",
+        required: true
       },
       {
         name: "lastname",
+        required: true
       },
       {
         name: "gender",
-        Element: () => <GenderRadioGroup />
-      }
+        select: true,
+        options: ["male", "female"]
+      },
     ]
   },
   {
     name: "company",
     fields: [
       {
-        name: "name"
+        name: "name",
+        required: true,
+        disabled: true
       },
       {
-        name: "address"
+        name: "address",
+        disabled: true
       },
       {
-        name: "sponsor"
+        name: "sponsor",
+        disabled: true
       }
     ]
   },
@@ -68,13 +67,28 @@ const CATEGORIES = [
     name: "contact",
     fields: [
       {
-        name: "email"
+        name: "email",
+        required: true,
+        type: "email"
       },
       {
         name: "cellphone",
       },
       {
         name: "phone",
+      }
+    ]
+  },
+  {
+    name: "password",
+    fields: [
+      {
+        name: "oldPassword",
+        type: "password"
+      },
+      {
+        name: "newPassword",
+        type: "password"
       }
     ]
   }
@@ -85,8 +99,6 @@ export default function Profile() {
   const res = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "profile" });
   const [message, setMessage] = useState("");
-  const submitRef = useRef();
-  const submit = useSubmit();
 
   useEffect(() => {
     if (!res) return;
@@ -96,23 +108,29 @@ export default function Profile() {
   }, [res, t]);
 
   return (
-    <Stack spacing={2}>
-      <Form method="post" id="profile-form" >
+    <Form method="post" autoComplete>
+      <Grid container spacing={2}>
         {CATEGORIES.map(({ name, fields }) => (
-          <Paper variant="outlined" key={name} sx={{ padding: 2, marginY: 2 }} >
-            <Typography>{t(name)}</Typography>
-            <Stack spacing={2}>
-            {fields.map(({ name, Element }) => (
-              <FormControl key={name}>
-                {Element ? <Element name={name} defaultValue={account[name]} /> : <DefaultInput label={t(name)} name={name} defaultValue={account[name]} />}
-              </FormControl>
-             ))}
-            </Stack>
-          </Paper>
+          <Grid xs={6} key={name}>
+            <Paper variant="outlined" sx={{ padding: 2, marginY: 2 }} >
+              <Typography variant="h5" gutterBottom>{t(name)}</Typography>
+              <Stack spacing={2}>
+              {fields.map(({ name, required, disabled, type, autoComplete, select, options }) => 
+                  <TextField key={name} id={name} name={name} variant="filled" defaultValue={account[name]} label={t(name)} required={required} disabled={disabled} type={type} autoComplete={autoComplete} select={select}>{options && options.map(option => (
+                    <MenuItem key={option} value={option}>
+                      {t(option)}
+                    </MenuItem>
+                  ))}</TextField>
+               )}
+              </Stack>
+            </Paper>
+          </Grid>
         ))}
-        <Button variant="contained" endIcon={<SendIcon />} type="submit">{t("submit")}</Button>
-      </Form>
-      <Snackbar open={!!message} autoHideDuration={800} message={message} onClose={() => setMessage("")} action={<Button onClick={() => submit(submitRef.current)}>{t("retry")}</Button>} />
-    </Stack>
+        <Grid xsOffset="auto">
+          <Button variant="contained" endIcon={<SendIcon />} type="submit">{t("submit")}</Button>
+        </Grid>
+      </Grid>
+      <Snackbar open={!!message} autoHideDuration={4000} message={message} onClose={() => setMessage("")} />
+    </Form>
   );
 }
