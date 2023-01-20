@@ -11,6 +11,11 @@ LinkBehaviour.displayName = "LinkBehaviour";
 
 export default createTheme({
   components: {
+    MuiMenuItem: {
+      defaultProps: {
+        component: LinkBehaviour
+      }
+    },
     MuiLink: {
       defaultProps: {
         component: LinkBehaviour
