@@ -18,10 +18,11 @@ export async function loader() {
   return res.json();
 }
 
-export async function action({ request }) {
+export async function action({ params, request }) {
   const formData = await request.formData();
-  if (formData.has("newPassword")) {
+  if (params.property === "password") {
     if (!formData.has("oldPassword")) return { message: "Missing previous password" };
+    if (!formData.has("newPassword")) return { message: "Missing new pasword" };
     const res = await updatePassword({ oldPassword: formData.get("oldPassword"), newPassword: formData.get("newPassword") });
     if (!res.ok) return res.status;
     return res.json();
@@ -137,7 +138,7 @@ export default function Profile() {
       <Grid container spacing={2}>
         <SubForm name={COMPANY.name} fields={COMPANY.fields} account={account} t={t} xs={12} />
       </Grid>
-      <Form method="post" autoComplete>
+      <Form method="post">
         <Grid container spacing={2}>
           {PROFILE.map(({ name, fields }) => <SubForm key={name} name={name} fields={fields} account={account} t={t} xs={6} />)}
           <Grid xsOffset="auto">

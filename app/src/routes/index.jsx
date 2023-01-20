@@ -14,7 +14,7 @@ export default [
     loader: homeLoader,
     children: [
       {
-        path: "profile",
+        path: "profile/:property?",
         element: <Profile />,
         loader: profileLoader,
         action: profileAction
