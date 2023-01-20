@@ -32,7 +32,7 @@ export async function action({ request }) {
   return res.json();
 }
 
-const CATEGORIES = [
+const PROFILE = [
   {
     name: "id",
     fields: [
@@ -52,24 +52,6 @@ const CATEGORIES = [
     ]
   },
   {
-    name: "company",
-    fields: [
-      {
-        name: "name",
-        required: true,
-        disabled: true
-      },
-      {
-        name: "address",
-        disabled: true
-      },
-      {
-        name: "sponsor",
-        disabled: true
-      }
-    ]
-  },
-  {
     name: "contact",
     fields: [
       {
@@ -85,20 +67,57 @@ const CATEGORIES = [
       }
     ]
   },
-  {
-    name: "password",
-    fields: [
-      {
-        name: "oldPassword",
-        type: "password"
-      },
-      {
-        name: "newPassword",
-        type: "password"
-      }
-    ]
-  }
 ];
+
+const PASSWORD = {
+  name: "password",
+  fields: [
+    {
+      name: "oldPassword",
+      type: "password"
+    },
+    {
+      name: "newPassword",
+      type: "password"
+    }
+  ]
+};
+
+const COMPANY = {
+  name: "company",
+  fields: [
+    {
+      name: "name",
+      required: true,
+      disabled: true
+    },
+    {
+      name: "address",
+      disabled: true
+    },
+    {
+      name: "sponsor",
+      disabled: true
+    }
+  ]
+};
+
+const SubForm = ({ name, fields, account, t, xs }) => (
+  <Grid xs={xs}>
+    <Paper variant="outlined" sx={{ padding: 2, marginY: 2 }} >
+      <Typography variant="h5" gutterBottom>{t(name)}</Typography>
+      <Stack spacing={2}>
+      {fields.map(({ name, required, disabled, type, autoComplete, select, options }) => 
+          <TextField key={name} id={name} name={name} variant="filled" defaultValue={account[name]} label={t(name)} required={required} disabled={disabled} type={type} autoComplete={autoComplete} select={select}>{options && options.map(option => (
+            <MenuItem key={option} value={option}>
+              {t(option)}
+            </MenuItem>
+          ))}</TextField>
+       )}
+      </Stack>
+    </Paper>
+  </Grid>
+);
 
 export default function Profile() {
   const { account } = useLoaderData();
@@ -114,29 +133,27 @@ export default function Profile() {
   }, [res, t]);
 
   return (
-    <Form method="post" autoComplete>
+    <>
       <Grid container spacing={2}>
-        {CATEGORIES.map(({ name, fields }) => (
-          <Grid xs={6} key={name}>
-            <Paper variant="outlined" sx={{ padding: 2, marginY: 2 }} >
-              <Typography variant="h5" gutterBottom>{t(name)}</Typography>
-              <Stack spacing={2}>
-              {fields.map(({ name, required, disabled, type, autoComplete, select, options }) => 
-                  <TextField key={name} id={name} name={name} variant="filled" defaultValue={account[name]} label={t(name)} required={required} disabled={disabled} type={type} autoComplete={autoComplete} select={select}>{options && options.map(option => (
-                    <MenuItem key={option} value={option}>
-                      {t(option)}
-                    </MenuItem>
-                  ))}</TextField>
-               )}
-              </Stack>
-            </Paper>
-          </Grid>
-        ))}
-        <Grid xsOffset="auto">
-          <Button variant="contained" endIcon={<SendIcon />} type="submit">{t("submit")}</Button>
-        </Grid>
+        <SubForm name={COMPANY.name} fields={COMPANY.fields} account={account} t={t} xs={12} />
       </Grid>
+      <Form method="post" autoComplete>
+        <Grid container spacing={2}>
+          {PROFILE.map(({ name, fields }) => <SubForm key={name} name={name} fields={fields} account={account} t={t} xs={6} />)}
+          <Grid xsOffset="auto">
+            <Button variant="contained" endIcon={<SendIcon />} type="submit">{t("submit")}</Button>
+          </Grid>
+        </Grid>
+      </Form>
+      <Form method="post" action="/profile/password">
+        <Grid container spacing={2}>
+            <SubForm name={PASSWORD.name} fields={PASSWORD.fields} account={account} t={t} xs={12} />
+            <Grid xsOffset="auto">
+              <Button variant="contained" endIcon={<SendIcon />} type="submit">{t("submit")}</Button>
+            </Grid>
+          </Grid>
+      </Form>
       <Snackbar open={!!message} autoHideDuration={4000} message={message} onClose={() => setMessage("")} />
-    </Form>
+    </>
   );
 }
