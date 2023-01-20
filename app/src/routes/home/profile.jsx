@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, useActionData, Form, useSubmit } from "react-router-dom";
-import { get, update } from "@/api/accounts";
+import { useLoaderData, useActionData, Form } from "react-router-dom";
+import { get, update, updatePassword } from "@/api/accounts";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -20,6 +20,12 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
+  if (formData.has("newPassword")) {
+    if (!formData.has("oldPassword")) return { message: "Missing previous password" };
+    const res = await updatePassword({ oldPassword: formData.get("oldPassword"), newPassword: formData.get("newPassword") });
+    if (!res.ok) return res.status;
+    return res.json();
+  }
   const objData = Object.fromEntries(formData);
   const res = await update(objData);
   if (!res.ok) return res.status;

@@ -14,6 +14,18 @@ export function update(infos) {
   });
 }
 
+export function updatePassword(infos) {
+  return fetch("/api/accounts/password", {
+    body: JSON.stringify(infos),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    method: "PATCH"
+  });
+}
+
 export function create(infos) {
   return fetch("/api/accounts", {
     body: JSON.stringify(infos),
