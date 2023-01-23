@@ -8,12 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import GenderRadioGroup from "@/components/GenderRadioGroup";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import MenuItem from "@mui/material/MenuItem";
 
 const SignupDialog = ({ onClose, open = true }) => {
   const { t } = useTranslation(null, { keyPrefix: "signup" });
@@ -54,12 +49,22 @@ const SignupDialog = ({ onClose, open = true }) => {
               autoComplete="new-password"
               fullWidth
             />
-            <GenderRadioGroup />
+            <TextField
+              required
+              label={t("gender")}
+              name="gender"
+              autoComplete="sex"
+              select
+              fullWidth
+            >
+              <MenuItem value="male">{t("male")}</MenuItem>
+              <MenuItem value="female">{t("female")}</MenuItem>
+            </TextField>
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>{t("cancel")}</Button>
-          <Button type="submit">{t("submit")}</Button>
+          <Button variant="contained" type="submit">{t("submit")}</Button>
         </DialogActions>
       </Form>
     </Dialog>

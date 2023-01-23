@@ -1,5 +1,8 @@
 {
   "signup": {
+    "male": "Male",
+    "female": "Female",
+    "gender": "Gender",
     "cancel": "Cancel",
     "firstname": "First name",
     "lastname": "Last name",
@@ -50,11 +53,6 @@
     "since": "Since",
     "expiration": "Expiration",
     "status": "Status"
-  },
-  "genderRadio": {
-    "male": "Male",
-    "female": "Female",
-    "gender": "Gender"
   },
   "profile": {
     "id": "Identity",

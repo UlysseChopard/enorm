@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Form, redirect, useActionData } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -28,10 +27,10 @@ const Login = () => {
   const [open, setOpen] = useState(false);
   const [failure, setFailure] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "login" });
-  useEffect(() => {
-    if (status === 401) setFailure(true);
+  if (status === 401) {
+    setFailure(true);
     setTimeout(() => setFailure(false), 2000);
-  });
+  }
   return (
     <Box
       display="flex"

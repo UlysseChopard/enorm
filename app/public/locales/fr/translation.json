@@ -1,5 +1,8 @@
 {
   "signup": {
+    "male": "Monsieur",
+    "female": "Madame",
+    "gender": "Civilité",
     "cancel": "Annuler",
     "firstname": "Prénom",
     "lastname": "Nom",
@@ -50,11 +53,6 @@
     "since": "Début",
     "expiration": "Fin",
     "status": "État"
-  },
-  "genderRadio": {
-    "male": "Monsieur",
-    "female": "Madame",
-    "gender": "Civilité"
   },
   "profile": {
     "id": "Identité",
