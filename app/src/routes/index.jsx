@@ -1,5 +1,6 @@
 import Home, { loader as homeLoader } from "@/routes/home";
 import Dashboard, { loader as dashboardLoader } from "@/routes/home/dashboard";
+import Groups, { loader as groupsLoader, action as groupsAction } from "@/routes/home/groups";
 import Profile, { loader as profileLoader, action as profileAction } from "@/routes/home/profile";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
@@ -14,19 +15,25 @@ export default [
     loader: homeLoader,
     children: [
       {
+        element: <Dashboard />,
+        loader: dashboardLoader,
+        index: true
+      },
+      {
         path: "profile/:property?",
         element: <Profile />,
         loader: profileLoader,
         action: profileAction
       },
       {
-        element: <Dashboard />,
-        loader: dashboardLoader,
-        index: true
-      },
-      {
         path: "community"
       },
+      {
+        path: "groups",
+        element: <Groups />,
+        loader: groupsLoader,
+        action: groupsAction
+      }
     ],
   },
   {

@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HubIcon from "@mui/icons-material/Hub";
 import ProfileMenu from "@/components/ProfileMenu";
+import GroupsIcon from "@mui/icons-material/Groups";
 
 const WIDTH = 240;
 
@@ -23,6 +24,11 @@ const MENU = [
     text: "community",
     target: "community"
   },
+  {
+    icon: <GroupsIcon sx={{ color: "white" }} />,
+    text: "groups",
+    target: "groups"
+  }
 ];
 
 const LeftNavbar = ({ user }) => {

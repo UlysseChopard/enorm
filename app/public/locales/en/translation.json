@@ -34,7 +34,8 @@
     "profile": "Profile",
     "registrations": "Registrations",
     "community": "Community",
-    "settings": "Settings"
+    "settings": "Settings",
+    "groups": "Working groups"
   },
   "account": {
     "firstname": "First name",
