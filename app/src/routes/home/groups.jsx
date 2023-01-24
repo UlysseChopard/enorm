@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -17,17 +17,19 @@ import Stack from "@mui/material/Stack";
 import { get, create } from "@/api/groups";
 
 export async function loader() {
- const res = await get();
- if (!res.ok) return false;
- return res.json(); 
-};
+  const res = await get();
+  if (!res.ok) return false;
+  return res.json();
+}
 
-export async function action ({ request }) {
+export async function action({ request }) {
   const formData = await request.formData();
   const group = Object.fromEntries(formData);
+  console.log(group);
   const res = await create(group);
-  return res.ok;
-};
+  if (!res.ok) return res.status;
+  return res.json();
+}
 
 const CreateModal = ({ open, onClose }) => {
   const { t } = useTranslation(null, { keyPrefix: "groups" });
@@ -50,27 +52,24 @@ const CreateModal = ({ open, onClose }) => {
               name="reference"
               fullWidth
             />
-            <TextField
-              required
-              label={t("label")}
-              name="title"
-              fullWidth
-            />
+            <TextField required label={t("label")} name="title" fullWidth />
           </Stack>
-        </DialogContent> 
+        </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>{t("cancel")}</Button>
-          <Button variant="contained" type="submit">{t("submit")}</Button>
+          <Button variant="contained" type="submit">
+            {t("submit")}
+          </Button>
         </DialogActions>
       </Form>
     </Dialog>
   );
 };
 
-const createColumns = (t) => ([
+const createColumns = (t) => [
   {
     accessorKey: "member",
-    header: t("member")
+    header: t("member"),
   },
   {
     accessorFn: (row) => `${row.tc || ""} ${row.wg || ""}`,
@@ -78,7 +77,7 @@ const createColumns = (t) => ([
   },
   {
     accessorKey: "label",
-    header: t("label")
+    header: t("label"),
   },
   {
     accessorKey: "start",
@@ -90,31 +89,41 @@ const createColumns = (t) => ([
   },
   {
     accessorKey: "status",
-    header: t("status")
+    header: t("status"),
   },
   {
     accessorKey: "visibility",
-    header: t("visibility")
-  }
-]);
+    header: t("visibility"),
+  },
+];
 
 export default function Groups() {
-  const groups  = useLoaderData();
+  const groups = useLoaderData();
   const createdGroup = useActionData();
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
   const columns = createColumns(t);
-  const table = useReactTable({ data: groups, columns, getCoreRowModel: getCoreRowModel() });
-  if (createdGroup) setCreateModal(false);
+  const table = useReactTable({
+    data: groups,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  useEffect(() => {
+    if (createdGroup?.group) setCreateModal(false);
+  }, [createdGroup]);
+
   return (
     <>
-      <Button variant="contained" onClick={() => setCreateModal(true)}>{t("create")}</Button>
+      <Button variant="contained" onClick={() => setCreateModal(true)}>
+        {t("create")}
+      </Button>
       <CreateModal open={createModal} onClose={() => setCreateModal(false)} />
       <table>
         <thead>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
+              {headerGroup.headers.map((header) => (
                 <th key={header.id}>
                   {header.isPlaceholder
                     ? null
@@ -128,9 +137,9 @@ export default function Groups() {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => (
+          {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
@@ -139,9 +148,9 @@ export default function Groups() {
           ))}
         </tbody>
         <tfoot>
-          {table.getFooterGroups().map(footerGroup => (
+          {table.getFooterGroups().map((footerGroup) => (
             <tr key={footerGroup.id}>
-              {footerGroup.headers.map(header => (
+              {footerGroup.headers.map((header) => (
                 <th key={header.id}>
                   {header.isPlaceholder
                     ? null
@@ -158,4 +167,3 @@ export default function Groups() {
     </>
   );
 }
-
