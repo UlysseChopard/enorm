@@ -79,5 +79,20 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Log out"
+  },
+  "groups": {
+    "create": "Create",
+    "member": "Member",
+    "reference": "Reference",
+    "title": "Group creation",
+    "text": "Please enter these informations to create a group",
+    "creation": "Creation",
+    "disbanding": "Disbanding",
+    "status": "Status",
+    "visibility": "Visibility",
+    "organisation": "Organisation",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "label": "Title"
   }
 }

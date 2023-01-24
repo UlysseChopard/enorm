@@ -4,7 +4,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Form, useSubmit } from "react-router-dom";
+import { Form, useLoaderData, useActionData } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,55 +14,26 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import MenuItem from "@mui/material/MenuItem";
-import { useTranslation } from "react-i18next";
-import { get } from "@/api/registrations";
-import { useLoaderData } from "react-router-dom";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { get, create } from "@/api/groups";
 
-export const action = async ({ request }) => {
-  const formData = await request.formData();
-  console.log(Object.entries(formData));
-  return formData;
+export async function loader() {
+ const res = await get();
+ if (!res.ok) return false;
+ return res.json(); 
 };
-// const data = [
-//   {
-//     id: 0,
-//     member: "me",
-//     tc: "XXX/TC",
-//     wg: "XXX/WG1",
-//     label: "Blablabla",
-//     start: "10/05/2017",
-//     end: "31/12/2023",
-//     status: "active"
-//   },
-//   {
-//     id: 1,
-//     member: "me",
-//     tc: "XXX/TC",
-//     wg: "XXX/WG32",
-//     label: "Blablabla",
-//     start: null,
-//     end: "31/12/2023",
-//     status: "denied"
-//   } 
-// ];
+
+export async function action ({ request }) {
+  const formData = await request.formData();
+  const group = Object.fromEntries(formData);
+  const res = await create(group);
+  return res.ok;
+};
 
 const CreateModal = ({ open, onClose }) => {
   const { t } = useTranslation(null, { keyPrefix: "groups" });
-  const [group, setGroup] = useState({
-    organisation: "",
-    reference: "",
-    title: "",
-    establishmentDate: new Date(),
-    disbandingDate: new Date(),
-    status: "active",
-    visibility: "hidden"
-  });  
-  const submit = useSubmit();
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
-      <Form method="post" autoComplete="on" onSubmit={() => submit(group)}>
+      <Form method="post" autoComplete="on">
         <DialogTitle>{t("title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t("text")}</DialogContentText>
@@ -69,59 +41,21 @@ const CreateModal = ({ open, onClose }) => {
             <TextField
               required
               label={t("organisation")}
-              value={group.organisation}
-              onChange={e => setGroup({ ...group, organisation: e.target.value })}
+              name="organisation"
               fullWidth
             />
             <TextField
               required
               label={t("reference")}
-              value={group.reference}
-              onChange={e => setGroup({ ...group, reference: e.target.value })}
+              name="reference"
               fullWidth
             />
             <TextField
               required
-              label={t("title")}
-              value={group.title}
-              onChange={e => setGroup({ ...group, title: e.target.value })}
+              label={t("label")}
+              name="title"
               fullWidth
             />
-            <DatePicker
-              label={t("establishmentDate")}
-              value={group.establishmentDate}
-              onChange={e => setGroup({ ...group, establishmentDate: e.target.value })}
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <DatePicker
-              label={t("disbandingDate")}
-              value={group.disbandingDate}
-              onChange={e => setGroup({ ...group, disbandingDate: e.target.value })}
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <TextField
-              required
-              label={t("status")}
-              value={group.status}
-              onChange={e => setGroup({ ...group, status: e.target.value })}
-              select
-              fullWidth
-            >
-              <MenuItem value="active">{t("active")}</MenuItem>
-              <MenuItem value="disbanded">{t("disbanded")}</MenuItem>
-              <MenuItem value="dormant">{t("dormant")}</MenuItem>
-            </TextField>
-            <TextField
-              required
-              label={t("visibility")}
-              value={group.visibility}
-              onChange={e => setGroup({ ...group, visibility: e.target.value })}
-              select
-              fullWidth
-            >
-              <MenuItem value="visible">{t("visible")}</MenuItem>
-              <MenuItem value="hidden">{t("hidden")}</MenuItem>
-            </TextField>
           </Stack>
         </DialogContent> 
         <DialogActions>
@@ -148,30 +82,30 @@ const createColumns = (t) => ([
   },
   {
     accessorKey: "start",
-    header: t("since"),
+    header: t("creation"),
   },
   {
     accessorKey: "end",
-    header: t("expiration"),
+    header: t("disbanding"),
   },
   {
     accessorKey: "status",
     header: t("status")
+  },
+  {
+    accessorKey: "visibility",
+    header: t("visibility")
   }
 ]);
 
-export async function loader() {
- const res = await get();
- if (!res.ok) return false;
- return res.json(); 
-};
-
-export default function HeadlessRegistrations() {
-  const { registrations: data } = useLoaderData();
+export default function Groups() {
+  const groups  = useLoaderData();
+  const createdGroup = useActionData();
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
   const columns = createColumns(t);
-  const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
+  const table = useReactTable({ data: groups, columns, getCoreRowModel: getCoreRowModel() });
+  if (createdGroup) setCreateModal(false);
   return (
     <>
       <Button variant="contained" onClick={() => setCreateModal(true)}>{t("create")}</Button>
