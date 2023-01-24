@@ -1,3 +1,10 @@
-* Fix update form
-* Make company readonly
-* Convert `sponsor` to `manager`
+
+## DB
+
+* Add index on each foreign key
+
+## Api
+
+## App
+
+## CI/CD
