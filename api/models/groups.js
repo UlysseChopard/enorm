@@ -1,6 +1,9 @@
 const { db } = require("../utils");
 
-exports.getAll = () => db.query("SELECT * FROM groups");
+exports.getAll = () =>
+  db.query(
+    "SELECT g.organisation, g.reference, g.title, a.email FROM groups AS g INNER JOIN accounts AS a ON g.creator = a.id"
+  );
 
 exports.create = (userId, { organisation, title, reference }) =>
   db.query(

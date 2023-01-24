@@ -68,23 +68,27 @@ const CreateModal = ({ open, onClose }) => {
 
 const createColumns = (t) => [
   {
-    accessorKey: "member",
+    accessorKey: "email",
     header: t("member"),
   },
   {
-    accessorFn: (row) => `${row.tc || ""} ${row.wg || ""}`,
+    accessorKey: "organisation",
+    header: t("organisation"),
+  },
+  {
+    accessorKey: "reference",
     header: t("reference"),
   },
   {
-    accessorKey: "label",
+    accessorKey: "title",
     header: t("label"),
   },
   {
-    accessorKey: "start",
+    accessorKey: "creation",
     header: t("creation"),
   },
   {
-    accessorKey: "end",
+    accessorKey: "disbanding",
     header: t("disbanding"),
   },
   {
@@ -98,7 +102,7 @@ const createColumns = (t) => [
 ];
 
 export default function Groups() {
-  const groups = useLoaderData();
+  const { groups } = useLoaderData();
   const createdGroup = useActionData();
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
