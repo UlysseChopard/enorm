@@ -54,6 +54,7 @@ const SignupDialog = ({ onClose, open = true }) => {
               label={t("gender")}
               name="gender"
               autoComplete="sex"
+              defaultValue="male"
               select
               fullWidth
             >
@@ -64,7 +65,9 @@ const SignupDialog = ({ onClose, open = true }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>{t("cancel")}</Button>
-          <Button variant="contained" type="submit">{t("submit")}</Button>
+          <Button variant="contained" type="submit">
+            {t("submit")}
+          </Button>
         </DialogActions>
       </Form>
     </Dialog>
