@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Form, redirect, useActionData } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -21,16 +22,19 @@ export async function action({ request }) {
   return redirect("/");
 }
 
-
 const Login = () => {
   const status = useActionData();
   const [open, setOpen] = useState(false);
   const [failure, setFailure] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "login" });
-  if (status === 401) {
-    setFailure(true);
-    setTimeout(() => setFailure(false), 2000);
-  }
+
+  useEffect(() => {
+    if (status === 401) {
+      setFailure(true);
+      setTimeout(() => setFailure(false), 2000);
+    }
+  }, [status]);
+
   return (
     <Box
       display="flex"
@@ -42,15 +46,35 @@ const Login = () => {
         <Typography variant="h1">{t("brandname")}</Typography>
         <Typography variant="subtitle1">{t("presentation")}</Typography>
       </Stack>
-      <Form
-        autoComplete="on"
-        method="post"
-      >
+      <Form autoComplete="on" method="post">
         <Stack spacing={2} alignItems="center" width="400px">
-          <TextField name="email" variant="filled" label={t("email")} autoComplete="email" type="email" fullWidth required/>
-          <TextField name="password" variant="filled" type="password" label={t("password")} autoComplete="current-password" fullWidth required helperText={<Link href="/reset-password">{t("resetPassword")}</Link>}/>
-          <Button variant="contained" type="submit" fullWidth>{t("submit")}</Button>
-          <Button variant="text" onClick={() => setOpen(true)} fullWidth>{t("signup")}</Button>
+          <TextField
+            name="email"
+            variant="filled"
+            label={t("email")}
+            autoComplete="email"
+            type="email"
+            fullWidth
+            required
+          />
+          <TextField
+            name="password"
+            variant="filled"
+            type="password"
+            label={t("password")}
+            autoComplete="current-password"
+            fullWidth
+            required
+            helperText={
+              <Link href="/reset-password">{t("resetPassword")}</Link>
+            }
+          />
+          <Button variant="contained" type="submit" fullWidth>
+            {t("submit")}
+          </Button>
+          <Button variant="text" onClick={() => setOpen(true)} fullWidth>
+            {t("signup")}
+          </Button>
         </Stack>
       </Form>
       <SignupDialog open={open} onClose={() => setOpen(false)} />
