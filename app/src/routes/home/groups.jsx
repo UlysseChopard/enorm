@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {
+  getSortedRowModel,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -70,40 +71,57 @@ const createColumns = (t) => [
   {
     accessorKey: "email",
     header: t("member"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "organisation",
     header: t("organisation"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "reference",
     header: t("reference"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "title",
     header: t("label"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "creation",
     header: t("creation"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "disbanding",
     header: t("disbanding"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "status",
     header: t("status"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "visibility",
     header: t("visibility"),
+    enableSorting: true,
+    sortingFn: "basic",
   },
 ];
 
 export default function Groups() {
   const { groups } = useLoaderData();
   const createdGroup = useActionData();
+  const [sorting, setSorting] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
   const columns = createColumns(t);
@@ -111,6 +129,10 @@ export default function Groups() {
     data: groups,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    enableSorting: true,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
   });
 
   useEffect(() => {
@@ -129,12 +151,23 @@ export default function Groups() {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
+                  {header.isPlaceholder ? null : (
+                    <div
+                      {...{
+                        onClick: header.column.getToggleSortingHandler(),
+                      }}
+                    >
+                      {" "}
+                      {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted()] ?? null}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
