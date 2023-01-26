@@ -25,17 +25,17 @@ export default function ProfileMenu({ name, avatar }) {
   return (
     <>
       <Tooltip title="Account settings">
-          <Button
-            onClick={handleClick}
-            size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}>{avatar}</Avatar>
-            <Typography sx={{ color: "white" }} >{name}</Typography>
-          </Button>
+        <Button
+          onClick={handleClick}
+          size="small"
+          sx={{ ml: 2 }}
+          aria-controls={open ? "account-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+        >
+          <Avatar sx={{ width: 32, height: 32 }}>{avatar}</Avatar>
+          <Typography sx={{ color: "white" }}>{name}</Typography>
+        </Button>
       </Tooltip>
       <Menu
         anchorEl={anchorEl}
@@ -72,20 +72,20 @@ export default function ProfileMenu({ name, avatar }) {
         transformOrigin={{ horizontal: "left", vertical: "bottom" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem href="/profile">
-              <ListItemIcon>
-                <Avatar /> 
-              </ListItemIcon>
-              <ListItemText primary={t("profile")} />
+        <MenuItem href="profile">
+          <ListItemIcon>
+            <Avatar />
+          </ListItemIcon>
+          <ListItemText primary={t("profile")} />
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem href="">
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           <ListItemText primary={t("settings")} />
         </MenuItem>
-        <MenuItem href="/logout">
+        <MenuItem href="logout">
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

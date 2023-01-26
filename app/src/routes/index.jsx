@@ -20,7 +20,7 @@ export default [
         index: true
       },
       {
-        path: "profile/:property?",
+        path: "profile",
         element: <Profile />,
         loader: profileLoader,
         action: profileAction

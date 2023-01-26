@@ -13,23 +13,23 @@ export default createTheme({
   components: {
     MuiMenuItem: {
       defaultProps: {
-        component: LinkBehaviour
-      }
+        component: LinkBehaviour,
+      },
     },
     MuiLink: {
       defaultProps: {
-        component: LinkBehaviour
+        component: LinkBehaviour,
       },
     },
     MuiButtonBase: {
       defaultProps: {
-        component: LinkBehaviour
-      }
+        LinkComponent: LinkBehaviour,
+      },
     },
     MuiListItemButton: {
       defaultProps: {
-        component: LinkBehaviour
-      }
-    }
-  }
+        component: LinkBehaviour,
+      },
+    },
+  },
 });
