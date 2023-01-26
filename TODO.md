@@ -5,6 +5,9 @@
 
 ## Api
 
+* Secure vs insecure models
+* crypt in accounts controller
+
 ## App
 
 ## CI/CD
