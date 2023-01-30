@@ -2,22 +2,24 @@
 
 exports.shorthands = undefined;
 
-exports.up = pgm => {
+exports.up = (pgm) => {
   pgm.createTable("companies", {
     id: "id",
     name: "text",
-    address: "text"
+    address: "text",
   });
   pgm.addColumn("accounts", {
     company: {
       primaryKey: false,
       references: "companies",
-      type: "integer"
-    }
+      type: "integer",
+    },
   });
+  pgm.createIndex("accounts", "company");
 };
 
-exports.down = pgm => {
+exports.down = (pgm) => {
+  pgm.dropIndex("accounts", "company");
   pgm.dropColumn("accounts", "company");
   pgm.dropTable("companies");
 };

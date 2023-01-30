@@ -2,7 +2,7 @@
 
 exports.shorthands = undefined;
 
-exports.up = pgm => {
+exports.up = (pgm) => {
   pgm.createTable("groups", {
     id: "id",
     createdAt: "createdAt",
@@ -10,23 +10,25 @@ exports.up = pgm => {
       type: "uuid",
       notNull: true,
       references: "accounts",
-      onDelete: "cascade"
+      onDelete: "cascade",
     },
     reference: {
       type: "text",
-      notNull: true
+      notNull: true,
     },
     organisation: {
       type: "text",
-      notNull: true
+      notNull: true,
     },
     title: {
-      type: "text", 
-      notNull: true
-    }
+      type: "text",
+      notNull: true,
+    },
   });
+  pgm.createIndex("groups", "creator");
 };
 
-exports.down = pgm => {
+exports.down = (pgm) => {
+  pgm.dropIndex("groups", "creator");
   pgm.dropTable("groups");
 };

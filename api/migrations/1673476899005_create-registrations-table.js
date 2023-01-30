@@ -2,30 +2,38 @@
 
 exports.shorthands = undefined;
 
-exports.up = pgm => {
-  pgm.createType("status", ["canceled", "requested", "delisted", "approved", "denied"]);
+exports.up = (pgm) => {
+  pgm.createType("status", [
+    "canceled",
+    "requested",
+    "delisted",
+    "approved",
+    "denied",
+  ]);
 
   pgm.createTable("registrations", {
     id: "id",
     reference: {
       type: "text",
-      notNull: true
+      notNull: true,
     },
     label: "text",
     start: "date",
     end: "date",
     status: {
       type: "status",
-      default: "requested"
+      default: "requested",
     },
     user_id: {
       type: "userId",
-      references: "accounts"
-    }
+      references: "accounts",
+    },
   });
+  pgm.createIndex("registrations", "user_id");
 };
 
-exports.down = pgm => {
+exports.down = (pgm) => {
+  pgm.dropIndex("registrations", "user_id");
   pgm.dropTable("registrations");
   pgm.dropType("status");
 };
