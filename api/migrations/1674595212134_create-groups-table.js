@@ -3,32 +3,43 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("groups", {
-    id: "id",
-    createdAt: "createdAt",
-    creator: {
-      type: "uuid",
-      notNull: true,
-      references: "accounts",
-      onDelete: "cascade",
+  pgm.createTable(
+    "groups",
+    {
+      id: "id",
+      createdAt: "createdAt",
+      creator: {
+        type: "uuid",
+        references: "accounts",
+      },
+      sponsor: {
+        type: "integer",
+        notNull: true,
+        references: "companies",
+        onDelete: "cascade",
+      },
+      reference: {
+        type: "text",
+        notNull: true,
+      },
+      organisation: {
+        type: "text",
+        notNull: true,
+      },
+      title: {
+        type: "text",
+      },
     },
-    reference: {
-      type: "text",
-      notNull: true,
-    },
-    organisation: {
-      type: "text",
-      notNull: true,
-    },
-    title: {
-      type: "text",
-      notNull: true,
-    },
-  });
-  pgm.createIndex("groups", "creator");
+    {
+      constraints: {
+        unique: ["reference", "organisation", "sponsor"],
+      },
+    }
+  );
+  pgm.createIndex("groups", ["sponsor", "creator"]);
 };
 
 exports.down = (pgm) => {
-  pgm.dropIndex("groups", "creator");
+  pgm.dropIndex("groups", ["sponsor", "creator"]);
   pgm.dropTable("groups");
 };
