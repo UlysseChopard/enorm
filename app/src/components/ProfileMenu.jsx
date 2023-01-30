@@ -11,6 +11,7 @@ import Logout from "@mui/icons-material/Logout";
 import Typography from "@mui/material/Typography";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
 
 export default function ProfileMenu({ name, avatar }) {
   const { t } = useTranslation(null, { keyPrefix: "profileMenu" });
@@ -72,25 +73,25 @@ export default function ProfileMenu({ name, avatar }) {
         transformOrigin={{ horizontal: "left", vertical: "bottom" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem href="profile">
+        <ListItemButton href="profile">
           <ListItemIcon>
             <Avatar />
           </ListItemIcon>
           <ListItemText primary={t("profile")} />
-        </MenuItem>
+        </ListItemButton>
         <Divider />
-        <MenuItem href="">
+        <ListItemButton href="">
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           <ListItemText primary={t("settings")} />
-        </MenuItem>
-        <MenuItem href="logout">
+        </ListItemButton>
+        <ListItemButton href="logout">
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           <ListItemText primary={t("logout")} />
-        </MenuItem>
+        </ListItemButton>
       </Menu>
     </>
   );
