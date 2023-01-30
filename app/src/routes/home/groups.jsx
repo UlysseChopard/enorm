@@ -70,7 +70,7 @@ const CreateModal = ({ open, onClose }) => {
 const createColumns = (t) => [
   {
     accessorKey: "email",
-    header: t("member"),
+    header: t("sponsor"),
     enableSorting: true,
     sortingFn: "basic",
   },

@@ -82,7 +82,7 @@
   },
   "groups": {
     "create": "Create",
-    "member": "Member",
+    "sponsor": "Sponsor",
     "reference": "Reference",
     "title": "Group creation",
     "text": "Please enter these informations to create a group",
