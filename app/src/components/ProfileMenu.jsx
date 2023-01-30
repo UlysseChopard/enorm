@@ -2,7 +2,6 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
@@ -12,8 +11,9 @@ import Typography from "@mui/material/Typography";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
+import ListItem from "@mui/material/ListItem";
 
-export default function ProfileMenu({ name, avatar }) {
+export default function ProfileMenu({ pathname, name, avatar }) {
   const { t } = useTranslation(null, { keyPrefix: "profileMenu" });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -73,25 +73,31 @@ export default function ProfileMenu({ name, avatar }) {
         transformOrigin={{ horizontal: "left", vertical: "bottom" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <ListItemButton href="profile">
-          <ListItemIcon>
-            <Avatar />
-          </ListItemIcon>
-          <ListItemText primary={t("profile")} />
-        </ListItemButton>
+        <ListItem selected={pathname === "/profile"} disablePadding>
+          <ListItemButton href="profile">
+            <ListItemIcon>
+              <Avatar />
+            </ListItemIcon>
+            <ListItemText primary={t("profile")} />
+          </ListItemButton>
+        </ListItem>
         <Divider />
-        <ListItemButton href="">
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary={t("settings")} />
-        </ListItemButton>
-        <ListItemButton href="logout">
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary={t("logout")} />
-        </ListItemButton>
+        <ListItem selected={pathname === "/"} disablePadding>
+          <ListItemButton href="">
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary={t("settings")} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem selected={pathname === "/logout"} disablePadding>
+          <ListItemButton href="logout">
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary={t("logout")} />
+          </ListItemButton>
+        </ListItem>
       </Menu>
     </>
   );

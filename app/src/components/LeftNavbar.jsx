@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useResolvedPath } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
@@ -17,22 +18,23 @@ const MENU = [
   {
     icon: <AppRegistrationIcon sx={{ color: "white" }} />,
     text: "registrations",
-    target: ""
+    target: "",
   },
   {
     icon: <HubIcon sx={{ color: "white" }} />,
     text: "community",
-    target: "community"
+    target: "community",
   },
   {
     icon: <GroupsIcon sx={{ color: "white" }} />,
     text: "groups",
-    target: "groups"
-  }
+    target: "groups",
+  },
 ];
 
 const LeftNavbar = ({ user }) => {
   const { t } = useTranslation(null, { keyPrefix: "navbar" });
+  const { pathname } = useResolvedPath();
   return (
     <Drawer
       sx={{
@@ -43,7 +45,7 @@ const LeftNavbar = ({ user }) => {
           width: WIDTH,
           boxSizing: "border-box",
           backgroundColor: "#282525",
-          color: "white"
+          color: "white",
         },
       }}
       variant="permanent"
@@ -51,24 +53,30 @@ const LeftNavbar = ({ user }) => {
     >
       <List>
         {MENU.map(({ text, icon, target }) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton href={target}>
-                <ListItemIcon>
-                  {icon}
-                </ListItemIcon>
-                <ListItemText primary={t(text)} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <ListItem
+            key={text}
+            disablePadding
+            selected={pathname === `/${target}`}
+          >
+            <ListItemButton href={target}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={t(text)} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
       <List>
         <Divider sx={{ backgroundColor: "white" }} />
         <ListItem key="user" disablePadding>
-          <ProfileMenu avatar={`${user.firstname.charAt(0)}${user.lastname.charAt(0)}`} name={`${user.firstname ?? ""} ${user.lastname ?? ""}`} />
+          <ProfileMenu
+            pathname={pathname}
+            avatar={`${user.firstname.charAt(0)}${user.lastname.charAt(0)}`}
+            name={`${user.firstname ?? ""} ${user.lastname ?? ""}`}
+          />
         </ListItem>
       </List>
-    </Drawer>);
+    </Drawer>
+  );
 };
-
 
 export default LeftNavbar;
