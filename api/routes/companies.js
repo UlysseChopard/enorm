@@ -5,4 +5,5 @@ module.exports = (router) => {
   router.put("/", update);
   router.delete("/", remove);
   router.get("/", get);
+  return router;
 };
