@@ -1,5 +1,5 @@
 const { crypt } = require("../utils");
-const { Accounts } = require("../models");
+const { Accounts, Companies } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -40,15 +40,19 @@ exports.update = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const { email, password, company } = req.body;
-    if (!password || !email || !company) {
+    const { email, password, company: companyName } = req.body;
+    if (!password || !email || !companyName) {
       return res.status(400).json({ message: "missing property" });
     }
     const hash = await crypt.hash(password);
     delete req.password;
     const {
+      rows: [{ id: company }],
+    } = await Companies.create(companyName);
+    delete req.company;
+    const {
       rows: [account],
-    } = await Accounts.create({ ...req.body, hash });
+    } = await Accounts.create({ ...req.body, hash, company });
     res.json({ account });
   } catch (err) {
     next(err);

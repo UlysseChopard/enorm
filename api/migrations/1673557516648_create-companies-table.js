@@ -6,7 +6,6 @@ exports.up = (pgm) => {
   pgm.createTable("companies", {
     id: "id",
     name: "text",
-    address: "text",
   });
   pgm.addColumn("accounts", {
     company: {
