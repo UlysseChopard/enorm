@@ -1,7 +1,16 @@
 import Home, { loader as homeLoader } from "@/routes/home";
+import Subscriptions, {
+  action as subscriptionsAction,
+} from "@/routes/home/subscriptions";
 import Dashboard, { loader as dashboardLoader } from "@/routes/home/dashboard";
-import Groups, { loader as groupsLoader, action as groupsAction } from "@/routes/home/groups";
-import Profile, { loader as profileLoader, action as profileAction } from "@/routes/home/profile";
+import Groups, {
+  loader as groupsLoader,
+  action as groupsAction,
+} from "@/routes/home/groups";
+import Profile, {
+  loader as profileLoader,
+  action as profileAction,
+} from "@/routes/home/profile";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -17,23 +26,25 @@ export default [
       {
         element: <Dashboard />,
         loader: dashboardLoader,
-        index: true
+        index: true,
       },
       {
         path: "profile",
         element: <Profile />,
         loader: profileLoader,
-        action: profileAction
+        action: profileAction,
       },
       {
-        path: "community"
+        path: "subscriptions",
+        element: <Subscriptions />,
+        action: subscriptionsAction,
       },
       {
         path: "groups",
         element: <Groups />,
         loader: groupsLoader,
-        action: groupsAction
-      }
+        action: groupsAction,
+      },
     ],
   },
   {

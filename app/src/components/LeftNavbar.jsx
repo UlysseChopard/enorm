@@ -23,7 +23,7 @@ const MENU = [
   {
     icon: <HubIcon sx={{ color: "white" }} />,
     text: "community",
-    target: "community",
+    target: "subscriptions",
   },
   {
     icon: <GroupsIcon sx={{ color: "white" }} />,

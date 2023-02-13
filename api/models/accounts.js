@@ -25,3 +25,9 @@ exports.update = (
   );
 
 exports.close = (id) => db.query("DELETE FROM accounts WHERE id = $1", [id]);
+
+exports.getByText = (text) =>
+  db.query(
+    "SELECT FROM accounts WHERE firstname LIKE '%$1%' OR lastname LIKE '%$1%' OR email LIKE '%1%'",
+    [text]
+  );
