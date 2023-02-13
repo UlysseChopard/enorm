@@ -4,7 +4,7 @@
   "description": "premiere app",
   "main": "app.js",
   "scripts": {
-    "start:prod": "pm2 start app",
+    "start:prod": "pm2 start app.js -i max",
     "start": "node app",
     "dev": "nodemon -r dotenv/config app | bunyan",
     "migrate": "node-pg-migrate",

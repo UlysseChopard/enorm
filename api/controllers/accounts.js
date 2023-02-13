@@ -40,19 +40,15 @@ exports.update = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const { email, password, company: companyName } = req.body;
-    if (!password || !email || !companyName) {
+    const { email, password, company } = req.body;
+    if (!password || !email || !company) {
       return res.status(400).json({ message: "missing property" });
     }
     const hash = await crypt.hash(password);
-    delete req.password;
-    const {
-      rows: [{ id: company }],
-    } = await Companies.create(companyName);
-    delete req.company;
     const {
       rows: [account],
-    } = await Accounts.create({ ...req.body, hash, company });
+    } = await Accounts.create({ ...req.body, hash });
+    await Companies.create({ name: company, creator: account.id });
     res.json({ account });
   } catch (err) {
     next(err);
