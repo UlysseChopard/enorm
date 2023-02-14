@@ -1,4 +1,4 @@
-const { search } = require("../controllers/accounts");
+const { search } = require("../controllers/subscriptions");
 
 module.exports = (router) => {
   router.get("/", search);

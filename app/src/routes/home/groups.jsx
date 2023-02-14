@@ -26,7 +26,7 @@ export async function loader() {
 export async function action({ request }) {
   const formData = await request.formData();
   const group = Object.fromEntries(formData);
-  console.log(group);
+  
   const res = await create(group);
   if (!res.ok) return res.status;
   return res.json();

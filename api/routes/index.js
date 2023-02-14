@@ -3,7 +3,7 @@ const accounts = require("./accounts");
 const registrations = require("./registrations");
 const groups = require("./groups");
 const companies = require("./companies");
-const subscriptions = require("./companies");
+const subscriptions = require("./subscriptions");
 
 module.exports = (express, app) => {
   const router = express.Router;
