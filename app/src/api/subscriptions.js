@@ -1,3 +1,3 @@
-export function search({ text }) {
-  return fetch(`/api/subscriptions?text=${text}`, { credentials: "include" });
+export function search({ query }) {
+  return fetch(`/api/subscriptions?q=${query}`, { credentials: "include" });
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useActionData, useSubmit } from "react-router-dom";
 import { search } from "@/api/subscriptions";
@@ -16,17 +16,19 @@ export default function Subscriptions() {
   const res = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "subscriptions" });
   const submit = useSubmit();
-  const [search, setSearch] = useState(null);
+  const timeoutId = useRef(null);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    clearTimeout(search);
+    console.log(timeoutId.current, query);
+    clearTimeout(timeoutId.current);
     if (query) {
-      setSearch(
-        setTimeout(() => submit({ text: query }, { method: "post" }), 300)
+      timeoutId.current = setTimeout(
+        () => submit({ query }, { method: "post" }),
+        400
       );
     }
-  }, [query, search, submit]);
+  }, [query, timeoutId, submit]);
   return (
     <TextField
       id="text"
