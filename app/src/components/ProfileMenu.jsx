@@ -34,8 +34,17 @@ export default function ProfileMenu({ pathname, name, avatar }) {
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
-          <Avatar sx={{ width: 32, height: 32 }}>{avatar}</Avatar>
-          <Typography sx={{ color: "white" }}>{name}</Typography>
+          <Avatar
+            sx={{
+              width: 32,
+              height: 32,
+              color: "#e7f1fc",
+              backgroundColor: "#a2a9b0",
+            }}
+          >
+            {avatar}
+          </Avatar>
+          <Typography sx={{ color: "#041b32" }}>{name}</Typography>
         </Button>
       </Tooltip>
       <Menu

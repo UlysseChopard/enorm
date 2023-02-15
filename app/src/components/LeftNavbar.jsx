@@ -16,17 +16,17 @@ const WIDTH = 240;
 
 const MENU = [
   {
-    icon: <AppRegistrationIcon sx={{ color: "white" }} />,
+    icon: <AppRegistrationIcon />,
     text: "registrations",
     target: "",
   },
   {
-    icon: <HubIcon sx={{ color: "white" }} />,
+    icon: <HubIcon />,
     text: "community",
     target: "subscriptions",
   },
   {
-    icon: <GroupsIcon sx={{ color: "white" }} />,
+    icon: <GroupsIcon />,
     text: "groups",
     target: "groups",
   },
@@ -44,29 +44,49 @@ const LeftNavbar = ({ user }) => {
           justifyContent: "space-between",
           width: WIDTH,
           boxSizing: "border-box",
-          backgroundColor: "#282525",
-          color: "white",
+          backgroundColor: "#e7f1fc",
+          color: "#041b32",
         },
       }}
       variant="permanent"
-      anchor="left"
+      elevation={24}
     >
-      <List>
+      <List disablePadding>
         {MENU.map(({ text, icon, target }) => (
-          <ListItem
-            key={text}
-            disablePadding
-            selected={pathname === `/${target}`}
-          >
-            <ListItemButton href={target}>
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={t(text)} />
+          <ListItem key={text} disablePadding>
+            <ListItemButton
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "#0a4987",
+                },
+                "&:hover": {
+                  backgroundColor: "#a2a9b0",
+                },
+              }}
+              href={target}
+              selected={pathname === `/${target}`}
+            >
+              <ListItemIcon
+                sx={{
+                  "& :first-child": {
+                    color: pathname === `/${target}` ? "#e7f1fc" : "#108bdc",
+                  },
+                }}
+              >
+                {icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={t(text)}
+                sx={{
+                  color: pathname === `/${target}` ? "#e7f1fc" : "inherit",
+                }}
+              />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
       <List>
-        <Divider sx={{ backgroundColor: "white" }} />
+        <Divider sx={{ borderColor: "#e7f1fc" }} />
         <ListItem key="user" disablePadding>
           <ProfileMenu
             pathname={pathname}
