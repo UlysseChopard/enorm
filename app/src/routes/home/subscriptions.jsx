@@ -3,6 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useActionData, useSubmit } from "react-router-dom";
 import { search } from "@/api/subscriptions";
 import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import IconButton from "@mui/material/IconButton";
+import AddLinkIcon from "@mui/icons-material/AddLink";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -19,6 +25,12 @@ export default function Subscriptions() {
   const timeoutId = useRef(null);
   const [query, setQuery] = useState("");
 
+  const handleSearch = (e) => {
+    setQuery(e.target.value.toLowerCase());
+  };
+
+  console.log("rerender");
+
   useEffect(() => {
     console.log(timeoutId.current, query);
     clearTimeout(timeoutId.current);
@@ -29,11 +41,33 @@ export default function Subscriptions() {
       );
     }
   }, [query, timeoutId, submit]);
+
   return (
-    <TextField
-      id="text"
-      name="text"
-      onChange={(e) => setQuery(e.target.value)}
-    />
+    <Stack>
+      <TextField
+        placeholder="Search group providers"
+        id="text"
+        name="text"
+        onChange={handleSearch}
+      />
+      <List>
+        {query &&
+          res?.accounts &&
+          res.accounts.map(({ id, firstname, lastname, email }) => (
+            <ListItem
+              key={id}
+              secondaryAction={
+                <IconButton edge="end" aria-label="connect">
+                  <AddLinkIcon />
+                </IconButton>
+              }
+            >
+              <ListItemText
+                secondary={email}
+              >{`${firstname} ${lastname}`}</ListItemText>
+            </ListItem>
+          ))}
+      </List>
+    </Stack>
   );
 }
