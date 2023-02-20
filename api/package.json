@@ -28,6 +28,7 @@
     "node-pg-migrate": "^6.2.2",
     "nodemailer": "^6.8.0",
     "pg": "^8.8.0",
+    "pg-format": "^1.0.4",
     "pm2": "^5.2.2",
     "swagger-ui-express": "^4.6.0",
     "uuid": "^9.0.0",

@@ -1,3 +1,4 @@
+const format = require("pg-format");
 const { db } = require("../utils");
 
 const SAFE_DATA =
@@ -26,7 +27,14 @@ exports.update = (
 
 exports.close = (id) => db.query("DELETE FROM accounts WHERE id = $1", [id]);
 
-exports.getByText = (query) =>
+exports.searchText = (query, limit = 100) =>
   db.query(
-    `SELECT ${SAFE_DATA} FROM accounts WHERE LOWER(firstname) LIKE '%${query}%' OR LOWER(lastname) LIKE '%${query}%' OR LOWER(email) LIKE '%${query}%'`
+    format(
+      "SELECT %s FROM accounts WHERE LOWER(firstname) LIKE '%%%s%%' OR LOWER(lastname) LIKE '%%%s%%' OR LOWER(email) LIKE '%%%s%%' LIMIT %L",
+      SAFE_DATA,
+      query,
+      query,
+      query,
+      limit
+    )
   );
