@@ -8,3 +8,7 @@ export function invite(id) {
     credentials: "include",
   });
 }
+
+export function getNews() {
+  return fetch("/api/subscriptions", { credentials: "include" });
+}

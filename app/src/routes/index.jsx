@@ -1,5 +1,6 @@
 import Home, { loader as homeLoader } from "@/routes/home";
 import Subscriptions, {
+  loader as subscriptionsLoader,
   action as subscriptionsAction,
 } from "@/routes/home/subscriptions";
 import Dashboard, { loader as dashboardLoader } from "@/routes/home/dashboard";
@@ -37,6 +38,7 @@ export default [
       {
         path: "subscriptions",
         element: <Subscriptions />,
+        loader: subscriptionsLoader,
         action: subscriptionsAction,
       },
       {

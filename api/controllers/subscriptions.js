@@ -1,9 +1,16 @@
 const { Accounts, Subscriptions } = require("../models");
 
-exports.search = async (req, res, next) => {
+exports.get = async (req, res, next) => {
   try {
-    const { rows } = await Accounts.searchText(req.query.q);
-    res.json({ accounts: rows });
+    if (req.query.q) {
+      const { rows } = await Accounts.searchText(req.query.q);
+      return res.json({ accounts: rows });
+    }
+    const { rows: sended } = await Subscriptions.getSended(res.locals.userId);
+    const { rows: received } = await Subscriptions.getReceived(
+      res.locals.userId
+    );
+    return res.json({ sended, received });
   } catch (err) {
     next(err);
   }

@@ -1,7 +1,7 @@
-const { search, invite } = require("../controllers/subscriptions");
+const { get, invite } = require("../controllers/subscriptions");
 
 module.exports = (router) => {
-  router.get("/", search);
+  router.get("/", get);
   router.put("/:recipient", invite);
   return router;
 };
