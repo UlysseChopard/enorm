@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import { useActionData, useSubmit } from "react-router-dom";
-import { search } from "@/api/subscriptions";
+import { search, invite } from "@/api/subscriptions";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
@@ -20,7 +20,7 @@ export async function action({ request }) {
 
 export default function Subscriptions() {
   const res = useActionData();
-  const { t } = useTranslation(null, { keyPrefix: "subscriptions" });
+  // const { t } = useTranslation(null, { keyPrefix: "subscriptions" });
   const submit = useSubmit();
   const timeoutId = useRef(null);
   const [query, setQuery] = useState("");
@@ -29,10 +29,7 @@ export default function Subscriptions() {
     setQuery(e.target.value.toLowerCase());
   };
 
-  console.log("rerender");
-
   useEffect(() => {
-    console.log(timeoutId.current, query);
     clearTimeout(timeoutId.current);
     if (query) {
       timeoutId.current = setTimeout(
@@ -57,7 +54,11 @@ export default function Subscriptions() {
             <ListItem
               key={id}
               secondaryAction={
-                <IconButton edge="end" aria-label="connect">
+                <IconButton
+                  edge="end"
+                  aria-label="connect"
+                  onClick={() => invite(id)}
+                >
                   <AddLinkIcon />
                 </IconButton>
               }

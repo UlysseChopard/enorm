@@ -1,10 +1,10 @@
 const { db } = require("../utils");
 
 exports.send = (sender, recipient) =>
-  db.query("INSERT INTO subscriptions (sender, recipient) VALUES ($1, $2)", [
-    sender,
-    recipient,
-  ]);
+  db.query(
+    "INSERT INTO subscriptions (sender, recipient) VALUES ($1, $2) RETURNING id, sended_at",
+    [sender, recipient]
+  );
 
 exports.getSended = (sender) =>
   db.query("SELECT * FROM subscriptions WHERE sender = $1", [sender]);
