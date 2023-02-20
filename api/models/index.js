@@ -6,4 +6,4 @@ exports.Groups = require("./groups");
 
 exports.Companies = require("./companies");
 
-exports.Relationships = require("./relationships");
+exports.Subscriptions = require("./subscriptions");
