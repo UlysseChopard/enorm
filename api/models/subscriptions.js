@@ -7,10 +7,16 @@ exports.send = (sender, recipient) =>
   );
 
 exports.getSended = (sender) =>
-  db.query("SELECT * FROM subscriptions WHERE sender = $1", [sender]);
+  db.query(
+    "SELECT * FROM subscriptions AS s JOIN accounts AS a ON s.recipient = a.id WHERE sender = $1",
+    [sender]
+  );
 
 exports.getReceived = (recipient) =>
-  db.query("SELECT * FROM subscriptions WHERE recipient = $1", [recipient]);
+  db.query(
+    "SELECT * FROM subscriptions AS s JOIN accounts AS a ON s.sender = a.id WHERE recipient = $1",
+    [recipient]
+  );
 
 exports.accept = (id) =>
   db.query(

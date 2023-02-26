@@ -9,6 +9,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import AddLinkIcon from "@mui/icons-material/AddLink";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
+import CallReceivedIcon from "@mui/icons-material/CallReceived";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -24,6 +27,22 @@ export async function loader() {
   return res.json();
 }
 
+const GroupProvider = ({ id, firstname, lastname, email, status, action }) => (
+  <ListItem
+    key={id}
+    secondaryAction={
+      <IconButton edge="end" onClick={action}>
+        {!status && <AddLinkIcon />}
+        {status === "sended" && <ScheduleIcon />}
+        {status === "received" && <CallReceivedIcon />}
+        {status === "connected" && <LinkOffIcon />}
+      </IconButton>
+    }
+  >
+    <ListItemText secondary={email}>{`${firstname} ${lastname}`}</ListItemText>
+  </ListItem>
+);
+
 export default function Subscriptions() {
   const action = useActionData();
   const load = useLoaderData();
@@ -31,13 +50,13 @@ export default function Subscriptions() {
   const submit = useSubmit();
   const timeoutId = useRef(null);
   const [query, setQuery] = useState("");
-  const [sended, setSended] = useState(new Set());
-  const [received, setReceived] = useState(new Set());
+  const [sended, setSended] = useState([]);
+  const [received, setReceived] = useState([]);
 
   useEffect(() => {
     if (typeof load === "number") return;
-    setSended(new Set(load.sended.map(({ id }) => id)));
-    setReceived(new Set(load.received));
+    setSended(load.sended);
+    setReceived(load.received);
   }, []);
 
   useEffect(() => {
@@ -54,10 +73,10 @@ export default function Subscriptions() {
     setQuery(e.target.value.toLowerCase());
   };
 
-  const handleInvite = (id) => async () => {
-    const { status } = await invite(id);
+  const handleInvite = (recipient) => async () => {
+    const { status } = await invite(recipient.id);
     if (status === "sended") {
-      const update = sended.add(id);
+      const update = sended.push(recipient);
       setSended(update);
     }
   };
@@ -71,25 +90,31 @@ export default function Subscriptions() {
         onChange={handleSearch}
       />
       <List>
+        {!query &&
+          sended.map((recipient) => (
+            <GroupProvider
+              key={recipient.id}
+              action={() => console.log("clicked")}
+              status="sended"
+              {...recipient}
+            />
+          ))}
+        {!query &&
+          received.map((recipient) => (
+            <GroupProvider
+              key={recipient.id}
+              action={() => console.log("clicked")}
+              status="received"
+              {...recipient}
+            />
+          ))}
         {query &&
-          action?.accounts &&
-          action.accounts.map(({ id, firstname, lastname, email }) => (
-            <ListItem
-              key={id}
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="connect"
-                  onClick={handleInvite}
-                >
-                  <AddLinkIcon />
-                </IconButton>
-              }
-            >
-              <ListItemText
-                secondary={email}
-              >{`${firstname} ${lastname}`}</ListItemText>
-            </ListItem>
+          action?.accounts.map((recipient) => (
+            <GroupProvider
+              key={recipient.id}
+              action={handleInvite(recipient)}
+              {...recipient}
+            />
           ))}
       </List>
     </Stack>
