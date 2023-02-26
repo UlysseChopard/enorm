@@ -1,7 +1,14 @@
-const { get, invite } = require("../controllers/subscriptions");
+const {
+  get,
+  invite,
+  establish,
+  close,
+} = require("../controllers/subscriptions");
 
 module.exports = (router) => {
   router.get("/", get);
-  router.put("/:recipient", invite);
+  router.put("/", invite);
+  router.post("/:subscription", establish);
+  router.delete("/:subscription", close);
   return router;
 };
