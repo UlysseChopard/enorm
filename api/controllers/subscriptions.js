@@ -2,7 +2,7 @@ const { Subscriptions, Accounts } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: searched } = await Accounts.searchText(req.query.q);
+    const { rows: searchResults } = await Accounts.searchText(req.query.q);
     const { rows: sended } = await Subscriptions.getSended(res.locals.userId);
     const { rows: received } = await Subscriptions.getReceived(
       res.locals.userId
@@ -10,11 +10,11 @@ exports.get = async (req, res, next) => {
     const sendedIds = new Set(sended.map(({ id }) => id));
     const receivedIds = new Set(received.map(({ id }) => id));
     console.log(sendedIds, receivedIds);
-    const accounts = searched.filter(
+    const results = searchResults.filter(
       ({ id }) =>
         id !== res.locals.userId && !sendedIds.has(id) && !receivedIds.has(id)
     );
-    return res.json({ sended, received, accounts });
+    return res.json({ sended, received, results });
   } catch (err) {
     next(err);
   }

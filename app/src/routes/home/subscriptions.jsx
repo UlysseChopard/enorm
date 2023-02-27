@@ -32,10 +32,10 @@ const GroupProvider = ({ id, firstname, lastname, email, status, action }) => (
     key={id}
     secondaryAction={
       <IconButton edge="end" onClick={action}>
-        {!status && <AddLinkIcon />}
         {status === "sended" && <ScheduleIcon />}
         {status === "received" && <CallReceivedIcon />}
-        {status === "connected" && <LinkOffIcon />}
+        {status === "accepted" && <LinkOffIcon />}
+        {!status && <AddLinkIcon />}
       </IconButton>
     }
   >
@@ -52,6 +52,7 @@ export default function Subscriptions() {
   const [query, setQuery] = useState("");
   const [sended, setSended] = useState([]);
   const [received, setReceived] = useState([]);
+  const [possible, setPossible] = useState([]);
 
   useEffect(() => {
     if (typeof load === "number") return;
@@ -60,12 +61,18 @@ export default function Subscriptions() {
   }, []);
 
   useEffect(() => {
+    if (action?.results) setPossible(action.results);
+  }, [action]);
+
+  useEffect(() => {
     clearTimeout(timeoutId.current);
     if (query) {
       timeoutId.current = setTimeout(
         () => submit({ query }, { method: "post" }),
         400
       );
+    } else {
+      submit();
     }
   }, [query, timeoutId, submit]);
 
@@ -74,10 +81,10 @@ export default function Subscriptions() {
   };
 
   const handleInvite = (recipient) => async () => {
+    console.log(recipient);
     const { status } = await invite(recipient.id);
-    if (status === "sended") {
-      const update = sended.push(recipient);
-      setSended(update);
+    if (status === 201) {
+      setSended([...sended, recipient]);
     }
   };
 
@@ -109,10 +116,15 @@ export default function Subscriptions() {
             />
           ))}
         {query &&
-          action?.accounts.map((recipient) => (
+          possible.map((recipient) => (
             <GroupProvider
               key={recipient.id}
               action={handleInvite(recipient)}
+              status={
+                sended.map(({ id }) => id).includes(recipient.id)
+                  ? "sended"
+                  : null
+              }
               {...recipient}
             />
           ))}

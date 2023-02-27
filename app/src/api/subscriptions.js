@@ -10,7 +10,7 @@ export function invite(recipient) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: { recipient },
+    body: JSON.stringify({ recipient }),
   });
 }
 
