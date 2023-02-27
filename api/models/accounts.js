@@ -4,6 +4,8 @@ const { db } = require("../utils");
 const SAFE_DATA =
   "id, firstname, lastname, gender, email, cellphone, phone, hash";
 
+exports.SAFE_DATA;
+
 exports.getByEmail = (email) =>
   db.query("SELECT * FROM accounts WHERE email = $1", [email]);
 
@@ -27,12 +29,10 @@ exports.update = (
 
 exports.close = (id) => db.query("DELETE FROM accounts WHERE id = $1", [id]);
 
-exports.searchText = (query, userId, limit = 100) =>
+exports.searchText = (query, limit = 100) =>
   db.query(
     format(
-      "SELECT %s FROM accounts WHERE id <> %L AND LOWER(firstname) LIKE '%%%3$s%%' OR LOWER(lastname) LIKE '%%%3$s%%' OR LOWER(email) LIKE '%%%3$s%%' LIMIT %L",
-      SAFE_DATA,
-      userId,
+      "SELECT id, email, firstname, lastname FROM accounts WHERE LOWER(firstname) LIKE '%%%1$s%%' OR LOWER(lastname) LIKE '%%%1$s%%' OR LOWER(email) LIKE '%%%1$s%%' LIMIT %L",
       query,
       limit
     )
