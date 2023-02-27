@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 // import { useTranslation } from "react-i18next";
 import { useActionData, useLoaderData, useSubmit } from "react-router-dom";
-import { search, invite, getNews } from "@/api/subscriptions";
+import { search, invite, getNews, accept, deny } from "@/api/subscriptions";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
-import CallReceivedIcon from "@mui/icons-material/CallReceived";
+import DoneIcon from "@mui/icons-material/Done";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -27,16 +27,31 @@ export async function loader() {
   return res.json();
 }
 
-const GroupProvider = ({ id, firstname, lastname, email, status, action }) => (
+const GroupProvider = ({
+  id,
+  firstname,
+  lastname,
+  email,
+  status,
+  action,
+  accept,
+}) => (
   <ListItem
     key={id}
     secondaryAction={
-      <IconButton edge="end" onClick={action}>
-        {status === "sended" && <ScheduleIcon />}
-        {status === "received" && <CallReceivedIcon />}
-        {status === "accepted" && <LinkOffIcon />}
-        {!status && <AddLinkIcon />}
-      </IconButton>
+      <>
+        <IconButton edge="end" onClick={action}>
+          {status === "received" && <LinkOffIcon />}
+          {status === "sended" && <ScheduleIcon />}
+          {status === "connected" && <LinkOffIcon />}
+          {!status && <AddLinkIcon />}
+        </IconButton>
+        {status === "received" && (
+          <IconButton edge="end" onClick={accept}>
+            <DoneIcon />
+          </IconButton>
+        )}
+      </>
     }
   >
     <ListItemText secondary={email}>{`${firstname} ${lastname}`}</ListItemText>
@@ -53,11 +68,13 @@ export default function Subscriptions() {
   const [sended, setSended] = useState([]);
   const [received, setReceived] = useState([]);
   const [possible, setPossible] = useState([]);
+  const [connected, setConnected] = useState([]);
 
   useEffect(() => {
     if (typeof load === "number") return;
     setSended(load.sended);
     setReceived(load.received);
+    setConnected([]);
   }, []);
 
   useEffect(() => {
@@ -81,10 +98,26 @@ export default function Subscriptions() {
   };
 
   const handleInvite = (recipient) => async () => {
-    console.log(recipient);
     const { status } = await invite(recipient.id);
     if (status === 201) {
       setSended([...sended, recipient]);
+    }
+  };
+
+  const handleAccept = (recipient) => async () => {
+    const { status } = await accept(recipient.id);
+    if (status === 201) {
+      setConnected([...connected, recipient]);
+      setReceived(received.filter(({ id }) => id !== recipient.id));
+    }
+  };
+
+  const handleDeny = (recipient) => async () => {
+    const { status } = await deny(recipient.id);
+    console.log(status);
+    if (status === 204) {
+      setReceived(received.filter(({ id }) => id !== recipient.id));
+      setConnected(connected.filter(({ id }) => id !== recipient.id));
     }
   };
 
@@ -98,21 +131,31 @@ export default function Subscriptions() {
       />
       <List>
         {!query &&
-          sended.map((recipient) => (
+          sended.map((subscription) => (
             <GroupProvider
-              key={recipient.id}
-              action={() => console.log("clicked")}
+              key={subscription.id}
+              action={handleDeny(subscription)}
               status="sended"
-              {...recipient}
+              {...subscription}
             />
           ))}
         {!query &&
-          received.map((recipient) => (
+          received.map((subscription) => (
             <GroupProvider
-              key={recipient.id}
-              action={() => console.log("clicked")}
+              key={subscription.id}
+              accept={handleAccept(subscription)}
+              action={handleDeny(subscription)}
               status="received"
-              {...recipient}
+              {...subscription}
+            />
+          ))}
+        {!query &&
+          connected.map((subscription) => (
+            <GroupProvider
+              key={subscription.id}
+              action={handleDeny(subscription)}
+              status="connected"
+              {...subscription}
             />
           ))}
         {query &&

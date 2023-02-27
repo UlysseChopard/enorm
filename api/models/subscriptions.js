@@ -20,12 +20,12 @@ exports.getReceived = (recipient) =>
 
 exports.accept = (id) =>
   db.query(
-    "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1",
+    "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id::text = $1",
     [id]
   );
 
 exports.close = (id) =>
   db.query(
-    "UPDATE subscriptions SET rejected_at = CURRENT_TIMESTAMP WHERE id = $1",
+    "UPDATE subscriptions SET rejected_at = CURRENT_TIMESTAMP WHERE id::text = $1",
     [id]
   );

@@ -9,7 +9,6 @@ exports.get = async (req, res, next) => {
     );
     const sendedIds = new Set(sended.map(({ id }) => id));
     const receivedIds = new Set(received.map(({ id }) => id));
-    console.log(sendedIds, receivedIds);
     const results = searchResults.filter(
       ({ id }) =>
         id !== res.locals.userId && !sendedIds.has(id) && !receivedIds.has(id)
@@ -35,6 +34,20 @@ exports.invite = async (req, res, next) => {
   }
 };
 
-exports.establish = (req, res) => res.sendStatus(201);
+exports.establish = async (req, res, next) => {
+  try {
+    await Subscriptions.accept(req.params.subscription);
+    res.sendStatus(201);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.close = (req, res) => res.sendStatus(200);
+exports.close = async (req, res, next) => {
+  try {
+    await Subscriptions.close(req.params.subscriptions);
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};

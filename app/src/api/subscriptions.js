@@ -17,3 +17,17 @@ export function invite(recipient) {
 export function getNews() {
   return fetch("/api/subscriptions", { credentials: "include" });
 }
+
+export function accept(id) {
+  return fetch(`/api/subscriptions/${id}`, {
+    method: "POST",
+    credentials: "include",
+  });
+}
+
+export function deny(id) {
+  return fetch(`/api/subscriptions/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+}
