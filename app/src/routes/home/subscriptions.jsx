@@ -74,7 +74,7 @@ export default function Subscriptions() {
     if (typeof load === "number") return;
     setSended(load.sended);
     setReceived(load.received);
-    setConnected([]);
+    setConnected(load.accepted);
   }, []);
 
   useEffect(() => {
@@ -114,7 +114,6 @@ export default function Subscriptions() {
 
   const handleDeny = (recipient) => async () => {
     const { status } = await deny(recipient.id);
-    console.log(status);
     if (status === 204) {
       setReceived(received.filter(({ id }) => id !== recipient.id));
       setConnected(connected.filter(({ id }) => id !== recipient.id));

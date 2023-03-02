@@ -3,17 +3,29 @@ const { Subscriptions, Accounts } = require("../models");
 exports.get = async (req, res, next) => {
   try {
     const { rows: searchResults } = await Accounts.searchText(req.query.q);
-    const { rows: sended } = await Subscriptions.getSended(res.locals.userId);
-    const { rows: received } = await Subscriptions.getReceived(
+    const { rows: received } = await Subscriptions.getPendingReceived(
       res.locals.userId
     );
-    const sendedIds = new Set(sended.map(({ id }) => id));
-    const receivedIds = new Set(received.map(({ id }) => id));
-    const results = searchResults.filter(
-      ({ id }) =>
-        id !== res.locals.userId && !sendedIds.has(id) && !receivedIds.has(id)
+    const { rows: sended } = await Subscriptions.getPendingSended(
+      res.locals.userId
     );
-    return res.json({ sended, received, results });
+    const { rows: sendedOk } = await Subscriptions.getAcceptedSended(
+      res.locals.userId
+    );
+    const { rows: receivedOk } = await Subscriptions.getAcceptedReceived(
+      res.locals.userId
+    );
+    const accepted = sendedOk.concat(receivedOk);
+    const exceptIds = new Set(
+      sended
+        .map(({ id }) => id)
+        .concat(received.map(({ id }) => id))
+        .concat(accepted.map(({ id }) => id))
+    );
+    const results = searchResults.filter(
+      ({ id }) => id !== res.locals.userId && !exceptIds.has(id)
+    );
+    return res.json({ accepted, sended, received, results });
   } catch (err) {
     next(err);
   }
@@ -45,7 +57,7 @@ exports.establish = async (req, res, next) => {
 
 exports.close = async (req, res, next) => {
   try {
-    await Subscriptions.close(req.params.subscriptions);
+    await Subscriptions.close(req.params.subscription);
     res.sendStatus(204);
   } catch (err) {
     next(err);
