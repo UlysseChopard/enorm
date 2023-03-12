@@ -34,7 +34,7 @@ exports.get = async (req, res, next) => {
 exports.invite = async (req, res, next) => {
   try {
     if (!req.body.recipient)
-      return res.status(400).json({ message: "Missing recipient id in url" });
+      return res.status(400).json({ message: "Missing recipient id in body" });
     const {
       rows: [subscription],
     } = await Subscriptions.send(res.locals.userId, req.body.recipient);
