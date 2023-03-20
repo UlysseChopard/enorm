@@ -7,10 +7,12 @@ import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
+import LinkIcon from "@mui/icons-material/Link";
 import DoneIcon from "@mui/icons-material/Done";
 
 export async function action({ request }) {
@@ -41,9 +43,9 @@ const GroupProvider = ({
     secondaryAction={
       <>
         <IconButton edge="end" onClick={action}>
-          {status === "received" && <LinkOffIcon />}
-          {status === "sended" && <ScheduleIcon />}
-          {status === "connected" && <LinkOffIcon />}
+          {new Set(["received", "sended", "connected"]).has(status) && (
+            <LinkOffIcon />
+          )}
           {!status && <AddLinkIcon />}
         </IconButton>
         {status === "received" && (
@@ -54,6 +56,10 @@ const GroupProvider = ({
       </>
     }
   >
+    <ListItemIcon>
+      {status === "sended" && <ScheduleIcon />}
+      {status === "connected" && <LinkIcon />}
+    </ListItemIcon>
     <ListItemText secondary={email}>{`${firstname} ${lastname}`}</ListItemText>
   </ListItem>
 );
