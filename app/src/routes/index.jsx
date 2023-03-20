@@ -1,6 +1,17 @@
 import Home, { loader as homeLoader } from "@/routes/home";
-import Registrations, { loader as registrationsLoader } from "@/routes/home/registrations";
-import Profile, { loader as profileLoader } from "@/routes/home/profile";
+import Subscriptions, {
+  loader as subscriptionsLoader,
+  action as subscriptionsAction,
+} from "@/routes/home/subscriptions";
+import Dashboard, { loader as dashboardLoader } from "@/routes/home/dashboard";
+import Groups, {
+  loader as groupsLoader,
+  action as groupsAction,
+} from "@/routes/home/groups";
+import Profile, {
+  loader as profileLoader,
+  action as profileAction,
+} from "@/routes/home/profile";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -9,25 +20,33 @@ export default [
   {
     path: "/",
     element: <Home />,
+    shouldRevalidate: () => false,
     errorElement: <ErrorPage />,
     loader: homeLoader,
     children: [
       {
+        element: <Dashboard />,
+        loader: dashboardLoader,
+        index: true,
+      },
+      {
         path: "profile",
         element: <Profile />,
-        loader: profileLoader
+        loader: profileLoader,
+        action: profileAction,
       },
       {
-        path: "registrations",
-        element: <Registrations />,
-        loader: registrationsLoader
+        path: "subscriptions",
+        element: <Subscriptions />,
+        loader: subscriptionsLoader,
+        action: subscriptionsAction,
       },
       {
-        path: "community"
+        path: "groups",
+        element: <Groups />,
+        loader: groupsLoader,
+        action: groupsAction,
       },
-      {
-        path: "settings"
-      }
     ],
   },
   {

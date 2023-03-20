@@ -1,6 +1,10 @@
 .vscode
 **/local
 
+# Backup files
+*.ori
+*.orig
+
 # Npm
 **/node_modules
 

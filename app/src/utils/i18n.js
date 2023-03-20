@@ -14,7 +14,7 @@ i18n
     load: "languageOnly",
     cleanCode: true,
     fallbackLng: "en",
-    debug: import.meta.env.DEV,
+    debug: false,
     interpolation: {
       escapeValue: false,
     },

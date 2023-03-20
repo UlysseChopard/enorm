@@ -1,81 +1,102 @@
 import { useTranslation } from "react-i18next";
+import { useResolvedPath } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
-import PersonIcon from "@mui/icons-material/Person2";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import HubIcon from '@mui/icons-material/Hub';
-import SettingsIcon from '@mui/icons-material/Settings';
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import HubIcon from "@mui/icons-material/Hub";
+import ProfileMenu from "@/components/ProfileMenu";
+import GroupsIcon from "@mui/icons-material/Groups";
 
 const WIDTH = 240;
 
 const MENU = [
   {
-    icon: <PersonIcon  sx={{ color: "white" }} />,
-    text: "profile",
-  },
-  {
-    icon: <AppRegistrationIcon sx={{ color: "white" }} />,
+    icon: <AppRegistrationIcon />,
     text: "registrations",
+    target: "",
   },
   {
-    icon: <HubIcon sx={{ color: "white" }} />,
+    icon: <HubIcon />,
     text: "community",
+    target: "subscriptions",
   },
   {
-    icon: <SettingsIcon sx={{ color: "white" }} />,
-    text: "settings",
-  }
+    icon: <GroupsIcon />,
+    text: "groups",
+    target: "groups",
+  },
 ];
 
 const LeftNavbar = ({ user }) => {
   const { t } = useTranslation(null, { keyPrefix: "navbar" });
+  const { pathname } = useResolvedPath();
   return (
     <Drawer
       sx={{
         width: WIDTH,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
+          justifyContent: "space-between",
           width: WIDTH,
           boxSizing: "border-box",
-          backgroundColor: "#282525",
-          color: "white"
+          backgroundColor: "#e7f1fc",
+          color: "#041b32",
         },
       }}
       variant="permanent"
-      anchor="left"
+      elevation={24}
     >
-      <Toolbar>
-        <Stack direction="row" spacing={2}>
-          <AccountCircleIcon />
-          <Typography>
-            {user ? `${user?.firstname} ${user?.lastname}` : "USER XXX"}
-          </Typography>
-        </Stack>
-      </Toolbar>
-      <Divider sx={{ backgroundColor: "white" }} />
-      <List>
-        {MENU.map(({ text, icon }) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton href={text}>
-                <ListItemIcon>
-                  {icon}
-                </ListItemIcon>
-                <ListItemText primary={t(text)} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+      <List disablePadding>
+        {MENU.map(({ text, icon, target }) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "#0a4987",
+                },
+                "&:hover": {
+                  backgroundColor: "#a2a9b0",
+                },
+              }}
+              href={target}
+              selected={pathname === `/${target}`}
+            >
+              <ListItemIcon
+                sx={{
+                  "& :first-child": {
+                    color: pathname === `/${target}` ? "#e7f1fc" : "#108bdc",
+                  },
+                }}
+              >
+                {icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={t(text)}
+                sx={{
+                  color: pathname === `/${target}` ? "#e7f1fc" : "inherit",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
-    </Drawer>);
+      <List>
+        <Divider sx={{ borderColor: "#e7f1fc" }} />
+        <ListItem key="user" disablePadding>
+          <ProfileMenu
+            pathname={pathname}
+            avatar={`${user.firstname.charAt(0)}${user.lastname.charAt(0)}`}
+            name={`${user.firstname ?? ""} ${user.lastname ?? ""}`}
+          />
+        </ListItem>
+      </List>
+    </Drawer>
+  );
 };
-
 
 export default LeftNavbar;

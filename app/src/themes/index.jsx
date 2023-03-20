@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createTheme } from "@mui/material/styles";
 
@@ -13,13 +13,18 @@ export default createTheme({
   components: {
     MuiLink: {
       defaultProps: {
-        component: LinkBehaviour
+        component: LinkBehaviour,
       },
     },
     MuiButtonBase: {
       defaultProps: {
-        component: LinkBehaviour
-      }
-    }
-  }
+        LinkComponent: LinkBehaviour,
+      },
+    },
+    MuiListItemButton: {
+      defaultProps: {
+        component: LinkBehaviour,
+      },
+    },
+  },
 });

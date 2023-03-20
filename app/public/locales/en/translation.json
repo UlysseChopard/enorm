@@ -1,5 +1,9 @@
 {
   "signup": {
+    "company": "Company",
+    "male": "Male",
+    "female": "Female",
+    "gender": "Gender",
     "cancel": "Cancel",
     "firstname": "First name",
     "lastname": "Last name",
@@ -31,7 +35,8 @@
     "profile": "Profile",
     "registrations": "Registrations",
     "community": "Community",
-    "settings": "Settings"
+    "settings": "Settings",
+    "groups": "Working groups"
   },
   "account": {
     "firstname": "First name",
@@ -50,5 +55,45 @@
     "since": "Since",
     "expiration": "Expiration",
     "status": "Status"
+  },
+  "profile": {
+    "id": "Identity",
+    "firstname": "First name",
+    "lastname": "Last name",
+    "company": "Company",
+    "name": "Name",
+    "address": "Address",
+    "sponsor": "Sponsor",
+    "contact": "Contact",
+    "email": "Email address",
+    "cellphone": "Cell phone",
+    "phone": "Phone",
+    "submit": "Submit",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "password": "Password",
+    "newPassword": "New",
+    "oldPassword": "Previous"
+  },
+  "profileMenu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "groups": {
+    "create": "Create",
+    "sponsor": "Sponsor",
+    "reference": "Reference",
+    "title": "Group creation",
+    "text": "Please enter these informations to create a group",
+    "creation": "Creation",
+    "disbanding": "Disbanding",
+    "status": "Status",
+    "visibility": "Visibility",
+    "organisation": "Organisation",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "label": "Title"
   }
 }

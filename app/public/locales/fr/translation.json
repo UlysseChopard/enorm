@@ -1,5 +1,9 @@
 {
   "signup": {
+    "company": "Entreprise",
+    "male": "Monsieur",
+    "female": "Madame",
+    "gender": "Civilité",
     "cancel": "Annuler",
     "firstname": "Prénom",
     "lastname": "Nom",
@@ -31,7 +35,8 @@
     "profile": "Profil",
     "registrations": "Inscriptions",
     "community": "Réseau",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "groups": "Groupes de travail"
   },
   "account": {
     "firstname": "Prénom",
@@ -50,5 +55,45 @@
     "since": "Début",
     "expiration": "Fin",
     "status": "État"
+  },
+  "profile": {
+    "id": "Identité",
+    "firstname": "Prénom",
+    "lastname": "Nom de famille",
+    "company": "Établissement",
+    "name": "Nom",
+    "address": "Adresse",
+    "sponsor": "Sponsor",
+    "contact": "Contact",
+    "email": "Adresse mail",
+    "cellphone": "Téléphone portable",
+    "phone": "Téléphone fixe",
+    "submit": "Soumettre",
+    "gender": "Civilité",
+    "male": "Homme",
+    "female": "Femme",
+    "password": "Mot de passe",
+    "newPassword": "Nouveau",
+    "oldPassword": "Ancien"
+  },
+  "profileMenu": {
+    "profile": "Compte",
+    "settings": "Paramètres",
+    "logout": "Déconnection"
+  },
+  "groups": {
+    "create": "Créer",
+    "sponsor": "Sponsor",
+    "reference": "Réference",
+    "title": "Création d'un groupe",
+    "text": "Veuillez entrer ces informations pour créer un groupe",
+    "creation": "Création",
+    "disbanding": "Dissolution",
+    "status": "Statut",
+    "visibility": "Visibilité",
+    "organisation": "Organisation",
+    "cancel": "Annuler",
+    "submit": "Envoyer",
+    "label": "Titre"
   }
 }
