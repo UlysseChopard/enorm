@@ -36,8 +36,13 @@ exports.invite = async (req, res, next) => {
     if (!req.body.recipient)
       return res.status(400).json({ message: "Missing recipient id in body" });
     const {
+      rows: [previousSubscription],
+    } = await Subscriptions.getPrevious(res.locals.userId, req.body.recipient);
+    const {
       rows: [subscription],
-    } = await Subscriptions.send(res.locals.userId, req.body.recipient);
+    } = previousSubscription
+      ? await Subscriptions.reset(previousSubscription.id)
+      : await Subscriptions.send(res.locals.userId, req.body.recipient);
     if (!subscription)
       return res.status(500).json({ message: "Could not send invitation" });
     res.status(201).json({ status: "sended" });

@@ -30,6 +30,12 @@ exports.getAcceptedReceived = (recipient) =>
     [recipient]
   );
 
+exports.getPrevious = (firstUser, secondUser) =>
+  db.query(
+    "SELECT * FROM subscriptions WHERE sender IN ($1, $2) OR recipient IN ($1, $2)",
+    [firstUser, secondUser]
+  );
+
 exports.accept = (id) =>
   db.query(
     "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1",
@@ -39,5 +45,11 @@ exports.accept = (id) =>
 exports.close = (id) =>
   db.query(
     "UPDATE subscriptions SET rejected_at = CURRENT_TIMESTAMP WHERE id = $1",
+    [id]
+  );
+
+exports.reset = (id) =>
+  db.query(
+    "UPDATE subscriptions SET sended_at = CURRENT_TIMESTAMP,  accepted_at = NULL received_at = NULL,  rejected_at = NULL WHERE id = $1 RETURNING id, sended_at",
     [id]
   );
