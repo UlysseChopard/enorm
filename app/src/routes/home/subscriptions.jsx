@@ -56,10 +56,12 @@ const GroupProvider = ({
       </>
     }
   >
-    <ListItemIcon>
-      {status === "sended" && <ScheduleIcon />}
-      {status === "connected" && <LinkIcon />}
-    </ListItemIcon>
+    {status && (
+      <ListItemIcon>
+        {(status === "received" || status === "sended") && <ScheduleIcon />}
+        {status === "connected" && <LinkIcon />}
+      </ListItemIcon>
+    )}
     <ListItemText secondary={email}>{`${firstname} ${lastname}`}</ListItemText>
   </ListItem>
 );
@@ -103,13 +105,6 @@ export default function Subscriptions() {
     setQuery(e.target.value.toLowerCase());
   };
 
-  const handleInvite = (recipient) => async () => {
-    const { status } = await invite(recipient.id);
-    if (status === 201) {
-      setSended([...sended, recipient]);
-    }
-  };
-
   const handleAccept = (recipient) => async () => {
     const { status } = await accept(recipient.id);
     if (status === 201) {
@@ -121,8 +116,17 @@ export default function Subscriptions() {
   const handleDeny = (recipient) => async () => {
     const { status } = await deny(recipient.id);
     if (status === 204) {
+      setSended(sended.filter(({ id }) => id !== recipient.id));
       setReceived(received.filter(({ id }) => id !== recipient.id));
       setConnected(connected.filter(({ id }) => id !== recipient.id));
+    }
+  };
+
+  const handleInvite = (recipient) => async () => {
+    if (sended.map(({ id }) => id).includes(recipient.id)) return;
+    const { status } = await invite(recipient.id);
+    if (status === 201) {
+      setSended([...sended, recipient]);
     }
   };
 
