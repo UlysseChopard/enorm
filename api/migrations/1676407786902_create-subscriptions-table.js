@@ -26,7 +26,6 @@ exports.up = (pgm) => {
       },
       received_at: "timestamptz",
       accepted_at: "timestamptz",
-      rejected_at: "timestamptz",
     },
     { constraints: { unique: ["sender", "recipient"] } }
   );

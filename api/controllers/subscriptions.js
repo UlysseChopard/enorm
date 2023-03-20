@@ -36,15 +36,8 @@ exports.invite = async (req, res, next) => {
     if (!req.body.recipient)
       return res.status(400).json({ message: "Missing recipient id in body" });
     const {
-      rows: [previousSubscription],
-    } = await Subscriptions.getPrevious(res.locals.userId, req.body.recipient);
-    if (previousSubscription?.sended_at && !previousSubscription.rejected_at)
-      return res.status(400).json({ message: "Invitation already sent" });
-    const {
       rows: [subscription],
-    } = previousSubscription
-      ? await Subscriptions.reset(previousSubscription.id)
-      : await Subscriptions.send(res.locals.userId, req.body.recipient);
+    } = await Subscriptions.send(res.locals.userId, req.body.recipient);
     if (!subscription)
       return res.status(500).json({ message: "Could not send invitation" });
     res.status(201).json({ status: "sended" });
@@ -68,8 +61,8 @@ exports.establish = async (req, res, next) => {
 
 exports.close = async (req, res, next) => {
   try {
-    const { rows } = await Subscriptions.close(req.params.subscription);
-    if (!rows.length)
+    const { rowCount } = await Subscriptions.close(req.params.subscription);
+    if (!rowCount)
       return res.status(400).json({ message: "No subscription to close" });
     res.sendStatus(204);
   } catch (err) {
