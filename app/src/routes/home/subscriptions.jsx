@@ -75,7 +75,7 @@ export default function Subscriptions() {
     setSended(load.sended);
     setReceived(load.received);
     setConnected(load.accepted);
-  }, []);
+  }, [load]);
 
   useEffect(() => {
     if (action?.results) setPossible(action.results);

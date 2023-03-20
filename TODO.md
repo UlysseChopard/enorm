@@ -7,3 +7,4 @@
 - [ ] 868fbb7de57179 Permettre recherche d'un membre par nom ou email  
 - [ ] bf7367d469b0dc Permettre d'envoyer une demande d'abonnement  
 - [ ] 36544829555325 Permettre d'accepter une demande d'abonnement  
+- [x] c97aefe4068ed1 utiliser l'id de connection pour annuler une demande  

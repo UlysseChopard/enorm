@@ -38,18 +38,18 @@ exports.getPrevious = (firstUser, secondUser) =>
 
 exports.accept = (id) =>
   db.query(
-    "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1",
+    "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id",
     [id]
   );
 
 exports.close = (id) =>
   db.query(
-    "UPDATE subscriptions SET rejected_at = CURRENT_TIMESTAMP WHERE id = $1",
+    "UPDATE subscriptions SET rejected_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id",
     [id]
   );
 
 exports.reset = (id) =>
   db.query(
-    "UPDATE subscriptions SET sended_at = CURRENT_TIMESTAMP,  accepted_at = NULL received_at = NULL,  rejected_at = NULL WHERE id = $1 RETURNING id, sended_at",
+    "UPDATE subscriptions SET sended_at = CURRENT_TIMESTAMP,  accepted_at = NULL, received_at = NULL,  rejected_at = NULL WHERE id = $1 RETURNING id, sended_at",
     [id]
   );

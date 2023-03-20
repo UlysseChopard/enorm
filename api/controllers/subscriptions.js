@@ -38,6 +38,8 @@ exports.invite = async (req, res, next) => {
     const {
       rows: [previousSubscription],
     } = await Subscriptions.getPrevious(res.locals.userId, req.body.recipient);
+    if (previousSubscription?.sended_at && !previousSubscription.rejected_at)
+      return res.status(400).json({ message: "Invitation already sent" });
     const {
       rows: [subscription],
     } = previousSubscription
@@ -53,7 +55,11 @@ exports.invite = async (req, res, next) => {
 
 exports.establish = async (req, res, next) => {
   try {
-    await Subscriptions.accept(req.params.subscription);
+    const { rows } = await Subscriptions.accept(req.params.subscription);
+    if (!rows.length)
+      return res
+        .status(400)
+        .json({ message: "No subscription to be established" });
     res.sendStatus(201);
   } catch (err) {
     next(err);
@@ -62,7 +68,9 @@ exports.establish = async (req, res, next) => {
 
 exports.close = async (req, res, next) => {
   try {
-    await Subscriptions.close(req.params.subscription);
+    const { rows } = await Subscriptions.close(req.params.subscription);
+    if (!rows.length)
+      return res.status(400).json({ message: "No subscription to close" });
     res.sendStatus(204);
   } catch (err) {
     next(err);

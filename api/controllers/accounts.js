@@ -6,7 +6,7 @@ exports.get = async (req, res, next) => {
     const {
       rows: [account],
     } = await Accounts.getById(res.locals.userId);
-    if (!account) return res.status(401).json({ message: "user not found" });
+    if (!account) return res.status(401).json({ message: "Account not found" });
     res.json({ account });
   } catch (err) {
     next(err);
@@ -42,7 +42,7 @@ exports.create = async (req, res, next) => {
   try {
     const { email, password, company } = req.body;
     if (!password || !email || !company) {
-      return res.status(400).json({ message: "missing property" });
+      return res.status(400).json({ message: "Missing property" });
     }
     const hash = await crypt.hash(password);
     const {
