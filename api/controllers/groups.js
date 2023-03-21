@@ -2,18 +2,16 @@ const { Groups, Companies, Subscriptions } = require("../models");
 
 exports.get = async (_req, res, next) => {
   try {
-    const { rows: subscriptionsSended } = await Subscriptions.getAcceptedSended(
+    const { rows: subscriptions } = await Subscriptions.getAccepted(
       res.locals.userId
     );
-    const { rows: subscriptionsReceived } =
-      await Subscriptions.getAcceptedReceived(res.locals.userId);
     const groups = [];
-    for (const subscription of subscriptionsSended) {
-      const { rows } = await Groups.getAll(subscription.recipient);
-      groups.push(...rows);
-    }
-    for (const subscription of subscriptionsReceived) {
-      const { rows } = await Groups.getAll(subscription.sender);
+    for (const subscription of subscriptions) {
+      const { rows } = await Groups.getAll(
+        subscription.sender === res.locals.userId
+          ? subscription.recipient
+          : subscription.sender
+      );
       groups.push(...rows);
     }
     const { rows } = await Groups.getAll(res.locals.userId);

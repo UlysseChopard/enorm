@@ -30,6 +30,12 @@ exports.getAcceptedReceived = (recipient) =>
     [recipient]
   );
 
+exports.getAccepted = (userId) =>
+  db.query(
+    "SELECT sender, recipient FROM subscriptions WHERE sender = $1 OR recipient = $1 AND accepted_at IS NOT NULL",
+    [userId]
+  );
+
 exports.accept = (id) =>
   db.query(
     "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id",
