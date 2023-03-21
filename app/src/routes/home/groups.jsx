@@ -16,6 +16,10 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { get, create } from "@/api/groups";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import DoNotDisturbOnOutlinedIcon from "@mui/icons-material/DoNotDisturbOnOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 export async function loader() {
   const res = await get();
@@ -26,7 +30,7 @@ export async function loader() {
 export async function action({ request }) {
   const formData = await request.formData();
   const group = Object.fromEntries(formData);
-  
+
   const res = await create(group);
   if (!res.ok) return res.status;
   return res.json();
@@ -93,25 +97,38 @@ const createColumns = (t) => [
     sortingFn: "basic",
   },
   {
-    accessorKey: "creation",
+    id: "created_at",
+    accessorFn: (row) => new Date(row.created_at).toLocaleDateString(),
     header: t("creation"),
     enableSorting: true,
     sortingFn: "basic",
   },
   {
-    accessorKey: "disbanding",
+    accessorKey: "disbanded_at",
     header: t("disbanding"),
     enableSorting: true,
     sortingFn: "basic",
   },
   {
-    accessorKey: "status",
-    header: t("status"),
+    accessorKey: "open",
+    cell: (cell) =>
+      cell.getValue() ? (
+        <CheckCircleOutlineOutlinedIcon style={{ margin: "0 50%" }} />
+      ) : (
+        <DoNotDisturbOnOutlinedIcon style={{ margin: "0 50%" }} />
+      ),
+    header: t("openness"),
     enableSorting: true,
     sortingFn: "basic",
   },
   {
-    accessorKey: "visibility",
+    accessorKey: "visible",
+    cell: (cell) =>
+      cell.getValue() ? (
+        <VisibilityOutlinedIcon style={{ margin: "0 50%" }} />
+      ) : (
+        <VisibilityOffOutlinedIcon style={{ margin: "0 50%" }} />
+      ),
     header: t("visibility"),
     enableSorting: true,
     sortingFn: "basic",
@@ -141,11 +158,12 @@ export default function Groups() {
 
   return (
     <>
-      <Button variant="contained" onClick={() => setCreateModal(true)}>
-        {t("create")}
-      </Button>
-      <CreateModal open={createModal} onClose={() => setCreateModal(false)} />
-      <table>
+      <div style={{ margin: "0 1rem 1rem" }}>
+        <Button variant="contained" onClick={() => setCreateModal(true)}>
+          {t("create")}
+        </Button>
+      </div>
+      <table style={{ width: "100%" }}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -201,6 +219,7 @@ export default function Groups() {
           ))}
         </tfoot>
       </table>
+      <CreateModal open={createModal} onClose={() => setCreateModal(false)} />
     </>
   );
 }

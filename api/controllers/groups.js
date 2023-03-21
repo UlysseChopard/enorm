@@ -1,8 +1,23 @@
-const { Groups, Companies } = require("../models");
+const { Groups, Companies, Subscriptions } = require("../models");
 
 exports.get = async (_req, res, next) => {
   try {
-    const { rows: groups } = await Groups.getAll();
+    const { rows: subscriptionsSended } = await Subscriptions.getAcceptedSended(
+      res.locals.userId
+    );
+    const { rows: subscriptionsReceived } =
+      await Subscriptions.getAcceptedReceived(res.locals.userId);
+    const groups = [];
+    for (const subscription of subscriptionsSended) {
+      const { rows } = await Groups.getAll(subscription.recipient);
+      groups.push(...rows);
+    }
+    for (const subscription of subscriptionsReceived) {
+      const { rows } = await Groups.getAll(subscription.sender);
+      groups.push(...rows);
+    }
+    const { rows } = await Groups.getAll(res.locals.userId);
+    groups.push(...rows);
     res.json({ groups });
   } catch (err) {
     next(err);

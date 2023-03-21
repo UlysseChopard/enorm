@@ -16,7 +16,7 @@ const data = [
     label: "Blablabla",
     start: "10/05/2017",
     end: "31/12/2023",
-    status: "active"
+    status: "active",
   },
   {
     id: 1,
@@ -26,14 +26,14 @@ const data = [
     label: "Blablabla",
     start: null,
     end: "31/12/2023",
-    status: "denied"
-  } 
+    status: "denied",
+  },
 ];
 
-const createColumns = (t) => ([
+const createColumns = (t) => [
   {
     accessorKey: "member",
-    header: t("member")
+    header: t("member"),
   },
   {
     accessorFn: (row) => `${row.tc || ""} ${row.wg || ""}`,
@@ -41,7 +41,7 @@ const createColumns = (t) => ([
   },
   {
     accessorKey: "label",
-    header: t("label")
+    header: t("label"),
   },
   {
     accessorKey: "start",
@@ -53,28 +53,32 @@ const createColumns = (t) => ([
   },
   {
     accessorKey: "status",
-    header: t("status")
-  }
-]);
+    header: t("status"),
+  },
+];
 
 export async function loader() {
- const res = await get();
- if (!res.ok) return false;
- return res.json(); 
-};
+  const res = await get();
+  if (!res.ok) return false;
+  return res.json();
+}
 
 export default function HeadlessRegistrations() {
   const { registrations: data } = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const columns = createColumns(t);
-  const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
   return (
     <div>
-      <table>
+      <table style={{ width: "100%" }}>
         <thead>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
+              {headerGroup.headers.map((header) => (
                 <th key={header.id}>
                   {header.isPlaceholder
                     ? null
@@ -88,9 +92,9 @@ export default function HeadlessRegistrations() {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => (
+          {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
@@ -99,9 +103,9 @@ export default function HeadlessRegistrations() {
           ))}
         </tbody>
         <tfoot>
-          {table.getFooterGroups().map(footerGroup => (
+          {table.getFooterGroups().map((footerGroup) => (
             <tr key={footerGroup.id}>
-              {footerGroup.headers.map(header => (
+              {footerGroup.headers.map((header) => (
                 <th key={header.id}>
                   {header.isPlaceholder
                     ? null
@@ -118,4 +122,3 @@ export default function HeadlessRegistrations() {
     </div>
   );
 }
-

@@ -89,11 +89,14 @@
     "text": "Veuillez entrer ces informations pour créer un groupe",
     "creation": "Création",
     "disbanding": "Dissolution",
-    "status": "Statut",
+    "openness": "Ouvert aux inscriptions",
     "visibility": "Visibilité",
     "organisation": "Organisation",
     "cancel": "Annuler",
     "submit": "Envoyer",
     "label": "Titre"
+  },
+  "subscriptions": {
+    "search": "Recherche de fournisseurs de groupes de travail"
   }
 }
