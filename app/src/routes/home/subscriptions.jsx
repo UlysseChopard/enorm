@@ -123,10 +123,10 @@ export default function Subscriptions() {
   };
 
   const handleInvite = (recipient) => async () => {
-    if (sended.map(({ id }) => id).includes(recipient.id)) return;
     const { status } = await invite(recipient.id);
     if (status === 201) {
       setSended([...sended, recipient]);
+      setPossible(possible.filter(({ id }) => id !== recipient.id));
     }
   };
 
