@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useActionData, useLoaderData, useSubmit } from "react-router-dom";
 import { search, invite, getNews, accept, deny } from "@/api/subscriptions";
 import TextField from "@mui/material/TextField";
@@ -69,7 +69,7 @@ const GroupProvider = ({
 export default function Subscriptions() {
   const action = useActionData();
   const load = useLoaderData();
-  // const { t } = useTranslation(null, { keyPrefix: "subscriptions" });
+  const { t } = useTranslation(null, { keyPrefix: "subscriptions" });
   const submit = useSubmit();
   const timeoutId = useRef(null);
   const [query, setQuery] = useState("");
@@ -133,9 +133,10 @@ export default function Subscriptions() {
   return (
     <Stack>
       <TextField
-        placeholder="Search group providers"
+        placeholder={t("search")}
         id="text"
         name="text"
+        type="search"
         onChange={handleSearch}
       />
       <List>

@@ -95,5 +95,8 @@
     "cancel": "Cancel",
     "submit": "Submit",
     "label": "Title"
+  },
+  "subscriptions": {
+    "search": "Search groups providers"
   }
 }

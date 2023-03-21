@@ -95,5 +95,8 @@
     "cancel": "Annuler",
     "submit": "Envoyer",
     "label": "Titre"
+  },
+  "subscriptions": {
+    "search": "Recherche de fournisseurs de groupes de travail"
   }
 }
