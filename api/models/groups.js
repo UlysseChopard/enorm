@@ -1,8 +1,9 @@
 const { db } = require("../utils");
 
-exports.getAll = () =>
+exports.getAll = (userId) =>
   db.query(
-    "SELECT g.created_at, g.organisation, g.reference, g.title, g.disbanded_at, g.open, g.visible, a.email FROM groups AS g INNER JOIN accounts AS a ON g.creator = a.id"
+    "SELECT g.created_at, g.organisation, g.reference, g.title, g.disbanded_at, g.open, g.visible, a.email FROM groups AS g INNER JOIN accounts AS a ON g.creator = a.id WHERE g.creator = $1",
+    [userId]
   );
 
 exports.create = (userId, { organisation, title, reference, sponsor }) =>
