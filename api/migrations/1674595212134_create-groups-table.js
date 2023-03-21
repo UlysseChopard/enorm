@@ -7,7 +7,7 @@ exports.up = (pgm) => {
     "groups",
     {
       id: "id",
-      createdAt: "createdAt",
+      created_at: "createdAt",
       creator: {
         type: "uuid",
         references: "accounts",

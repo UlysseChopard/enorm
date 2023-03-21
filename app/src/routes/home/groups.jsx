@@ -26,7 +26,7 @@ export async function loader() {
 export async function action({ request }) {
   const formData = await request.formData();
   const group = Object.fromEntries(formData);
-  
+
   const res = await create(group);
   if (!res.ok) return res.status;
   return res.json();
@@ -93,7 +93,8 @@ const createColumns = (t) => [
     sortingFn: "basic",
   },
   {
-    accessorKey: "creation",
+    id: "created_at",
+    accessorFn: (row) => new Date(row.created_at).toLocaleString(),
     header: t("creation"),
     enableSorting: true,
     sortingFn: "basic",
@@ -141,11 +142,12 @@ export default function Groups() {
 
   return (
     <>
-      <Button variant="contained" onClick={() => setCreateModal(true)}>
-        {t("create")}
-      </Button>
-      <CreateModal open={createModal} onClose={() => setCreateModal(false)} />
-      <table>
+      <div style={{ margin: "0 1rem 1rem" }}>
+        <Button variant="contained" onClick={() => setCreateModal(true)}>
+          {t("create")}
+        </Button>
+      </div>
+      <table style={{ width: "100%" }}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -201,6 +203,7 @@ export default function Groups() {
           ))}
         </tfoot>
       </table>
+      <CreateModal open={createModal} onClose={() => setCreateModal(false)} />
     </>
   );
 }
