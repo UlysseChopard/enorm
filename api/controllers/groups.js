@@ -6,12 +6,8 @@ exports.get = async (_req, res, next) => {
       res.locals.userId
     );
     const groups = [];
-    for (const subscription of subscriptions) {
-      const { rows } = await Groups.getAll(
-        subscription.sender === res.locals.userId
-          ? subscription.recipient
-          : subscription.sender
-      );
+    for (const { recipient } of subscriptions) {
+      const { rows } = await Groups.getAll(recipient);
       groups.push(...rows);
     }
     const { rows } = await Groups.getAll(res.locals.userId);
@@ -25,7 +21,6 @@ exports.get = async (_req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     const { group } = req.body;
-    // What if many companies created by the same user ?
     const {
       rows: [company],
     } = await Companies.getByCreator(res.locals.userId);
