@@ -6,25 +6,25 @@ exports.send = (sender, recipient) =>
     [sender, recipient]
   );
 
-exports.getPendingSended = (recipient) =>
+exports.getPendingProviders = (recipient) =>
   db.query(
     "SELECT *, s.id FROM subscriptions AS s JOIN accounts AS a ON s.recipient = a.id WHERE s.sender = $1 AND accepted_at IS NULL",
     [recipient]
   );
 
-exports.getPendingReceived = (recipient) =>
+exports.getPendingSubscribers = (recipient) =>
   db.query(
     "SELECT *, s.id FROM subscriptions AS s JOIN accounts AS a ON s.sender = a.id WHERE s.recipient = $1 AND accepted_at IS NULL",
     [recipient]
   );
 
-exports.getAcceptedSended = (recipient) =>
+exports.getProviders = (recipient) =>
   db.query(
     "SELECT *, s.id FROM subscriptions AS s JOIN accounts AS a ON s.recipient = a.id WHERE sender = $1 AND accepted_at IS NOT NULL",
     [recipient]
   );
 
-exports.getAcceptedReceived = (recipient) =>
+exports.getSubscribers = (recipient) =>
   db.query(
     "SELECT *, s.id FROM subscriptions AS s JOIN accounts AS a ON s.sender = a.id WHERE recipient = $1 AND accepted_at IS NOT NULL",
     [recipient]

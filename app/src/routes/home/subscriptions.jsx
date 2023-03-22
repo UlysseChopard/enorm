@@ -12,8 +12,9 @@ import IconButton from "@mui/material/IconButton";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
-import LinkIcon from "@mui/icons-material/Link";
+import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import DoneIcon from "@mui/icons-material/Done";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -43,9 +44,9 @@ const GroupProvider = ({
     secondaryAction={
       <>
         <IconButton edge="end" onClick={action}>
-          {new Set(["received", "sended", "connected"]).has(status) && (
-            <LinkOffIcon />
-          )}
+          {new Set(["received", "sended", "subscribed", "provided"]).has(
+            status
+          ) && <LinkOffIcon />}
           {!status && <AddLinkIcon />}
         </IconButton>
         {status === "received" && (
@@ -59,7 +60,8 @@ const GroupProvider = ({
     {status && (
       <ListItemIcon>
         {(status === "received" || status === "sended") && <ScheduleIcon />}
-        {status === "connected" && <LinkIcon />}
+        {status === "provided" && <SaveAltIcon />}
+        {status === "subscribed" && <DoubleArrowIcon />}
       </ListItemIcon>
     )}
     <ListItemText secondary={email}>{`${firstname} ${lastname}`}</ListItemText>
@@ -75,18 +77,19 @@ export default function Subscriptions() {
   const [query, setQuery] = useState("");
   const [sended, setSended] = useState([]);
   const [received, setReceived] = useState([]);
-  const [possible, setPossible] = useState([]);
-  const [connected, setConnected] = useState([]);
+  const [search, setSearch] = useState([]);
+  const [subscribers, setSubscribers] = useState([]);
+  const [providers, setProviders] = useState([]);
 
   useEffect(() => {
-    if (typeof load === "number") return;
     setSended(load.sended);
     setReceived(load.received);
-    setConnected(load.accepted);
+    setSubscribers(load.subscribers);
+    setProviders(load.providers);
   }, [load]);
 
   useEffect(() => {
-    if (action?.results) setPossible(action.results);
+    if (action?.results) setSearch(action.results);
   }, [action]);
 
   useEffect(() => {
@@ -108,7 +111,7 @@ export default function Subscriptions() {
   const handleAccept = (recipient) => async () => {
     const { status } = await accept(recipient.id);
     if (status === 201) {
-      setConnected([...connected, recipient]);
+      setSubscribers([...subscribers, recipient]);
       setReceived(received.filter(({ id }) => id !== recipient.id));
     }
   };
@@ -118,7 +121,8 @@ export default function Subscriptions() {
     if (status === 204) {
       setSended(sended.filter(({ id }) => id !== recipient.id));
       setReceived(received.filter(({ id }) => id !== recipient.id));
-      setConnected(connected.filter(({ id }) => id !== recipient.id));
+      setSubscribers(subscribers.filter(({ id }) => id !== recipient.id));
+      setProviders(providers.filter(({ id }) => id !== recipient.id));
     }
   };
 
@@ -126,7 +130,7 @@ export default function Subscriptions() {
     const { status } = await invite(recipient.id);
     if (status === 201) {
       setSended([...sended, recipient]);
-      setPossible(possible.filter(({ id }) => id !== recipient.id));
+      setSearch(search.filter(({ id }) => id !== recipient.id));
     }
   };
 
@@ -160,16 +164,25 @@ export default function Subscriptions() {
             />
           ))}
         {!query &&
-          connected.map((subscription) => (
+          subscribers.map((subscriber) => (
             <GroupProvider
-              key={subscription.id}
-              action={handleDeny(subscription)}
-              status="connected"
-              {...subscription}
+              key={subscriber.id}
+              action={handleDeny(subscriber)}
+              status="subscribed"
+              {...subscriber}
+            />
+          ))}
+        {!query &&
+          providers.map((provider) => (
+            <GroupProvider
+              key={provider.id}
+              action={handleDeny(provider)}
+              status="provided"
+              {...provider}
             />
           ))}
         {query &&
-          possible.map((recipient) => (
+          search.map((recipient) => (
             <GroupProvider
               key={recipient.id}
               action={handleInvite(recipient)}

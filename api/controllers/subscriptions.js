@@ -2,21 +2,21 @@ const { Subscriptions, Accounts } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: received } = await Subscriptions.getPendingReceived(
+    const { rows: received } = await Subscriptions.getPendingSubscribers(
       res.locals.userId
     );
-    const { rows: sended } = await Subscriptions.getPendingSended(
+    const { rows: sended } = await Subscriptions.getPendingProviders(
       res.locals.userId
     );
-    const { rows: subscribed } = await Subscriptions.getAcceptedSended(
+    const { rows: providers } = await Subscriptions.getProviders(
       res.locals.userId
     );
-    const { rows: accepted } = await Subscriptions.getAcceptedReceived(
+    const { rows: subscribers } = await Subscriptions.getSubscribers(
       res.locals.userId
     );
     const existing = new Set([
-      ...received.concat(accepted).map(({ sender }) => sender),
-      ...sended.concat(subscribed).map(({ recipient }) => recipient),
+      ...received.concat(subscribers).map(({ sender }) => sender),
+      ...sended.concat(providers).map(({ recipient }) => recipient),
       res.locals.userId,
     ]);
     const results = req.query.q
@@ -25,8 +25,8 @@ exports.get = async (req, res, next) => {
         )
       : null;
     return res.json({
-      subscribed,
-      accepted,
+      providers,
+      subscribers,
       sended,
       received,
       results,
