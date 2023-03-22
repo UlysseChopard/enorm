@@ -14,3 +14,5 @@
 - [ ] 929a3ecc406a22 invitation with managed account option  
 - [ ] ed13676f59578b forgot password feat  
 - [ ] 2ba9a88c779277 fix match password  
+- [ ] d4aadbd48522c3 invite and make a member feat  
+- [ ] 038fdd2e52188d update docker compose and dockerfiles  
