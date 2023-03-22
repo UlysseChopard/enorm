@@ -8,9 +8,9 @@
 - [x] bf7367d469b0dc Permettre d'envoyer une demande d'abonnement  
 - [x] 36544829555325 Permettre d'accepter une demande d'abonnement  
 - [x] c97aefe4068ed1 utiliser l'id de connection pour annuler une demande  
-- [ ] e839c83942ad1d Prevent sended sub to be displayed in search results  
+- [x] e839c83942ad1d Prevent sended sub to be displayed in search results  
 - [ ] 83946e26d39e0b create members table  
-- [ ] acb79539b0636a sender in subscription is subscribe to group provider  
+- [x] acb79539b0636a sender in subscription is subscribe to group provider  
 - [ ] 929a3ecc406a22 invitation with managed account option  
 - [ ] ed13676f59578b forgot password feat  
 - [ ] 2ba9a88c779277 fix match password  
