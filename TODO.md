@@ -12,3 +12,5 @@
 - [ ] 83946e26d39e0b create members table  
 - [ ] acb79539b0636a sender in subscription is subscribe to group provider  
 - [ ] 929a3ecc406a22 invitation with managed account option  
+- [ ] ed13676f59578b forgot password feat  
+- [ ] 2ba9a88c779277 fix match password  
