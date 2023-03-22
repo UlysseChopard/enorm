@@ -2,30 +2,35 @@ const { Subscriptions, Accounts } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: searchResults } = await Accounts.searchText(req.query.q);
     const { rows: received } = await Subscriptions.getPendingReceived(
       res.locals.userId
     );
     const { rows: sended } = await Subscriptions.getPendingSended(
       res.locals.userId
     );
-    const { rows: sendedOk } = await Subscriptions.getAcceptedSended(
+    const { rows: subscribed } = await Subscriptions.getAcceptedSended(
       res.locals.userId
     );
-    const { rows: receivedOk } = await Subscriptions.getAcceptedReceived(
+    const { rows: accepted } = await Subscriptions.getAcceptedReceived(
       res.locals.userId
     );
-    const accepted = sendedOk.concat(receivedOk);
-    const exceptIds = new Set(
-      sended
-        .map(({ id }) => id)
-        .concat(received.map(({ id }) => id))
-        .concat(accepted.map(({ id }) => id))
-    );
-    const results = searchResults.filter(
-      ({ id }) => id !== res.locals.userId && !exceptIds.has(id)
-    );
-    return res.json({ accepted, sended, received, results });
+    const existing = new Set([
+      ...received.concat(accepted).map(({ sender }) => sender),
+      ...sended.concat(subscribed).map(({ recipient }) => recipient),
+      res.locals.userId,
+    ]);
+    const results = req.query.q
+      ? await Accounts.searchText(req.query.q).then(({ rows }) =>
+          rows.filter(({ id }) => !existing.has(id))
+        )
+      : null;
+    return res.json({
+      subscribed,
+      accepted,
+      sended,
+      received,
+      results,
+    });
   } catch (err) {
     next(err);
   }
