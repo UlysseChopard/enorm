@@ -23,7 +23,7 @@ exports.update = async (req, res, next) => {
         return res.status(400).json({ message: "Missing old password" });
       if (!req.body.newPassword)
         return res.status(400).json({ message: "Missing new password" });
-      if (!req.body.oldPassword === crypt.decrypt(prev.hash))
+      if (!crypt.encrypt(req.body.oldPassword) === prev.hash)
         return res.sendStatus(401);
       req.body.hash = crypt.encrypt(req.body.password);
       delete req.body.oldPassword;
