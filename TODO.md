@@ -12,9 +12,10 @@
 - [ ] 83946e26d39e0b create members table  
 - [x] acb79539b0636a sender in subscription is subscribe to group provider  
 - [ ] 929a3ecc406a22 invitation with managed account option  
-- [ ] ed13676f59578b forgot password feat  
-- [ ] 2ba9a88c779277 fix match password  
+- [x] ed13676f59578b forgot password feat  
+- [x] 2ba9a88c779277 fix match password  
 - [ ] d4aadbd48522c3 invite and make a member feat  
 - [ ] 038fdd2e52188d update docker compose and dockerfiles  
 - [ ] ca6ba3956957ad propagate groups to indirect subscribers  
 - [ ] f0e233acb78e85 present subscriptions in 2 separated tabs  
+- [ ] 4332062fb2ec11 make token limited in time or for only one session  
