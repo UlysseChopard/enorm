@@ -16,3 +16,5 @@
 - [ ] 2ba9a88c779277 fix match password  
 - [ ] d4aadbd48522c3 invite and make a member feat  
 - [ ] 038fdd2e52188d update docker compose and dockerfiles  
+- [ ] ca6ba3956957ad propagate groups to indirect subscribers  
+- [ ] f0e233acb78e85 present subscriptions in 2 separated tabs  
