@@ -23,9 +23,9 @@ exports.update = async (req, res, next) => {
         return res.status(400).json({ message: "Missing old password" });
       if (!req.body.newPassword)
         return res.status(400).json({ message: "Missing new password" });
-      const isCorrectOld = await crypt.compare(req.body.oldPassword, prev.hash);
-      if (!isCorrectOld) return res.sendStatus(401);
-      req.body.hash = await crypt.hash(req.body.password);
+      if (!req.body.oldPassword === crypt.decrypt(prev.hash))
+        return res.sendStatus(401);
+      req.body.hash = crypt.encrypt(req.body.password);
       delete req.body.oldPassword;
       delete req.body.newPassword;
     }
@@ -44,7 +44,7 @@ exports.create = async (req, res, next) => {
     if (!password || !email || !company) {
       return res.status(400).json({ message: "Missing property" });
     }
-    const hash = await crypt.hash(password);
+    const hash = crypt.encrypt(password);
     const {
       rows: [account],
     } = await Accounts.create({ ...req.body, hash });

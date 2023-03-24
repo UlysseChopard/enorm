@@ -7,11 +7,8 @@ exports.login = async (req, res, next) => {
       rows: [account],
     } = await Accounts.getByEmail(req.body.email);
     if (!account) return res.sendStatus(401);
-    const isCorrectPassword = await crypt.compare(
-      req.body.password,
-      account.hash
-    );
-    if (!isCorrectPassword) return res.sendStatus(401);
+    if (!req.body.password === crypt.decrypt(account.hash))
+      return res.sendStatus(401);
     const token = jwt.sign({ uuid: account.id });
     res.cookie(jwt.key, token, {
       httpOnly: true,
