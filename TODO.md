@@ -19,3 +19,7 @@
 - [ ] ca6ba3956957ad propagate groups to indirect subscribers  
 - [ ] f0e233acb78e85 present subscriptions in 2 separated tabs  
 - [ ] 4332062fb2ec11 make token limited in time or for only one session  
+- [ ] 4104f161aba6ef members and experts by csv  
+## 27/03/2023 22:01:14 new password front  
+- [ ] ea21a9a9b681c9 use email from login in reset password form  
+- [ ] 152154fd1d1a4e trad  

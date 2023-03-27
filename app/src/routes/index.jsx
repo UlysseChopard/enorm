@@ -15,6 +15,9 @@ import Profile, {
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
+import ResetPassword, {
+  action as resetPasswordAction,
+} from "@/routes/reset-password";
 
 export default [
   {
@@ -60,6 +63,12 @@ export default [
     element: <Logout />,
     errorElement: <ErrorPage />,
     loader: logoutLoader,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+    errorElement: <ErrorPage />,
+    action: resetPasswordAction,
   },
 ];
 
