@@ -1,17 +1,28 @@
 const { Groups, Companies, Subscriptions } = require("../models");
 
+const getGroups = async (userId, groups) => {
+  const { rows: subscriptions } = await Subscriptions.getAccepted(userId);
+  const { rows } = await Groups.getAll(userId);
+  groups.set(userId, rows);
+  for (const { recipient } of subscriptions) {
+    if (groups.has(recipient)) continue;
+    const { rows } = await Groups.getAll(recipient);
+    groups.set(recipient, rows);
+    const { rows: subscriptions } = await Subscriptions.getAccepted(recipient);
+    for (const { recipient } of subscriptions) {
+      await getGroups(recipient, groups);
+    }
+  }
+};
+
 exports.get = async (_req, res, next) => {
   try {
-    const { rows: subscriptions } = await Subscriptions.getAccepted(
-      res.locals.userId
-    );
+    const map = new Map();
+    await getGroups(res.locals.userId, map);
     const groups = [];
-    for (const { recipient } of subscriptions) {
-      const { rows } = await Groups.getAll(recipient);
-      groups.push(...rows);
+    for (const userGroups of map.values()) {
+      groups.push(...userGroups);
     }
-    const { rows } = await Groups.getAll(res.locals.userId);
-    groups.push(...rows);
     res.json({ groups });
   } catch (err) {
     next(err);
