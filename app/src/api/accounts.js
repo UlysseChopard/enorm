@@ -1,3 +1,5 @@
+import fetch from "@/api";
+
 export function get() {
   return fetch("/api/accounts", { credentials: "include" });
 }
@@ -8,7 +10,7 @@ export function update(infos) {
     credentials: "include",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     method: "PUT",
   });
@@ -20,9 +22,9 @@ export function updatePassword(infos) {
     credentials: "include",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    method: "PATCH"
+    method: "PATCH",
   });
 }
 
@@ -31,7 +33,7 @@ export function create(infos) {
     body: JSON.stringify(infos),
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     method: "POST",
   });

@@ -1,3 +1,5 @@
+import fetch from "@/api";
+
 export const get = () => fetch("/api/groups", { credentials: "include" });
 
 export const create = (group) =>

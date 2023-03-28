@@ -15,6 +15,12 @@ import Profile, {
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
+import ResetPassword, {
+  action as resetPasswordAction,
+} from "@/routes/reset-password";
+import AccessToken, {
+  loader as accessTokenLoader,
+} from "@/routes/access-token";
 
 export default [
   {
@@ -60,6 +66,18 @@ export default [
     element: <Logout />,
     errorElement: <ErrorPage />,
     loader: logoutLoader,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+    errorElement: <ErrorPage />,
+    action: resetPasswordAction,
+  },
+  {
+    path: "/access/:first/:second/:third",
+    element: <AccessToken />,
+    errorElement: <ErrorPage />,
+    loader: accessTokenLoader,
   },
 ];
 
