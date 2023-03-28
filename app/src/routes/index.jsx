@@ -18,6 +18,9 @@ import Logout, { loader as logoutLoader } from "@/routes/logout";
 import ResetPassword, {
   action as resetPasswordAction,
 } from "@/routes/reset-password";
+import AccessToken, {
+  loader as accessTokenLoader,
+} from "@/routes/access-token";
 
 export default [
   {
@@ -69,6 +72,12 @@ export default [
     element: <ResetPassword />,
     errorElement: <ErrorPage />,
     action: resetPasswordAction,
+  },
+  {
+    path: "/access/:first/:second/:third",
+    element: <AccessToken />,
+    errorElement: <ErrorPage />,
+    loader: accessTokenLoader,
   },
 ];
 

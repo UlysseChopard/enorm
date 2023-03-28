@@ -41,7 +41,9 @@ exports.sendMailAccess = async (req, res, next) => {
     } = await Accounts.getByEmail(req.body.email);
     if (!account) return res.sendStatus(401);
     const token = jwt.sign({ uuid: account.id });
-    const resetLink = `${BASE_URL}/no-password/${token}`;
+    const resetLink = `${BASE_URL}/access/${encodeURIComponent(
+      token
+    ).replaceAll(".", "/")}`;
     const subject = "Connect to Enorm without password";
     const header = "Hi";
     const body = `Please click on the link after to connect to Enorm without a password: ${resetLink}`;
