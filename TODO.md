@@ -23,3 +23,4 @@
 ## 27/03/2023 22:01:14 new password front  
 - [ ] ea21a9a9b681c9 use email from login in reset password form  
 - [ ] 152154fd1d1a4e trad  
+- [ ] 8d26cf15e58d70 remove double check for password update  
