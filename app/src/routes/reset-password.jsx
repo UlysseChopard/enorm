@@ -1,17 +1,19 @@
 import { useActionData, useSearchParams, Form } from "react-router-dom";
+import { getMagicLink } from "@/api/sessions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { getMagicLink } from "@/api/sessions";
+import Snackbar from "@/components/Snackbar";
 
 export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
+  const requestNumber = formData.get("requestNumber");
   const res = await getMagicLink(email);
-  return res.ok;
+  return res.ok ? requestNumber + 1 : 0;
 }
 
 const ResetPassword = () => {
-  const magicLinkSended = useActionData();
+  const magicLinkSent = useActionData();
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (
@@ -54,6 +56,7 @@ const ResetPassword = () => {
           Submit
         </Button>
       </div>
+      <Snackbar severity="info" msg="Token sent" open={magicLinkSent} />
     </Form>
   );
 };
