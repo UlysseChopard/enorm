@@ -1,5 +1,3 @@
-import fetch from "@/api";
-
 export function getStatus() {
   return fetch("/api/sessions", { credentials: "include" });
 }
