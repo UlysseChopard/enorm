@@ -7,7 +7,7 @@ export const loader = async ({ params }) => {
     `${params.first}.${params.second}.${params.third}`
   );
   const res = await requestAccess(token);
-  if (!res.ok) return null;
+  if (!res.ok) return redirect("/login");
   return redirect("/");
 };
 
