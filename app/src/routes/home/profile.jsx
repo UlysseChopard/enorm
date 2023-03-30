@@ -69,11 +69,7 @@ const PASSWORD = {
   name: "password",
   fields: [
     {
-      name: "oldPassword",
-      type: "password",
-    },
-    {
-      name: "newPassword",
+      name: "password",
       type: "password",
     },
   ],

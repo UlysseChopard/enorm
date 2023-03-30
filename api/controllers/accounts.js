@@ -18,20 +18,16 @@ exports.update = async (req, res, next) => {
     const {
       rows: [prev],
     } = await Accounts.getById(res.locals.userId);
-    if (req.body.newPassword || req.body.oldPassword) {
-      if (!req.body.oldPassword)
-        return res.status(400).json({ message: "Missing old password" });
-      if (!req.body.newPassword)
-        return res.status(400).json({ message: "Missing new password" });
-      if (!crypt.encrypt(req.body.oldPassword) === prev.hash)
-        return res.sendStatus(401);
-      req.body.hash = crypt.encrypt(req.body.password);
-      delete req.body.oldPassword;
-      delete req.body.newPassword;
-    }
+    const hash = req.body.password
+      ? crypt.encrypt(req.body.password)
+      : prev.hash;
     const {
       rows: [account],
-    } = await Accounts.update(res.locals.userId, { ...prev, ...req.body });
+    } = await Accounts.update(res.locals.userId, {
+      ...prev,
+      ...req.body,
+      hash,
+    });
     res.json({ account });
   } catch (err) {
     next(err);
