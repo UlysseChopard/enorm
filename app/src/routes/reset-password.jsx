@@ -7,9 +7,8 @@ import Snackbar from "@/components/Snackbar";
 export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
-  const requestNumber = formData.get("requestNumber");
   const res = await getMagicLink(email);
-  return res.ok ? requestNumber + 1 : 0;
+  return res.ok;
 }
 
 const ResetPassword = () => {
