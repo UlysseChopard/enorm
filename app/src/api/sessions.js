@@ -20,9 +20,20 @@ export function logout() {
 
 export function getMagicLink(email) {
   return fetch("/api/sessions/no-password", {
-    credentials: "include",
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
+  });
+}
+
+export function requestAccess(token) {
+  return fetch("/api/sessions/no-password", {
+    credentials: "include",
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
 }

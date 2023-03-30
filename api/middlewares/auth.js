@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
     res.locals.userId = decoded.uuid;
     next();
   } catch (err) {
+    if (err.expiredAt) return next();
     next(err);
   }
 };
