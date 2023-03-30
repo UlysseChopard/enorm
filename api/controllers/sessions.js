@@ -16,10 +16,21 @@ exports.login = async (req, res, next) => {
       maxAge: jwt.maxAge,
       secure: process.env.NODE === "production",
     });
-    res.json({ token });
+    res.sendStatus(204);
   } catch (err) {
     next(err);
   }
+};
+
+exports.loginWithoutPasswd = (_req, res) => {
+  if (!res.locals.userId) return res.sendStatus(401);
+  const token = jwt.sign({ uuid: res.locals.userId });
+  res.cookie(jwt.key, token, {
+    httpOnly: true,
+    maxAge: jwt.maxAge,
+    secure: process.env.NODE === "production",
+  });
+  res.sendStatus(204);
 };
 
 exports.logout = async (req, res) => {
@@ -40,7 +51,10 @@ exports.sendMailAccess = async (req, res, next) => {
       rows: [account],
     } = await Accounts.getByEmail(req.body.email);
     if (!account) return res.sendStatus(401);
-    const token = jwt.sign({ uuid: account.id });
+    const token = jwt.sign(
+      { uuid: account.id },
+      process.env.JWT_RESET_PASSWD_MAX_AGE
+    );
     const resetLink = `${BASE_URL}/access/${encodeURIComponent(
       token
     ).replaceAll(".", "/")}`;
