@@ -44,3 +44,27 @@ exports.create = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.setRegistrationsOpenness = async (req, res, next) => {
+  try {
+    const { id, status } = req.params;
+    const {
+      rows: [group],
+    } = await Groups.setRegistrationsOpenness(id, status === "open");
+    res.json({ group });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.setVisibility = async (req, res, next) => {
+  try {
+    const { id, status } = req.params;
+    const {
+      rows: [group],
+    } = await Groups.setVisibility(id, status === "visible");
+    res.json({ group });
+  } catch (err) {
+    next(err);
+  }
+};

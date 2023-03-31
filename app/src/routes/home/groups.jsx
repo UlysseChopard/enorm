@@ -15,7 +15,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import { get, create } from "@/api/groups";
+import {
+  get,
+  create,
+  setVisibility,
+  setRegistrationsOpenness,
+} from "@/api/groups";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import DoNotDisturbOnOutlinedIcon from "@mui/icons-material/DoNotDisturbOnOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -113,9 +118,15 @@ const createColumns = (t) => [
     accessorKey: "open",
     cell: (cell) =>
       cell.getValue() ? (
-        <CheckCircleOutlineOutlinedIcon style={{ margin: "0 50%" }} />
+        <CheckCircleOutlineOutlinedIcon
+          style={{ margin: "0 50%" }}
+          onClick={() => setRegistrationsOpenness(cell.row.id, false)}
+        />
       ) : (
-        <DoNotDisturbOnOutlinedIcon style={{ margin: "0 50%" }} />
+        <DoNotDisturbOnOutlinedIcon
+          style={{ margin: "0 50%" }}
+          onClick={() => setRegistrationsOpenness(cell.row.id, true)}
+        />
       ),
     header: t("openness"),
     enableSorting: true,
@@ -125,9 +136,15 @@ const createColumns = (t) => [
     accessorKey: "visible",
     cell: (cell) =>
       cell.getValue() ? (
-        <VisibilityOutlinedIcon style={{ margin: "0 50%" }} />
+        <VisibilityOutlinedIcon
+          style={{ margin: "0 50%" }}
+          onClick={() => setVisibility(cell.row.id, false)}
+        />
       ) : (
-        <VisibilityOffOutlinedIcon style={{ margin: "0 50%" }} />
+        <VisibilityOffOutlinedIcon
+          style={{ margin: "0 50%" }}
+          onClick={() => setVisibility(cell.row.id, true)}
+        />
       ),
     header: t("visibility"),
     enableSorting: true,
