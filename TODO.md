@@ -17,7 +17,7 @@
 - [ ] d4aadbd48522c3 invite and make a member feat
 - [ ] 038fdd2e52188d update docker compose and dockerfiles
 - [x] ca6ba3956957ad propagate groups to indirect subscribers
-- [ ] f0e233acb78e85 present subscriptions in 2 separated tabs
+- [x] f0e233acb78e85 present subscriptions in 2 separated tabs
 - [x] 4332062fb2ec11 make token limited in time or for only one session
 - [ ] 4104f161aba6ef members and experts by csv
 ## 27/03/2023 22:01:14 new password front
