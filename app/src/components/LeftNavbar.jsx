@@ -68,9 +68,7 @@ const LeftNavbar = ({ user }) => {
             >
               <ListItemIcon
                 sx={{
-                  "& :first-child": {
-                    color: pathname === `/${target}` ? "#e7f1fc" : "#108bdc",
-                  },
+                  color: pathname === `/${target}` ? "#e7f1fc" : "#108bdc",
                 }}
               >
                 {icon}

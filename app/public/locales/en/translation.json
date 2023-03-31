@@ -97,6 +97,9 @@
     "label": "Title"
   },
   "subscriptions": {
-    "search": "Search groups providers"
+    "search": "Search groups providers",
+    "pending": "Pending",
+    "providers": "Subscriptions",
+    "subscribers": "Subscribers"
   }
 }

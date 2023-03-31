@@ -97,6 +97,9 @@
     "label": "Titre"
   },
   "subscriptions": {
-    "search": "Recherche de fournisseurs de groupes de travail"
+    "search": "Recherche de fournisseurs de groupes de travail",
+    "pending": "En attente",
+    "providers": "Abonnements",
+    "subscribers": "Abonnés"
   }
 }
