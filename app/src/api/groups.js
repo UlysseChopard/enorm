@@ -18,7 +18,7 @@ export const setRegistrationsOpenness = (id, isOpen) =>
   });
 
 export const setVisibility = (id, isVisible) =>
-  fetch(`/api/groups/${id}/registrations/${isVisible ? "visible" : "hidden"}`, {
+  fetch(`/api/groups/${id}/visibility/${isVisible ? "visible" : "hidden"}`, {
     method: "PUT",
     credentials: "include",
   });

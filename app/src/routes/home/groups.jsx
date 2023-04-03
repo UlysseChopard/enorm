@@ -1,11 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   getSortedRowModel,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Form, useLoaderData, useActionData } from "react-router-dom";
+import {
+  Form,
+  useLoaderData,
+  useActionData,
+  useSubmit,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -34,8 +39,15 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const group = Object.fromEntries(formData);
-
+  const { property, ...group } = Object.fromEntries(formData);
+  if (property) {
+    const { id, status } = group;
+    const res =
+      property === "visible"
+        ? await setVisibility(id, status)
+        : await setRegistrationsOpenness(id, status);
+    return res.ok || res.status;
+  }
   const res = await create(group);
   if (!res.ok) return res.status;
   return res.json();
@@ -76,7 +88,7 @@ const CreateModal = ({ open, onClose }) => {
   );
 };
 
-const createColumns = (t) => [
+const createColumns = (t, toggle) => [
   {
     accessorKey: "email",
     header: t("sponsor"),
@@ -116,52 +128,64 @@ const createColumns = (t) => [
   },
   {
     accessorKey: "open",
-    cell: (cell) =>
-      cell.getValue() ? (
+    cell: (cell) => {
+      return cell.getValue() ? (
         <CheckCircleOutlineOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => setRegistrationsOpenness(cell.row.id, false)}
+          onClick={() => toggle("open", cell.row.id, !cell.getValue())}
         />
       ) : (
         <DoNotDisturbOnOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => setRegistrationsOpenness(cell.row.id, true)}
+          onClick={() => toggle("open", cell.row.id, !cell.getValue())}
         />
-      ),
+      );
+    },
     header: t("openness"),
     enableSorting: true,
     sortingFn: "basic",
   },
   {
     accessorKey: "visible",
-    cell: (cell) =>
-      cell.getValue() ? (
+    cell: (cell) => {
+      return cell.getValue() ? (
         <VisibilityOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => setVisibility(cell.row.id, false)}
+          onClick={() => toggle("visible", cell.row.id, !cell.getValue())}
         />
       ) : (
         <VisibilityOffOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => setVisibility(cell.row.id, true)}
+          onClick={() => toggle("visible", cell.row.id, !cell.getValue())}
         />
-      ),
+      );
+    },
     header: t("visibility"),
     enableSorting: true,
     sortingFn: "basic",
   },
 ];
 
+const toggle = (submit) => (property, id, status) => {
+  const formData = new FormData();
+  formData.append("id", id);
+  formData.append("property", property);
+  formData.append("status", status);
+  submit(formData, { method: "POST" });
+};
+
 export default function Groups() {
   const { groups } = useLoaderData();
   const createdGroup = useActionData();
+  const submit = useSubmit();
   const [sorting, setSorting] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
-  const columns = createColumns(t);
+
   const table = useReactTable({
     data: groups,
-    columns,
+    columns: createColumns(t, toggle(submit)),
+    getRowId: (originalRow) => originalRow.id,
     getCoreRowModel: getCoreRowModel(),
     enableSorting: true,
     state: { sorting },
