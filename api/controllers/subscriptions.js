@@ -15,7 +15,7 @@ exports.get = async (req, res, next) => {
       res.locals.userId
     );
     const existing = new Set([
-      ...received.concat(subscribers).map(({ sender }) => sender),
+      ...received.map(({ sender }) => sender),
       ...sended.concat(providers).map(({ recipient }) => recipient),
       res.locals.userId,
     ]);
