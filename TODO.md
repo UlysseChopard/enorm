@@ -24,3 +24,7 @@
 - [ ] 152154fd1d1a4e trad
 - [x] 8d26cf15e58d70 remove double check for password update
 - [ ] 2c52199bcef786 set magic link usable only once
+- [ ] dcad2145b19077 del magic token on use  
+- [ ] 2af31d3d671eb2 team tab  
+- [ ] 001cf8d2798cf9 csv import for teams by emails  
+- [ ] 44e5fb958823a0 one admin for one team  
