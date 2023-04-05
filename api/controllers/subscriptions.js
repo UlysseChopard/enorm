@@ -14,6 +14,7 @@ exports.get = async (req, res, next) => {
     const { rows: subscribers } = await Subscriptions.getSubscribers(
       res.locals.userId
     );
+    // Allow to subscribe to own subscribers
     const existing = new Set([
       ...received.map(({ sender }) => sender),
       ...sended.concat(providers).map(({ recipient }) => recipient),
@@ -24,13 +25,14 @@ exports.get = async (req, res, next) => {
           rows.filter(({ id }) => !existing.has(id))
         )
       : null;
-    return res.json({
-      providers,
-      subscribers,
-      sended,
-      received,
-      results,
-    });
+    return results
+      ? res.json({ results })
+      : res.json({
+          providers,
+          subscribers,
+          sended,
+          received,
+        });
   } catch (err) {
     next(err);
   }
