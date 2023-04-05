@@ -18,10 +18,21 @@ import Box from "@mui/material/Box";
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const objData = Object.fromEntries(formData);
-  const res = await search(objData);
-  if (!res.ok) return res.status;
-  return res.json();
+  const { type, recipient, query } = Object.fromEntries(formData);
+  switch (type) {
+    case "invite":
+      return await invite(recipient).then((res) =>
+        res.ok ? res.json() : res.status
+      );
+    case "accept":
+      return await accept(recipient).then((res) => res.status);
+    case "deny":
+      return await deny(recipient).then((res) => res.status);
+    default:
+      return await search(query).then((res) =>
+        res.ok ? res.json() : res.status
+      );
+  }
 }
 
 export async function loader() {
@@ -79,19 +90,11 @@ export default function Subscriptions() {
   const submit = useSubmit();
   const timeoutId = useRef(null);
   const [query, setQuery] = useState("");
-  const [sended, setSended] = useState([]);
-  const [received, setReceived] = useState([]);
   const [search, setSearch] = useState([]);
-  const [subscribers, setSubscribers] = useState([]);
-  const [providers, setProviders] = useState([]);
   const [tab, setTab] = useState(0);
   const [arePending, setArePending] = useState(false);
 
   useEffect(() => {
-    setSended(load.sended);
-    setReceived(load.received);
-    setSubscribers(load.subscribers);
-    setProviders(load.providers);
     setArePending(load.sended.length || load.received.length);
   }, [load]);
 
@@ -102,10 +105,11 @@ export default function Subscriptions() {
   useEffect(() => {
     clearTimeout(timeoutId.current);
     if (query) {
-      timeoutId.current = setTimeout(
-        () => submit({ query }, { method: "post" }),
-        400
-      );
+      timeoutId.current = setTimeout(() => {
+        const formData = new FormData();
+        formData.append("query", query);
+        submit(formData, { method: "post" });
+      }, 400);
     } else {
       submit();
     }
@@ -115,31 +119,33 @@ export default function Subscriptions() {
     setQuery(e.target.value.toLowerCase());
   };
 
-  const handleAccept = (recipient) => async () => {
-    const { status } = await accept(recipient.id);
-    if (status === 201) {
-      setSubscribers([...subscribers, recipient]);
-      setReceived(received.filter(({ id }) => id !== recipient.id));
-    }
-  };
+  const handleAccept =
+    ({ id }) =>
+    () => {
+      const formData = new FormData();
+      formData.append("type", "accept");
+      formData.append("recipient", id);
+      submit(formData, { method: "POST" });
+    };
 
-  const handleDeny = (recipient) => async () => {
-    const { status } = await deny(recipient.id);
-    if (status === 204) {
-      setSended(sended.filter(({ id }) => id !== recipient.id));
-      setReceived(received.filter(({ id }) => id !== recipient.id));
-      setSubscribers(subscribers.filter(({ id }) => id !== recipient.id));
-      setProviders(providers.filter(({ id }) => id !== recipient.id));
-    }
-  };
+  const handleDeny =
+    ({ id }) =>
+    () => {
+      const formData = new FormData();
+      formData.append("type", "deny");
+      formData.append("recipient", id);
+      submit(formData, { method: "POST" });
+    };
 
-  const handleInvite = (recipient) => async () => {
-    const { status } = await invite(recipient.id);
-    if (status === 201) {
-      setSended([...sended, recipient]);
-      setSearch(search.filter(({ id }) => id !== recipient.id));
-    }
-  };
+  const handleInvite =
+    ({ id }) =>
+    () => {
+      const formData = new FormData();
+      formData.append("type", "invite");
+      formData.append("recipient", id);
+      submit(formData, { method: "POST" });
+      setSearch(search.filter((result) => result.id !== id));
+    };
 
   return (
     <Stack>
@@ -157,7 +163,7 @@ export default function Subscriptions() {
               key={recipient.id}
               action={handleInvite(recipient)}
               status={
-                sended.map(({ id }) => id).includes(recipient.id)
+                load.sended.map(({ id }) => id).includes(recipient.id)
                   ? "sended"
                   : null
               }
@@ -190,7 +196,7 @@ export default function Subscriptions() {
           {arePending ? (
             <TabPanel value={tab} index={0}>
               <List>
-                {sended.map((subscription) => (
+                {load.sended.map((subscription) => (
                   <GroupProvider
                     key={subscription.id}
                     action={handleDeny(subscription)}
@@ -198,7 +204,7 @@ export default function Subscriptions() {
                     {...subscription}
                   />
                 ))}
-                {received.map((subscription) => (
+                {load.received.map((subscription) => (
                   <GroupProvider
                     key={subscription.id}
                     accept={handleAccept(subscription)}
@@ -214,7 +220,7 @@ export default function Subscriptions() {
           )}
           <TabPanel value={tab} index={arePending ? 1 : 0}>
             <List>
-              {providers.map((provider) => (
+              {load.providers.map((provider) => (
                 <GroupProvider
                   key={provider.id}
                   action={handleDeny(provider)}
@@ -226,7 +232,7 @@ export default function Subscriptions() {
           </TabPanel>
           <TabPanel value={tab} index={arePending ? 2 : 1}>
             <List>
-              {subscribers.map((subscriber) => (
+              {load.subscribers.map((subscriber) => (
                 <GroupProvider
                   key={subscriber.id}
                   action={handleDeny(subscriber)}
