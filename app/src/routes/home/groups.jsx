@@ -39,18 +39,21 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const { property, ...group } = Object.fromEntries(formData);
-  if (property) {
-    const { id, status } = group;
-    const res =
-      property === "visible"
-        ? await setVisibility(id, status)
-        : await setRegistrationsOpenness(id, status);
-    return res.ok || res.status;
+  const { property, status, id, ...group } = Object.fromEntries(formData);
+  switch (property) {
+    case "visibility":
+      return await setVisibility(id, status === "true").then((res) =>
+        res.ok ? res.json() : res.status
+      );
+    case "openness":
+      return await setRegistrationsOpenness(id, status === "true").then((res) =>
+        res.ok ? res.json() : res.status
+      );
+    default:
+      return await create(group).then((res) =>
+        res.ok ? res.json() : res.status
+      );
   }
-  const res = await create(group);
-  if (!res.ok) return res.status;
-  return res.json();
 }
 
 const CreateModal = ({ open, onClose }) => {
@@ -132,12 +135,12 @@ const createColumns = (t, toggle) => [
       return cell.getValue() ? (
         <CheckCircleOutlineOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => toggle("open", cell.row.id, !cell.getValue())}
+          onClick={() => toggle("openness", cell.row.id, false)}
         />
       ) : (
         <DoNotDisturbOnOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => toggle("open", cell.row.id, !cell.getValue())}
+          onClick={() => toggle("openness", cell.row.id, true)}
         />
       );
     },
@@ -151,12 +154,12 @@ const createColumns = (t, toggle) => [
       return cell.getValue() ? (
         <VisibilityOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => toggle("visible", cell.row.id, !cell.getValue())}
+          onClick={() => toggle("visibility", cell.row.id, false)}
         />
       ) : (
         <VisibilityOffOutlinedIcon
           style={{ margin: "0 50%" }}
-          onClick={() => toggle("visible", cell.row.id, !cell.getValue())}
+          onClick={() => toggle("visibility", cell.row.id, true)}
         />
       );
     },
