@@ -1,17 +1,15 @@
 const { Groups, Companies, Subscriptions } = require("../models");
 
 const getGroups = async (userId, groups) => {
-  const { rows: subscriptions } = await Subscriptions.getAccepted(userId);
-  const { rows } = await Groups.getAll(userId);
+  console.log("params", userId, groups.entries());
+  if (groups.has(userId)) return;
+  const { rows } = groups.size
+    ? await Groups.getVisibles(userId)
+    : await Groups.getAll(userId);
   groups.set(userId, rows);
+  const { rows: subscriptions } = await Subscriptions.getAccepted(userId);
   for (const { recipient } of subscriptions) {
-    if (groups.has(recipient)) continue;
-    const { rows } = await Groups.getAll(recipient);
-    groups.set(recipient, rows);
-    const { rows: subscriptions } = await Subscriptions.getAccepted(recipient);
-    for (const { recipient } of subscriptions) {
-      await getGroups(recipient, groups);
-    }
+    await getGroups(recipient, groups);
   }
 };
 
@@ -21,6 +19,7 @@ exports.get = async (_req, res, next) => {
     await getGroups(res.locals.userId, map);
     const groups = [];
     for (const userGroups of map.values()) {
+      console.log("userGroups", userGroups);
       groups.push(...userGroups);
     }
     res.json({ groups });
@@ -50,7 +49,12 @@ exports.setRegistrationsOpenness = async (req, res, next) => {
     const { id, status } = req.params;
     const {
       rows: [group],
-    } = await Groups.setRegistrationsOpenness(id, status === "open");
+    } = await Groups.setRegistrationsOpenness(
+      res.locals.userId,
+      id,
+      status === "open"
+    );
+    if (!group) return res.sendStatus(401);
     res.json({ group });
   } catch (err) {
     next(err);
@@ -62,7 +66,8 @@ exports.setVisibility = async (req, res, next) => {
     const { id, status } = req.params;
     const {
       rows: [group],
-    } = await Groups.setVisibility(id, status === "visible");
+    } = await Groups.setVisibility(res.locals.userId, id, status === "visible");
+    if (!group) return res.sendStatus(401);
     res.json({ group });
   } catch (err) {
     next(err);
