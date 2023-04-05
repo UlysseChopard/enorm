@@ -85,12 +85,14 @@ export default function Subscriptions() {
   const [subscribers, setSubscribers] = useState([]);
   const [providers, setProviders] = useState([]);
   const [tab, setTab] = useState(0);
+  const [arePending, setArePending] = useState(false);
 
   useEffect(() => {
     setSended(load.sended);
     setReceived(load.received);
     setSubscribers(load.subscribers);
     setProviders(load.providers);
+    setArePending(load.sended.length || load.received.length);
   }, [load]);
 
   useEffect(() => {
@@ -172,39 +174,45 @@ export default function Subscriptions() {
               aria-label="tab-0"
               centered
             >
-              <Tab
-                icon={<ScheduleIcon />}
-                iconPosition="start"
-                label={t("pending")}
-                id="pendings"
-                aria-controls="tab-0"
-              />
+              {arePending && (
+                <Tab
+                  icon={<ScheduleIcon />}
+                  iconPosition="start"
+                  label={t("pending")}
+                  id="pendings"
+                  aria-controls="tab-0"
+                />
+              )}
               <Tab label={t("providers")} id="tab-1" aria-controls="tab-1" />
               <Tab label={t("subscribers")} id="tab-2" aria-controls="tab-2" />
             </Tabs>
           </Box>
-          <TabPanel value={tab} index={0}>
-            <List>
-              {sended.map((subscription) => (
-                <GroupProvider
-                  key={subscription.id}
-                  action={handleDeny(subscription)}
-                  status="sended"
-                  {...subscription}
-                />
-              ))}
-              {received.map((subscription) => (
-                <GroupProvider
-                  key={subscription.id}
-                  accept={handleAccept(subscription)}
-                  action={handleDeny(subscription)}
-                  status="received"
-                  {...subscription}
-                />
-              ))}
-            </List>
-          </TabPanel>
-          <TabPanel value={tab} index={1}>
+          {arePending ? (
+            <TabPanel value={tab} index={0}>
+              <List>
+                {sended.map((subscription) => (
+                  <GroupProvider
+                    key={subscription.id}
+                    action={handleDeny(subscription)}
+                    status="sended"
+                    {...subscription}
+                  />
+                ))}
+                {received.map((subscription) => (
+                  <GroupProvider
+                    key={subscription.id}
+                    accept={handleAccept(subscription)}
+                    action={handleDeny(subscription)}
+                    status="received"
+                    {...subscription}
+                  />
+                ))}
+              </List>
+            </TabPanel>
+          ) : (
+            ""
+          )}
+          <TabPanel value={tab} index={arePending ? 1 : 0}>
             <List>
               {providers.map((provider) => (
                 <GroupProvider
@@ -216,7 +224,7 @@ export default function Subscriptions() {
               ))}
             </List>
           </TabPanel>
-          <TabPanel value={tab} index={2}>
+          <TabPanel value={tab} index={arePending ? 2 : 1}>
             <List>
               {subscribers.map((subscriber) => (
                 <GroupProvider
