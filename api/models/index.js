@@ -9,3 +9,5 @@ exports.Companies = require("./companies");
 exports.Subscriptions = require("./subscriptions");
 
 exports.Teams = require("./teams");
+
+exports.Organisations = require("./organisations");

@@ -5,6 +5,7 @@ const groups = require("./groups");
 const companies = require("./companies");
 const subscriptions = require("./subscriptions");
 const teams = require("./teams");
+const organisations = require("./organisations");
 
 module.exports = (express, app) => {
   const router = express.Router;
@@ -16,4 +17,5 @@ module.exports = (express, app) => {
   app.use("/api/companies", companies(router()));
   app.use("/api/subscriptions", subscriptions(router()));
   app.use("/api/teams", teams(router()));
+  app.use("/api/organisations", organisations(router()));
 };
