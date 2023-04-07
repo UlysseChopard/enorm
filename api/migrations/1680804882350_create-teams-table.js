@@ -3,7 +3,7 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("members", {
+  pgm.createTable("teams", {
     id: "id",
     account: {
       type: "uuid",
@@ -22,10 +22,10 @@ exports.up = (pgm) => {
     },
     accepted_at: "timestamptz",
   });
-  pgm.createIndex("members", ["member", "account"]);
+  pgm.createIndex("teams", ["member", "account"]);
 };
 
 exports.down = (pgm) => {
-  pgm.dropIndex("members", ["member", "account"]);
-  pgm.dropTable("members");
+  pgm.dropIndex("teams", ["member", "account"]);
+  pgm.dropTable("teams");
 };

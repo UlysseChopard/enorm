@@ -1,4 +1,4 @@
-const { add, remove, get, join } = require("../controllers/members");
+const { add, remove, get, join } = require("../controllers/teams");
 
 module.exports = (router) => {
   router.get("/", get);

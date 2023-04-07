@@ -8,4 +8,4 @@ exports.Companies = require("./companies");
 
 exports.Subscriptions = require("./subscriptions");
 
-exports.Members = require("./members");
+exports.Teams = require("./teams");
