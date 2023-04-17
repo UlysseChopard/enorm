@@ -17,3 +17,6 @@ exports.create = (userId, { organisation, title, reference, sponsor }) =>
     "INSERT INTO groups (creator, organisation, title, reference, sponsor, created_at) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP) RETURNING *",
     [userId, organisation, title, reference, sponsor]
   );
+
+exports.getById = (groupId) =>
+  db.query("SELECT * FROM groups WHERE id = $1", [groupId]);

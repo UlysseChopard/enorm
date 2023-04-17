@@ -10,3 +10,6 @@ export const create = (group) =>
     },
     body: JSON.stringify({ group }),
   });
+
+export const getById = (id) =>
+  fetch(`/api/groups/${id}`, { credentials: "include" });

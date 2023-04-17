@@ -5,12 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Form,
-  useLoaderData,
-  useActionData,
-  useSubmit,
-} from "react-router-dom";
+import { Form, useLoaderData, useActionData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -30,13 +25,9 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const { property, ...group } = Object.fromEntries(formData);
-  switch (property) {
-    default:
-      return await create(group).then((res) =>
-        res.ok ? res.json() : res.status
-      );
-  }
+  const group = Object.fromEntries(formData);
+  const res = await create(group);
+  return res.ok ? res.json() : res.status;
 }
 
 const CreateModal = ({ open, onClose }) => {
@@ -74,7 +65,7 @@ const CreateModal = ({ open, onClose }) => {
   );
 };
 
-const createColumns = (t, toggle) => [
+const createColumns = (t) => [
   {
     accessorKey: "email",
     header: t("sponsor"),
@@ -114,29 +105,22 @@ const createColumns = (t, toggle) => [
   },
   {
     header: t("actions"),
-    cell: (props) => <Button>Join group {props.row.id}</Button>,
+    cell: (props) => (
+      <Button to={`/groups/${props.row.id}`}>{t("groupPage")}</Button>
+    ),
   },
 ];
-
-const toggle = (submit) => (property, id, status) => {
-  const formData = new FormData();
-  formData.append("id", id);
-  formData.append("property", property);
-  formData.append("status", status);
-  submit(formData, { method: "POST" });
-};
 
 export default function Groups() {
   const { groups } = useLoaderData();
   const createdGroup = useActionData();
-  const submit = useSubmit();
   const [sorting, setSorting] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
 
   const table = useReactTable({
     data: groups,
-    columns: createColumns(t, toggle(submit)),
+    columns: createColumns(t),
     getRowId: (originalRow) => originalRow.id,
     getCoreRowModel: getCoreRowModel(),
     enableSorting: true,
