@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   getSortedRowModel,
   flexRender,
@@ -20,16 +20,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import {
-  get,
-  create,
-  setVisibility,
-  setRegistrationsOpenness,
-} from "@/api/groups";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import DoNotDisturbOnOutlinedIcon from "@mui/icons-material/DoNotDisturbOnOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { get, create } from "@/api/groups";
 
 export async function loader() {
   const res = await get();
@@ -39,16 +30,8 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const { property, status, id, ...group } = Object.fromEntries(formData);
+  const { property, ...group } = Object.fromEntries(formData);
   switch (property) {
-    case "visibility":
-      return await setVisibility(id, status === "true").then((res) =>
-        res.ok ? res.json() : res.status
-      );
-    case "openness":
-      return await setRegistrationsOpenness(id, status === "true").then((res) =>
-        res.ok ? res.json() : res.status
-      );
     default:
       return await create(group).then((res) =>
         res.ok ? res.json() : res.status
@@ -130,42 +113,8 @@ const createColumns = (t, toggle) => [
     sortingFn: "basic",
   },
   {
-    accessorKey: "open",
-    cell: (cell) => {
-      return cell.getValue() ? (
-        <CheckCircleOutlineOutlinedIcon
-          style={{ margin: "0 50%" }}
-          onClick={() => toggle("openness", cell.row.id, false)}
-        />
-      ) : (
-        <DoNotDisturbOnOutlinedIcon
-          style={{ margin: "0 50%" }}
-          onClick={() => toggle("openness", cell.row.id, true)}
-        />
-      );
-    },
-    header: t("openness"),
-    enableSorting: true,
-    sortingFn: "basic",
-  },
-  {
-    accessorKey: "visible",
-    cell: (cell) => {
-      return cell.getValue() ? (
-        <VisibilityOutlinedIcon
-          style={{ margin: "0 50%" }}
-          onClick={() => toggle("visibility", cell.row.id, false)}
-        />
-      ) : (
-        <VisibilityOffOutlinedIcon
-          style={{ margin: "0 50%" }}
-          onClick={() => toggle("visibility", cell.row.id, true)}
-        />
-      );
-    },
-    header: t("visibility"),
-    enableSorting: true,
-    sortingFn: "basic",
+    header: t("actions"),
+    cell: (props) => <Button>Join group {props.row.id}</Button>,
   },
 ];
 

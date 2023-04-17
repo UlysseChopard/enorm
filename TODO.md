@@ -28,3 +28,9 @@
 - [ ] 2af31d3d671eb2 team tab  
 - [ ] 001cf8d2798cf9 csv import for teams by emails  
 - [ ] 44e5fb958823a0 one admin for one team  
+- [ ] 46837e3690c0d7 create group and subscription folders with specifications for visibility and openness  
+- [ ] 2ed37868281869 separate my groups from others  
+## 11/04/2023 21:26:39 lock target  
+- [ ] fabab1702202e4 register expert in a group  
+- [ ] f788f7c06aa54c delete openness and visibility feats for groups  
+- [ ] 8de8481f927425 move in prod  

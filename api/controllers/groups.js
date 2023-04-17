@@ -43,33 +43,3 @@ exports.create = async (req, res, next) => {
     next(err);
   }
 };
-
-exports.setRegistrationsOpenness = async (req, res, next) => {
-  try {
-    const { id, status } = req.params;
-    const {
-      rows: [group],
-    } = await Groups.setRegistrationsOpenness(
-      res.locals.userId,
-      id,
-      status === "open"
-    );
-    if (!group) return res.sendStatus(401);
-    res.json({ group });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.setVisibility = async (req, res, next) => {
-  try {
-    const { id, status } = req.params;
-    const {
-      rows: [group],
-    } = await Groups.setVisibility(res.locals.userId, id, status === "visible");
-    if (!group) return res.sendStatus(401);
-    res.json({ group });
-  } catch (err) {
-    next(err);
-  }
-};

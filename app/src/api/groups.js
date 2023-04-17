@@ -10,15 +10,3 @@ export const create = (group) =>
     },
     body: JSON.stringify({ group }),
   });
-
-export const setRegistrationsOpenness = (id, isOpen) =>
-  fetch(`/api/groups/${id}/registrations/${isOpen ? "open" : "closed"}`, {
-    method: "PUT",
-    credentials: "include",
-  });
-
-export const setVisibility = (id, isVisible) =>
-  fetch(`/api/groups/${id}/visibility/${isVisible ? "visible" : "hidden"}`, {
-    method: "PUT",
-    credentials: "include",
-  });
