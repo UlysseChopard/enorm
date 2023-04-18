@@ -23,6 +23,6 @@ exports.getById = (groupId) =>
 
 exports.addMember = (groupId, userId) =>
   db.query(
-    "INSERT INTO members (group, member, created_at) VALUES ($1, $2, CURRENT_TIMESTAMP) RETURNING *",
+    "INSERT INTO groups_members (group_id, account_id) VALUES ($1, $2) RETURNING *",
     [groupId, userId]
   );

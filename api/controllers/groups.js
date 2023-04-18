@@ -73,6 +73,10 @@ exports.join = async (req, res, next) => {
     await Groups.addMember(req.params.id, res.locals.userId);
     res.status(201).json({ message: "joined successfully" });
   } catch (err) {
+    if (err.code === "23505") {
+      // duplicate key error
+      return res.status(422).json({ message: "already joined" });
+    }
     next(err);
   }
 };

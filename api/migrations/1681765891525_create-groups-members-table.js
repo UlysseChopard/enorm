@@ -4,21 +4,22 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable("groups_members", {
-    group: {
+    group_id: {
       type: "integer",
       references: "groups",
       notNull: true,
+      onDelete: "cascade",
+      primaryKey: true
     },
-    member: {
+    account_id: {
       type: "uuid",
       references: "accounts",
       notNull: true,
+      onDelete: "cascade",
+      primaryKey: true
     },
-    created_at: {
-      type: "timestamptz",
-      default: pgm.func("current_timestamp"),
-      notNull: true,
-    },
+    created_at: "currentTs",
+    updated_at: "currentTs"
   });
 };
 

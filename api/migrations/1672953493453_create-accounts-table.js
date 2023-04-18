@@ -7,7 +7,7 @@ exports.shorthands = {
     primaryKey: true,
     default: new PgLiteral("gen_random_uuid()"),
   },
-  createdAt: {
+  currentTs: {
     type: "timestamptz",
     notNull: true,
     default: new PgLiteral("current_timestamp"),
@@ -28,7 +28,7 @@ exports.up = (pgm) => {
     gender: "gender",
     cellphone: "text",
     phone: "text",
-    created_at: "createdAt",
+    created_at: "currentTs",
     hash: {
       type: "text",
       notNull: true,

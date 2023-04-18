@@ -34,3 +34,4 @@
 - [ ] fabab1702202e4 register expert in a group  
 - [ ] f788f7c06aa54c delete openness and visibility feats for groups  
 - [ ] 8de8481f927425 move in prod  
+- [ ] 685211abff6206 set on delete cascade where needed  
