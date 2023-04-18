@@ -32,8 +32,8 @@
     "subtitle": "En cas de nécessité, veuillez contacter le service client"
   },
   "navbar": {
+    "dashboard": "Tableau de bord",
     "profile": "Profil",
-    "registrations": "Inscriptions",
     "community": "Réseau",
     "settings": "Paramètres",
     "groups": "Groupes de travail"
@@ -48,13 +48,9 @@
     "submit": "Modifier mes informations",
     "successNotif": "Mise à jour réussie"
   },
-  "registrations": {
-    "member": "Membre",
-    "reference": "Réference",
-    "label": "Intitulé",
-    "since": "Début",
-    "expiration": "Fin",
-    "status": "État"
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Pleins d'informations passionnantes"
   },
   "profile": {
     "id": "Identité",
@@ -89,8 +85,6 @@
     "text": "Veuillez entrer ces informations pour créer un groupe",
     "creation": "Création",
     "disbanding": "Dissolution",
-    "openness": "Ouvert aux inscriptions",
-    "visibility": "Visibilité",
     "organisation": "Organisation",
     "cancel": "Annuler",
     "submit": "Envoyer",

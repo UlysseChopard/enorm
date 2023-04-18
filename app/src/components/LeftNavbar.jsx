@@ -17,7 +17,7 @@ const WIDTH = 240;
 const MENU = [
   {
     icon: <AppRegistrationIcon />,
-    text: "registrations",
+    text: "dashboard",
     target: "",
   },
   {

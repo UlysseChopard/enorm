@@ -33,7 +33,7 @@
   },
   "navbar": {
     "profile": "Profile",
-    "registrations": "Registrations",
+    "dashboard": "Dashboard",
     "community": "Community",
     "settings": "Settings",
     "groups": "Working groups"
@@ -48,13 +48,9 @@
     "submit": "Modify my account",
     "successNotif": "Successfully updated"
   },
-  "registrations": {
-    "member": "Member",
-    "reference": "Reference",
-    "label": "Label",
-    "since": "Since",
-    "expiration": "Expiration",
-    "status": "Status"
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Many interesting informations"
   },
   "profile": {
     "id": "Identity",
@@ -89,8 +85,6 @@
     "text": "Please enter these informations to create a group",
     "creation": "Creation",
     "disbanding": "Disbanding",
-    "openness": "Open to registrations",
-    "visibility": "Visibility",
     "organisation": "Organisation",
     "cancel": "Cancel",
     "submit": "Submit",

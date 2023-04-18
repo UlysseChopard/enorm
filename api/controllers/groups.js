@@ -67,3 +67,12 @@ exports.getById = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.join = async (req, res, next) => {
+  try {
+    await Groups.addMember(req.params.id, res.locals.userId);
+    res.status(201).json({ message: "joined successfully" });
+  } catch (err) {
+    next(err);
+  }
+};

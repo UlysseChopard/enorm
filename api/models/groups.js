@@ -20,3 +20,9 @@ exports.create = (userId, { organisation, title, reference, sponsor }) =>
 
 exports.getById = (groupId) =>
   db.query("SELECT * FROM groups WHERE id = $1", [groupId]);
+
+exports.addMember = (groupId, userId) =>
+  db.query(
+    "INSERT INTO members (group, member, created_at) VALUES ($1, $2, CURRENT_TIMESTAMP) RETURNING *",
+    [groupId, userId]
+  );

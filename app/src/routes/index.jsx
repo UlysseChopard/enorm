@@ -3,7 +3,7 @@ import Subscriptions, {
   loader as subscriptionsLoader,
   action as subscriptionsAction,
 } from "@/routes/home/subscriptions";
-import Dashboard, { loader as dashboardLoader } from "@/routes/home/dashboard";
+import Dashboard from "@/routes/home/dashboard";
 import Groups, {
   loader as groupsLoader,
   action as groupsAction,
@@ -36,7 +36,6 @@ export default [
     children: [
       {
         element: <Dashboard />,
-        loader: dashboardLoader,
         index: true,
       },
       {

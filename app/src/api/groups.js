@@ -13,3 +13,5 @@ export const create = (group) =>
 
 export const getById = (id) =>
   fetch(`/api/groups/${id}`, { credentials: "include" });
+
+export const join = (id) => fetch(`/api/groups/${id}`, { method: "POST", credentials: "include" });
