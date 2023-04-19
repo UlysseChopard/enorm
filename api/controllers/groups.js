@@ -1,4 +1,9 @@
-const { Groups, Companies, Subscriptions } = require("../models");
+const {
+  Groups,
+  Companies,
+  Subscriptions,
+  Registrations,
+} = require("../models");
 
 const getGroups = async (userId, groups) => {
   if (groups.has(userId)) return;
@@ -70,13 +75,17 @@ exports.getById = async (req, res, next) => {
 
 exports.join = async (req, res, next) => {
   try {
-    await Groups.addMember(req.params.id, res.locals.userId);
-    res.status(201).json({ message: "joined successfully" });
+    if (!req.body.decisionMaker)
+      return res.status(400).json({ message: "missing decisionMaker in body" });
+    const {
+      rows: [registration],
+    } = await Registrations.ask({
+      beneficiary: res.locals.userId,
+      group: req.params.id,
+      decisionMaker: req.body.decisionMaker,
+    });
+    res.status(201).json({ registration });
   } catch (err) {
-    if (err.code === "23505") {
-      // duplicate key error
-      return res.status(422).json({ message: "already joined" });
-    }
     next(err);
   }
 };

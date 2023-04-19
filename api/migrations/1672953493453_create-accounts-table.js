@@ -2,11 +2,6 @@
 const { PgLiteral } = require("node-pg-migrate");
 
 exports.shorthands = {
-  userId: {
-    type: "uuid",
-    primaryKey: true,
-    default: new PgLiteral("gen_random_uuid()"),
-  },
   currentTs: {
     type: "timestamptz",
     notNull: true,
@@ -18,7 +13,11 @@ exports.up = (pgm) => {
   pgm.createType("gender", ["male", "female"]);
 
   pgm.createTable("accounts", {
-    id: "userId",
+    id: {
+      type: "uuid",
+      primaryKey: true,
+      default: new PgLiteral("gen_random_uuid()"),
+    },
     firstname: "text",
     lastname: "text",
     email: {

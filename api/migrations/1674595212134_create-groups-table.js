@@ -12,12 +12,6 @@ exports.up = (pgm) => {
         type: "uuid",
         references: "accounts",
       },
-      sponsor: {
-        type: "integer",
-        notNull: true,
-        references: "companies",
-        onDelete: "cascade",
-      },
       reference: {
         type: "text",
         notNull: true,
@@ -36,10 +30,8 @@ exports.up = (pgm) => {
       },
     }
   );
-  pgm.createIndex("groups", ["sponsor", "creator"]);
 };
 
 exports.down = (pgm) => {
-  pgm.dropIndex("groups", ["sponsor", "creator"]);
   pgm.dropTable("groups");
 };
