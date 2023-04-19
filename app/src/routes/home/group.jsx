@@ -1,5 +1,5 @@
 import { useLoaderData, Form } from "react-router-dom";
-import Button from "@mui/material/button";
+import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import { getById, join } from "@/api/groups";
 
