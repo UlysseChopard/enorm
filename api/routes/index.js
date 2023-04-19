@@ -3,7 +3,6 @@ const accounts = require("./accounts");
 const groups = require("./groups");
 const companies = require("./companies");
 const subscriptions = require("./subscriptions");
-const teams = require("./teams");
 
 module.exports = (express, app) => {
   const router = express.Router;
@@ -13,5 +12,4 @@ module.exports = (express, app) => {
   app.use("/api/groups", groups(router()));
   app.use("/api/companies", companies(router()));
   app.use("/api/subscriptions", subscriptions(router()));
-  app.use("/api/teams", teams(router()));
 };
