@@ -1,7 +1,7 @@
-export const get = () => fetch("/api/groups", { credentials: "include" });
+export const get = () => fetch("/api/working-groups", { credentials: "include" });
 
 export const create = (group) =>
-  fetch("/api/groups", {
+  fetch("/api/working-groups", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -12,6 +12,6 @@ export const create = (group) =>
   });
 
 export const getById = (id) =>
-  fetch(`/api/groups/${id}`, { credentials: "include" });
+  fetch(`/api/working-groups/${id}`, { credentials: "include" });
 
-export const join = (id) => fetch(`/api/groups/${id}`, { method: "POST", credentials: "include" });
+export const join = (id) => fetch(`/api/working-groups/${id}`, { method: "POST", credentials: "include" });

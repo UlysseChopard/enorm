@@ -40,23 +40,22 @@ exports.getById = async (req, res, next) => {
   try {
     const map = new Map();
     await getGroups(res.locals.userId, map);
-    const mapValues = map.values();
-    for (
-      let group = mapValues.next();
-      group.value.map(({ id }) => id).includes(req.params.id);
-      group = mapValues.next()
-    ) {
-      if (group.done) {
-        return res
-          .status(401)
-          .json({ message: "not allowed to access this group" });
+    const decisionMakers = [];
+    let group = null;
+    for (const [decisionMaker, groups] of map) {
+      for (const g of groups) {
+        if (g.id === parseInt(req.params.id)) {
+          decisionMakers.push(decisionMaker);
+          group = g;
+        }
       }
     }
-    const {
-      rows: [group],
-    } = await WorkingGroups.getById(req.params.id);
-    if (!group) return res.status(404).json({ message: "group id not found" });
-    return res.json({ group });
+    if (!group) {
+      return res
+        .status(401)
+        .json({ message: "not allowed to access this group" });
+    }
+    return res.json({ decisionMakers, group });
   } catch (err) {
     next(err);
   }
