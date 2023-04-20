@@ -1,6 +1,6 @@
 exports.Accounts = require("./accounts");
 
-exports.Groups = require("./groups");
+exports.WorkingGroups = require("./working-groups");
 
 exports.Subscriptions = require("./subscriptions");
 

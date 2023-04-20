@@ -1,6 +1,5 @@
 {
   "signup": {
-    "company": "Entreprise",
     "male": "Monsieur",
     "female": "Madame",
     "gender": "Civilité",
@@ -56,14 +55,11 @@
     "id": "Identité",
     "firstname": "Prénom",
     "lastname": "Nom de famille",
-    "company": "Établissement",
     "name": "Nom",
     "address": "Adresse",
     "sponsor": "Sponsor",
     "contact": "Contact",
     "email": "Adresse mail",
-    "cellphone": "Téléphone portable",
-    "phone": "Téléphone fixe",
     "submit": "Soumettre",
     "gender": "Civilité",
     "male": "Homme",

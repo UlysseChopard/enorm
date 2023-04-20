@@ -1,15 +1,10 @@
-const {
-  Groups,
-  Companies,
-  Subscriptions,
-  Registrations,
-} = require("../models");
+const { WorkingGroups, Subscriptions, Registrations } = require("../models");
 
 const getGroups = async (userId, groups) => {
   if (groups.has(userId)) return;
   const { rows } = groups.size
-    ? await Groups.getVisibles(userId)
-    : await Groups.getAll(userId);
+    ? await WorkingGroups.getVisibles(userId)
+    : await WorkingGroups.getAll(userId);
   groups.set(userId, rows);
   const { rows: subscriptions } = await Subscriptions.getAccepted(userId);
   for (const { recipient } of subscriptions) {
@@ -34,13 +29,7 @@ exports.get = async (_req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     const { group } = req.body;
-    const {
-      rows: [company],
-    } = await Companies.getByCreator(res.locals.userId);
-    const newGroup = await Groups.create(res.locals.userId, {
-      ...group,
-      sponsor: company.id,
-    });
+    const newGroup = await WorkingGroups.create(res.locals.userId, group);
     res.status(201).json({ group: newGroup });
   } catch (err) {
     next(err);
@@ -65,7 +54,7 @@ exports.getById = async (req, res, next) => {
     }
     const {
       rows: [group],
-    } = await Groups.getById(req.params.id);
+    } = await WorkingGroups.getById(req.params.id);
     if (!group) return res.status(404).json({ message: "group id not found" });
     return res.json({ group });
   } catch (err) {

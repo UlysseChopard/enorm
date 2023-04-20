@@ -25,9 +25,8 @@ exports.up = (pgm) => {
       notNull: true,
     },
     gender: "gender",
-    cellphone: "text",
-    phone: "text",
     created_at: "currentTs",
+    updated_at: "currentTs",
     hash: {
       type: "text",
       notNull: true,

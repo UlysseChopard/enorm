@@ -61,14 +61,6 @@ const SignupDialog = ({ onClose, open = true }) => {
               <MenuItem value="male">{t("male")}</MenuItem>
               <MenuItem value="female">{t("female")}</MenuItem>
             </TextField>
-            <TextField
-              required
-              label={t("company")}
-              name="company"
-              id="company"
-              autoComplete="organization"
-              fullWidth
-            />
           </Stack>
         </DialogContent>
         <DialogActions>

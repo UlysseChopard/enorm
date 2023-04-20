@@ -4,11 +4,10 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable(
-    "groups",
+    "working_groups",
     {
       id: "id",
-      created_at: "currentTs",
-      creator: {
+      admin: {
         type: "uuid",
         references: "accounts",
       },
@@ -23,15 +22,17 @@ exports.up = (pgm) => {
       title: {
         type: "text",
       },
+      created_at: "currentTs",
+      disbanded_at: "timestamptz"
     },
     {
       constraints: {
-        unique: ["reference", "organisation", "sponsor"],
+        unique: ["reference", "organisation"],
       },
     }
   );
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("groups");
+  pgm.dropTable("working_groups");
 };

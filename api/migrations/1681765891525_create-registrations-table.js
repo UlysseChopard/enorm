@@ -9,9 +9,9 @@ exports.up = (pgm) => {
       type: "integer",
       references: "registrations",
     },
-    group: {
+    working_group: {
       type: "integer",
-      references: "groups",
+      references: "working_groups",
       notNull: true,
       onDelete: "cascade",
     },

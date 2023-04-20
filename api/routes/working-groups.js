@@ -1,4 +1,4 @@
-const { get, create, getById, join } = require("../controllers/groups");
+const { get, create, getById, join } = require("../controllers/working-groups");
 
 module.exports = (router) => {
   router.get("/", get);

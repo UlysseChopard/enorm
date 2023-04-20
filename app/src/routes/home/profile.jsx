@@ -55,12 +55,6 @@ const PROFILE = [
         required: true,
         type: "email",
       },
-      {
-        name: "cellphone",
-      },
-      {
-        name: "phone",
-      },
     ],
   },
 ];
@@ -71,25 +65,6 @@ const PASSWORD = {
     {
       name: "password",
       type: "password",
-    },
-  ],
-};
-
-const COMPANY = {
-  name: "company",
-  fields: [
-    {
-      name: "name",
-      required: true,
-      disabled: true,
-    },
-    {
-      name: "address",
-      disabled: true,
-    },
-    {
-      name: "sponsor",
-      disabled: true,
     },
   ],
 };
@@ -153,15 +128,7 @@ export default function Profile() {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <SubForm
-          name={COMPANY.name}
-          fields={COMPANY.fields}
-          account={account}
-          t={t}
-          xs={12}
-        />
-      </Grid>
+      <Grid container spacing={2}></Grid>
       <Form method="post">
         <Grid container spacing={2}>
           {PROFILE.map(({ name, fields }) => (
