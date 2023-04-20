@@ -32,6 +32,7 @@
 - [ ] 2ed37868281869 separate my groups from others  
 ## 11/04/2023 21:26:39 lock target  
 - [ ] fabab1702202e4 register expert in a group  
-- [ ] f788f7c06aa54c delete openness and visibility feats for groups  
+- [x] f788f7c06aa54c delete openness and visibility feats for groups  
 - [ ] 8de8481f927425 move in prod  
 - [ ] 685211abff6206 set on delete cascade where needed  
+- [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint  
