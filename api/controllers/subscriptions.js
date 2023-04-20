@@ -2,37 +2,22 @@ const { Subscriptions, Accounts } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: received } = await Subscriptions.getPendingSubscribers(
+    const { rows: subscriptions } = await Subscriptions.getByUser(
       res.locals.userId
     );
-    const { rows: sended } = await Subscriptions.getPendingProviders(
-      res.locals.userId
-    );
-    const { rows: providers } = await Subscriptions.getProviders(
-      res.locals.userId
-    );
-    const { rows: subscribers } = await Subscriptions.getSubscribers(
-      res.locals.userId
-    );
-    // Allow to subscribe to own subscribers
-    const existing = new Set([
-      ...received.map(({ sender }) => sender),
-      ...sended.concat(providers).map(({ recipient }) => recipient),
-      res.locals.userId,
-    ]);
-    const results = req.query.q
-      ? await Accounts.searchText(req.query.q).then(({ rows }) =>
-          rows.filter(({ id }) => !existing.has(id))
-        )
-      : null;
-    return results
-      ? res.json({ results })
-      : res.json({
-          providers,
-          subscribers,
-          sended,
-          received,
-        });
+    if (req.query.q) {
+      const existing = subscriptions.reduce(
+        (acc, val) =>
+          val.recipient === res.locals.userId ? acc : acc.add(val.recipient),
+        new Set()
+      );
+      const results = await Accounts.searchText(req.query.q).then(({ rows }) =>
+        rows.filter(({ id }) => !existing.has(id))
+      );
+      return res.json({ results });
+    }
+    subscriptions.forEach((s) => delete s.hash);
+    return res.json({ subscriptions });
   } catch (err) {
     next(err);
   }

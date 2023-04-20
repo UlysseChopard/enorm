@@ -7,6 +7,7 @@ exports.get = async (req, res, next) => {
       rows: [account],
     } = await Accounts.getById(res.locals.userId);
     if (!account) return res.status(401).json({ message: "Account not found" });
+    delete account.hash;
     res.json({ account });
   } catch (err) {
     next(err);
@@ -28,6 +29,7 @@ exports.update = async (req, res, next) => {
       ...req.body,
       hash,
     });
+    delete account.hash;
     res.json({ account });
   } catch (err) {
     next(err);
@@ -44,6 +46,7 @@ exports.create = async (req, res, next) => {
     const {
       rows: [account],
     } = await Accounts.create({ ...req.body, hash });
+    delete account.hash;
     res.json({ account });
   } catch (err) {
     next(err);
