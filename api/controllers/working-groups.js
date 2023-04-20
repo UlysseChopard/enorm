@@ -2,9 +2,7 @@ const { WorkingGroups, Subscriptions, Registrations } = require("../models");
 
 const getGroups = async (userId, groups) => {
   if (groups.has(userId)) return;
-  const { rows } = groups.size
-    ? await WorkingGroups.getVisibles(userId)
-    : await WorkingGroups.getAll(userId);
+  const { rows } = await WorkingGroups.getAll(userId);
   groups.set(userId, rows);
   const { rows: subscriptions } = await Subscriptions.getAccepted(userId);
   for (const { recipient } of subscriptions) {
