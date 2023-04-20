@@ -11,13 +11,33 @@ exports.get = async (req, res, next) => {
           val.recipient === res.locals.userId ? acc : acc.add(val.recipient),
         new Set()
       );
+      existing.add(res.locals.userId);
       const results = await Accounts.searchText(req.query.q).then(({ rows }) =>
         rows.filter(({ id }) => !existing.has(id))
       );
       return res.json({ results });
     }
-    subscriptions.forEach((s) => delete s.hash);
-    return res.json({ subscriptions });
+    const providers = [];
+    const subscribers = [];
+    const sended = [];
+    const received = [];
+    for (const subscription of subscriptions) {
+      delete subscription.hash;
+      if (subscription.recipient === res.locals.userId) {
+        if (subscription.accepted_at) {
+          subscribers.push(subscription);
+        } else {
+          received.push(subscription);
+        }
+      } else {
+        if (subscription.accepted_at) {
+          providers.push(subscription);
+        } else {
+          sended.push(subscription);
+        }
+      }
+    }
+    return res.json({ providers, subscribers, sended, received });
   } catch (err) {
     next(err);
   }
