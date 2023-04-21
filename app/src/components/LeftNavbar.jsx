@@ -11,12 +11,13 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HubIcon from "@mui/icons-material/Hub";
 import ProfileMenu from "@/components/ProfileMenu";
 import GroupsIcon from "@mui/icons-material/Groups";
+import GridViewIcon from "@mui/icons-material/GridView";
 
 const WIDTH = 240;
 
 const MENU = [
   {
-    icon: <AppRegistrationIcon />,
+    icon: <GridViewIcon />,
     text: "dashboard",
     target: "",
   },
@@ -29,6 +30,11 @@ const MENU = [
     icon: <GroupsIcon />,
     text: "groups",
     target: "groups",
+  },
+  {
+    icon: <AppRegistrationIcon />,
+    text: "registrations",
+    target: "registrations",
   },
 ];
 

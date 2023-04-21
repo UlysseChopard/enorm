@@ -16,6 +16,10 @@ import Profile, {
   loader as profileLoader,
   action as profileAction,
 } from "@/routes/home/profile";
+import Registrations, {
+  loader as registrationsLoader,
+  action as registrationsAction,
+} from "@/routes/home/registrations";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -61,6 +65,12 @@ export default [
         element: <Group />,
         loader: groupLoader,
         action: groupAction,
+      },
+      {
+        path: "registrations",
+        element: <Registrations />,
+        loader: registrationsLoader,
+        action: registrationsAction,
       },
     ],
   },

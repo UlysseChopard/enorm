@@ -29,7 +29,7 @@ exports.up = (pgm) => {
     },
     created_at: "currentTs",
     accepted_at: "timestamptz",
-    ended_at: "timestamptz",
+    denied_at: "timestamptz",
   });
 };
 
