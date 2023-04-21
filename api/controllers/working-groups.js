@@ -1,4 +1,4 @@
-const { WorkingGroups, Subscriptions, Registrations } = require("../models");
+const { WorkingGroups, Subscriptions } = require("../models");
 
 const getGroups = async (userId, groups) => {
   if (groups.has(userId)) return;
@@ -38,39 +38,16 @@ exports.getById = async (req, res, next) => {
   try {
     const map = new Map();
     await getGroups(res.locals.userId, map);
-    const decisionMakers = [];
-    let group = null;
     for (const [decisionMaker, groups] of map) {
-      for (const g of groups) {
-        if (g.id === parseInt(req.params.id)) {
-          decisionMakers.push(decisionMaker);
-          group = g;
+      for (const group of groups) {
+        if (group.id === parseInt(req.params.id)) {
+          return res.json({ decisionMaker, group });
         }
       }
     }
-    if (!group) {
-      return res
-        .status(401)
-        .json({ message: "not allowed to access this group" });
-    }
-    return res.json({ decisionMakers, group });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.join = async (req, res, next) => {
-  try {
-    if (!req.body.decisionMaker)
-      return res.status(400).json({ message: "missing decisionMaker in body" });
-    const {
-      rows: [registration],
-    } = await Registrations.ask({
-      beneficiary: res.locals.userId,
-      group: req.params.id,
-      decisionMaker: req.body.decisionMaker,
-    });
-    res.status(201).json({ registration });
+    return res
+      .status(401)
+      .json({ message: "not allowed to access this group" });
   } catch (err) {
     next(err);
   }

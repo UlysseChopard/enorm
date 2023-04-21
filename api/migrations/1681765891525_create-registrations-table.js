@@ -5,7 +5,7 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   pgm.createTable("registrations", {
     id: "id",
-    next_step: {
+    prev_step: {
       type: "integer",
       references: "registrations",
     },

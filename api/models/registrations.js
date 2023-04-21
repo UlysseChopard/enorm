@@ -1,9 +1,9 @@
 const { db } = require("../utils");
 
-exports.ask = ({ beneficiary, decisionMaker, group, nextStep }) =>
+exports.ask = ({ beneficiary, decisionMaker, group, prevStep = null }) =>
   db.query(
-    "INSERT INTO registrations (beneficiary, group, decision_maker, next_step) VALUES ($1, $2, $3, $4) RETURNING *",
-    [beneficiary, group, decisionMaker, nextStep]
+    "INSERT INTO registrations (beneficiary, working_group, decision_maker, prev_step) VALUES ($1, $2, $3, $4) RETURNING *",
+    [beneficiary, group, decisionMaker, prevStep]
   );
 
 exports.accept = ({ beneficiary, group }) =>
