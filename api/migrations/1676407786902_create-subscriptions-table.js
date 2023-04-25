@@ -9,13 +9,11 @@ exports.up = (pgm) => {
       id: "id",
       sender: {
         type: "uuid",
-        primaryKey: true,
         references: "accounts",
         notNull: true,
       },
       recipient: {
         type: "uuid",
-        primaryKey: true,
         references: "accounts",
         notNull: true,
       },
