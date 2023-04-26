@@ -20,9 +20,15 @@ exports.getAccepted = (userId) =>
 
 exports.accept = (id) =>
   db.query(
-    "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id",
+    "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *",
     [id]
   );
 
 exports.close = (id) =>
   db.query("DELETE FROM subscriptions WHERE id = $1", [id]);
+
+exports.updateReceived = (userId) =>
+  db.query(
+    "UPDATE subscriptions SET received_at = CURRENT_TIMESTAMP WHERE recipient = $1 AND received_at IS NULL",
+    [userId]
+  );

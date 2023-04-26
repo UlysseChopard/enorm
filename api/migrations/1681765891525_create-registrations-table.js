@@ -5,19 +5,9 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   pgm.createTable("registrations", {
     id: "id",
-    prev_step: {
-      type: "integer",
-      references: "registrations",
-    },
     working_group: {
       type: "integer",
       references: "working_groups",
-      notNull: true,
-      onDelete: "cascade",
-    },
-    decision_maker: {
-      type: "uuid",
-      references: "accounts",
       notNull: true,
       onDelete: "cascade",
     },

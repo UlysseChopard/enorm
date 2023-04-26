@@ -19,6 +19,16 @@ exports.up = (pgm) => {
       type: "integer",
       references: "registrations",
     },
+    recipient: {
+      type: "uuid",
+      references: "accounts",
+      notNull: true,
+    },
+    sender: {
+      type: "uuid",
+      references: "accounts",
+      notNull: true,
+    },
   });
 };
 

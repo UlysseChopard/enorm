@@ -1,7 +1,8 @@
-const { Subscriptions, Accounts } = require("../models");
+const { Subscriptions, Accounts, Links } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
+    await Subscriptions.updateReceived(res.locals.userId);
     const { rows: subscriptions } = await Subscriptions.getByUser(
       res.locals.userId
     );
@@ -60,7 +61,13 @@ exports.invite = async (req, res, next) => {
 
 exports.establish = async (req, res, next) => {
   try {
-    const { rows } = await Subscriptions.accept(req.params.subscription);
+    const {
+      rows: [subscription],
+    } = await Subscriptions.accept(req.params.subscription);
+    const { rows } = await Links.create(
+      req.params.subscription,
+      subscription.recipient
+    );
     if (!rows.length)
       return res
         .status(400)
@@ -76,6 +83,7 @@ exports.close = async (req, res, next) => {
     const { rowCount } = await Subscriptions.close(req.params.subscription);
     if (!rowCount)
       return res.status(400).json({ message: "No subscription to close" });
+    await Links.remove(req.params.subscription);
     res.sendStatus(204);
   } catch (err) {
     next(err);

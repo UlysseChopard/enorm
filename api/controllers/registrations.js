@@ -1,4 +1,9 @@
-const { Registrations, WorkingGroups, Subscriptions } = require("../models");
+const {
+  Registrations,
+  WorkingGroups,
+  Subscriptions,
+  Links,
+} = require("../models");
 
 const getDecisionMaker = async (userId, wg) => {
   const queue = [userId];
@@ -42,14 +47,14 @@ exports.deny = () => {};
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: registrations } = await Registrations.get(res.locals.userId);
+    const { rows: links } = await Links.getSended(res.locals.userId);
     const sended = [];
     const received = [];
-    for (const r of registrations) {
-      if (r.beneficiary == res.locals.userId) {
-        sended.push(r);
+    for (const link of links) {
+      if (link.beneficiary == res.locals.userId) {
+        sended.push(link);
       } else {
-        received.push(r);
+        received.push(link);
       }
     }
     res.json({ sended, received });
