@@ -62,16 +62,18 @@ exports.invite = async (req, res, next) => {
 exports.establish = async (req, res, next) => {
   try {
     const {
-      rows: [subscription],
+      rows: [{ id, recipient, sender }],
     } = await Subscriptions.accept(req.params.subscription);
-    const { rows } = await Links.create(
-      req.params.subscription,
-      subscription.recipient
-    );
-    if (!rows.length)
+    if (!id) {
       return res
         .status(400)
         .json({ message: "No subscription to be established" });
+    }
+    await Links.create({
+      subscription: id,
+      recipient,
+      sender,
+    });
     res.sendStatus(201);
   } catch (err) {
     next(err);
