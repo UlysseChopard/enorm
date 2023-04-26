@@ -1,23 +1,8 @@
-const { WorkingGroups, Subscriptions } = require("../models");
-
-const getGroups = async (userId, groups) => {
-  if (groups.has(userId)) return;
-  const { rows } = await WorkingGroups.getAll(userId);
-  groups.set(userId, rows);
-  const { rows: subscriptions } = await Subscriptions.getAccepted(userId);
-  for (const { recipient } of subscriptions) {
-    await getGroups(recipient, groups);
-  }
-};
+const { WorkingGroups } = require("../models");
 
 exports.get = async (_req, res, next) => {
   try {
-    const map = new Map();
-    await getGroups(res.locals.userId, map);
-    const groups = [];
-    for (const userGroups of map.values()) {
-      groups.push(...userGroups);
-    }
+    const { rows: groups } = await WorkingGroups.getAllWG(res.locals.userId);
     res.json({ groups });
   } catch (err) {
     next(err);
@@ -34,20 +19,16 @@ exports.create = async (req, res, next) => {
   }
 };
 
+// TODO: remove
 exports.getById = async (req, res, next) => {
   try {
-    const map = new Map();
-    await getGroups(res.locals.userId, map);
-    for (const [decisionMaker, groups] of map) {
-      for (const group of groups) {
-        if (group.id === parseInt(req.params.id)) {
-          return res.json({ decisionMaker, group });
-        }
-      }
+    const {
+      rows: [group],
+    } = await WorkingGroups.getById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ message: "WG not found" });
     }
-    return res
-      .status(401)
-      .json({ message: "not allowed to access this group" });
+    res.json({ group });
   } catch (err) {
     next(err);
   }

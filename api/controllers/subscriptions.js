@@ -85,7 +85,6 @@ exports.close = async (req, res, next) => {
     const { rowCount } = await Subscriptions.close(req.params.subscription);
     if (!rowCount)
       return res.status(400).json({ message: "No subscription to close" });
-    await Links.remove(req.params.subscription);
     res.sendStatus(204);
   } catch (err) {
     next(err);

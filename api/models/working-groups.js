@@ -1,8 +1,8 @@
 const { db } = require("../utils");
 
-exports.getAll = (userId) =>
+exports.getAllWG = (userId) =>
   db.query(
-    "SELECT g.id, g.created_at, g.organisation, g.reference, g.title, g.disbanded_at, a.email FROM working_groups AS g INNER JOIN accounts AS a ON g.admin = a.id WHERE g.admin = $1",
+    "SELECT wg.*, a.firstname, a.lastname, a.id FROM working_groups AS wg JOIN links AS l ON wg.id = l.working_group JOIN accounts AS a ON l.recipient = a.id WHERE wg.admin = $1 OR l.sender = $1",
     [userId]
   );
 
@@ -12,5 +12,6 @@ exports.create = (userId, { organisation, title, reference }) =>
     [userId, organisation, title, reference]
   );
 
+// TODO: remove
 exports.getById = (groupId) =>
   db.query("SELECT * FROM working_groups WHERE id = $1", [groupId]);

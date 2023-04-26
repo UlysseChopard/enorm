@@ -6,18 +6,9 @@ exports.create = ({ subscription, recipient, sender }) =>
     [subscription, recipient, sender]
   );
 
-exports.remove = (subscription) =>
-  db.query("DELETE FROM links WHERE subscription = $1", [subscription]);
-
 exports.getRegistrations = (userId) =>
   db.query(
     "SELECT * FROM links AS l WHERE sender = $1 OR recipient = $1 JOIN registration AS r ON l.registration = r.id",
-    [userId]
-  );
-
-exports.getGroups = (userId) =>
-  db.query(
-    "SELECT * FROM links AS l WHERE sender = $1 OR recipient = $1 JOIN working_groups AS wg ON l.working_group = wg.id",
     [userId]
   );
 
