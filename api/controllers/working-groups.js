@@ -2,7 +2,7 @@ const { WorkingGroups } = require("../models");
 
 exports.get = async (_req, res, next) => {
   try {
-    const { rows: groups } = await WorkingGroups.getAllWG(res.locals.userId);
+    const { rows: groups } = await WorkingGroups.getByUserId(res.locals.userId);
     res.json({ groups });
   } catch (err) {
     next(err);

@@ -74,6 +74,16 @@ exports.establish = async (req, res, next) => {
       recipient,
       sender,
     });
+    const { rows: subscriptions } = Subscriptions.getSubscribers(
+      res.locals.userId
+    );
+    for (const { id, sender } of subscriptions) {
+      await Links.create({
+        subscription: id,
+        recipient: res.locals.userId,
+        sender,
+      });
+    }
     res.sendStatus(201);
   } catch (err) {
     next(err);

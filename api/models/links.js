@@ -6,6 +6,7 @@ exports.create = ({ subscription, recipient, sender }) =>
     [subscription, recipient, sender]
   );
 
+/*
 exports.getRegistrations = (userId) =>
   db.query(
     "SELECT * FROM links AS l WHERE sender = $1 OR recipient = $1 JOIN registration AS r ON l.registration = r.id",
@@ -23,3 +24,4 @@ exports.submitRegistration = ({
     "INSERT INTO links (registration, subscription, working_group, recipient, sender) VALUES ($1, $2, $3, $4, $5)",
     [registration, subscription, workingGroup, recipient, sender]
   );
+  */

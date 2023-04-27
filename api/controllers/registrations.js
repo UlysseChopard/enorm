@@ -1,15 +1,10 @@
-const {
-  Registrations,
-  WorkingGroups,
-  Subscriptions,
-  Links,
-} = require("../models");
+const { Registrations, WorkingGroups, Subscriptions } = require("../models");
 
 const getDecisionMaker = async (userId, wg) => {
   const queue = [userId];
   while (queue.length) {
     const userId = queue.shift();
-    const { rows } = await WorkingGroups.getAll(userId);
+    const { rows } = await WorkingGroups.getByUserId(userId);
     if (rows.map(({ id }) => id).includes(wg)) return userId;
     const { rows: subscriptions } = await Subscriptions.getAccepted(userId);
     queue.push(...subscriptions.map(({ recipient }) => recipient));
@@ -31,7 +26,7 @@ exports.accept = async (req, res, next) => {
     }
     const {
       rows: [registration],
-    } = await Registrations.ask({
+    } = await Registrations.request({
       beneficiary: req.body.beneficiary,
       workingGroup: req.body.id,
       prevStep: req.params.id,
@@ -47,7 +42,7 @@ exports.deny = () => {};
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: links } = await Links.getSended(res.locals.userId);
+    const { rows: links } = await Registrations.getSended(res.locals.userId);
     const sended = [];
     const received = [];
     for (const link of links) {
@@ -63,11 +58,11 @@ exports.get = async (req, res, next) => {
   }
 };
 
-exports.ask = async (req, res, next) => {
+exports.request = async (req, res, next) => {
   try {
     const {
       rows: [registration],
-    } = await Registrations.ask({
+    } = await Registrations.request({
       beneficiary: res.locals.userId,
       workingGroup: req.body.group,
       decisionMaker: req.body.decisionMaker,

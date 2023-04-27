@@ -1,5 +1,11 @@
 const { db } = require("../utils");
 
+exports.getSended = (userId) =>
+  db.query(
+    "SELECT * FROM registrations WHERE beneficiary = $1 AND accepted_at IS NULL AND denied_at IS NULL",
+    [userId]
+  );
+
 exports.request = ({ beneficiary, workingGroup }) =>
   db.query(
     "INSERT INTO registrations (beneficiary, working_group) VALUES ($1, $2) RETURNING *",

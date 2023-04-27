@@ -1,6 +1,6 @@
 const { db } = require("../utils");
 
-exports.getAllWG = (userId) =>
+exports.getByUserId = (userId) =>
   db.query(
     "SELECT wg.*, a.firstname, a.lastname, a.id FROM working_groups AS wg JOIN links AS l ON wg.id = l.working_group JOIN accounts AS a ON l.recipient = a.id WHERE wg.admin = $1 OR l.sender = $1",
     [userId]
