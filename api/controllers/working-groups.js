@@ -12,14 +12,15 @@ exports.get = async (_req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     const { group } = req.body;
-    const newGroup = await WorkingGroups.create(res.locals.userId, group);
+    const {
+      rows: [newGroup],
+    } = await WorkingGroups.create(res.locals.userId, group);
     res.status(201).json({ group: newGroup });
   } catch (err) {
     next(err);
   }
 };
 
-// TODO: remove
 exports.getById = async (req, res, next) => {
   try {
     const {

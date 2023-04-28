@@ -1,4 +1,4 @@
-const { Subscriptions, Accounts, Links } = require("../models");
+const { Subscriptions, Accounts } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -62,27 +62,12 @@ exports.invite = async (req, res, next) => {
 exports.establish = async (req, res, next) => {
   try {
     const {
-      rows: [{ id, recipient, sender }],
+      rows: [subscription],
     } = await Subscriptions.accept(req.params.subscription);
-    if (!id) {
+    if (!subscription) {
       return res
         .status(400)
         .json({ message: "No subscription to be established" });
-    }
-    await Links.create({
-      subscription: id,
-      recipient,
-      sender,
-    });
-    const { rows: subscriptions } = Subscriptions.getSubscribers(
-      res.locals.userId
-    );
-    for (const { id, sender } of subscriptions) {
-      await Links.create({
-        subscription: id,
-        recipient: res.locals.userId,
-        sender,
-      });
     }
     res.sendStatus(201);
   } catch (err) {
@@ -92,9 +77,7 @@ exports.establish = async (req, res, next) => {
 
 exports.close = async (req, res, next) => {
   try {
-    const { rowCount } = await Subscriptions.close(req.params.subscription);
-    if (!rowCount)
-      return res.status(400).json({ message: "No subscription to close" });
+    await Subscriptions.close(req.params.subscription);
     res.sendStatus(204);
   } catch (err) {
     next(err);
