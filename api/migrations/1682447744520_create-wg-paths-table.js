@@ -3,7 +3,7 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("links", {
+  pgm.createTable("wg_paths", {
     id: "id",
     subscription: {
       type: "integer",
@@ -17,26 +17,9 @@ exports.up = (pgm) => {
       notNull: true,
       onDelete: "cascade"
     },
-    registration: {
-      type: "integer",
-      references: "registrations",
-      onDelete: "cascade"
-    },
-    recipient: {
-      type: "uuid",
-      references: "accounts",
-      notNull: true,
-      onDelete: "cascade"
-    },
-    sender: {
-      type: "uuid",
-      references: "accounts",
-      notNull: true,
-      onDelete: "cascade"
-    },
   });
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("links");
+  pgm.dropTable("wg_paths");
 };
