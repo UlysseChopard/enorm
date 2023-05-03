@@ -8,7 +8,6 @@ exports.up = (pgm) => {
     subscription: {
       type: "integer",
       references: "subscriptions",
-      notNull: true,
       onDelete: "cascade"
     },
     working_group: {

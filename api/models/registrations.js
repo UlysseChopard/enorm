@@ -6,6 +6,8 @@ exports.getSended = (userId) =>
     [userId]
   );
 
+exports.getRequests = (userId) => db.query("SELECT r.* FROM registrations_streams AS rs JOIN registrations ON rs.registration = r.id WHERE rs.subscription IN (SELECT s.id FROM subscriptions AS s WHERE s.recipient = $1)", [userId]);
+
 exports.request = ({ beneficiary, workingGroup }) =>
   db.query(
     "INSERT INTO registrations (beneficiary, working_group) VALUES ($1, $2) RETURNING *",
