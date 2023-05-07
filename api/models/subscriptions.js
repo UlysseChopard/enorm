@@ -18,17 +18,11 @@ exports.getAccepted = (userId) =>
     [userId]
   );
 
-exports.accept = async (id) => {
-  const result = await db.query(
+exports.accept = (id) =>
+  db.query(
     "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *",
     [id]
   );
-  await db.query(
-    "INSERT INTO wg_paths (subscription, working_group) VALUES SELECT $1, id FROM working_groups WHERE admin = $2 UNION SELECT $1, working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $2)",
-    [result.rows[0].id, result.rows[0].recipient]
-  );
-  return result;
-};
 
 exports.close = (id) =>
   db.query("DELETE FROM subscriptions WHERE id = $1", [id]);

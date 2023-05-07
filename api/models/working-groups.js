@@ -2,7 +2,7 @@ const { db } = require("../utils");
 
 exports.getByUserId = (userId) =>
   db.query(
-    "SELECT wg.*, a.firstname, a.lastname, a.id FROM wg_paths AS wgp JOIN working_groups AS wg ON wgp.working_group = wg.id JOIN accounts AS a ON wg.admin = a.id WHERE wgp.subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
+    "SELECT wg.* FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id WHERE p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1) UNION SELECT * FROM working_groups WHERE admin = $1",
     [userId]
   );
 
@@ -16,7 +16,3 @@ exports.create = async (userId, { organisation, title, reference }) => {
   ]);
   return result;
 };
-
-// TODO: remove
-exports.getById = (groupId) =>
-  db.query("SELECT * FROM working_groups WHERE id = $1", [groupId]);

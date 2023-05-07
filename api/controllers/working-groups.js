@@ -20,17 +20,3 @@ exports.create = async (req, res, next) => {
     next(err);
   }
 };
-
-exports.getById = async (req, res, next) => {
-  try {
-    const {
-      rows: [group],
-    } = await WorkingGroups.getById(req.params.id);
-    if (!group) {
-      return res.status(404).json({ message: "WG not found" });
-    }
-    res.json({ group });
-  } catch (err) {
-    next(err);
-  }
-};

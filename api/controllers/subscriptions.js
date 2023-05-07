@@ -1,4 +1,4 @@
-const { Subscriptions, Accounts } = require("../models");
+const { Subscriptions, Accounts, WGPaths } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -64,6 +64,10 @@ exports.establish = async (req, res, next) => {
     const {
       rows: [subscription],
     } = await Subscriptions.accept(req.params.subscription);
+    await WGPaths.propagate({
+      subscription: subscription.id,
+      recipient: subscription.recipient,
+    });
     if (!subscription) {
       return res
         .status(400)
