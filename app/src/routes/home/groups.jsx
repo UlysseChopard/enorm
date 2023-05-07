@@ -67,12 +67,6 @@ const CreateModal = ({ open, onClose }) => {
 
 const createColumns = (t) => [
   {
-    accessorKey: "email",
-    header: t("sponsor"),
-    enableSorting: true,
-    sortingFn: "basic",
-  },
-  {
     accessorKey: "organisation",
     header: t("organisation"),
     enableSorting: true,
@@ -102,12 +96,6 @@ const createColumns = (t) => [
     header: t("disbanding"),
     enableSorting: true,
     sortingFn: "basic",
-  },
-  {
-    header: t("actions"),
-    cell: (props) => (
-      <Button to={`/groups/${props.row.id}`}>{t("groupPage")}</Button>
-    ),
   },
 ];
 
