@@ -8,10 +8,6 @@ import Groups, {
   loader as groupsLoader,
   action as groupsAction,
 } from "@/routes/home/groups";
-import Group, {
-  loader as groupLoader,
-  action as groupAction,
-} from "@/routes/home/group";
 import Profile, {
   loader as profileLoader,
   action as profileAction,
@@ -59,12 +55,6 @@ export default [
         element: <Groups />,
         loader: groupsLoader,
         action: groupsAction,
-      },
-      {
-        path: "groups/:id",
-        element: <Group />,
-        loader: groupLoader,
-        action: groupAction,
       },
       {
         path: "registrations",
