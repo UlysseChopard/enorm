@@ -36,3 +36,4 @@
 - [ ] 8de8481f927425 move in prod  
 - [ ] 685211abff6206 set on delete cascade where needed  
 - [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint  
+- [ ] 3d5161ed7f6f95 protect subscription add and remove routes auth  
