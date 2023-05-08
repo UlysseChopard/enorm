@@ -1,4 +1,8 @@
-export const get = () => fetch("/api/working-groups", { credentials: "include" });
+export const get = () =>
+  fetch("/api/working-groups", { credentials: "include" });
+
+export const find = (wgId) =>
+  fetch(`/api/working-groups/${wgId}`, { credentials: "include" });
 
 export const create = (group) =>
   fetch("/api/working-groups", {

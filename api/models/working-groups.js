@@ -1,8 +1,8 @@
 const { db } = require("../utils");
 
-exports.getByUserId = (userId) =>
+exports.getByUser = (userId) =>
   db.query(
-    "SELECT wg.* FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id WHERE p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1) UNION SELECT * FROM working_groups WHERE admin = $1",
+    "SELECT wg.*  FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id WHERE p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1) UNION SELECT * FROM working_groups WHERE admin = $1",
     [userId]
   );
 
@@ -16,3 +16,9 @@ exports.create = async (userId, { organisation, title, reference }) => {
   ]);
   return result;
 };
+
+exports.find = (userId, wg) =>
+  db.query(
+    "SELECT wg.*, p.id FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id WHERE p.working_group = $2 AND p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
+    [userId, wg]
+  );
