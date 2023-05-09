@@ -61,7 +61,7 @@ export default [
         action: groupsAction,
       },
       {
-        path: "group",
+        path: "groups/:id",
         element: <Group />,
         loader: groupLoader,
         action: groupAction,

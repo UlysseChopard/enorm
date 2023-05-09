@@ -1,4 +1,4 @@
-export const ask = (body) =>
+export const request = (body) =>
   fetch("/api/registrations", {
     method: "POST",
     credentials: "include",
