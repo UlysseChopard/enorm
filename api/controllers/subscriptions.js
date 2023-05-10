@@ -1,5 +1,19 @@
 const { Subscriptions, Accounts, WGPaths } = require("../models");
 
+const getImpactedSubscriptions = async (
+  subscription,
+  recipient,
+  queue = new Set()
+) => {
+  if (queue.has(subscription)) return;
+  queue.add(subscription);
+  const { rows: subscribers } = await Subscriptions.getSubscribers(recipient);
+  for (const { id, sender } of subscribers) {
+    await getImpactedSubscriptions(id, sender, queue);
+  }
+  return queue;
+};
+
 exports.get = async (req, res, next) => {
   try {
     await Subscriptions.updateReceived(res.locals.userId);
@@ -64,14 +78,20 @@ exports.establish = async (req, res, next) => {
     const {
       rows: [subscription],
     } = await Subscriptions.accept(req.params.subscription);
-    await WGPaths.propagate({
-      subscription: subscription.id,
-      recipient: subscription.recipient,
-    });
     if (!subscription) {
       return res
         .status(400)
         .json({ message: "No subscription to be established" });
+    }
+    const newWGs = await WGPaths.getNew(subscription.recipient);
+    const impactedSubscriptions = await getImpactedSubscriptions(
+      subscription.id,
+      subscription.recipient
+    );
+    for (const subscription of impactedSubscriptions) {
+      for (const wg of newWGs) {
+        await WGPaths.add(subscription, wg);
+      }
     }
     res.sendStatus(201);
   } catch (err) {

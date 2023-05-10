@@ -6,16 +6,11 @@ exports.getByUser = (userId) =>
     [userId]
   );
 
-exports.create = async (userId, { organisation, title, reference }) => {
-  const result = await db.query(
+exports.create = (userId, { organisation, title, reference }) =>
+  db.query(
     "INSERT INTO working_groups (admin, organisation, title, reference, created_at) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING *",
     [userId, organisation, title, reference]
   );
-  await db.query("INSERT INTO wg_paths (working_group) VALUES ($1)", [
-    result.rows[0].id,
-  ]);
-  return result;
-};
 
 exports.find = (userId, wg) =>
   db.query(

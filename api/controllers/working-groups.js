@@ -1,4 +1,23 @@
-const { WorkingGroups } = require("../models");
+const { WorkingGroups, WGPaths, Subscriptions } = require("../models");
+
+const propagate = async (userId, wg) => {
+  const queue = new Map();
+  const { rows: subscriptions } = await Subscriptions.getSubscribers(userId);
+  for (const { sender, id } of subscriptions) {
+    queue.set(id, sender);
+  }
+  for (const [subscription, subscriber] of queue.entries()) {
+    const { rows: subscriptions } = await Subscriptions.getSubscribers(
+      subscriber
+    );
+    for (const { sender, id } of subscriptions) {
+      if (sender === userId) continue;
+      queue.set(id, sender);
+    }
+    await WGPaths.add(subscription, wg);
+  }
+  console.log(queue);
+};
 
 exports.get = async (_req, res, next) => {
   try {
@@ -17,9 +36,9 @@ exports.get = async (_req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     const {
-      rows: [newGroup],
+      rows: [group],
     } = await WorkingGroups.create(res.locals.userId, req.body.group);
-    res.status(201).json({ group: newGroup });
+    res.status(201).json({ group });
   } catch (err) {
     next(err);
   }
