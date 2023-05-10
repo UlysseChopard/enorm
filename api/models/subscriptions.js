@@ -32,3 +32,8 @@ exports.updateReceived = (userId) =>
     "UPDATE subscriptions SET received_at = CURRENT_TIMESTAMP WHERE recipient = $1 AND received_at IS NULL",
     [userId]
   );
+
+exports.getSubscribers = (userId) =>
+  db.query("SELECT id, sender FROM subscriptions WHERE recipient = $1", [
+    userId,
+  ]);

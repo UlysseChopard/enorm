@@ -70,14 +70,14 @@ exports.establish = async (req, res, next) => {
         .status(400)
         .json({ message: "No subscription to be established" });
     }
-    const newWGs = await WGPaths.getNew(subscription.recipient);
+    const { rows: newWGs } = await WGPaths.getNew(subscription.recipient);
     const impactedSubscriptions = await getDownstream(
       subscription.recipient,
       subscription.id
     );
     for (const subscription of impactedSubscriptions) {
       for (const wg of newWGs) {
-        await WGPaths.add(subscription, wg);
+        await WGPaths.add(subscription, wg.id);
       }
     }
     res.sendStatus(201);
