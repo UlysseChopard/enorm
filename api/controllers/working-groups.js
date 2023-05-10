@@ -1,23 +1,5 @@
-const { WorkingGroups, WGPaths, Subscriptions } = require("../models");
-
-const propagate = async (userId, wg) => {
-  const queue = new Map();
-  const { rows: subscriptions } = await Subscriptions.getSubscribers(userId);
-  for (const { sender, id } of subscriptions) {
-    queue.set(id, sender);
-  }
-  for (const [subscription, subscriber] of queue.entries()) {
-    const { rows: subscriptions } = await Subscriptions.getSubscribers(
-      subscriber
-    );
-    for (const { sender, id } of subscriptions) {
-      if (sender === userId) continue;
-      queue.set(id, sender);
-    }
-    await WGPaths.add(subscription, wg);
-  }
-  console.log(queue);
-};
+const { WorkingGroups, WGPaths } = require("../models");
+const { getDownstream } = require("../services/subscriptions");
 
 exports.get = async (_req, res, next) => {
   try {
@@ -38,6 +20,10 @@ exports.create = async (req, res, next) => {
     const {
       rows: [group],
     } = await WorkingGroups.create(res.locals.userId, req.body.group);
+    const impactedSubscriptions = await getDownstream(res.locals.userId);
+    for (const subscription of impactedSubscriptions) {
+      await WGPaths.add(subscription, group.id);
+    }
     res.status(201).json({ group });
   } catch (err) {
     next(err);

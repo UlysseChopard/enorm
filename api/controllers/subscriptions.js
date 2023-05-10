@@ -1,18 +1,5 @@
 const { Subscriptions, Accounts, WGPaths } = require("../models");
-
-const getImpactedSubscriptions = async (
-  subscription,
-  recipient,
-  queue = new Set()
-) => {
-  if (queue.has(subscription)) return;
-  queue.add(subscription);
-  const { rows: subscribers } = await Subscriptions.getSubscribers(recipient);
-  for (const { id, sender } of subscribers) {
-    await getImpactedSubscriptions(id, sender, queue);
-  }
-  return queue;
-};
+const { getDownstream } = require("../services/subscriptions");
 
 exports.get = async (req, res, next) => {
   try {
@@ -84,9 +71,9 @@ exports.establish = async (req, res, next) => {
         .json({ message: "No subscription to be established" });
     }
     const newWGs = await WGPaths.getNew(subscription.recipient);
-    const impactedSubscriptions = await getImpactedSubscriptions(
-      subscription.id,
-      subscription.recipient
+    const impactedSubscriptions = await getDownstream(
+      subscription.recipient,
+      subscription.id
     );
     for (const subscription of impactedSubscriptions) {
       for (const wg of newWGs) {
