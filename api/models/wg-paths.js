@@ -8,7 +8,7 @@ exports.update = (subscription, recipient) =>
 
 exports.add = (subscription, wg) =>
   db.query(
-    "INSERT INTO wg_paths (subscription, working_group) VALUES ($1, $2)",
+    "INSERT INTO wg_paths (subscription, working_group) VALUES ($1, $2) ON CONFLICT DO NOTHING",
     [subscription, wg]
   );
 
