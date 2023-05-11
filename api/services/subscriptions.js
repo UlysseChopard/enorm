@@ -1,15 +1,21 @@
 const { Subscriptions } = require("../models");
 
-exports.getDownstream = async (
+const get = async (
   recipient,
+  initialUser = null,
   subscription = null,
   downstream = new Set()
 ) => {
+  console.log(downstream);
   if (downstream.has(subscription)) return;
+  if (!subscription) initialUser = recipient;
   if (subscription) downstream.add(subscription);
   const { rows: subscribers } = await Subscriptions.getSubscribers(recipient);
   for (const { id, sender } of subscribers) {
-    await exports.getDownstream(sender, id, downstream);
+    if (sender === initialUser) continue;
+    await get(sender, initialUser, id, downstream);
   }
   return downstream;
 };
+
+exports.getDownstream = (userId) => get(userId);

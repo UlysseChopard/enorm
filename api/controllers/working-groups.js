@@ -3,12 +3,7 @@ const { getDownstream } = require("../services/subscriptions");
 
 exports.get = async (_req, res, next) => {
   try {
-    const { rows: wgs } = await WorkingGroups.getByUser(res.locals.userId);
-    const groups = wgs.map((wg) => {
-      wg.wg_path = wg.id;
-      delete wg.id;
-      return wg;
-    });
+    const { rows: groups } = await WorkingGroups.getByUser(res.locals.userId);
     res.json({ groups });
   } catch (err) {
     next(err);
