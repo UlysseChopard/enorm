@@ -1,21 +1,5 @@
-const { WorkingGroups, WGPaths, Subscriptions } = require("../models");
-
-const propagate = async (
-  userId,
-  wg,
-  subscription = null,
-  propagated = new Set()
-) => {
-  if (propagated.has(subscription)) return;
-  if (subscription) {
-    await WGPaths.add(subscription, wg);
-  }
-  const { rows: subscriptions } = await Subscriptions.getSubscribers(userId);
-  for (const subscription of subscriptions) {
-    propagated.add(subscription.id);
-    await propagate(subscription.sender, wg, subscription.id, propagated);
-  }
-};
+const { WorkingGroups, WGPaths } = require("../models");
+const { getDownstream } = require("../services/subscriptions");
 
 exports.get = async (_req, res, next) => {
   try {
@@ -31,7 +15,10 @@ exports.create = async (req, res, next) => {
     const {
       rows: [group],
     } = await WorkingGroups.create(res.locals.userId, req.body.group);
-    await propagate(res.locals.userId, group.id);
+    const impactedSubscriptions = await getDownstream(res.locals.userId);
+    for (const subscription of impactedSubscriptions) {
+      await WGPaths.add(subscription, group.id);
+    }
     res.status(201).json({ group });
   } catch (err) {
     next(err);

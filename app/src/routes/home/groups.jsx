@@ -97,6 +97,12 @@ const createColumns = (t) => [
     enableSorting: true,
     sortingFn: "basic",
   },
+  {
+    header: t("groupPages"),
+    cell: (props) => (
+      <Button to={`/groups/${props.row.id}`}>{t("groupPage")}</Button>
+    ),
+  },
 ];
 
 export default function Groups() {

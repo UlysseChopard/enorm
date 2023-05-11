@@ -1,4 +1,5 @@
 const { Subscriptions, Accounts, WGPaths } = require("../models");
+const { getDownstream } = require("../services/subscriptions");
 
 exports.get = async (req, res, next) => {
   try {
@@ -64,14 +65,20 @@ exports.establish = async (req, res, next) => {
     const {
       rows: [subscription],
     } = await Subscriptions.accept(req.params.subscription);
-    await WGPaths.propagate({
-      subscription: subscription.id,
-      recipient: subscription.recipient,
-    });
     if (!subscription) {
       return res
         .status(400)
         .json({ message: "No subscription to be established" });
+    }
+    const { rows: newWGs } = await WGPaths.getNew(subscription.recipient);
+    const impactedSubscriptions = await getDownstream(
+      subscription.recipient,
+      subscription.id
+    );
+    for (const subscription of impactedSubscriptions) {
+      for (const wg of newWGs) {
+        await WGPaths.add(subscription, wg.id);
+      }
     }
     res.sendStatus(201);
   } catch (err) {
