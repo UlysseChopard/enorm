@@ -2,7 +2,7 @@ const { db } = require("../utils");
 
 exports.getByUser = (userId) =>
   db.query(
-    "SELECT wg.*, p.id AS wg_path  FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id WHERE p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1) UNION SELECT *, NULL AS wg_path FROM working_groups WHERE admin = $1",
+    "SELECT wg.* FROM working_groups AS wg WHERE wg.id IN (SELECT working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $1)) OR admin = $1",
     [userId]
   );
 
