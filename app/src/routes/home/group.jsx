@@ -2,6 +2,7 @@ import { useSubmit, useLoaderData, useActionData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getById } from "@/api/working-groups";
 import { request } from "@/api/registrations";
+import Button from "@mui/material/Button";
 
 export const loader = async ({ params }) => {
   const res = await getById(params.id);
@@ -20,8 +21,11 @@ const Group = () => {
   const { t } = useTranslation();
   return (
     <>
+      <Button to="/groups">{t("back")}</Button>
       <div>{JSON.stringify(wg, null, 4)}</div>
-      <button onClick={submit}>{t("join")}</button>
+      <Button variant="contained" onClick={submit}>
+        {t("join")}
+      </Button>
       <div>{JSON.stringify(actionData, null, 4)}</div>
     </>
   );

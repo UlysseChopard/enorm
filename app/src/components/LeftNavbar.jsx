@@ -19,7 +19,7 @@ const MENU = [
   {
     icon: <GridViewIcon />,
     text: "dashboard",
-    target: "",
+    target: "dashboard",
   },
   {
     icon: <HubIcon />,
@@ -70,11 +70,11 @@ const LeftNavbar = ({ user }) => {
                 },
               }}
               href={target}
-              selected={pathname === `/${target}`}
+              selected={pathname.match(target)}
             >
               <ListItemIcon
                 sx={{
-                  color: pathname === `/${target}` ? "#e7f1fc" : "#108bdc",
+                  color: pathname.match(target) ? "#e7f1fc" : "#108bdc",
                 }}
               >
                 {icon}
@@ -82,7 +82,7 @@ const LeftNavbar = ({ user }) => {
               <ListItemText
                 primary={t(text)}
                 sx={{
-                  color: pathname === `/${target}` ? "#e7f1fc" : "inherit",
+                  color: pathname.match(target) ? "#e7f1fc" : "inherit",
                 }}
               />
             </ListItemButton>

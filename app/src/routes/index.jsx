@@ -39,6 +39,7 @@ export default [
     loader: homeLoader,
     children: [
       {
+        path: "dashboard",
         element: <Dashboard />,
         index: true,
       },
