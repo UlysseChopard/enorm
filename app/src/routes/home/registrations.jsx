@@ -1,9 +1,30 @@
-import { useLoaderData, useSubmit } from "react-router-dom";
-import { get, accept, deny } from "@/api/registrations";
+import { useState } from "react";
+import { useLoaderData, useSubmit, Form } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Select from "@mui/base/Select";
+import Option from "@mui/base/Option";
+import { get as getRegistrations, accept, deny } from "@/api/registrations";
+import { get as getWGs } from "@/api/working-groups";
 
 export const loader = async () => {
-  const res = await get();
-  return res.ok ? res.json() : res.status;
+  const registrations = await getRegistrations();
+  if (!registrations.ok) {
+    return registrations.status;
+  }
+  const wgs = await getWGs();
+  if (!wgs.ok) {
+    return wgs.status;
+  }
+  const { sended, received } = await registrations.json();
+  const { groups } = await wgs.json();
+  return { sended, received, groups };
 };
 
 export const action = async ({ request }) => {
@@ -22,7 +43,10 @@ export const action = async ({ request }) => {
 
 const Registrations = () => {
   const submit = useSubmit();
-  const { sended, received } = useLoaderData();
+  const { sended, received, groups } = useLoaderData();
+  const { t } = useTranslation(null, { keyPrefix: "registrations" });
+  const [dialog, setDialog] = useState("");
+  const [wg, setWG] = useState(null);
   const accept = (group) => {
     const formData = new FormData();
     formData.append("group", JSON.stringify(group));
@@ -38,6 +62,14 @@ const Registrations = () => {
   return (
     <>
       <h1>Received</h1>
+      <ButtonGroup>
+        <Button variant="contained" onClick={() => setDialog("selfRegister")}>
+          {t("selfRegister")}
+        </Button>
+        <Button variant="contained" onClick={() => setDialog("register")}>
+          {t("register")}
+        </Button>
+      </ButtonGroup>
       <table>
         <thead>
           <tr>
@@ -71,6 +103,34 @@ const Registrations = () => {
           ))}
         </tbody>
       </table>
+      <Dialog
+        onClose={() => setDialog("")}
+        open={dialog}
+        fullWidth
+        maxWidth="sm"
+      >
+        <Form method="post" autoComplete="on">
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>{t("text")}</DialogContentText>
+            <Select value={wg} onChange={(_, wg) => setWG(wg)}>
+              {groups.map(({ id, reference, organisation }) => (
+                <Option
+                  id={id}
+                  key={id}
+                  value={id}
+                >{`${organisation} ${reference}`}</Option>
+              ))}
+            </Select>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialog("")}>{t("cancel")}</Button>
+            <Button variant="contained" type="submit">
+              {t("submit")}
+            </Button>
+          </DialogActions>
+        </Form>
+      </Dialog>
     </>
   );
 };
