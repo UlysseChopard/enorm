@@ -67,6 +67,15 @@ const CreateModal = ({ open, onClose }) => {
 
 const createColumns = (t) => [
   {
+    accessorKey: "title",
+    header: t("label"),
+    enableSorting: true,
+    sortingFn: "basic",
+    cell: (props) => (
+      <Button to={`/groups/${props.row.id}`}>{props.row.original.title}</Button>
+    ),
+  },
+  {
     accessorKey: "organisation",
     header: t("organisation"),
     enableSorting: true,
@@ -75,12 +84,6 @@ const createColumns = (t) => [
   {
     accessorKey: "reference",
     header: t("reference"),
-    enableSorting: true,
-    sortingFn: "basic",
-  },
-  {
-    accessorKey: "title",
-    header: t("label"),
     enableSorting: true,
     sortingFn: "basic",
   },
@@ -96,12 +99,6 @@ const createColumns = (t) => [
     header: t("disbanding"),
     enableSorting: true,
     sortingFn: "basic",
-  },
-  {
-    header: t("groupPages"),
-    cell: (props) => (
-      <Button to={`/groups/${props.row.id}`}>{t("groupPage")}</Button>
-    ),
   },
 ];
 
