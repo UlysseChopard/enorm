@@ -31,6 +31,7 @@
     "subtitle": "En cas de nécessité, veuillez contacter le service client"
   },
   "navbar": {
+    "registrations": "Inscriptions",
     "dashboard": "Tableau de bord",
     "profile": "Profil",
     "community": "Réseau",

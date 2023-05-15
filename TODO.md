@@ -9,7 +9,6 @@
 - [x] 36544829555325 Permettre d'accepter une demande d'abonnement
 - [x] c97aefe4068ed1 utiliser l'id de connection pour annuler une demande
 - [x] e839c83942ad1d Prevent sended sub to be displayed in search results
-- [ ] 83946e26d39e0b create members table
 - [x] acb79539b0636a sender in subscription is subscribe to group provider
 - [ ] 929a3ecc406a22 invitation with managed account option
 - [x] ed13676f59578b forgot password feat
@@ -25,7 +24,6 @@
 - [x] 8d26cf15e58d70 remove double check for password update
 - [ ] 2c52199bcef786 set magic link usable only once
 - [ ] dcad2145b19077 del magic token on use  
-- [ ] 2af31d3d671eb2 team tab  
 - [ ] 001cf8d2798cf9 csv import for teams by emails  
 - [ ] 44e5fb958823a0 one admin for one team  
 - [ ] 46837e3690c0d7 create group and subscription folders with specifications for visibility and openness  
@@ -33,7 +31,6 @@
 ## 11/04/2023 21:26:39 lock target  
 - [ ] fabab1702202e4 register expert in a group  
 - [x] f788f7c06aa54c delete openness and visibility feats for groups  
-- [ ] 8de8481f927425 move in prod  
 - [ ] 685211abff6206 set on delete cascade where needed  
 - [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint  
 - [ ] 3d5161ed7f6f95 protect subscription add and remove routes auth  

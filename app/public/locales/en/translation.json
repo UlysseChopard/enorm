@@ -31,6 +31,7 @@
     "subtitle": "If necessary, contact us about what happened"
   },
   "navbar": {
+    "registrations": "Registrations",
     "profile": "Profile",
     "dashboard": "Dashboard",
     "community": "Community",
