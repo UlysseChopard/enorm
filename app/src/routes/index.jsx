@@ -18,8 +18,11 @@ import Profile, {
 } from "@/routes/home/profile";
 import Registrations, {
   loader as registrationsLoader,
-  action as registrationsAction,
 } from "@/routes/home/registrations";
+import Registration, {
+  loader as registrationLoader,
+  action as registrationAction,
+} from "@/routes/home/registration";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -71,7 +74,12 @@ export default [
         path: "registrations",
         element: <Registrations />,
         loader: registrationsLoader,
-        action: registrationsAction,
+      },
+      {
+        path: "registrations/:id",
+        element: <Registration />,
+        loader: registrationLoader,
+        action: registrationAction,
       },
     ],
   },

@@ -29,3 +29,5 @@ exports.getWG = (registration) =>
     "SELECT wg.admin FROM registrations AS r JOIN working_groups AS wg ON r.working_group = wg.id WHERE r.id = $1",
     [registration]
   );
+
+exports.find = id => db.query("SELECT * FROM registrations AS r WHERE r.id = $1", [id]);

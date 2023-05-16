@@ -24,3 +24,6 @@ export const deny = (id) =>
     method: "DELETE",
     credentials: "include",
   });
+
+export const find = (id) =>
+  fetch(`/api/registrations/${id}`, { credentials: "include" });

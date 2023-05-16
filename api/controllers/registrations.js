@@ -60,3 +60,14 @@ exports.request = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.find = async (req, res, next) => {
+  try {
+    const {
+      rows: [registration],
+    } = await Registrations.find(req.params.id);
+    res.json({ registration });
+  } catch (err) {
+    next(err);
+  }
+};
