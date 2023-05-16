@@ -11,12 +11,12 @@ export const request = (body) =>
 export const get = () =>
   fetch("/api/registrations", { credentials: "include" });
 
-export const accept = (group) =>
-  fetch(`/api/registrations/${group.id}`, {
-    method: "PUT",
+export const accept = (id, body) =>
+  fetch(`/api/registrations/${id}`, {
+    method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(group),
+    body: JSON.stringify(body),
   });
 
 export const deny = (id) =>

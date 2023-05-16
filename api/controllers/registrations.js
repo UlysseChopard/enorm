@@ -1,4 +1,4 @@
-const { Registrations, WorkingGroups, Subscriptions } = require("../models");
+const { Registrations, WGPaths, RegistrationsStreams } = require("../models");
 
 exports.accept = async (req, res, next) => {
   try {
@@ -7,10 +7,12 @@ exports.accept = async (req, res, next) => {
     } = await Registrations.getWG(req.params.id);
     if (wg.admin === res.locals.userId) {
       await Registrations.accept(req.params.id);
-      res.sendStatus(204);
+      return res.json({ message: `Registration ${req.params.id} created` });
     }
-    await Registrations.forward(req.body.wgPath, req.params.id);
-    res.sendStatus(204);
+    const {
+      rows: [registrationStream],
+    } = await RegistrationsStreams.forward(req.params.id, req.body.wgPath);
+    res.status(201).json({ registrationStream });
   } catch (err) {
     next(err);
   }
@@ -18,8 +20,10 @@ exports.accept = async (req, res, next) => {
 
 exports.deny = async (req, res, next) => {
   try {
-    await Registrations.deny(req.params.id);
-    res.json({ message: `Registration ${req.params.id} successfully denied` });
+    const {
+      rows: [registration],
+    } = await Registrations.deny(req.params.id);
+    res.json({ registration });
   } catch (err) {
     next(err);
   }
@@ -28,7 +32,7 @@ exports.deny = async (req, res, next) => {
 exports.get = async (req, res, next) => {
   try {
     const { rows: sended } = await Registrations.getSended(res.locals.userId);
-    const { rows: received } = await Registrations.getReceived(
+    const { rows: received } = await RegistrationsStreams.getReceived(
       res.locals.userId
     );
     res.json({ sended, received });
@@ -40,13 +44,18 @@ exports.get = async (req, res, next) => {
 exports.request = async (req, res, next) => {
   try {
     const {
+      rows: [wgPath],
+    } = await WGPaths.getById(req.body.wgPath);
+    const {
       rows: [registration],
-    } = await Registrations.request({
+    } = await Registrations.create({
       beneficiary: res.locals.userId,
-      workingGroup: req.body.group,
-      decisionMaker: req.body.decisionMaker,
+      workingGroup: wgPath.working_group,
     });
-    res.status(201).json({ registration });
+    const {
+      rows: [registrationStream],
+    } = await RegistrationsStreams.forward(registration.id, req.body.wgPath);
+    res.status(201).json({ registration, registrationStream });
   } catch (err) {
     next(err);
   }

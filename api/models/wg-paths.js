@@ -17,3 +17,6 @@ exports.getNew = (recipient) =>
     "SELECT id FROM working_groups WHERE admin = $1 UNION SELECT working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
     [recipient]
   );
+
+exports.getById = (id) =>
+  db.query("SELECT * FROM wg_paths WHERE id = $1", [id]);
