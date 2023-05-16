@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useActionData, useLoaderData, useSubmit } from "react-router-dom";
-import { search, invite, getNews, accept, deny } from "@/api/subscriptions";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
@@ -15,7 +14,8 @@ import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-
+import TabPanel from "@/components/TabPanel";
+import { search, invite, getNews, accept, deny } from "@/api/subscriptions";
 export async function action({ request }) {
   const formData = await request.formData();
   const { type, recipient, query } = Object.fromEntries(formData);
@@ -68,20 +68,6 @@ const GroupProvider = ({
     <ListItemText secondary={email}>{`${firstname} ${lastname}`}</ListItemText>
   </ListItem>
 );
-
-const TabPanel = ({ children, value, index, ...other }) => {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tab-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...other}
-    >
-      {value === index && children}
-    </div>
-  );
-};
 
 export default function Subscriptions() {
   const action = useActionData();
@@ -186,11 +172,11 @@ export default function Subscriptions() {
                   iconPosition="start"
                   label={t("pending")}
                   id="pendings"
-                  aria-controls="tab-0"
+                  ariaControls="tab-0"
                 />
               )}
-              <Tab label={t("providers")} id="tab-1" aria-controls="tab-1" />
-              <Tab label={t("subscribers")} id="tab-2" aria-controls="tab-2" />
+              <Tab label={t("providers")} id="tab-1" ariaControls="tab-1" />
+              <Tab label={t("subscribers")} id="tab-2" ariaControls="tab-2" />
             </Tabs>
           </Box>
           {arePending ? (
