@@ -40,11 +40,11 @@ const Registrations = () => {
         <Tabs
           value={tab}
           onChange={(_, val) => setTab(val)}
-          ariaControls="tab-0"
+          aria-controls="tab-0"
           centered
         >
-          <Tab label={t("sended")} id="tab-0" ariaControls="tab-0" />
-          <Tab label={t("received")} id="tab-1" ariaControls="tab-1" />
+          <Tab label={t("sended")} id="tab-0" aria-controls="tab-0" />
+          <Tab label={t("received")} id="tab-1" aria-controls="tab-1" />
         </Tabs>
       </Box>
       <TabPanel value={tab} index={0}>

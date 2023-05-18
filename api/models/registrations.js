@@ -2,7 +2,7 @@ const { db } = require("../utils");
 
 exports.getSended = (userId) =>
   db.query(
-    "SELECT *, wg.id AS working_group FROM registrations AS r JOIN working_groups AS wg ON r.working_group = wg.id WHERE r.beneficiary = $1",
+    "SELECT *, r.id AS id, wg.id AS working_group FROM registrations AS r JOIN working_groups AS wg ON r.working_group = wg.id WHERE r.beneficiary = $1",
     [userId]
   );
 
@@ -30,4 +30,11 @@ exports.getWG = (registration) =>
     [registration]
   );
 
-exports.find = id => db.query("SELECT * FROM registrations AS r WHERE r.id = $1", [id]);
+exports.find = (id) =>
+  db.query("SELECT * FROM registrations AS r WHERE r.id = $1", [id]);
+
+exports.removeBySubscription = (subscription) =>
+  db.query(
+    "DELETE FROM registrations WHERE id IN (SELECT registration FROM registrations_streams WHERE wg_path IN (SELECT id FROM wg_paths WHERE subscription = $1))",
+    [subscription]
+  );

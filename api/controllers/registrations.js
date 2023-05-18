@@ -1,6 +1,7 @@
 const { Registrations, WGPaths, RegistrationsStreams } = require("../models");
 
 exports.accept = async (req, res, next) => {
+  console.log("here");
   try {
     const {
       rows: [wg],
@@ -66,7 +67,11 @@ exports.find = async (req, res, next) => {
     const {
       rows: [registration],
     } = await Registrations.find(req.params.id);
-    res.json({ registration });
+    const requireAction =
+      registration.beneficiary !== res.locals.userId &&
+      !registration.denied_at &&
+      !registration.accepted_at;
+    res.json({ registration, requireAction });
   } catch (err) {
     next(err);
   }

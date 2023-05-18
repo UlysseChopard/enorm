@@ -1,4 +1,9 @@
-const { Subscriptions, Accounts, WGPaths } = require("../models");
+const {
+  Subscriptions,
+  Accounts,
+  WGPaths,
+  Registrations,
+} = require("../models");
 const { getDownstream } = require("../services/subscriptions");
 
 exports.get = async (req, res, next) => {
@@ -88,6 +93,7 @@ exports.establish = async (req, res, next) => {
 
 exports.close = async (req, res, next) => {
   try {
+    await Registrations.removeBySubscription(req.params.subscription);
     await Subscriptions.close(req.params.subscription);
     res.sendStatus(204);
   } catch (err) {

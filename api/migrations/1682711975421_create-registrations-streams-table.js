@@ -9,11 +9,13 @@ exports.up = (pgm) => {
       type: "integer",
       references: "wg_paths",
       notNull: true,
+      onDelete: "cascade",
     },
     registration: {
       type: "id",
       references: "registrations",
       notNull: true,
+      onDelete: "cascade",
     },
   });
 };

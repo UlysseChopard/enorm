@@ -58,36 +58,39 @@ const LeftNavbar = ({ user }) => {
       elevation={24}
     >
       <List disablePadding>
-        {MENU.map(({ text, icon, target }) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              sx={{
-                "&.Mui-selected, &.Mui-selected:hover": {
-                  backgroundColor: "#0a4987",
-                },
-                "&:hover": {
-                  backgroundColor: "#a2a9b0",
-                },
-              }}
-              href={target}
-              selected={pathname.match(target)}
-            >
-              <ListItemIcon
+        {MENU.map(({ text, icon, target }) => {
+          const selected = new RegExp(target).test(pathname);
+          return (
+            <ListItem key={text} disablePadding>
+              <ListItemButton
                 sx={{
-                  color: pathname.match(target) ? "#e7f1fc" : "#108bdc",
+                  "&.Mui-selected, &.Mui-selected:hover": {
+                    backgroundColor: "#0a4987",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#a2a9b0",
+                  },
                 }}
+                href={target}
+                selected={selected}
               >
-                {icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={t(text)}
-                sx={{
-                  color: pathname.match(target) ? "#e7f1fc" : "inherit",
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+                <ListItemIcon
+                  sx={{
+                    color: selected ? "#e7f1fc" : "#108bdc",
+                  }}
+                >
+                  {icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={t(text)}
+                  sx={{
+                    color: selected ? "#e7f1fc" : "inherit",
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
       <List>
         <Divider sx={{ borderColor: "#e7f1fc" }} />

@@ -9,7 +9,7 @@ const {
 module.exports = (router) => {
   router.get("/", get);
   router.post("/", request);
-  router.put("/:id", accept);
+  router.patch("/:id", accept);
   router.delete("/:id", deny);
   router.get("/:id", find);
   return router;
