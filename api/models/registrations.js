@@ -32,7 +32,7 @@ exports.getWG = (registration) =>
 
 exports.find = (id) =>
   db.query(
-    "SELECT r.*, rs.wg_path FROM registrations AS r JOIN registrations_streams AS rs ON r.id = rs.registration WHERE r.id = $1",
+    "SELECT r.*, rs.wg_path, a.firstname, a.lastname FROM registrations AS r JOIN registrations_streams AS rs ON r.id = rs.registration JOIN wg_paths AS wgp ON rs.wg_path = wgp.id JOIN subscriptions AS s ON wgp.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE r.id = $1",
     [id]
   );
 

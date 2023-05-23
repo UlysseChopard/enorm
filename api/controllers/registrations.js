@@ -72,8 +72,11 @@ exports.find = async (req, res, next) => {
       registration.beneficiary !== res.locals.userId &&
       !registration.denied_at &&
       !registration.accepted_at;
-    const wgPaths = registrations.map(({ wg_path }) => wg_path);
-    delete registration.wg_path;
+    const wgPaths = registrations.map(({ firstname, lastname, wg_path }) => ({
+      firstname,
+      lastname,
+      wg_path,
+    }));
     res.json({ registration, wgPaths, requireAction });
   } catch (err) {
     next(err);

@@ -4,12 +4,9 @@ import { useTranslation } from "react-i18next";
 import { getById } from "@/api/working-groups";
 import { request as requestRegistration } from "@/api/registrations";
 import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import SelectProvider from "@/components/SelectProvider";
 
 export const loader = async ({ params }) => {
   const res = await getById(params.id);
@@ -44,23 +41,11 @@ const Group = () => {
         <div>{JSON.stringify(paths, null, 4)}</div>
       </Grid>
       <Grid item xs={10}>
-        <FormControl required fullWidth>
-          <InputLabel id="wg-path-label">{t("provider")}</InputLabel>
-          <Select
-            id="wg-path"
-            labelId="wg-path-label"
-            label={t("options")}
-            value={wgPath}
-            onChange={(e) => setWgPath(e.target.value)}
-          >
-            {paths.map((path) => (
-              <MenuItem
-                key={path.wg_path}
-                value={path.wg_path}
-              >{`${path.firstname} ${path.lastname}`}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <SelectProvider
+          wgPaths={paths}
+          onChange={(e) => setWgPath(e.target.value)}
+          value={wgPath}
+        />
       </Grid>
       <Grid item xs={10}>
         <Stack direction="row" spacing={2}>

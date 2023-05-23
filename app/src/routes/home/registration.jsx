@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLoaderData, useActionData, useSubmit } from "react-router-dom";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import SelectProvider from "@/components/SelectProvider";
 import { find, accept, deny } from "@/api/registrations";
 
 export const loader = async ({ params }) => {
@@ -16,7 +19,7 @@ export const action = async ({ request, params }) => {
       res = await deny(params.id);
       break;
     case "accept":
-      res = await accept(params.id, formData.get("wgPath"));
+      res = await accept(params.id, { wgPath: formData.get("wgPath") });
       break;
   }
   return res.ok ? res.json() : res.status;
@@ -24,12 +27,14 @@ export const action = async ({ request, params }) => {
 
 const Registration = () => {
   const submit = useSubmit();
-  const { registration, requireAction } = useLoaderData();
+  const { wgPaths, registration, requireAction } = useLoaderData();
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
+  const [wgPath, setWgPath] = useState("");
   const handleClick = (type) => () => {
     const formData = new FormData();
     formData.append("type", type);
+    formData.append("wgPath", wgPath);
     submit(formData, { method: "POST" });
   };
   return (
@@ -40,14 +45,23 @@ const Registration = () => {
       <p>{JSON.stringify(registration)}</p>
       <p>{JSON.stringify(actionData)}</p>
       {requireAction && (
-        <>
-          <Button variant="contained" onClick={handleClick("deny")}>
-            {t("deny")}
-          </Button>
-          <Button variant="contained" onClick={handleClick("accept")}>
-            {t("accept")}
-          </Button>
-        </>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button variant="contained" onClick={handleClick("deny")}>
+              {t("deny")}
+            </Button>
+          </Grid>
+          <Grid item>
+            <SelectProvider
+              wgPaths={wgPaths}
+              onChange={(e) => setWgPath(e.target.value)}
+              value={wgPath}
+            />
+            <Button variant="contained" onClick={handleClick("accept")}>
+              {t("accept")}
+            </Button>
+          </Grid>
+        </Grid>
       )}
     </>
   );
