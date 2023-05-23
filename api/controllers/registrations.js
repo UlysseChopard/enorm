@@ -9,7 +9,7 @@ exports.accept = async (req, res, next) => {
       await Registrations.accept(req.params.id);
       return res.json({ message: `Registration ${req.params.id} created` });
     }
-    if (!req.boby.wgPath) {
+    if (!req.body.wgPath) {
       return res.status(422).json({ message: "Missing wgPath in body" });
     }
     const {
