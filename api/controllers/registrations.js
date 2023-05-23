@@ -1,7 +1,6 @@
 const { Registrations, WGPaths, RegistrationsStreams } = require("../models");
 
 exports.accept = async (req, res, next) => {
-  console.log("here");
   try {
     const {
       rows: [wg],
@@ -9,6 +8,9 @@ exports.accept = async (req, res, next) => {
     if (wg.admin === res.locals.userId) {
       await Registrations.accept(req.params.id);
       return res.json({ message: `Registration ${req.params.id} created` });
+    }
+    if (!req.boby.wgPath) {
+      return res.status(422).json({ message: "Missing wgPath in body" });
     }
     const {
       rows: [registrationStream],
@@ -64,14 +66,15 @@ exports.request = async (req, res, next) => {
 
 exports.find = async (req, res, next) => {
   try {
-    const {
-      rows: [registration],
-    } = await Registrations.find(req.params.id);
+    const { rows: registrations } = await Registrations.find(req.params.id);
+    const registration = registrations[0];
     const requireAction =
       registration.beneficiary !== res.locals.userId &&
       !registration.denied_at &&
       !registration.accepted_at;
-    res.json({ registration, requireAction });
+    const wgPaths = registrations.map(({ wg_path }) => wg_path);
+    delete registration.wg_path;
+    res.json({ registration, wgPaths, requireAction });
   } catch (err) {
     next(err);
   }

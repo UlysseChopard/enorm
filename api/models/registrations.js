@@ -31,7 +31,10 @@ exports.getWG = (registration) =>
   );
 
 exports.find = (id) =>
-  db.query("SELECT * FROM registrations AS r WHERE r.id = $1", [id]);
+  db.query(
+    "SELECT r.*, rs.wg_path FROM registrations AS r JOIN registrations_streams AS rs ON r.id = rs.registration WHERE r.id = $1",
+    [id]
+  );
 
 exports.removeBySubscription = (subscription) =>
   db.query(
