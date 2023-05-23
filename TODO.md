@@ -34,3 +34,4 @@
 - [ ] 685211abff6206 set on delete cascade where needed  
 - [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint  
 - [ ] 3d5161ed7f6f95 protect subscription add and remove routes auth  
+- [ ] 0ea7bb6d585532 change propagate to accept when needed  
