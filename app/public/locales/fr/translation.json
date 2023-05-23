@@ -91,5 +91,14 @@
     "pending": "En attente",
     "providers": "Abonnements",
     "subscribers": "Abonnés"
+  },
+  "registrations": {
+    "sended": "Envoyées",
+    "received": "Reçues"
+  },
+  "registration": {
+    "back": "Retour",
+    "deny": "Bloquer",
+    "accept": "Faire suivre"
   }
 }

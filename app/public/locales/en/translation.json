@@ -91,5 +91,14 @@
     "pending": "Pending",
     "providers": "Subscriptions",
     "subscribers": "Subscribers"
+  },
+  "registrations": {
+    "sended": "Sended",
+    "received": "Received"
+  },
+  "registration": {
+    "back": "Back",
+    "deny": "Deny",
+    "accept": "Accept"
   }
 }
