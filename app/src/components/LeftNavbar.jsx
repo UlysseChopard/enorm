@@ -19,7 +19,7 @@ const MENU = [
   {
     icon: <GridViewIcon />,
     text: "dashboard",
-    target: "dashboard",
+    target: "",
   },
   {
     icon: <HubIcon />,
@@ -59,7 +59,9 @@ const LeftNavbar = ({ user }) => {
     >
       <List disablePadding>
         {MENU.map(({ text, icon, target }) => {
-          const selected = new RegExp(target).test(pathname);
+          const selected = target
+            ? new RegExp(target).test(pathname)
+            : pathname === "/";
           return (
             <ListItem key={text} disablePadding>
               <ListItemButton
