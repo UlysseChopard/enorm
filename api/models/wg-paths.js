@@ -20,3 +20,15 @@ exports.getNew = (recipient) =>
 
 exports.getById = (id) =>
   db.query("SELECT * FROM wg_paths WHERE id = $1", [id]);
+
+exports.getByWGAndUser = (userId, wg) =>
+  db.query(
+    "SELECT wgp.id, s.id AS subscription_id, a.firstname, a.lastname FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE wgp.working_group = $1 AND wgp.subscription IN (SELECT id FROM subscriptions AS s WHERE s.sender = $2)",
+    [wg, userId]
+  );
+
+exports.find = (userId, wg) =>
+  db.query(
+    "SELECT p.id, wg.*, wg.id AS wg_id,  a.id AS user_id, a.firstname, a.lastname FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id JOIN subscriptions AS s ON p.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE p.working_group = $2 AND p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
+    [userId, wg]
+  );

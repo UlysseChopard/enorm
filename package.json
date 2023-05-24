@@ -4,7 +4,7 @@
   "description": "Web app for expert subscription to standard committees",
   "main": "index.js",
   "scripts": {
-    "dev": "nvm use && run-p -r db api app",
+    "dev": "run-p -r db api app",
     "api": "npm run dev -w api",
     "app": "npm run dev -w app",
     "db": "docker compose up db",

@@ -20,7 +20,7 @@ export const action = async ({ request }) => {
 };
 
 const Group = () => {
-  const { paths } = useLoaderData();
+  const { wgPaths } = useLoaderData();
   const actionData = useActionData();
   const submit = useSubmit();
   const { t } = useTranslation();
@@ -38,11 +38,11 @@ const Group = () => {
         </Button>
       </Grid>
       <Grid item>
-        <div>{JSON.stringify(paths, null, 4)}</div>
+        <div>{JSON.stringify(wgPaths, null, 4)}</div>
       </Grid>
       <Grid item xs={10}>
         <SelectProvider
-          wgPaths={paths}
+          wgPaths={wgPaths}
           onChange={(e) => setWgPath(e.target.value)}
           value={wgPath}
         />

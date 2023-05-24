@@ -16,11 +16,8 @@ const SelectProvider = ({ wgPaths, onChange, value }) => {
         value={value}
         onChange={onChange}
       >
-        {wgPaths.map((path) => (
-          <MenuItem
-            key={path.wg_path}
-            value={path.wg_path}
-          >{`${path.firstname} ${path.lastname}`}</MenuItem>
+        {wgPaths.map(({ id, firstname, lastname }) => (
+          <MenuItem key={id} value={id}>{`${firstname} ${lastname}`}</MenuItem>
         ))}
       </Select>
     </FormControl>

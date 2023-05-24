@@ -27,11 +27,11 @@ exports.create = async (req, res, next) => {
 
 exports.find = async (req, res, next) => {
   try {
-    const { rows: paths } = await WorkingGroups.find(
+    const { rows: wgPaths } = await WGPaths.find(
       res.locals.userId,
       req.params.id
     );
-    res.json({ paths });
+    res.json({ wgPaths });
   } catch (err) {
     next(err);
   }

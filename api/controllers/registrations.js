@@ -66,17 +66,17 @@ exports.request = async (req, res, next) => {
 
 exports.find = async (req, res, next) => {
   try {
-    const { rows: registrations } = await Registrations.find(req.params.id);
-    const registration = registrations[0];
+    const {
+      rows: [registration],
+    } = await Registrations.find(req.params.id);
+    const { rows: wgPaths } = await WGPaths.getByWGAndUser(
+      res.locals.userId,
+      registration.working_group
+    );
     const requireAction =
       registration.beneficiary !== res.locals.userId &&
       !registration.denied_at &&
       !registration.accepted_at;
-    const wgPaths = registrations.map(({ firstname, lastname, wg_path }) => ({
-      firstname,
-      lastname,
-      wg_path,
-    }));
     res.json({ registration, wgPaths, requireAction });
   } catch (err) {
     next(err);
