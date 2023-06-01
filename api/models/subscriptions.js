@@ -25,7 +25,7 @@ exports.accept = (id) =>
   );
 
 exports.close = (id) =>
-  db.query("DELETE FROM subscriptions WHERE id = $1", [id]);
+  db.query("DELETE FROM subscriptions WHERE id = $1 RETURNING *", [id]);
 
 exports.updateReceived = (userId) =>
   db.query(

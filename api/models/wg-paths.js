@@ -12,10 +12,10 @@ exports.add = (subscription, wg) =>
     [subscription, wg]
   );
 
-exports.getNew = (recipient) =>
+exports.remove = (subscription, wg) =>
   db.query(
-    "SELECT id FROM working_groups WHERE admin = $1 UNION SELECT working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
-    [recipient]
+    "DELETE FROM wg_paths WHERE subscription = $1 AND working_group = $2",
+    [subscription, wg]
   );
 
 exports.getById = (id) =>
