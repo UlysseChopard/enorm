@@ -100,5 +100,10 @@
     "back": "Back",
     "deny": "Deny",
     "accept": "Accept"
+  },
+  "selectProvider": {
+    "provider": "Provider",
+    "options": "Options",
+    "empty": "----- empty selection -----"
   }
 }

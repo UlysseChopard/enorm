@@ -10,12 +10,16 @@ const SelectProvider = ({ wgPaths, onChange, value }) => {
     <FormControl required fullWidth>
       <InputLabel id="wg-path-label">{t("provider")}</InputLabel>
       <Select
+        displayEmpty
         id="wg-path"
         labelId="wg-path-label"
         label={t("options")}
         value={value}
         onChange={onChange}
       >
+        <MenuItem key="empty" value="">
+          {t("empty")}
+        </MenuItem>
         {wgPaths.map(({ id, firstname, lastname }) => (
           <MenuItem key={id} value={id}>{`${firstname} ${lastname}`}</MenuItem>
         ))}

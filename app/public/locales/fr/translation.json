@@ -100,5 +100,10 @@
     "back": "Retour",
     "deny": "Bloquer",
     "accept": "Faire suivre"
+  },
+  "selectProvider": {
+    "provider": "Fournisseur",
+    "options": "Options",
+    "empty": "----- pas de sélection -----"
   }
 }

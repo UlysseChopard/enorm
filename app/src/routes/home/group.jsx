@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSubmit, useLoaderData, useActionData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getById } from "@/api/working-groups";
@@ -30,6 +30,11 @@ const Group = () => {
     formData.append("wgPath", wgPath);
     submit(formData, { method: "post" });
   };
+  useEffect(() => {
+    if (wgPaths.length == 1) {
+      setWgPath(wgPaths[0].id);
+    }
+  }, []);
   return (
     <Grid container spacing={2}>
       <Grid item>
