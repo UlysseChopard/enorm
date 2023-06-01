@@ -25,11 +25,6 @@ exports.up = (pgm) => {
       created_at: "currentTs",
       disbanded_at: "timestamptz"
     },
-    {
-      constraints: {
-        unique: ["reference", "organisation"],
-      },
-    }
   );
 };
 

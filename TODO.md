@@ -20,7 +20,7 @@
 - [x] 4332062fb2ec11 make token limited in time or for only one session
 - [ ] 4104f161aba6ef members and experts by csv
 ## 27/03/2023 22:01:14 new password front
-- [ ] 152154fd1d1a4e trad
+- [x] 152154fd1d1a4e trad
 - [x] 8d26cf15e58d70 remove double check for password update
 - [ ] 2c52199bcef786 set magic link usable only once
 - [ ] dcad2145b19077 del magic token on use
@@ -29,7 +29,7 @@
 - [ ] 46837e3690c0d7 create group and subscription folders with specifications for visibility and openness
 - [ ] 2ed37868281869 separate my groups from others
 ## 11/04/2023 21:26:39 lock target
-- [ ] fabab1702202e4 register expert in a group
+- [x] fabab1702202e4 register expert in a group
 - [x] f788f7c06aa54c delete openness and visibility feats for groups
 - [ ] 685211abff6206 set on delete cascade where needed
 - [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint
@@ -37,9 +37,9 @@
 - [ ] 0ea7bb6d585532 change propagate to accept when needed
 - [ ] 54aeca9f77b55e error handling for double organisation-groupid
 - [ ] 0f38ccb626acbf send check for email on login and modification
-- [ ] d120e868c4229f unique emails
+- [x] d120e868c4229f unique emails
 - [ ] 54a0c5ebff0a6d cross instead of link for refuse subscription button
-- [ ] 0974d597a0041d remive uniqueness on reference and organisation for wg
+- [x] 0974d597a0041d remive uniqueness on reference and organisation for wg
 - [ ] 1fa32eadb2f85e remplace join by register in group registration page
 - [ ] fde3e871b6dadf use subscribe for subscriptions
 - [ ] e15d25336d54dc when only one provider, provide preselection

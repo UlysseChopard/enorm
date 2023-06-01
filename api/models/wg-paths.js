@@ -29,6 +29,6 @@ exports.getByWGAndUser = (userId, wg) =>
 
 exports.find = (userId, wg) =>
   db.query(
-    "SELECT p.id, wg.*, wg.id AS wg_id,  a.id AS user_id, a.firstname, a.lastname FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id JOIN subscriptions AS s ON p.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE p.working_group = $2 AND p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
+    "SELECT wg.*, wg.id AS wg_id, a.id AS user_id, a.firstname, a.lastname, p.id AS id FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id JOIN subscriptions AS s ON p.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE p.working_group = $2 AND p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
     [userId, wg]
   );

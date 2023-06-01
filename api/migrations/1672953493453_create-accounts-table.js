@@ -23,6 +23,7 @@ exports.up = (pgm) => {
     email: {
       type: "text",
       notNull: true,
+      unique: true
     },
     gender: "gender",
     created_at: "currentTs",
