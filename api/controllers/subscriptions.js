@@ -2,6 +2,7 @@ const {
   Subscriptions,
   Accounts,
   WGPaths,
+  WorkingGroups,
   Registrations,
 } = require("../models");
 const { getDownstream } = require("../services/subscriptions");
@@ -75,11 +76,10 @@ exports.establish = async (req, res, next) => {
         .status(400)
         .json({ message: "No subscription to be established" });
     }
-    const { rows: newWGs } = await WGPaths.getNew(subscription.recipient);
-    const impactedSubscriptions = await getDownstream(
-      subscription.recipient,
-      subscription.id
+    const { rows: newWGs } = await WorkingGroups.getProvidedByRecipient(
+      subscription.recipient
     );
+    const impactedSubscriptions = await getDownstream(subscription.recipient);
     for (const subscription of impactedSubscriptions) {
       for (const wg of newWGs) {
         await WGPaths.add(subscription, wg.id);
@@ -94,7 +94,18 @@ exports.establish = async (req, res, next) => {
 exports.close = async (req, res, next) => {
   try {
     await Registrations.removeBySubscription(req.params.subscription);
-    await Subscriptions.close(req.params.subscription);
+    const {
+      rows: [subscription],
+    } = await Subscriptions.close(req.params.subscription);
+    const { rows: oldWGs } = await WorkingGroups.getProvidedByRecipient(
+      subscription.recipient
+    );
+    const impactedSubscriptions = await getDownstream(subscription.recipient);
+    for (const subscription of impactedSubscriptions) {
+      for (const wg of oldWGs) {
+        await WGPaths.remove(subscription, wg.id);
+      }
+    }
     res.sendStatus(204);
   } catch (err) {
     next(err);

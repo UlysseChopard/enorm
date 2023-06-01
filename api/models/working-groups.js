@@ -11,3 +11,10 @@ exports.create = (userId, { organisation, title, reference }) =>
     "INSERT INTO working_groups (admin, organisation, title, reference, created_at) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING *",
     [userId, organisation, title, reference]
   );
+
+exports.getProvidedByRecipient = (recipient) =>
+  db.query(
+    "SELECT id FROM working_groups WHERE admin = $1 UNION SELECT working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
+    [recipient]
+  );
+
