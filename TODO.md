@@ -23,15 +23,32 @@
 - [ ] 152154fd1d1a4e trad
 - [x] 8d26cf15e58d70 remove double check for password update
 - [ ] 2c52199bcef786 set magic link usable only once
-- [ ] dcad2145b19077 del magic token on use  
-- [ ] 001cf8d2798cf9 csv import for teams by emails  
-- [ ] 44e5fb958823a0 one admin for one team  
-- [ ] 46837e3690c0d7 create group and subscription folders with specifications for visibility and openness  
-- [ ] 2ed37868281869 separate my groups from others  
-## 11/04/2023 21:26:39 lock target  
-- [ ] fabab1702202e4 register expert in a group  
-- [x] f788f7c06aa54c delete openness and visibility feats for groups  
-- [ ] 685211abff6206 set on delete cascade where needed  
-- [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint  
-- [ ] 3d5161ed7f6f95 protect subscription add and remove routes auth  
-- [ ] 0ea7bb6d585532 change propagate to accept when needed  
+- [ ] dcad2145b19077 del magic token on use
+- [x] emails
+- [ ] 44e5fb958823a0 one admin for one team
+- [x] and openness
+- [ ] 2ed37868281869 separate my groups from others
+## 11/04/2023 21:26:39 lock target
+- [ ] fabab1702202e4 register expert in a group
+- [x] f788f7c06aa54c delete openness and visibility feats for groups
+- [ ] 685211abff6206 set on delete cascade where needed
+- [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint
+- [ ] 3d5161ed7f6f95 protect subscription add and remove routes auth
+- [ ] 0ea7bb6d585532 change propagate to accept when needed
+- [ ] 54aeca9f77b55e error handling for double organisation-groupid
+- [ ] 0f38ccb626acbf send check for email on login and modification  
+- [ ] d120e868c4229f unique emails  
+- [ ] 54a0c5ebff0a6d cross instead of link for refuse subscription button  
+- [ ] 0974d597a0041d remive uniqueness on reference and organisation for wg  
+- [ ] 1fa32eadb2f85e remplace join by register in group registration page  
+- [ ] fde3e871b6dadf use subscribe for subscriptions  
+- [ ] e15d25336d54dc when only one provider, provide preselection  
+- [ ] d0e008d930c8e7 replace block by reject in registrations  
+- [ ] 674d14360be65c mention who in registrations + datetime  
+- [ ] b370af42f82425 remove possibility to modify registration after action  
+- [ ] 042f106652e69a add possibility to delete own registration demand  
+- [ ] 9bfd23c52d46bd add possibility to modify provider for registration demand  
+- [ ] fac0a9a4d3d926 add possibility to cancel registration sended / keep it  
+- [ ] 2e31b9b60185f2 add propagated to sended registrations  
+- [ ] aa628817c3c28e only a list for registrations  
+- [ ] 966d26809af99d wg_path deletion propagation  
