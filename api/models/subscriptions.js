@@ -34,6 +34,6 @@ exports.updateReceived = (userId) =>
   );
 
 exports.getSubscribers = (userId) =>
-  db.query("SELECT id, sender FROM subscriptions WHERE recipient = $1", [
+  db.query("SELECT id, sender FROM subscriptions WHERE recipient = $1 AND accepted_at IS NOT NULL", [
     userId,
   ]);
