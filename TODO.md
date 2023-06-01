@@ -42,7 +42,7 @@
 - [x] 0974d597a0041d remive uniqueness on reference and organisation for wg
 - [ ] 1fa32eadb2f85e remplace join by register in group registration page
 - [ ] fde3e871b6dadf use subscribe for subscriptions
-- [ ] e15d25336d54dc when only one provider, provide preselection
+- [x] e15d25336d54dc when only one provider, provide preselection
 - [ ] d0e008d930c8e7 replace block by reject in registrations
 - [ ] 674d14360be65c mention who in registrations + datetime
 - [ ] b370af42f82425 remove possibility to modify registration after action
