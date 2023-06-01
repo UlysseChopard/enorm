@@ -31,8 +31,8 @@
 ## 11/04/2023 21:26:39 lock target
 - [x] fabab1702202e4 register expert in a group
 - [x] f788f7c06aa54c delete openness and visibility feats for groups
-- [ ] 685211abff6206 set on delete cascade where needed
-- [ ] f6b9c03d98280c move regstration from groups to registrations own endpoint
+- [x] 685211abff6206 set on delete cascade where needed
+- [x] f6b9c03d98280c move regstration from groups to registrations own endpoint
 - [ ] 3d5161ed7f6f95 protect subscription add and remove routes auth
 - [ ] 0ea7bb6d585532 change propagate to accept when needed
 - [ ] 54aeca9f77b55e error handling for double organisation-groupid
@@ -51,4 +51,4 @@
 - [ ] fac0a9a4d3d926 add possibility to cancel registration sended / keep it
 - [ ] 2e31b9b60185f2 add propagated to sended registrations
 - [ ] aa628817c3c28e only a list for registrations
-- [ ] 966d26809af99d wg_path deletion propagation
+- [x] 966d26809af99d wg_path deletion propagation
