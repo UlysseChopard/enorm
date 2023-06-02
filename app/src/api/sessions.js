@@ -1,9 +1,11 @@
+const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
+
 export function getStatus() {
-  return fetch("/api/sessions", { credentials: "include" });
+  return fetch(`${apiUrl}/api/sessions`, { credentials: "include" });
 }
 
 export function login(infos) {
-  return fetch("/api/sessions", {
+  return fetch(`${apiUrl}/api/sessions`, {
     body: JSON.stringify(infos),
     credentials: "include",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
@@ -12,14 +14,14 @@ export function login(infos) {
 }
 
 export function logout() {
-  return fetch("/api/sessions", {
+  return fetch(`${apiUrl}/api/sessions`, {
     credentials: "include",
     method: "DELETE",
   });
 }
 
 export function getMagicLink(email) {
-  return fetch("/api/sessions/no-password", {
+  return fetch(`${apiUrl}/api/sessions/no-password`, {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
@@ -27,7 +29,7 @@ export function getMagicLink(email) {
 }
 
 export function requestAccess(token) {
-  return fetch("/api/sessions/no-password", {
+  return fetch(`${apiUrl}/api/sessions/no-password`, {
     credentials: "include",
     method: "PUT",
     headers: {

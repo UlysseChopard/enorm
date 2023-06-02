@@ -1,9 +1,11 @@
+const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
+
 export function get() {
-  return fetch("/api/accounts", { credentials: "include" });
+  return fetch(`${apiUrl}/api/accounts`, { credentials: "include" });
 }
 
 export function update(infos) {
-  return fetch("/api/accounts", {
+  return fetch(`${apiUrl}/api/accounts`, {
     body: JSON.stringify(infos),
     credentials: "include",
     headers: {
@@ -15,7 +17,7 @@ export function update(infos) {
 }
 
 export function create(infos) {
-  return fetch("/api/accounts", {
+  return fetch(`${apiUrl}/api/accounts`, {
     body: JSON.stringify(infos),
     headers: {
       Accept: "application/json",
@@ -26,7 +28,7 @@ export function create(infos) {
 }
 
 export function close() {
-  return fetch("/api/accounts", {
+  return fetch(`${apiUrl}/api/accounts`, {
     credentials: "include",
     method: "DELETE",
   });

@@ -1,11 +1,13 @@
+const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
+
 export const get = () =>
-  fetch("/api/working-groups", { credentials: "include" });
+  fetch(`${apiUrl}/api/working-groups`, { credentials: "include" });
 
 export const getById = (wgId) =>
   fetch(`/api/working-groups/${wgId}`, { credentials: "include" });
 
 export const create = (group) =>
-  fetch("/api/working-groups", {
+  fetch(`${apiUrl}/api/working-groups`, {
     method: "POST",
     credentials: "include",
     headers: {

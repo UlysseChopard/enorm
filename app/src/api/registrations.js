@@ -1,5 +1,7 @@
+const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
+
 export const request = (body) =>
-  fetch("/api/registrations", {
+  fetch(`${apiUrl}/api/registrations`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -9,7 +11,7 @@ export const request = (body) =>
   });
 
 export const get = () =>
-  fetch("/api/registrations", { credentials: "include" });
+  fetch(`${apiUrl}/api/registrations`, { credentials: "include" });
 
 export const accept = (id, body) =>
   fetch(`/api/registrations/${id}`, {
