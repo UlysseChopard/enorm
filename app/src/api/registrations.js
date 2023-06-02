@@ -1,7 +1,7 @@
-const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
+const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "/";
 
 export const request = (body) =>
-  fetch(`${apiUrl}/api/registrations`, {
+  fetch(`${apiUrl}api/registrations`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -11,10 +11,10 @@ export const request = (body) =>
   });
 
 export const get = () =>
-  fetch(`${apiUrl}/api/registrations`, { credentials: "include" });
+  fetch(`${apiUrl}api/registrations`, { credentials: "include" });
 
 export const accept = (id, body) =>
-  fetch(`/api/registrations/${id}`, {
+  fetch(`${apiUrl}api/registrations/${id}`, {
     method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -22,10 +22,10 @@ export const accept = (id, body) =>
   });
 
 export const deny = (id) =>
-  fetch(`/api/registrations/${id}`, {
+  fetch(`${apiUrl}api/registrations/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
 
 export const find = (id) =>
-  fetch(`/api/registrations/${id}`, { credentials: "include" });
+  fetch(`${apiUrl}api/registrations/${id}`, { credentials: "include" });
