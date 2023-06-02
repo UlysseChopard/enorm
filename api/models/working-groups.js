@@ -18,3 +18,4 @@ exports.getProvidedByRecipient = (recipient) =>
     [recipient]
   );
 
+exports.getById = (id) => db.query("SELECT * FROM working_groups WHERE id = $1", [id]);
