@@ -14,7 +14,8 @@ exports.login = async (req, res, next) => {
     res.cookie(jwt.key, token, {
       httpOnly: true,
       maxAge: jwt.maxAge,
-      secure: process.env.NODE === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
     });
     res.sendStatus(204);
   } catch (err) {
@@ -28,7 +29,8 @@ exports.loginWithoutPasswd = (_req, res) => {
   res.cookie(jwt.key, token, {
     httpOnly: true,
     maxAge: jwt.maxAge,
-    secure: process.env.NODE === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    secure: process.env.NODE_ENV === "production",
   });
   res.sendStatus(204);
 };
