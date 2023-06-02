@@ -4,7 +4,7 @@
   "description": "Web app for expert subscription to standard committees",
   "main": "index.js",
   "scripts": {
-    "start": "npm run start -w api",
+    "start": "npm run start:prod -w api",
     "dev": "run-p -r db api app",
     "api": "npm run dev -w api",
     "app": "npm run dev -w app",
