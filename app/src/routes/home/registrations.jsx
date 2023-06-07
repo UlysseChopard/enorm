@@ -22,7 +22,10 @@ export const loader = async () => {
 
 const RegistrationItem = (r) => (
   <ListItem component={Link} key={r.id} to={`/registrations/${r.id}`}>
-    <ListItemText>{`${r.organisation} ${r.reference} ${r.title} -- ${r.firstname} ${r.lastname}`}</ListItemText>
+    <ListItemText>
+      {`${r.organisation} ${r.reference} ${r.title}`} &mdash;
+      {` ${r.firstname} ${r.lastname}`}
+    </ListItemText>
     <ListItemIcon>
       {(r.denied_at && <CancelIcon />) ||
         (r.accepted_at && <CheckCircleIcon />) || <PendingIcon />}
