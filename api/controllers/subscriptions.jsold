@@ -27,7 +27,7 @@ exports.get = async (req, res, next) => {
     }
     const providers = [];
     const subscribers = [];
-    const sended = [];
+    const sent = [];
     const received = [];
     for (const subscription of subscriptions) {
       delete subscription.hash;
@@ -41,11 +41,11 @@ exports.get = async (req, res, next) => {
         if (subscription.accepted_at) {
           providers.push(subscription);
         } else {
-          sended.push(subscription);
+          sent.push(subscription);
         }
       }
     }
-    return res.json({ providers, subscribers, sended, received });
+    return res.json({ providers, subscribers, sent, received });
   } catch (err) {
     next(err);
   }
@@ -60,7 +60,7 @@ exports.invite = async (req, res, next) => {
     } = await Subscriptions.send(res.locals.userId, req.body.recipient);
     if (!subscription)
       return res.status(500).json({ message: "Could not send invitation" });
-    res.status(201).json({ status: "sended" });
+    res.status(201).json({ status: "sent" });
   } catch (err) {
     next(err);
   }

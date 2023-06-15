@@ -1,6 +1,6 @@
 const { db } = require("../utils");
 
-exports.getSended = (userId) =>
+exports.getSent = (userId) =>
   db.query(
     "SELECT *, r.id AS id, wg.id AS working_group_id, a.id AS account_id, a.firstname, a.lastname FROM registrations AS r JOIN accounts AS a ON r.beneficiary = a.id JOIN working_groups AS wg ON r.working_group = wg.id WHERE r.beneficiary = $1",
     [userId]

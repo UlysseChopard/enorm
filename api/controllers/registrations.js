@@ -34,11 +34,11 @@ exports.deny = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: sended } = await Registrations.getSended(res.locals.userId);
+    const { rows: sent } = await Registrations.getSent(res.locals.userId);
     const { rows: received } = await RegistrationsStreams.getReceived(
       res.locals.userId
     );
-    res.json({ sended, received });
+    res.json({ sent, received });
   } catch (err) {
     next(err);
   }

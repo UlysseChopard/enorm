@@ -8,7 +8,7 @@
 - [x] bf7367d469b0dc Permettre d'envoyer une demande d'abonnement
 - [x] 36544829555325 Permettre d'accepter une demande d'abonnement
 - [x] c97aefe4068ed1 utiliser l'id de connection pour annuler une demande
-- [x] e839c83942ad1d Prevent sended sub to be displayed in search results
+- [x] e839c83942ad1d Prevent sent sub to be displayed in search results
 - [x] acb79539b0636a sender in subscription is subscribe to group provider
 - [ ] 929a3ecc406a22 invitation with managed account option
 - [x] ed13676f59578b forgot password feat
@@ -48,7 +48,18 @@
 - [ ] b370af42f82425 remove possibility to modify registration after action
 - [ ] 042f106652e69a add possibility to delete own registration demand
 - [ ] 9bfd23c52d46bd add possibility to modify provider for registration demand
-- [ ] fac0a9a4d3d926 add possibility to cancel registration sended / keep it
-- [ ] 2e31b9b60185f2 add propagated to sended registrations
+- [ ] fac0a9a4d3d926 add possibility to cancel registration sent / keep it
+- [ ] 2e31b9b60185f2 add propagated to sent registrations
 - [ ] aa628817c3c28e only a list for registrations
 - [x] 966d26809af99d wg_path deletion propagation
+- [ ] e5393c692db283 modify sent to sent in registrations page  
+- [ ] 82fa710e95e25c add button for lang  
+- [ ] b820d9073146e4 accept registration when admin  
+- [ ] 6d5c57eeca2801 remove json informations in registration and wg pages  
+- [ ] 2f3386187c4def let cancel registration  
+- [ ] 4abc06d163a869 pssibilioty for wg admin to cancel registration  
+- [ ] 2a352b60c70296 preselect provider when only one  
+- [ ] cc563dd20756b3 own informations (tel, mail, post, company)  
+- [ ] 7c1891d5768d92 establishment (address, name, company)  
+- [ ] 2bd8a448ea6d44 add interest category for registrations  
+- [ ] fa7633a0526d47 add represented interests  

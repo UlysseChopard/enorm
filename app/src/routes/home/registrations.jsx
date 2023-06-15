@@ -34,7 +34,7 @@ const RegistrationItem = (r) => (
 );
 
 const Registrations = () => {
-  const { sended, received } = useLoaderData();
+  const { sent, received } = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const [tab, setTab] = useState(0);
   return (
@@ -46,12 +46,12 @@ const Registrations = () => {
           aria-controls="tab-0"
           centered
         >
-          <Tab label={t("sended")} id="tab-0" aria-controls="tab-0" />
+          <Tab label={t("sent")} id="tab-0" aria-controls="tab-0" />
           <Tab label={t("received")} id="tab-1" aria-controls="tab-1" />
         </Tabs>
       </Box>
       <TabPanel value={tab} index={0}>
-        <List>{sended.map(RegistrationItem)}</List>
+        <List>{sent.map(RegistrationItem)}</List>
       </TabPanel>
       <TabPanel value={tab} index={1}>
         <List>{received.map(RegistrationItem)}</List>

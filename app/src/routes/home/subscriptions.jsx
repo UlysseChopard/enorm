@@ -81,7 +81,7 @@ export default function Subscriptions() {
   const [arePending, setArePending] = useState(false);
 
   useEffect(() => {
-    setArePending(load.sended.length || load.received.length);
+    setArePending(load.sent.length || load.received.length);
   }, [load]);
 
   useEffect(() => {
@@ -149,8 +149,8 @@ export default function Subscriptions() {
               key={recipient.id}
               action={handleInvite(recipient)}
               status={
-                load.sended.map(({ id }) => id).includes(recipient.id)
-                  ? "sended"
+                load.sent.map(({ id }) => id).includes(recipient.id)
+                  ? "sent"
                   : null
               }
               {...recipient}
@@ -182,11 +182,11 @@ export default function Subscriptions() {
           {arePending ? (
             <TabPanel value={tab} index={0}>
               <List>
-                {load.sended.map((subscription) => (
+                {load.sent.map((subscription) => (
                   <GroupProvider
                     key={subscription.id}
                     action={handleDeny(subscription)}
-                    status="sended"
+                    status="sent"
                     {...subscription}
                   />
                 ))}

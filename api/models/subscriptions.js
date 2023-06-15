@@ -2,7 +2,7 @@ const { db } = require("../utils");
 
 exports.send = (sender, recipient) =>
   db.query(
-    "INSERT INTO subscriptions (sender, recipient) VALUES ($1, $2) RETURNING id, sended_at",
+    "INSERT INTO subscriptions (sender, recipient) VALUES ($1, $2) RETURNING id, sent_at",
     [sender, recipient]
   );
 

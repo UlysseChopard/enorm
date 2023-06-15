@@ -17,7 +17,7 @@ exports.up = (pgm) => {
         references: "accounts",
         notNull: true,
       },
-      sended_at: {
+      sent_at: {
         type: "timestamptz",
         notNull: true,
         default: pgm.func("current_timestamp"),
