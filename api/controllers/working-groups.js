@@ -39,3 +39,14 @@ exports.find = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.remove = async (req, res, next) => {
+  try {
+    const {
+      rows: [wg],
+    } = await WorkingGroups.deleteByIdAsAdmin(res.locals.userId, req.params.id);
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};
