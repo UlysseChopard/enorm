@@ -63,3 +63,6 @@
 - [ ] 7c1891d5768d92 establishment (address, name, company)  
 - [ ] 2bd8a448ea6d44 add interest category for registrations  
 - [ ] fa7633a0526d47 add represented interests  
+## 16/06/2023 20:58:50 finitions  
+- [x] b1e3edd178dcac connect to remote db with postico  
+- [x] ab4e086f43bd7b fix renaming of subscription column  

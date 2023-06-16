@@ -52,13 +52,15 @@ const Registration = () => {
             </Button>
           </Grid>
           <Grid item>
-            <SelectProvider
-              wgPaths={wgPaths}
-              onChange={(e) => setWgPath(e.target.value)}
-              value={wgPath}
-            />
+            {wgPaths.length && (
+              <SelectProvider
+                wgPaths={wgPaths}
+                onChange={(e) => setWgPath(e.target.value)}
+                value={wgPath}
+              />
+            )}
             <Button variant="contained" onClick={handleClick("accept")}>
-              {t("accept")}
+              {wgPaths.length ? t("forward") : t("accept")}
             </Button>
           </Grid>
         </Grid>

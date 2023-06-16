@@ -99,7 +99,8 @@
   "registration": {
     "back": "Retour",
     "deny": "Bloquer",
-    "accept": "Faire suivre"
+    "forward": "Transmettre",
+    "accept": "Accepter"
   },
   "selectProvider": {
     "provider": "Fournisseur",

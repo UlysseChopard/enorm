@@ -99,6 +99,7 @@
   "registration": {
     "back": "Back",
     "deny": "Deny",
+    "forward": "Forward",
     "accept": "Accept"
   },
   "selectProvider": {
