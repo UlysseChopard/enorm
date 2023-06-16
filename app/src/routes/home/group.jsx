@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
-import { useSubmit, useLoaderData, useActionData } from "react-router-dom";
+import {
+  useSubmit,
+  useLoaderData,
+  useActionData,
+  redirect,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getById } from "@/api/working-groups";
+import { getById, deleteById } from "@/api/working-groups";
 import { request as requestRegistration } from "@/api/registrations";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -13,10 +18,17 @@ export const loader = async ({ params }) => {
   return res.ok ? res.json() : false;
 };
 
-export const action = async ({ request }) => {
+export const action = async ({ params, request }) => {
   const formData = await request.formData();
-  const res = await requestRegistration({ wgPath: formData.get("wgPath") });
-  return res.ok ? res.json() : false;
+  let res;
+  switch (formData.get("type")) {
+    case "register":
+      res = await requestRegistration({ wgPath: formData.get("wgPath") });
+      return res.ok ? res.json() : false;
+    case "delete":
+      res = await deleteById(params.id);
+      return res.ok ? redirect("/groups") : false;
+  }
 };
 
 const Group = () => {
@@ -25,10 +37,16 @@ const Group = () => {
   const submit = useSubmit();
   const { t } = useTranslation();
   const [wgPath, setWgPath] = useState("");
-  const handleSubmit = () => {
+  const handleSubmitRegister = () => {
     const formData = new FormData();
+    formData.append("type", "register");
     formData.append("wgPath", wgPath);
     submit(formData, { method: "post" });
+  };
+  const handleSubmitDelete = () => {
+    const formData = new FormData();
+    formData.append("type", "delete");
+    submit(formData, { method: "delete" });
   };
   useEffect(() => {
     if (wgPaths.length == 1) {
@@ -57,12 +75,17 @@ const Group = () => {
           <Button
             variant="contained"
             disabled={!wgPath}
-            onClick={handleSubmit}
+            onClick={handleSubmitRegister}
             size="large"
           >
             {t("join")}
           </Button>
         </Stack>
+      </Grid>
+      <Grid item xs={10}>
+        <Button variant="contained" onClick={handleSubmitDelete} size="large">
+          {t("delete")}
+        </Button>
       </Grid>
       <Grid item>
         <div>{JSON.stringify(actionData, null, 4)}</div>

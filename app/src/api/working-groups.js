@@ -16,3 +16,9 @@ export const create = (group) =>
     },
     body: JSON.stringify({ group }),
   });
+
+export const deleteById = (id) =>
+  fetch(`${apiUrl}api/working-groups/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
