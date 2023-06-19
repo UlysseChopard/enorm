@@ -41,3 +41,9 @@ exports.removeBySubscription = (subscription) =>
     "DELETE FROM registrations WHERE id IN (SELECT registration FROM registrations_streams WHERE wg_path IN (SELECT id FROM wg_paths WHERE subscription = $1))",
     [subscription]
   );
+
+exports.remove = (beneficiary, id) =>
+  db.query("DELETE FROM registrations WHERE id = $1 AND beneficiary = $2", [
+    id,
+    beneficiary,
+  ]);
