@@ -3,29 +3,25 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable(
-    "working_groups",
-    {
-      id: "id",
-      admin: {
-        type: "uuid",
-        references: "accounts",
-      },
-      reference: {
-        type: "text",
-        notNull: true,
-      },
-      organisation: {
-        type: "text",
-        notNull: true,
-      },
-      title: {
-        type: "text",
-      },
-      created_at: "currentTs",
-      disbanded_at: "timestamptz"
+  pgm.createTable("working_groups", {
+    id: "id",
+    admin: {
+      type: "uuid",
+      references: "accounts",
     },
-  );
+    reference: {
+      type: "text",
+      notNull: true,
+    },
+    organisation: {
+      type: "text",
+      notNull: true,
+    },
+    title: {
+      type: "text",
+    },
+    created_at: "currentTs",
+  });
 };
 
 exports.down = (pgm) => {

@@ -94,12 +94,6 @@ const createColumns = (t) => [
     enableSorting: true,
     sortingFn: "basic",
   },
-  {
-    accessorKey: "disbanded_at",
-    header: t("disbanding"),
-    enableSorting: true,
-    sortingFn: "basic",
-  },
 ];
 
 export default function Groups() {
