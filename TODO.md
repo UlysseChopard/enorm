@@ -66,3 +66,5 @@
 ## 16/06/2023 20:58:50 finitions  
 - [x] b1e3edd178dcac connect to remote db with postico  
 - [x] ab4e086f43bd7b fix renaming of subscription column  
+- [x] c1417cff45b482 can delete wg  
+- [x] ce020cf39915e7 can cancel registration  
