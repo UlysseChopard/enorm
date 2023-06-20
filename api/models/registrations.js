@@ -20,7 +20,7 @@ exports.accept = (id) =>
 
 exports.deny = (id) =>
   db.query(
-    "UPDATE registrations SET denied_at = CURRENT_TIMESTAMP WHERE id = $1",
+    "UPDATE registrations SET denied_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *",
     [id]
   );
 

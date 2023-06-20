@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, useActionData, useSubmit } from "react-router-dom";
+import {
+  useLoaderData,
+  useActionData,
+  useSubmit,
+  useNavigate,
+} from "react-router-dom";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import SelectProvider from "@/components/SelectProvider";
@@ -27,10 +32,14 @@ export const action = async ({ request, params }) => {
 
 const Registration = () => {
   const submit = useSubmit();
+  const navigate = useNavigate();
   const { wgPaths, registration, requireAction } = useLoaderData();
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
   const [wgPath, setWgPath] = useState("");
+  if (actionData?.deleted) {
+    navigate("/registrations");
+  }
   const handleClick = (type) => () => {
     const formData = new FormData();
     formData.append("type", type);
@@ -44,13 +53,13 @@ const Registration = () => {
       </Button>
       <p>{JSON.stringify(registration)}</p>
       <p>{JSON.stringify(actionData)}</p>
-      {requireAction && (
-        <Grid container spacing={2}>
-          <Grid item>
-            <Button variant="contained" onClick={handleClick("deny")}>
-              {t("deny")}
-            </Button>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item>
+          <Button variant="contained" onClick={handleClick("deny")}>
+            {t("deny")}
+          </Button>
+        </Grid>
+        {requireAction && (
           <Grid item>
             {wgPaths.length && (
               <SelectProvider
@@ -63,8 +72,8 @@ const Registration = () => {
               {wgPaths.length ? t("forward") : t("accept")}
             </Button>
           </Grid>
-        </Grid>
-      )}
+        )}
+      </Grid>
     </>
   );
 };
