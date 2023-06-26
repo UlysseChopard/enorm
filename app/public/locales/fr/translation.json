@@ -109,6 +109,15 @@
     "empty": "----- pas de sélection -----"
   },
   "establishments": {
-    "title": "Établissements"
+    "title": "Établissements",
+    "text": "Créer un établissement pour y rattacher des experts",
+    "name": "Nom",
+    "address": "Adresse",
+    "email": "Email",
+    "phone": "Téléphone",
+    "created_at": "Date de création",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "submit": "Envoyer"
   }
 }

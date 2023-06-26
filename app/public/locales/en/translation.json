@@ -109,6 +109,15 @@
     "empty": "----- empty selection -----"
   },
   "establishments": {
-    "title": "Establishments"
+    "title": "Establishments",
+    "text": "Allow to link experts to establishments",
+    "name": "Name",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "created_at": "Creation date",
+    "create": "Create",
+    "cancel": "Cancel",
+    "submit": "Submit"
   }
 }
