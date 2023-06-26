@@ -107,5 +107,8 @@
     "provider": "Fournisseur",
     "options": "Options",
     "empty": "----- pas de sélection -----"
+  },
+  "establishments": {
+    "title": "Établissements"
   }
 }

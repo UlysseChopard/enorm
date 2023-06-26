@@ -1,7 +1,10 @@
 const { db } = require("../utils");
 
 exports.getByAdmin = (userId) =>
-  db.query("SELECT FROM establishments WHERE admin = $1", [userId]);
+  db.query(
+    "SELECT id, name, address, email, phone, created_at  FROM establishments WHERE admin = $1",
+    [userId]
+  );
 
 exports.closeAsAdmin = (userId, id) =>
   db.query("DELETE FROM establishments WHERE id = $1 AND admin = $2", [

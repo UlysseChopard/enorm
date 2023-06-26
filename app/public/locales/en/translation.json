@@ -107,5 +107,8 @@
     "provider": "Provider",
     "options": "Options",
     "empty": "----- empty selection -----"
+  },
+  "establishments": {
+    "title": "Establishments"
   }
 }
