@@ -9,3 +9,5 @@ exports.Registrations = require("./registrations");
 exports.WGPaths = require("./wg-paths");
 
 exports.RegistrationsStreams = require("./registrations-streams");
+
+exports.Establishments = require("./establishments");
