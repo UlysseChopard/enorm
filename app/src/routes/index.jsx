@@ -23,6 +23,10 @@ import Registration, {
   loader as registrationLoader,
   action as registrationAction,
 } from "@/routes/home/registration";
+import Establishments, {
+  loader as establishmentsLoader,
+  action as establishmentsAction,
+} from "@/routes/home/establishments";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -80,6 +84,12 @@ export default [
         element: <Registration />,
         loader: registrationLoader,
         action: registrationAction,
+      },
+      {
+        path: "establishments",
+        element: <Establishments />,
+        loader: establishmentsLoader,
+        action: establishmentsAction,
       },
     ],
   },

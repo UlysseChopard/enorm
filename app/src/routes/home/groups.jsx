@@ -19,8 +19,7 @@ import { get, create } from "@/api/working-groups";
 
 export async function loader() {
   const res = await get();
-  if (!res.ok) return false;
-  return res.json();
+  return res.ok ? res.json() : false;
 }
 
 export async function action({ request }) {

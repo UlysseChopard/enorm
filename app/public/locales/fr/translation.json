@@ -36,7 +36,8 @@
     "profile": "Profil",
     "community": "Réseau",
     "settings": "Paramètres",
-    "groups": "Groupes de travail"
+    "groups": "Groupes de travail",
+    "establishments": "Établissements"
   },
   "account": {
     "firstname": "Prénom",
