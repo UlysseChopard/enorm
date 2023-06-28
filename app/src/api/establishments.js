@@ -13,3 +13,17 @@ export const create = (establishment) =>
       "Content-Type": "application/json",
     },
   });
+
+export const update = (id, establishment) =>
+  fetch(`${apiUrl}api/establishments/${id}`, {
+    credentials: "include",
+    method: "PUT",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(establishment),
+  });
+
+export const remove = (id) =>
+  fetch(`${apiUrl}api/establishments/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });

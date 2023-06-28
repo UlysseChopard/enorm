@@ -1,8 +1,9 @@
-const { get, create, close } = require("../controllers/establishments");
+const { get, create, close, update } = require("../controllers/establishments");
 
 module.exports = (router) => {
   router.post("/", create);
   router.get("/", get);
-  router.delete("/", close);
+  router.put("/:id", update);
+  router.delete("/:id", close);
   return router;
 };

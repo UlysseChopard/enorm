@@ -118,6 +118,9 @@
     "created_at": "Creation date",
     "create": "Create",
     "cancel": "Cancel",
-    "submit": "Submit"
+    "submit": "Submit",
+    "actions": "Actions",
+    "update": "Modify",
+    "remove": "Delete"
   }
 }

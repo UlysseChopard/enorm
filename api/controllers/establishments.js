@@ -22,6 +22,19 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.update = async (req, res, next) => {
+  try {
+    const {
+      rows: [establishment],
+    } = await Establishments.replaceAsAdmin(res.locals.userId, req.params.id, {
+      ...req.body,
+    });
+    res.json({ establishment });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.close = async (req, res, next) => {
   try {
     const {

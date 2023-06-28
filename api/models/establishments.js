@@ -17,3 +17,9 @@ exports.create = (userId, { name, address, email, phone }) =>
     "INSERT INTO establishments (admin, name, address, email, phone) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, address, email, phone, created_at",
     [userId, name, address, email, phone]
   );
+
+exports.replaceAsAdmin = (userId, id, { name, address, email, phone }) =>
+  db.query(
+    "UPDATE establishments SET name = $1, address = $2, email = $3, phone = $4 WHERE id = $5 AND admin = $6",
+    [name, address, email, phone, id, userId]
+  );

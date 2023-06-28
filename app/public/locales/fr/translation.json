@@ -118,6 +118,9 @@
     "created_at": "Date de création",
     "create": "Créer",
     "cancel": "Annuler",
-    "submit": "Envoyer"
+    "submit": "Envoyer",
+    "actions": "Actions",
+    "update": "Modifier",
+    "remove": "Supprimer"
   }
 }
