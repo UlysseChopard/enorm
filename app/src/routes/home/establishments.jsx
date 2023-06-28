@@ -48,8 +48,8 @@ export default function Establishments() {
                 name="address"
                 label={t("address")}
               />
-              <TextField required type="text" name="email" label={t("email")} />
-              <TextField required type="text" name="phone" label={t("phone")} />
+              <TextField type="text" name="email" label={t("email")} />
+              <TextField type="text" name="phone" label={t("phone")} />
             </Stack>
             <DialogActions>
               <Button onClick={() => setModal(false)}>{t("cancel")}</Button>
