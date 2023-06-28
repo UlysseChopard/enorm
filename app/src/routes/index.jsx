@@ -27,6 +27,10 @@ import Establishments, {
   loader as establishmentsLoader,
   action as establishmentsAction,
 } from "@/routes/home/establishments";
+import Administration, {
+  loader as administrationLoader,
+  action as administrationAction,
+} from "@/routes/home/administration";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -90,6 +94,12 @@ export default [
         element: <Establishments />,
         loader: establishmentsLoader,
         action: establishmentsAction,
+      },
+      {
+        path: "administration",
+        element: <Administration />,
+        loader: administrationLoader,
+        action: administrationAction,
       },
     ],
   },
