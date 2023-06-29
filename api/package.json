@@ -6,7 +6,7 @@
   "scripts": {
     "start:prod": "pm2 start app.js -i max",
     "start": "node app",
-    "dev": "nodemon -r dotenv/config app | bunyan",
+    "dev": "./start-dev.sh",
     "migrate": "node-pg-migrate",
     "swagger": "node swagger.js"
   },
