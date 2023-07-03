@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { Form } from "react-router-dom";
 import Stack from "@mui/material/Stack";
+import { apiUrl } from "@/api";
 
 export function loader() {
   return true;
 }
 
-export function action() {
+export async function action() {
   return true;
 }
 
@@ -16,16 +16,20 @@ export default function Administration() {
     <>
       <div>
         <h2>Organisation name</h2>
-        <Form method="POST">
+        <form
+          action={`${apiUrl}api/administration/users`}
+          method="POST"
+          encType="multipart/form-data"
+        >
           <Stack spacing={2} width={300}>
             <input
               type="file"
-              name="accounts"
+              name="users"
               accept=".csv, .txt, text/csv, text/tab-separated-value"
             />
             <button type="submit">{t("submit")}</button>
           </Stack>
-        </Form>
+        </form>
       </div>
       <table>
         <thead>
