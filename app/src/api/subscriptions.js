@@ -1,4 +1,4 @@
-const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "/";
+import { apiUrl } from "@/api";
 
 export function search(query) {
   return fetch(`${apiUrl}api/subscriptions?q=${query}`, {

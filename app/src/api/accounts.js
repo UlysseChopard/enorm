@@ -1,4 +1,4 @@
-const apiUrl = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "/";
+import { apiUrl } from "@/api";
 
 export function get() {
   return fetch(`${apiUrl}api/accounts`, { credentials: "include" });
