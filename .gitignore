@@ -1,6 +1,8 @@
 .vscode
 **/local
 
+api/uploads
+
 # Backup files
 *.ori
 *.orig
