@@ -1,23 +1,51 @@
+import { useState } from "react";
+import { Form, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
 import { apiUrl } from "@/api";
+import { get, updateSociety } from "@/api/administration";
 
-export function loader() {
-  return true;
+export async function loader() {
+  const res = await get();
+  return res.ok ? res.json() : res.status;
 }
 
-export async function action() {
-  return true;
+export async function action({ request }) {
+  const formData = await request.formData();
+  let res;
+  switch (formData.get("type")) {
+    case "society":
+      res = await updateSociety(
+        formData.get("societyId"),
+        formData.get("name")
+      );
+      break;
+    default:
+      return null;
+  }
+  return res.ok ? res.json() : res.status;
 }
 
 export default function Administration() {
   const { t } = useTranslation(null, { keyPrefix: "administration" });
+  const data = useLoaderData();
+  const [separator, setSeparator] = useState(",");
+  const [emailColumn, setEmailColumn] = useState("email");
   return (
     <>
       <div>
         <h2>Organisation name</h2>
+        <Form method="PUT" autoComplete="on">
+          <label htmlFor="name">{t("name")}</label>
+          <input type="text" name="name" />
+          <input type="hidden" name="type" value="society" />
+          <input type="hidden" name="societyId" value={data.society_id} />
+          <button type="submit">{t("submit")}</button>
+        </Form>
         <form
-          action={`${apiUrl}api/administration/users`}
+          action={`${apiUrl}api/administration/users?separator=${encodeURIComponent(
+            separator
+          )}&email-column=${encodeURIComponent(emailColumn)}`}
           method="POST"
           encType="multipart/form-data"
         >
@@ -26,6 +54,21 @@ export default function Administration() {
               type="file"
               name="users"
               accept=".csv, .txt, text/csv, text/tab-separated-value"
+            />
+            <label htmlFor="separator">{t("separator")}</label>
+            <input
+              type="text"
+              maxLength="1"
+              name="separator"
+              value={separator}
+              onChange={(e) => setSeparator(e.target.value)}
+            />
+            <label htmlFor="email-col">{t("emailColumn")}</label>
+            <input
+              type="text"
+              name="email-col"
+              value={emailColumn}
+              onChange={(e) => setEmailColumn(e.target.value)}
             />
             <button type="submit">{t("submit")}</button>
           </Stack>
