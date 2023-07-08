@@ -28,18 +28,18 @@ export async function action({ request }) {
 
 export default function Administration() {
   const { t } = useTranslation(null, { keyPrefix: "administration" });
-  const data = useLoaderData();
+  const { society, users } = useLoaderData();
   const [separator, setSeparator] = useState(",");
   const [emailColumn, setEmailColumn] = useState("email");
   return (
     <>
       <div>
-        <h2>Organisation name</h2>
+        <h2>{society?.name ?? t("emptyName")}</h2>
         <Form method="PUT" autoComplete="on">
           <label htmlFor="name">{t("name")}</label>
-          <input type="text" name="name" />
+          <input type="text" name="name" defaultValue={society.name} />
           <input type="hidden" name="type" value="society" />
-          <input type="hidden" name="societyId" value={data.society_id} />
+          <input type="hidden" name="societyId" value={society.id} />
           <button type="submit">{t("submit")}</button>
         </Form>
         <form
@@ -92,7 +92,13 @@ export default function Administration() {
             <th>{t("subscriptable")}</th>
           </tr>
         </thead>
-        <tbody />
+        <tbody>
+          {users?.map((user) => (
+            <tr key={user.id}>
+              <td>{user.email}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </>
   );

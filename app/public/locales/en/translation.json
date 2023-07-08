@@ -37,7 +37,8 @@
     "community": "Community",
     "settings": "Settings",
     "groups": "Working groups",
-    "establishments": "Establishments"
+    "establishments": "Establishments",
+    "administration": "Administration"
   },
   "account": {
     "firstname": "First name",

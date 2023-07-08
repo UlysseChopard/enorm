@@ -37,7 +37,8 @@
     "community": "Réseau",
     "settings": "Paramètres",
     "groups": "Groupes de travail",
-    "establishments": "Établissements"
+    "establishments": "Établissements",
+    "administration": "Administration"
   },
   "account": {
     "firstname": "Prénom",
@@ -122,5 +123,15 @@
     "actions": "Actions",
     "update": "Modifier",
     "remove": "Supprimer"
+  },
+  "administration": {
+    "name": "Nom",
+    "submit": "Valider",
+    "separator": "Séparateur",
+    "emailColumn": "En-tête de colonne des addresses mail",
+    "account": "Comptes",
+    "email": "Adresse mail",
+    "firstname": "Prénom",
+    "lastname": "Nom"
   }
 }

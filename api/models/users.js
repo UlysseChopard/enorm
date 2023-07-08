@@ -1,7 +1,7 @@
 const { db } = require("../utils");
 
 exports.create = (society, email) =>
-  db.query("INSERT INTO users (society, email) VALUES ($1, $2)", [
+  db.query("INSERT INTO users (society, email) VALUES ($1, $2) RETURNING *", [
     society,
     email,
   ]);

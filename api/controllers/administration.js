@@ -8,6 +8,9 @@ exports.linkUsers = async (req, res, next) => {
     let error = false;
     const separator = req.query?.separator ?? ",";
     const emailColumn = req.query?.["email-column"] ?? "email";
+    const {
+      rows: [society],
+    } = await Societies.getByAdmin(res.locals.userId);
     createReadStream(req.file.path, {
       encoding: "utf-8",
       emitClose: true,
@@ -27,8 +30,8 @@ exports.linkUsers = async (req, res, next) => {
         }
       })
       .on("error", console.error)
-      .on("data", (data) => {
-        console.log(data[emailColumn]);
+      .on("data", async (row) => {
+        await Users.create(society.id, row[emailColumn]);
       })
       .on("close", async () => {
         await unlink(req.file.path);
@@ -45,7 +48,10 @@ exports.updateSociety = async (req, res, next) => {
   try {
     const {
       rows: [society],
-    } = await Societies.update(res.locals.userId, req.body);
+    } = await Societies.update(res.locals.userId, {
+      name: req.body?.name,
+      id: req.params.id,
+    });
     res.status(201).json({ society });
   } catch (err) {
     next(err);
