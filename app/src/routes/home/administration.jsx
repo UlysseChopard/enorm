@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Form, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
-import { apiUrl } from "@/api";
-import { get, updateSociety } from "@/api/administration";
+import { uploadUsers, get, updateOrganisation } from "@/api/administration";
 
 export async function loader() {
   const res = await get();
@@ -12,13 +11,23 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
+  for (const data of formData) {
+    console.log(data);
+  }
+  console.log(formData);
   let res;
   switch (formData.get("type")) {
-    case "society":
-      res = await updateSociety(
-        formData.get("societyId"),
+    case "updateOrganisation":
+      res = await updateOrganisation(
+        formData.get("organisationId"),
         formData.get("name")
       );
+      break;
+    case "uploadUsers":
+      res = await uploadUsers(formData, {
+        emailColumn: formData.get("email-column"),
+        separator: formData.get("separator"),
+      });
       break;
     default:
       return null;
@@ -28,21 +37,51 @@ export async function action({ request }) {
 
 export default function Administration() {
   const { t } = useTranslation(null, { keyPrefix: "administration" });
-  const { society, users } = useLoaderData();
+  const { organisation, users } = useLoaderData();
   const [separator, setSeparator] = useState(",");
   const [emailColumn, setEmailColumn] = useState("email");
   return (
     <>
       <div>
-        <h2>{society?.name ?? t("emptyName")}</h2>
+        <h2>{organisation?.name ?? t("emptyName")}</h2>
         <Form method="PUT" autoComplete="on">
           <label htmlFor="name">{t("name")}</label>
-          <input type="text" name="name" defaultValue={society.name} />
-          <input type="hidden" name="type" value="society" />
-          <input type="hidden" name="societyId" value={society.id} />
+          <input
+            type="text"
+            name="name"
+            defaultValue={organisation?.name ?? t("fillName")}
+          />
+          <input type="hidden" name="type" value="updateOrganisation" />
+          <input type="hidden" name="organisationId" value={organisation.id} />
           <button type="submit">{t("submit")}</button>
         </Form>
-        <form
+        <Form method="POST" encType="multipart/form-data">
+          <Stack spacing={2} width={300}>
+            <input
+              type="file"
+              name="users"
+              accept=".csv, .txt, text/csv, text/tab-separated-value"
+            />
+            <label htmlFor="separator">{t("separator")}</label>
+            <input
+              type="text"
+              maxLength="1"
+              name="separator"
+              value={separator}
+              onChange={(e) => setSeparator(e.target.value)}
+            />
+            <label htmlFor="email-column">{t("emailColumn")}</label>
+            <input
+              type="text"
+              name="email-column"
+              value={emailColumn}
+              onChange={(e) => setEmailColumn(e.target.value)}
+            />
+            <input type="hidden" name="type" value="uploadUsers" />
+            <button type="submit">{t("submit")}</button>
+          </Stack>
+        </Form>
+        {/*<form
           action={`${apiUrl}api/administration/users?separator=${encodeURIComponent(
             separator
           )}&email-column=${encodeURIComponent(emailColumn)}`}
@@ -72,7 +111,7 @@ export default function Administration() {
             />
             <button type="submit">{t("submit")}</button>
           </Stack>
-        </form>
+        </form>*/}
       </div>
       <table>
         <thead>

@@ -3,7 +3,7 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("societies", {
+  pgm.createTable("organisations", {
     id: "id",
     admin: {
       type: "uuid",
@@ -17,5 +17,5 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("societies");
+  pgm.dropTable("organisations");
 };

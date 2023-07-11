@@ -6,7 +6,7 @@ const {
   giveRole,
   linkUsers,
   unlinkUser,
-  updateSociety,
+  updateOrganisation,
   withdrawRole,
 } = require("../controllers/administration");
 
@@ -16,6 +16,6 @@ module.exports = (router) => {
   router.delete("/users/:userId", unlinkUser);
   router.put("/users/:userId/roles/:role", giveRole);
   router.delete("/users/:userId/roles/:role", withdrawRole);
-  router.put("/society/:id", updateSociety);
+  router.put("/organisations/:id", updateOrganisation);
   return router;
 };

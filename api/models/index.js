@@ -12,6 +12,6 @@ exports.RegistrationsStreams = require("./registrations-streams");
 
 exports.Establishments = require("./establishments");
 
-exports.Societies = require("./societies");
+exports.Organisations = require("./organisations");
 
 exports.Users = require("./users");

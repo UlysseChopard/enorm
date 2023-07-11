@@ -1,7 +1,7 @@
 import { apiUrl } from "@/api";
 
-export const updateSociety = (id, name) =>
-  fetch(`${apiUrl}api/administration/society/${id}`, {
+export const updateOrganisation = (id, name) =>
+  fetch(`${apiUrl}api/administration/organisations/${id}`, {
     method: "PUT",
     credentials: "include",
     body: JSON.stringify({ name }),
@@ -14,3 +14,14 @@ export const get = () =>
     credentials: "include",
     headers: { Accept: "application/json" },
   });
+
+export const uploadUsers = (body, { separator = ",", emailColumn = "email" }) =>
+  fetch(
+    `${apiUrl}api/administration/users?separator=${encodeURIComponent(
+      separator
+    )}&email-column=${encodeURIComponent(emailColumn)}`,
+    {
+      method: "POST",
+      body,
+    }
+  );

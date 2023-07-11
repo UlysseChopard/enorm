@@ -1,5 +1,5 @@
 const { crypt } = require("../utils");
-const { Accounts, Societies } = require("../models");
+const { Accounts, Organisations } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -48,9 +48,9 @@ exports.create = async (req, res, next) => {
     } = await Accounts.create({ ...req.body, hash });
     delete account.hash;
     const {
-      rows: [society],
-    } = await Societies.create(account.id);
-    res.json({ account, society });
+      rows: [organisation],
+    } = await Organisations.create(account.id);
+    res.json({ account, organisation });
   } catch (err) {
     next(err);
   }

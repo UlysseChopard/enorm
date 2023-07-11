@@ -1,58 +1,71 @@
 const { createReadStream } = require("fs");
+const { pipeline, finished } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
-const { Societies, Users } = require("../models");
+const { Organisations, Users } = require("../models");
 
 exports.linkUsers = async (req, res, next) => {
   try {
     let error = false;
+    const emails = [];
     const separator = req.query?.separator ?? ",";
     const emailColumn = req.query?.["email-column"] ?? "email";
     const {
-      rows: [society],
-    } = await Societies.getByAdmin(res.locals.userId);
-    createReadStream(req.file.path, {
+      rows: [organisation],
+    } = await Organisations.getByAdmin(res.locals.userId);
+    const stream = createReadStream(req.file.path, {
       encoding: "utf-8",
-      emitClose: true,
-    })
-      .pipe(
-        csvParser({
-          mapHeaders: ({ header }) => header.toLowerCase(),
-          separator,
-          skipLines: 0,
-          strict: false,
-        })
-      )
+    });
+    const csv = csvParser({
+      mapHeaders: ({ header }) => header.toLowerCase(),
+      separator,
+      skipLines: 0,
+      strict: false,
+    });
+    csv
       .on("headers", (headers) => {
         if (!headers.includes(emailColumn)) {
-          error = true;
-          res.status(422).json({ message: "Missing email header" });
+          error = new Error(`Missing ${emailColumn} header`);
+          csv.destroy();
+          stream.destroy();
         }
       })
-      .on("error", console.error)
-      .on("data", async (row) => {
-        await Users.create(society.id, row[emailColumn]);
+      .on("error", (err) => {
+        error = err;
+        stream.resume();
       })
-      .on("close", async () => {
-        await unlink(req.file.path);
-        if (!error) {
-          res.sendStatus(204);
-        }
+      .on("data", (row) => {
+        console.log("data");
+        emails.push(row[emailColumn]);
       });
+
+    await pipeline(stream, csv, console.error);
+    await finished(stream);
+    await finished(csv);
+    await unlink(req.file.path);
+    if (error.message === `Missing ${emailColumn} header`) {
+      return res.status(422).json({ message: "Missing email header" });
+    }
+    if (error) {
+      throw error;
+    }
+    console.log(emails);
+    const { rows: users } = Users.createMany(organisation.id, emails);
+    res.json({ users });
   } catch (err) {
     next(err);
   }
 };
 
-exports.updateSociety = async (req, res, next) => {
+exports.updateOrganisation = async (req, res, next) => {
   try {
     const {
-      rows: [society],
-    } = await Societies.update(res.locals.userId, {
+      rows: [organisation],
+    } = await Organisations.update(req.params.id, {
       name: req.body?.name,
-      id: req.params.id,
+      admin: res.locals.userId,
     });
-    res.status(201).json({ society });
+    res.status(201).json({ organisation });
   } catch (err) {
     next(err);
   }
@@ -61,10 +74,13 @@ exports.updateSociety = async (req, res, next) => {
 exports.get = async (req, res, next) => {
   try {
     const {
-      rows: [society],
-    } = await Societies.getByAdmin(res.locals.userId);
-    const { rows: users } = await Users.getBySociety(society.id);
-    res.json({ society, users });
+      rows: [organisation],
+    } = await Organisations.getByAdmin(res.locals.userId);
+    if (!organisation) {
+      return res.json({ message: "missing organisation" });
+    }
+    const { rows: users } = await Users.getBySociety(organisation.id);
+    res.json({ organisation, users });
   } catch (err) {
     next(err);
   }

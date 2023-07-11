@@ -3,15 +3,22 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("users", {
-    id: "id",
-    society: {
-      type: "id",
-      notNull: true,
-      references: "societies",
+  pgm.createTable(
+    "users",
+    {
+      id: "id",
+      organisation: {
+        type: "id",
+        notNull: true,
+        references: "organisations",
+      },
+      email: {
+        type: "text",
+        notNull: true,
+      },
     },
-    email: "text",
-  });
+    { constraints: { unique: ["email", "organisation"] } }
+  );
 };
 
 exports.down = (pgm) => {
