@@ -1,57 +1,58 @@
 const { createReadStream } = require("fs");
-const { pipeline, finished } = require("stream/promises");
+const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
 const { Organisations, Users } = require("../models");
 
 exports.linkUsers = async (req, res, next) => {
   try {
-    let error = false;
-    const emails = [];
-    const separator = req.query?.separator ?? ",";
     const emailColumn = req.query?.["email-column"] ?? "email";
+    const received = [];
+    const invalids = [];
     const {
       rows: [organisation],
     } = await Organisations.getByAdmin(res.locals.userId);
+    const ac = new AbortController();
     const stream = createReadStream(req.file.path, {
       encoding: "utf-8",
+      emitClose: true,
+    }).on("close", async () => {
+      await unlink(req.file.path);
     });
     const csv = csvParser({
       mapHeaders: ({ header }) => header.toLowerCase(),
-      separator,
+      separator: req.query?.separator ?? ",",
       skipLines: 0,
       strict: false,
-    });
-    csv
+    })
       .on("headers", (headers) => {
         if (!headers.includes(emailColumn)) {
-          error = new Error(`Missing ${emailColumn} header`);
-          csv.destroy();
-          stream.destroy();
+          ac.abort(`Missing ${emailColumn} header`);
         }
       })
-      .on("error", (err) => {
-        error = err;
-        stream.resume();
-      })
       .on("data", (row) => {
-        console.log("data");
-        emails.push(row[emailColumn]);
+        if (row[emailColumn].includes("@")) {
+          received.push(row[emailColumn]);
+        } else {
+          invalids.push(row[emailColumn]);
+        }
       });
-
-    await pipeline(stream, csv, console.error);
-    await finished(stream);
-    await finished(csv);
-    await unlink(req.file.path);
-    if (error.message === `Missing ${emailColumn} header`) {
-      return res.status(422).json({ message: "Missing email header" });
+    try {
+      await pipeline(stream, csv, { signal: ac.signal });
+    } catch (err) {
+      if (ac.signal.aborted) {
+        if (ac.signal.reason === `Missing ${emailColumn} header`) {
+          return res.status(422).json({ message: "Missing email header" });
+        }
+        return res.status(400).json({ message: ac.signal.reason });
+      }
+      throw err;
     }
-    if (error) {
-      throw error;
-    }
-    console.log(emails);
-    const { rows: users } = Users.createMany(organisation.id, emails);
-    res.json({ users });
+    const { rows: inserted } = await Users.createMany(
+      organisation.id,
+      received
+    );
+    res.json({ inserted, received, invalids });
   } catch (err) {
     next(err);
   }
