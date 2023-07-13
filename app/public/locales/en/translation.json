@@ -123,5 +123,16 @@
     "actions": "Actions",
     "update": "Modify",
     "remove": "Delete"
+  },
+  "administration": {
+    "name": "Name",
+    "submit": "Submit",
+    "separator": "Separator",
+    "emailColumn": "Email column header",
+    "email": "Email",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "establishment": "Establishment",
+    "role": "Role"
   }
 }

@@ -13,4 +13,6 @@ exports.createMany = (organisation, emails) =>
   );
 
 exports.getBySociety = (organisation) =>
-  db.query("SELECT email FROM users WHERE organisation = $1", [organisation]);
+  db.query("SELECT id, email FROM users WHERE organisation = $1", [
+    organisation,
+  ]);

@@ -129,9 +129,10 @@
     "submit": "Valider",
     "separator": "Séparateur",
     "emailColumn": "En-tête de colonne des addresses mail",
-    "account": "Comptes",
     "email": "Adresse mail",
     "firstname": "Prénom",
-    "lastname": "Nom"
+    "lastname": "Nom",
+    "establishment": "Établissement",
+    "role": "Rôle"
   }
 }

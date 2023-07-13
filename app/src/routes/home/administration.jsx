@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { Form, useLoaderData } from "react-router-dom";
+import { Form, useLoaderData, useSubmit } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import EditIcon from "@mui/icons-material/Edit";
 import { uploadUsers, get, updateOrganisation } from "@/api/administration";
 
 export async function loader() {
@@ -17,11 +24,8 @@ export async function action({ request }) {
   console.log(formData);
   let res;
   switch (formData.get("type")) {
-    case "updateOrganisation":
-      res = await updateOrganisation(
-        formData.get("organisationId"),
-        formData.get("name")
-      );
+    case "organisation":
+      res = await updateOrganisation(formData.get("id"), formData.get("name"));
       break;
     case "uploadUsers":
       res = await uploadUsers(formData, {
@@ -37,24 +41,45 @@ export async function action({ request }) {
 
 export default function Administration() {
   const { t } = useTranslation(null, { keyPrefix: "administration" });
+  const submit = useSubmit();
   const { organisation, users } = useLoaderData();
   const [separator, setSeparator] = useState(",");
   const [emailColumn, setEmailColumn] = useState("email");
+  const [nameHovered, setNameHovered] = useState(false);
+  const [nameEdited, setNameEdited] = useState(false);
+  const [name, setName] = useState(organisation?.name ?? "");
   return (
     <>
       <div>
-        <h2>{organisation?.name ?? t("emptyName")}</h2>
-        <Form method="PUT" autoComplete="on">
-          <label htmlFor="name">{t("name")}</label>
-          <input
-            type="text"
-            name="name"
-            defaultValue={organisation?.name ?? t("fillName")}
+        {nameEdited ? (
+          <TextField
+            value={name}
+            onKeyUp={(e) => {
+              if (e.key !== "Enter") return;
+              const formData = new FormData();
+              formData.append("name", e.target.value);
+              formData.append("id", organisation.id);
+              formData.append("type", "organisation");
+              submit(formData, { method: "PUT" });
+              setNameEdited(false);
+            }}
+            onChange={(e) => setName(e.target.value)}
           />
-          <input type="hidden" name="type" value="updateOrganisation" />
-          <input type="hidden" name="organisationId" value={organisation.id} />
-          <button type="submit">{t("submit")}</button>
-        </Form>
+        ) : (
+          <Typography
+            variant="h3"
+            onMouseEnter={() => setNameHovered(true)}
+            onMouseLeave={() => setTimeout(() => setNameHovered(false), 150)}
+          >
+            {organisation.name}
+            {nameHovered && (
+              <EditIcon
+                onClick={() => setNameEdited(true)}
+                sx={{ cursor: "pointer" }}
+              />
+            )}
+          </Typography>
+        )}
         <Form method="POST" encType="multipart/form-data">
           <Stack spacing={2} width={300}>
             <input
@@ -81,60 +106,33 @@ export default function Administration() {
             <button type="submit">{t("submit")}</button>
           </Stack>
         </Form>
-        {/*<form
-          action={`${apiUrl}api/administration/users?separator=${encodeURIComponent(
-            separator
-          )}&email-column=${encodeURIComponent(emailColumn)}`}
-          method="POST"
-          encType="multipart/form-data"
-        >
-          <Stack spacing={2} width={300}>
-            <input
-              type="file"
-              name="users"
-              accept=".csv, .txt, text/csv, text/tab-separated-value"
-            />
-            <label htmlFor="separator">{t("separator")}</label>
-            <input
-              type="text"
-              maxLength="1"
-              name="separator"
-              value={separator}
-              onChange={(e) => setSeparator(e.target.value)}
-            />
-            <label htmlFor="email-col">{t("emailColumn")}</label>
-            <input
-              type="text"
-              name="email-col"
-              value={emailColumn}
-              onChange={(e) => setEmailColumn(e.target.value)}
-            />
-            <button type="submit">{t("submit")}</button>
-          </Stack>
-        </form>*/}
       </div>
       <table>
         <thead>
           <tr>
-            <th colSpan="3">{t("account")}</th>
-            <th colSpan="6">{t("rights")}</th>
-          </tr>
-          <tr>
             <th>{t("email")}</th>
             <th>{t("firstname")}</th>
             <th>{t("lastname")}</th>
-            <th>{t("subscriptions")}</th>
-            <th>{t("wg")}</th>
-            <th>{t("registrations")}</th>
-            <th>{t("establishments")}</th>
-            <th>{t("admin")}</th>
-            <th>{t("subscriptable")}</th>
+            <th>{t("establishment")}</th>
+            <th>{t("role")}</th>
           </tr>
         </thead>
         <tbody>
           {users?.map((user) => (
             <tr key={user.id}>
               <td>{user.email}</td>
+              <td>empty for now</td>
+              <td>empty for now</td>
+              <td>
+                <FormControl fullWidth>
+                  <InputLabel id="establishment-label">
+                    {t("establishment")}
+                  </InputLabel>
+                  <Select labelId="establishment-label" label="test" value={0}>
+                    <MenuItem value={0}>Establishment 0</MenuItem>
+                  </Select>
+                </FormControl>
+              </td>
             </tr>
           ))}
         </tbody>
