@@ -31,7 +31,7 @@ exports.linkUsers = async (req, res, next) => {
         }
       })
       .on("data", (row) => {
-        if (row[emailColumn].includes("@")) {
+        if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(row[emailColumn])) {
           received.push(row[emailColumn]);
         } else {
           invalids.push(row[emailColumn]);
