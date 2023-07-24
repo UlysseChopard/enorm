@@ -53,7 +53,7 @@ const UploadUsersDialog = ({ onClose, open }) => {
   const inputFile = useRef();
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
-      <Form method="POST" encType="multipart/form-data" autoComplete="on">
+      <Form method="POST" encType="multipart/form-data">
         <DialogTitle>{t("importUsersTitle")}</DialogTitle>
         <DialogContent>
           <Stack spacing={2} width={300}>
