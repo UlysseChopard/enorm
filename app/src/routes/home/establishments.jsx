@@ -55,19 +55,19 @@ const EstablishmentDialog = ({ type, onClose, open, establishment }) => {
               type="text"
               name="address"
               label={t("address")}
-              defaultValue={establishment?.address || ""}
+              defaultValue={establishment?.address ?? ""}
             />
             <TextField
               type="text"
               name="email"
               label={t("email")}
-              defaultValue={establishment?.email || ""}
+              defaultValue={establishment?.email ?? ""}
             />
             <TextField
               type="text"
               name="phone"
               label={t("phone")}
-              defaultValue={establishment?.phone || ""}
+              defaultValue={establishment?.phone ?? ""}
             />
             <input type="hidden" name="type" value={type} />
             {establishment && (

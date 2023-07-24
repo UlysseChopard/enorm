@@ -7,7 +7,10 @@ const { Organisations, Users } = require("../models");
 
 exports.linkUsers = async (req, res, next) => {
   try {
-    const emailColumn = req.query?.["email-column"].toLowerCase() ?? "email";
+    const noHeader = req.query?.["no-header"];
+    const emailColumn = noHeader
+      ? 0
+      : req.query?.["email-column"]?.toLowerCase();
     const received = [];
     const {
       rows: [organisation],
@@ -20,7 +23,9 @@ exports.linkUsers = async (req, res, next) => {
       await unlink(req.file.path);
     });
     const csv = csvParser({
-      mapHeaders: ({ header }) => header.toLowerCase(),
+      headers: !noHeader,
+      mapHeaders: ({ header }) =>
+        header.toLowerCase() === emailColumn ? emailColumn : null,
       separator: req.query?.separator ?? ",",
       skipLines: 0,
       strict: false,
@@ -31,11 +36,12 @@ exports.linkUsers = async (req, res, next) => {
         }
       })
       .on("data", (row) => {
-        if (!regex.isEmail(row[emailColumn])) {
-          ac.abort(`${row[emailColumn]} is not a valid email`);
+        const email = row[emailColumn];
+        if (!regex.isEmail(email)) {
+          ac.abort(`${email} is not a valid email`);
           return;
         }
-        received.push(row[emailColumn].toLowerCase());
+        received.push(email.toLowerCase());
       });
     try {
       await pipeline(stream, csv, { signal: ac.signal });

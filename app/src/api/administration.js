@@ -15,13 +15,19 @@ export const get = () =>
     headers: { Accept: "application/json" },
   });
 
-export const uploadUsers = (body, { separator = ",", emailColumn = "email" }) =>
-  fetch(
-    `${apiUrl}api/administration/users?separator=${encodeURIComponent(
-      separator
-    )}&email-column=${encodeURIComponent(emailColumn)}`,
-    {
-      method: "POST",
-      body,
-    }
-  );
+export const uploadUsers = (body, { separator, emailColumn, noHeader }) => {
+  const qs = new URLSearchParams();
+  if (separator) {
+    qs.set("separator", encodeURIComponent(separator));
+  }
+  if (emailColumn) {
+    qs.set("email-column", encodeURIComponent(emailColumn));
+  }
+  if (noHeader) {
+    qs.set("no-header", "true");
+  }
+  return fetch(`${apiUrl}api/administration/users?${qs.toString()}`, {
+    method: "POST",
+    body,
+  });
+};
