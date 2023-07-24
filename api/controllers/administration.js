@@ -1,3 +1,4 @@
+const { regex } = require("../utils");
 const { createReadStream } = require("fs");
 const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
@@ -6,9 +7,8 @@ const { Organisations, Users } = require("../models");
 
 exports.linkUsers = async (req, res, next) => {
   try {
-    const emailColumn = req.query?.["email-column"] ?? "email";
+    const emailColumn = req.query?.["email-column"].toLowerCase() ?? "email";
     const received = [];
-    const invalids = [];
     const {
       rows: [organisation],
     } = await Organisations.getByAdmin(res.locals.userId);
@@ -31,11 +31,11 @@ exports.linkUsers = async (req, res, next) => {
         }
       })
       .on("data", (row) => {
-        if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(row[emailColumn])) {
-          received.push(row[emailColumn]);
-        } else {
-          invalids.push(row[emailColumn]);
+        if (!regex.isEmail(row[emailColumn])) {
+          ac.abort(`${row[emailColumn]} is not a valid email`);
+          return;
         }
+        received.push(row[emailColumn].toLowerCase());
       });
     try {
       await pipeline(stream, csv, { signal: ac.signal });
@@ -52,7 +52,7 @@ exports.linkUsers = async (req, res, next) => {
       organisation.id,
       received
     );
-    res.json({ inserted, received, invalids });
+    res.json({ inserted, received });
   } catch (err) {
     next(err);
   }
