@@ -38,7 +38,9 @@
     "settings": "Paramètres",
     "groups": "Groupes de travail",
     "establishments": "Établissements",
-    "administration": "Administration"
+    "administration": "Administration",
+    "organisation": "Organisation",
+    "users": "Utilisateurs"
   },
   "account": {
     "firstname": "Prénom",
@@ -124,15 +126,21 @@
     "update": "Modifier",
     "remove": "Supprimer"
   },
-  "administration": {
+  "organisation": {
+    "submit": "Envoyer"
+  },
+  "users": {
+    "upload": "Télécharger",
     "name": "Nom",
     "submit": "Valider",
     "separator": "Séparateur",
-    "emailColumn": "En-tête de colonne des addresses mail",
+    "emailColumn": "En-tête de colonne des adresses mail",
     "email": "Adresse mail",
-    "firstname": "Prénom",
-    "lastname": "Nom",
     "establishment": "Établissement",
-    "role": "Rôle"
+    "role": "Rôle",
+    "uploadTitle": "Télécharger une liste d'utilisateurs",
+    "file": "Fichier",
+    "hasHeader": "Le fichier contient des en-têtes",
+    "cancel": "Annuler"
   }
 }

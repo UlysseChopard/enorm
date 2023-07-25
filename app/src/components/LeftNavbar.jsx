@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useResolvedPath } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
+import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -47,11 +49,83 @@ const MENU = [
     icon: <MenuBookIcon />,
     text: "administration",
     target: "administration",
+    menu: ["organisation", "users"],
   },
 ];
 
-const LeftNavbar = ({ user }) => {
+const NavBarItem = ({ text, icon, target, pathname, menu }) => {
   const { t } = useTranslation(null, { keyPrefix: "navbar" });
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = !!anchorEl;
+  const selected = target
+    ? new RegExp(target).test(pathname)
+    : pathname === "/";
+  const listItemProps = menu
+    ? {
+        onClick: (e) => setAnchorEl(e.currentTarget),
+        id: `${target}-btn`,
+        "aria-controls": open ? `${target}-menu` : null,
+        "aria-haspopup": true,
+        "aria-expanded": open ?? null,
+        href: pathname,
+      }
+    : { href: target };
+
+  return (
+    <ListItem disablePadding>
+      <ListItemButton
+        sx={{
+          "&.Mui-selected, &.Mui-selected:hover": {
+            backgroundColor: "#0a4987",
+          },
+          "&:hover": {
+            backgroundColor: "#a2a9b0",
+          },
+        }}
+        selected={selected}
+        {...listItemProps}
+      >
+        <ListItemIcon
+          sx={{
+            color: selected ? "#e7f1fc" : "#108bdc",
+          }}
+        >
+          {icon}
+        </ListItemIcon>
+        <ListItemText
+          primary={t(text)}
+          sx={{
+            color: selected ? "#e7f1fc" : "inherit",
+          }}
+        />
+      </ListItemButton>
+      {menu && (
+        <Menu
+          id={`${target}-menu`}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={() => setAnchorEl(null)}
+          transformOrigin={{ horizontal: "left", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "top" }}
+          MenuListProps={{ "arial-labelledby": `${target}-btn` }}
+        >
+          {menu.map((name) => {
+            const selected = new RegExp(`${target}/${name}`).test(pathname);
+            return (
+              <ListItem key={name} selected={selected} disablePadding>
+                <ListItemButton href={`${target}/${name}`}>
+                  {t(name)}
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </Menu>
+      )}
+    </ListItem>
+  );
+};
+
+const LeftNavbar = ({ user }) => {
   const { pathname } = useResolvedPath();
   return (
     <Drawer
@@ -70,39 +144,16 @@ const LeftNavbar = ({ user }) => {
       elevation={24}
     >
       <List disablePadding>
-        {MENU.map(({ text, icon, target }) => {
-          const selected = target
-            ? new RegExp(target).test(pathname)
-            : pathname === "/";
+        {MENU.map(({ text, icon, target, menu }) => {
           return (
-            <ListItem key={text} disablePadding>
-              <ListItemButton
-                sx={{
-                  "&.Mui-selected, &.Mui-selected:hover": {
-                    backgroundColor: "#0a4987",
-                  },
-                  "&:hover": {
-                    backgroundColor: "#a2a9b0",
-                  },
-                }}
-                href={target}
-                selected={selected}
-              >
-                <ListItemIcon
-                  sx={{
-                    color: selected ? "#e7f1fc" : "#108bdc",
-                  }}
-                >
-                  {icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={t(text)}
-                  sx={{
-                    color: selected ? "#e7f1fc" : "inherit",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
+            <NavBarItem
+              key={target}
+              text={text}
+              icon={icon}
+              target={target}
+              pathname={pathname}
+              menu={menu}
+            />
           );
         })}
       </List>

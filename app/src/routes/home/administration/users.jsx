@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Form, useLoaderData, useSubmit } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,48 +13,35 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import EditIcon from "@mui/icons-material/Edit";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { uploadUsers, get, updateOrganisation } from "@/api/administration";
+import { uploadUsers, getUsers } from "@/api/administration";
 
 export async function loader() {
-  const res = await get();
+  const res = await getUsers();
   return res.ok ? res.json() : res.status;
 }
 
 export async function action({ request }) {
   const formData = await request.formData();
-  let res;
-  switch (formData.get("type")) {
-    case "organisation":
-      res = await updateOrganisation(formData.get("id"), formData.get("name"));
-      break;
-    case "uploadUsers":
-      console.log(formData.get("header"));
-      res = await uploadUsers(formData, {
-        emailColumn: formData.get("email-column"),
-        separator: formData.get("separator"),
-        noHeader: !formData.get("header"),
-      });
-      break;
-    default:
-      return null;
-  }
+  const res = await uploadUsers(formData, {
+    emailColumn: formData.get("email-column"),
+    separator: formData.get("separator"),
+    noHeader: !formData.get("header"),
+  });
   return res.ok ? res.json() : res.status;
 }
 
 const UploadUsersDialog = ({ onClose, open }) => {
-  const { t } = useTranslation(null, { keyPrefix: "administration" });
+  const { t } = useTranslation(null, { keyPrefix: "users" });
   const [filename, setFilename] = useState(null);
   const [hasHeader, setHasHeader] = useState(true);
   const inputFile = useRef();
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <Form method="POST" encType="multipart/form-data">
-        <DialogTitle>{t("importUsersTitle")}</DialogTitle>
+        <DialogTitle>{t("uploadTitle")}</DialogTitle>
         <DialogContent>
           <Stack spacing={2} width={300}>
             <Box>
@@ -124,47 +111,14 @@ const UploadUsersDialog = ({ onClose, open }) => {
 };
 
 export default function Administration() {
-  const { t } = useTranslation(null, { keyPrefix: "administration" });
-  const submit = useSubmit();
-  const { organisation, users } = useLoaderData();
-  const [nameHovered, setNameHovered] = useState(false);
-  const [nameEdited, setNameEdited] = useState(false);
-  const [name, setName] = useState(organisation?.name ?? "");
+  const { t } = useTranslation(null, { keyPrefix: "users" });
+  const { users } = useLoaderData();
   const [open, setOpen] = useState(false);
   return (
     <>
       <div>
-        {nameEdited ? (
-          <TextField
-            value={name}
-            onKeyUp={(e) => {
-              if (e.key !== "Enter") return;
-              const formData = new FormData();
-              formData.append("name", e.target.value);
-              formData.append("id", organisation.id);
-              formData.append("type", "organisation");
-              submit(formData, { method: "PUT" });
-              setNameEdited(false);
-            }}
-            onChange={(e) => setName(e.target.value)}
-          />
-        ) : (
-          <Typography
-            variant="h3"
-            onMouseEnter={() => setNameHovered(true)}
-            onMouseLeave={() => setTimeout(() => setNameHovered(false), 150)}
-          >
-            {organisation.name}
-            {nameHovered && (
-              <EditIcon
-                onClick={() => setNameEdited(true)}
-                sx={{ cursor: "pointer" }}
-              />
-            )}
-          </Typography>
-        )}
         <Button type="button" onClick={() => setOpen(true)}>
-          {t("uploadUsers")}
+          {t("upload")}
         </Button>
         <UploadUsersDialog open={open} onClose={() => setOpen(false)} />
       </div>
@@ -172,8 +126,6 @@ export default function Administration() {
         <thead>
           <tr>
             <th>{t("email")}</th>
-            <th>{t("firstname")}</th>
-            <th>{t("lastname")}</th>
             <th>{t("establishment")}</th>
             <th>{t("role")}</th>
           </tr>
@@ -182,8 +134,6 @@ export default function Administration() {
           {users?.map((user) => (
             <tr key={user.id}>
               <td>{user.email}</td>
-              <td>empty for now</td>
-              <td>empty for now</td>
               <td>
                 <FormControl fullWidth>
                   <InputLabel id="establishment-label">

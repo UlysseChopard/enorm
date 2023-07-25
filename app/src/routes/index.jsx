@@ -27,10 +27,14 @@ import Establishments, {
   loader as establishmentsLoader,
   action as establishmentsAction,
 } from "@/routes/home/establishments";
-import Administration, {
-  loader as administrationLoader,
-  action as administrationAction,
-} from "@/routes/home/administration";
+import Users, {
+  loader as usersLoader,
+  action as usersAction,
+} from "@/routes/home/administration/users";
+import Organisation, {
+  loader as organisationLoader,
+  action as organisationAction,
+} from "@/routes/home/administration/organisation";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -97,9 +101,20 @@ export default [
       },
       {
         path: "administration",
-        element: <Administration />,
-        loader: administrationLoader,
-        action: administrationAction,
+        children: [
+          {
+            path: "organisation",
+            element: <Organisation />,
+            loader: organisationLoader,
+            action: organisationAction,
+          },
+          {
+            path: "users",
+            element: <Users />,
+            loader: usersLoader,
+            action: usersAction,
+          },
+        ],
       },
     ],
   },

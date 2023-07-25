@@ -38,7 +38,9 @@
     "settings": "Settings",
     "groups": "Working groups",
     "establishments": "Establishments",
-    "administration": "Administration"
+    "administration": "Administration",
+    "organisation": "Organisation",
+    "users": "Users"
   },
   "account": {
     "firstname": "First name",
@@ -124,15 +126,21 @@
     "update": "Modify",
     "remove": "Delete"
   },
-  "administration": {
+  "organisation": {
+    "submit": "Submit"
+  },
+  "users": {
+    "upload": "Upload",
     "name": "Name",
     "submit": "Submit",
     "separator": "Separator",
     "emailColumn": "Email column header",
     "email": "Email",
-    "firstname": "Firstname",
-    "lastname": "Lastname",
     "establishment": "Establishment",
-    "role": "Role"
+    "role": "Role",
+    "uploadTitle": "Upload a list of users",
+    "file": "File",
+    "hasHeader": "File contains headers",
+    "cancel": "Cancel"
   }
 }

@@ -8,7 +8,14 @@ export const updateOrganisation = (id, name) =>
     headers: { "Content-Type": "application/json", Accept: "application/json" },
   });
 
-export const get = () =>
+export const getOrganisation = () =>
+  fetch(`${apiUrl}api/administration`, {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+
+export const getUsers = () =>
   fetch(`${apiUrl}api/administration`, {
     method: "GET",
     credentials: "include",
