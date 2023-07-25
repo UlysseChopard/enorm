@@ -114,6 +114,7 @@ export default function Administration() {
   const { t } = useTranslation(null, { keyPrefix: "users" });
   const { users } = useLoaderData();
   const [open, setOpen] = useState(false);
+  const [roles, setRoles] = useState([]);
   return (
     <>
       <div>
@@ -131,21 +132,33 @@ export default function Administration() {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user) => (
-            <tr key={user.id}>
-              <td>{user.email}</td>
-              <td>
-                <FormControl fullWidth>
-                  <InputLabel id="establishment-label">
-                    {t("establishment")}
-                  </InputLabel>
-                  <Select labelId="establishment-label" label="test" value={0}>
-                    <MenuItem value={0}>Establishment 0</MenuItem>
-                  </Select>
-                </FormControl>
-              </td>
-            </tr>
-          ))}
+          {users?.map((user) => {
+            return (
+              <tr key={user.id}>
+                <td>{user.email}</td>
+                <td>
+                  <FormControl fullWidth>
+                    <Select value={0}>
+                      <MenuItem value={0}>Establishment 0</MenuItem>
+                    </Select>
+                  </FormControl>
+                </td>
+                <td>
+                  <FormControl fullWidth>
+                    <Select
+                      multiple
+                      value={roles}
+                      onChange={(e) => setRoles(e.target.value)}
+                    >
+                      <MenuItem value={"admin"}>{t("admin")}</MenuItem>
+                      <MenuItem value={"manager"}>{t("manager")}</MenuItem>
+                      <MenuItem value={"expert"}>{t("expert")}</MenuItem>
+                    </Select>
+                  </FormControl>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>
