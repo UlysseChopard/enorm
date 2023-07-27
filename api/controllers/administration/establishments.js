@@ -1,4 +1,4 @@
-const { Establishments } = require("../models");
+const { Establishments } = require("../../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -22,7 +22,7 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.update = async (req, res, next) => {
+exports.replace = async (req, res, next) => {
   try {
     const {
       rows: [establishment],

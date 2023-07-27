@@ -9,7 +9,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
-import { get, create, update, remove } from "@/api/establishments";
+import {
+  get,
+  create,
+  replace,
+  close,
+} from "@/api/administration/establishments";
 
 export async function loader() {
   const res = await get();
@@ -22,11 +27,11 @@ export async function action({ request }) {
     case "create":
       res = await create(Object.fromEntries(formData));
       break;
-    case "remove":
-      res = await remove(formData.get("id"));
+    case "close":
+      res = await close(formData.get("id"));
       break;
-    case "update":
-      res = await update(formData.get("id"), Object.fromEntries(formData));
+    case "replace":
+      res = await replace(formData.get("id"), Object.fromEntries(formData));
       break;
     default:
       throw new Error("unmatched action type");
@@ -90,7 +95,7 @@ export default function Establishments() {
   const { establishments } = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "establishments" });
   const [modal, setModal] = useState(false);
-  const [updated, setUpdated] = useState("");
+  const [replacement, setReplacement] = useState("");
 
   return (
     <>
@@ -101,10 +106,10 @@ export default function Establishments() {
         open={modal === "create"}
       />
       <EstablishmentDialog
-        type="update"
+        type="replace"
         onClose={() => setModal("")}
-        open={modal === "update"}
-        establishment={updated}
+        open={modal === "replace"}
+        establishment={replacement}
       />
       <table>
         <thead>
@@ -130,19 +135,19 @@ export default function Establishments() {
                   <Button
                     variant="contained"
                     onClick={() => {
-                      setUpdated({ id, name, address, email, phone });
-                      setModal("update");
+                      setReplacement({ id, name, address, email, phone });
+                      setModal("replace");
                     }}
                   >
-                    {t("update")}
+                    {t("replace")}
                   </Button>
                 </td>
                 <td>
                   <Form method="DELETE">
-                    <input type="hidden" name="type" value="remove" />
+                    <input type="hidden" name="type" value="close" />
                     <input type="hidden" name="id" value={id} />
                     <Button type="submit" variant="contained">
-                      {t("remove")}
+                      {t("close")}
                     </Button>
                   </Form>
                 </td>

@@ -1,11 +1,11 @@
-const { regex } = require("../utils");
 const { createReadStream } = require("fs");
 const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
-const { Organisations, Users } = require("../models");
+const { regex } = require("../../utils");
+const { Organisations, Users } = require("../../models");
 
-exports.linkUsers = async (req, res, next) => {
+exports.add = async (req, res, next) => {
   try {
     const noHeader = req.query?.["no-header"];
     const emailColumn = noHeader
@@ -64,20 +64,6 @@ exports.linkUsers = async (req, res, next) => {
   }
 };
 
-exports.updateOrganisation = async (req, res, next) => {
-  try {
-    const {
-      rows: [organisation],
-    } = await Organisations.update(req.params.id, {
-      name: req.body?.name,
-      admin: res.locals.userId,
-    });
-    res.status(201).json({ organisation });
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.get = async (req, res, next) => {
   try {
     const {
@@ -86,15 +72,15 @@ exports.get = async (req, res, next) => {
     if (!organisation) {
       return res.json({ message: "missing organisation" });
     }
-    const { rows: users } = await Users.getBySociety(organisation.id);
-    res.json({ organisation, users });
+    const { rows: users } = await Users.getByOrganisation(organisation.id);
+    res.json({ users });
   } catch (err) {
     next(err);
   }
 };
 
-exports.unlinkUser = (req, res, next) => {};
+exports.unlink = (req, res, next) => {};
 
-exports.giveRole = (req, res, next) => {};
+exports.allow = (req, res, next) => {};
 
-exports.withdrawRole = (req, res, next) => {};
+exports.disallow = (req, res, next) => {};

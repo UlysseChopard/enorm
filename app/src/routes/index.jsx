@@ -26,7 +26,7 @@ import Registration, {
 import Establishments, {
   loader as establishmentsLoader,
   action as establishmentsAction,
-} from "@/routes/home/establishments";
+} from "@/routes/home/administration/establishments";
 import Users, {
   loader as usersLoader,
   action as usersAction,
@@ -94,12 +94,6 @@ export default [
         action: registrationAction,
       },
       {
-        path: "establishments",
-        element: <Establishments />,
-        loader: establishmentsLoader,
-        action: establishmentsAction,
-      },
-      {
         path: "administration",
         children: [
           {
@@ -113,6 +107,12 @@ export default [
             element: <Users />,
             loader: usersLoader,
             action: usersAction,
+          },
+          {
+            path: "establishments",
+            element: <Establishments />,
+            loader: establishmentsLoader,
+            action: establishmentsAction,
           },
         ],
       },

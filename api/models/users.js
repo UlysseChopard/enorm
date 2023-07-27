@@ -12,7 +12,7 @@ exports.createMany = (organisation, emails) =>
     [organisation, emails.join(",")]
   );
 
-exports.getBySociety = (organisation) =>
+exports.getByOrganisation = (organisation) =>
   db.query("SELECT id, email FROM users WHERE organisation = $1", [
     organisation,
   ]);

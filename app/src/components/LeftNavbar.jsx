@@ -10,7 +10,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import DomainIcon from "@mui/icons-material/Domain";
 import HubIcon from "@mui/icons-material/Hub";
 import ProfileMenu from "@/components/ProfileMenu";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -41,15 +40,10 @@ const MENU = [
     target: "registrations",
   },
   {
-    icon: <DomainIcon />,
-    text: "establishments",
-    target: "establishments",
-  },
-  {
     icon: <MenuBookIcon />,
     text: "administration",
     target: "administration",
-    menu: ["organisation", "users"],
+    menu: ["organisation", "users", "establishments"],
   },
 ];
 

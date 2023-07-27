@@ -3,7 +3,6 @@ import { Form, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
@@ -16,16 +15,16 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { uploadUsers, getUsers } from "@/api/administration";
+import { get, add } from "@/api/administration/users";
 
 export async function loader() {
-  const res = await getUsers();
+  const res = await get();
   return res.ok ? res.json() : res.status;
 }
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const res = await uploadUsers(formData, {
+  const res = await add(formData, {
     emailColumn: formData.get("email-column"),
     separator: formData.get("separator"),
     noHeader: !formData.get("header"),
@@ -55,7 +54,7 @@ const UploadUsersDialog = ({ onClose, open }) => {
                 <input
                   type="file"
                   id="users"
-                  name="users"
+                  name="file"
                   hidden
                   accept=".csv, .txt, text/csv, text/tab-separated-value"
                   ref={inputFile}

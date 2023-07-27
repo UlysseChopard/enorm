@@ -123,8 +123,8 @@
     "cancel": "Annuler",
     "submit": "Envoyer",
     "actions": "Actions",
-    "update": "Modifier",
-    "remove": "Supprimer"
+    "replace": "Modifier",
+    "close": "Supprimer"
   },
   "organisation": {
     "submit": "Envoyer"
