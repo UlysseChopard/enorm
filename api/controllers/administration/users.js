@@ -79,7 +79,25 @@ exports.get = async (req, res, next) => {
   }
 };
 
-exports.unlink = (req, res, next) => {};
+exports.unlink = async (req, res, next) => {
+  try {
+    const {
+      rows: [organisation],
+    } = await Organisations.getByAdmin(res.locals.userId);
+    if (!organisation) {
+      return res.status(400).json({ message: "Missing organisation" });
+    }
+    const {
+      rows: [unlinked],
+    } = await Users.deleteByIdAndOrganisation(
+      organisation.id,
+      req.params.userId
+    );
+    res.json({ unlinked });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.allow = (req, res, next) => {};
 

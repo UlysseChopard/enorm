@@ -141,6 +141,11 @@
     "uploadTitle": "Upload a list of users",
     "file": "File",
     "hasHeader": "File contains headers",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "actions": "Actions",
+    "unlink": "Remove",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "expert": "Expert"
   }
 }

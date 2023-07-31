@@ -141,6 +141,11 @@
     "uploadTitle": "Télécharger une liste d'utilisateurs",
     "file": "Fichier",
     "hasHeader": "Le fichier contient des en-têtes",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "actions": "Actions",
+    "unlink": "Supprimer",
+    "admin": "Administrateur",
+    "manager": "Gestionnaire",
+    "expert": "Expert"
   }
 }

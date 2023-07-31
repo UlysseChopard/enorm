@@ -23,3 +23,9 @@ export const add = (body, { separator, emailColumn, noHeader }) => {
     body,
   });
 };
+
+export const unlink = (user) =>
+  fetch(`${apiUrl}api/administration/users/${user}`, {
+    method: "DELETE",
+    credentials: "include",
+  });

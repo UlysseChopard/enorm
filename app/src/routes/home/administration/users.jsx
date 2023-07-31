@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { get, add } from "@/api/administration/users";
+import { get, add, unlink } from "@/api/administration/users";
 
 export async function loader() {
   const res = await get();
@@ -24,11 +24,21 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const res = await add(formData, {
-    emailColumn: formData.get("email-column"),
-    separator: formData.get("separator"),
-    noHeader: !formData.get("header"),
-  });
+  let res;
+  switch (formData.get("type")) {
+    case "unlink":
+      res = await unlink(formData.get("user"));
+      break;
+    case "add":
+      res = await add(formData, {
+        emailColumn: formData.get("email-column"),
+        separator: formData.get("separator"),
+        noHeader: !formData.get("header"),
+      });
+      break;
+    default:
+      throw new Error("Missing type for action");
+  }
   return res.ok ? res.json() : res.status;
 }
 
@@ -40,6 +50,7 @@ const UploadUsersDialog = ({ onClose, open }) => {
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <Form method="POST" encType="multipart/form-data">
+        <input type="hidden" name="type" value="add" />
         <DialogTitle>{t("uploadTitle")}</DialogTitle>
         <DialogContent>
           <Stack spacing={2} width={300}>
@@ -128,6 +139,7 @@ export default function Administration() {
             <th>{t("email")}</th>
             <th>{t("establishment")}</th>
             <th>{t("role")}</th>
+            <th>{t("actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -154,6 +166,13 @@ export default function Administration() {
                       <MenuItem value={"expert"}>{t("expert")}</MenuItem>
                     </Select>
                   </FormControl>
+                </td>
+                <td>
+                  <Form method="DELETE">
+                    <input type="hidden" name="type" value="unlink" />
+                    <input type="hidden" name="user" value={user.id} />
+                    <Button type="submit">{t("unlink")}</Button>
+                  </Form>
                 </td>
               </tr>
             );

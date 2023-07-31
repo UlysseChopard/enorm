@@ -16,3 +16,9 @@ exports.getByOrganisation = (organisation) =>
   db.query("SELECT id, email FROM users WHERE organisation = $1", [
     organisation,
   ]);
+
+exports.deleteByIdAndOrganisation = (organisation, user) =>
+  db.query(
+    "DELETE FROM users WHERE organisation = $1 AND id = $2::INTEGER RETURNING *",
+    [organisation, user]
+  );
