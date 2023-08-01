@@ -29,3 +29,15 @@ export const unlink = (user) =>
     method: "DELETE",
     credentials: "include",
   });
+
+export const allow = (user, role) =>
+  fetch(`${apiUrl}api/administration/users/${user}/roles/${role}`, {
+    method: "PUT",
+    credentials: "include",
+  });
+
+export const disallow = (user, role) =>
+  fetch(`${apiUrl}api/administration/users/${user}/roles/${role}`, {
+    method: "DELETE",
+    credentials: "include",
+  });

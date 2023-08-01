@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { Form, useLoaderData } from "react-router-dom";
+import { useState, useRef, useCallback } from "react";
+import { Form, useLoaderData, useSubmit } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { get, add, unlink } from "@/api/administration/users";
+import { get, add, unlink, allow, disallow } from "@/api/administration/users";
 
 export async function loader() {
   const res = await get();
@@ -35,6 +35,12 @@ export async function action({ request }) {
         separator: formData.get("separator"),
         noHeader: !formData.get("header"),
       });
+      break;
+    case "allow":
+      res = await allow(formData.get("user"), formData.get("role"));
+      break;
+    case "disallow":
+      res = await disallow(formData.get("user"), formData.get("role"));
       break;
     default:
       throw new Error("Missing type for action");
@@ -123,8 +129,15 @@ const UploadUsersDialog = ({ onClose, open }) => {
 export default function Administration() {
   const { t } = useTranslation(null, { keyPrefix: "users" });
   const { users } = useLoaderData();
+  const submit = useSubmit();
   const [open, setOpen] = useState(false);
-  const [roles, setRoles] = useState([]);
+  const getRoles = useCallback(({ is_manager, is_admin, is_expert }) => {
+    const roles = [];
+    is_manager && roles.push("manager");
+    is_expert && roles.push("expert");
+    is_admin && roles.push("admin");
+    return roles;
+  }, []);
   return (
     <>
       <div>
@@ -144,6 +157,9 @@ export default function Administration() {
         </thead>
         <tbody>
           {users?.map((user) => {
+            const roles = getRoles(user);
+            const formData = new FormData();
+            formData.append("user", user.id);
             return (
               <tr key={user.id}>
                 <td>{user.email}</td>
@@ -157,13 +173,38 @@ export default function Administration() {
                 <td>
                   <FormControl fullWidth>
                     <Select
+                      type="submit"
                       multiple
                       value={roles}
-                      onChange={(e) => setRoles(e.target.value)}
+                      onChange={(e) => {
+                        formData.append("role", e.target.value.pop());
+                        formData.append(
+                          "type",
+                          e.target.value.length < roles.length
+                            ? "disallow"
+                            : "allow"
+                        );
+                        submit(formData, { method: "PATCH" });
+                      }}
                     >
-                      <MenuItem value={"admin"}>{t("admin")}</MenuItem>
-                      <MenuItem value={"manager"}>{t("manager")}</MenuItem>
-                      <MenuItem value={"expert"}>{t("expert")}</MenuItem>
+                      <MenuItem
+                        value={"admin"}
+                        onClick={() => formData.append("role", "admin")}
+                      >
+                        {t("admin")}
+                      </MenuItem>
+                      <MenuItem
+                        value={"manager"}
+                        onClick={() => formData.append("role", "manager")}
+                      >
+                        {t("manager")}
+                      </MenuItem>
+                      <MenuItem
+                        value={"expert"}
+                        onClick={() => formData.append("role", "expert")}
+                      >
+                        {t("expert")}
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </td>

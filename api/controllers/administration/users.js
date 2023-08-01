@@ -70,7 +70,7 @@ exports.get = async (req, res, next) => {
       rows: [organisation],
     } = await Organisations.getByAdmin(res.locals.userId);
     if (!organisation) {
-      return res.json({ message: "missing organisation" });
+      return res.status(400).json({ message: "Missing organisation" });
     }
     const { rows: users } = await Users.getByOrganisation(organisation.id);
     res.json({ users });
@@ -99,6 +99,44 @@ exports.unlink = async (req, res, next) => {
   }
 };
 
-exports.allow = (req, res, next) => {};
+exports.allow = async (req, res, next) => {
+  try {
+    const {
+      rows: [organisation],
+    } = await Organisations.getByAdmin(res.locals.userId);
+    if (!organisation) {
+      return res.status(400).json({ message: "Missing organisation" });
+    }
+    const {
+      rows: [updated],
+    } = await Users.manageRoleByIdAndOrganisation(
+      organisation.id,
+      req.params.userId,
+      { role: req.params.role, value: true }
+    );
+    res.json({ updated });
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.disallow = (req, res, next) => {};
+exports.disallow = async (req, res, next) => {
+  try {
+    const {
+      rows: [organisation],
+    } = await Organisations.getByAdmin(res.locals.userId);
+    if (!organisation) {
+      return res.status(400).json({ message: "Missing organisation" });
+    }
+    const {
+      rows: [updated],
+    } = await Users.manageRoleByIdAndOrganisation(
+      organisation.id,
+      req.params.userId,
+      { role: req.params.role, value: false }
+    );
+    res.json({ updated });
+  } catch (err) {
+    next(err);
+  }
+};
