@@ -13,7 +13,10 @@ exports.createMany = (organisation, emails) =>
   );
 
 exports.getByOrganisation = (organisation) =>
-  db.query("SELECT * FROM users WHERE organisation = $1", [organisation]);
+  db.query(
+    "SELECT u.*, eu.establishment FROM users AS u LEFT JOIN establishments_users AS eu ON u.id = eu.user WHERE u.organisation = $1",
+    [organisation]
+  );
 
 exports.deleteByIdAndOrganisation = (organisation, user) =>
   db.query(

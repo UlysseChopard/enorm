@@ -3,7 +3,7 @@ const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
 const { regex } = require("../../utils");
-const { Organisations, Users } = require("../../models");
+const { Organisations, Users, EstablishmentsUsers } = require("../../models");
 
 exports.add = async (req, res, next) => {
   try {
@@ -136,6 +136,27 @@ exports.disallow = async (req, res, next) => {
       { role: req.params.role, value: false }
     );
     res.json({ updated });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.modify = async (req, res, next) => {
+  try {
+    const {
+      rows: [organisation],
+    } = await Organisations.getByAdmin(res.locals.userId);
+    if (!organisation) {
+      return res.status(400).json({ message: "Missing organisation" });
+    }
+    const {
+      rows: [modified],
+    } = await EstablishmentsUsers.modifyByIdAndOrganisation(
+      organisation.id,
+      req.params.userId,
+      { establishment: req.body.establishment }
+    );
+    res.json({ modified });
   } catch (err) {
     next(err);
   }

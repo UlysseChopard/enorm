@@ -15,11 +15,25 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { get, add, unlink, allow, disallow } from "@/api/administration/users";
+import {
+  get,
+  add,
+  unlink,
+  allow,
+  disallow,
+  modify,
+} from "@/api/administration/users";
+import { get as getEstablishments } from "@/api/administration/establishments";
 
 export async function loader() {
   const res = await get();
-  return res.ok ? res.json() : res.status;
+  const resEstablishments = await getEstablishments();
+  if (!res.ok || !resEstablishments.ok) {
+    return res.status;
+  }
+  const users = await res.json();
+  const establishments = await resEstablishments.json();
+  return { ...establishments, ...users };
 }
 
 export async function action({ request }) {
@@ -41,6 +55,11 @@ export async function action({ request }) {
       break;
     case "disallow":
       res = await disallow(formData.get("user"), formData.get("role"));
+      break;
+    case "modify":
+      res = await modify(formData.get("user"), {
+        establishment: formData.get("establishment"),
+      });
       break;
     default:
       throw new Error("Missing type for action");
@@ -83,6 +102,7 @@ const UploadUsersDialog = ({ onClose, open }) => {
             <TextField
               type="text"
               maxLength="1"
+              minLength="1"
               name="separator"
               defaultValue=","
               helperText={t("separator")}
@@ -128,7 +148,7 @@ const UploadUsersDialog = ({ onClose, open }) => {
 
 export default function Administration() {
   const { t } = useTranslation(null, { keyPrefix: "users" });
-  const { users } = useLoaderData();
+  const { establishments, users } = useLoaderData();
   const submit = useSubmit();
   const [open, setOpen] = useState(false);
   const getRoles = useCallback(({ is_manager, is_admin, is_expert }) => {
@@ -165,15 +185,25 @@ export default function Administration() {
                 <td>{user.email}</td>
                 <td>
                   <FormControl fullWidth>
-                    <Select value={0}>
-                      <MenuItem value={0}>Establishment 0</MenuItem>
+                    <Select
+                      value={user?.establishment}
+                      onChange={(e) => {
+                        formData.append("establishment", e.target.value);
+                        formData.append("type", "modify");
+                        submit(formData, { method: "PATCH" });
+                      }}
+                    >
+                      {establishments?.map(({ id, name }) => (
+                        <MenuItem key={id} value={id}>
+                          {name}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </td>
                 <td>
                   <FormControl fullWidth>
                     <Select
-                      type="submit"
                       multiple
                       value={roles}
                       onChange={(e) => {
