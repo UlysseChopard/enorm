@@ -150,13 +150,19 @@ exports.modify = async (req, res, next) => {
       return res.status(400).json({ message: "Missing organisation" });
     }
     const {
-      rows: [modified],
+      rows: [deleted],
+    } = await EstablishmentsUsers.deleteByUserAndEstablishment(
+      req.params.userId,
+      req.body.establishment
+    );
+    const {
+      rows: [created],
     } = await EstablishmentsUsers.modifyByIdAndOrganisation(
       organisation.id,
       req.params.userId,
       { establishment: req.body.establishment }
     );
-    res.json({ modified });
+    res.json({ deleted, created });
   } catch (err) {
     next(err);
   }
