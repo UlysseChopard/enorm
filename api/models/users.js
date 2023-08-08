@@ -66,3 +66,12 @@ exports.manageRoleByIdAndOrganisation = (
     [value, organisation, user]
   );
 };
+
+exports.linkAccount = (user, account) =>
+  db.query("UPDATE users SET account = $1 WHERE id = $2", [account, user]);
+
+exports.unlinkAccount = (user) =>
+  db.query("UPDATE SET account = NULL WHERE id = $1", [user]);
+
+exports.getByEmail = (email) =>
+  db.query("SELECT id FROM users WHERE email = $1", [email]);
