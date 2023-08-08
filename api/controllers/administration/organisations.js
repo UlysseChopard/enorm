@@ -6,7 +6,7 @@ exports.replace = async (req, res, next) => {
       rows: [organisation],
     } = await Organisations.update(req.params.id, {
       name: req.body?.name,
-      admin: res.locals.userId,
+      admin: res.locals.accountId,
     });
     res.status(201).json({ organisation });
   } catch (err) {
@@ -18,7 +18,7 @@ exports.get = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.userId);
+    } = await Organisations.getByAdmin(res.locals.accountId);
     if (!organisation) {
       return res.json({ message: "missing organisation" });
     }

@@ -1,11 +1,11 @@
 import { apiUrl } from "@/api";
 
-export function get() {
-  return fetch(`${apiUrl}api/accounts`, { credentials: "include" });
+export function get(account) {
+  return fetch(`${apiUrl}api/accounts/${account}`, { credentials: "include" });
 }
 
-export function update(infos) {
-  return fetch(`${apiUrl}api/accounts`, {
+export function update(account, infos) {
+  return fetch(`${apiUrl}api/accounts/${account}`, {
     body: JSON.stringify(infos),
     credentials: "include",
     headers: {
@@ -27,9 +27,23 @@ export function create(infos) {
   });
 }
 
-export function close() {
-  return fetch(`${apiUrl}api/accounts`, {
+export function close(account) {
+  return fetch(`${apiUrl}api/accounts/${account}`, {
     credentials: "include",
     method: "DELETE",
+  });
+}
+
+export function join(account, user) {
+  return fetch(`${apiUrl}api/accounts/${account}/users/${user}`, {
+    method: "PUT",
+    credentials: "include",
+  });
+}
+
+export function leave(account, user) {
+  return fetch(`${apiUrl}api/accounts/${account}/users/${user}`, {
+    method: "DELETE",
+    credentials: "include",
   });
 }

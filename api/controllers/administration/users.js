@@ -14,7 +14,7 @@ exports.add = async (req, res, next) => {
     const received = [];
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.userId);
+    } = await Organisations.getByAdmin(res.locals.accountId);
     const ac = new AbortController();
     const stream = createReadStream(req.file.path, {
       encoding: "utf-8",
@@ -68,7 +68,7 @@ exports.get = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.userId);
+    } = await Organisations.getByAdmin(res.locals.accountId);
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }
@@ -83,7 +83,7 @@ exports.unlink = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.userId);
+    } = await Organisations.getByAdmin(res.locals.accountId);
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }
@@ -103,7 +103,7 @@ exports.allow = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.userId);
+    } = await Organisations.getByAdmin(res.locals.accountId);
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }
@@ -124,7 +124,7 @@ exports.disallow = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.userId);
+    } = await Organisations.getByAdmin(res.locals.accountId);
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }
@@ -145,7 +145,7 @@ exports.modify = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.userId);
+    } = await Organisations.getByAdmin(res.locals.accountId);
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }

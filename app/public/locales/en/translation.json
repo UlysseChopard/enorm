@@ -71,7 +71,9 @@
     "female": "Female",
     "password": "Password",
     "newPassword": "New",
-    "oldPassword": "Previous"
+    "oldPassword": "Previous",
+    "join": "Join",
+    "leave": "Leave"
   },
   "profileMenu": {
     "profile": "Profile",

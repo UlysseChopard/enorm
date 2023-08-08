@@ -71,7 +71,9 @@
     "female": "Femme",
     "password": "Mot de passe",
     "newPassword": "Nouveau",
-    "oldPassword": "Ancien"
+    "oldPassword": "Ancien",
+    "join": "Rejoindre",
+    "leave": "Quitter"
   },
   "profileMenu": {
     "profile": "Compte",

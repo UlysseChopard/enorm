@@ -5,7 +5,7 @@ exports.get = async (req, res, next) => {
   try {
     const {
       rows: [account],
-    } = await Accounts.getById(res.locals.userId);
+    } = await Accounts.getById(res.locals.accountId);
     if (!account) return res.status(401).json({ message: "Account not found" });
     delete account.hash;
     const { rows: users } = await Users.getByEmail(account.email);
@@ -19,13 +19,13 @@ exports.update = async (req, res, next) => {
   try {
     const {
       rows: [prev],
-    } = await Accounts.getById(res.locals.userId);
+    } = await Accounts.getById(res.locals.accountId);
     const hash = req.body.password
       ? crypt.encrypt(req.body.password)
       : prev.hash;
     const {
       rows: [account],
-    } = await Accounts.update(res.locals.userId, {
+    } = await Accounts.update(res.locals.accountId, {
       ...prev,
       ...req.body,
       hash,
@@ -61,7 +61,7 @@ exports.close = async (req, res, next) => {
   try {
     const {
       rows: [account],
-    } = await Accounts.close(res.locals.userId);
+    } = await Accounts.close(res.locals.accountId);
     res.json({ account });
   } catch (err) {
     next(err);
@@ -71,7 +71,7 @@ exports.close = async (req, res, next) => {
 exports.join = async (req, res, next) => {
   try {
     await Users.linkAccount(req.params.userId, req.params.id);
-    res.sendStatus(201);
+    res.status(201).json({ message: "Successfully joined organisation" });
   } catch (err) {
     next(err);
   }
@@ -80,7 +80,7 @@ exports.join = async (req, res, next) => {
 exports.leave = async (req, res, next) => {
   try {
     await Users.unlinkAccount(req.params.userId);
-    res.sendStatus(201);
+    res.status(200).json({ message: "Leaved organisation" });
   } catch (err) {
     next(err);
   }

@@ -9,17 +9,17 @@ const { getDownstream } = require("../services/subscriptions");
 
 exports.get = async (req, res, next) => {
   try {
-    await Subscriptions.updateReceived(res.locals.userId);
+    await Subscriptions.updateReceived(res.locals.accountId);
     const { rows: subscriptions } = await Subscriptions.getByUser(
-      res.locals.userId
+      res.locals.accountId
     );
     if (req.query.q) {
       const existing = subscriptions.reduce(
         (acc, val) =>
-          val.recipient === res.locals.userId ? acc : acc.add(val.recipient),
+          val.recipient === res.locals.accountId ? acc : acc.add(val.recipient),
         new Set()
       );
-      existing.add(res.locals.userId);
+      existing.add(res.locals.accountId);
       const results = await Accounts.searchText(req.query.q).then(({ rows }) =>
         rows.filter(({ id }) => !existing.has(id))
       );
@@ -31,7 +31,7 @@ exports.get = async (req, res, next) => {
     const received = [];
     for (const subscription of subscriptions) {
       delete subscription.hash;
-      if (subscription.recipient === res.locals.userId) {
+      if (subscription.recipient === res.locals.accountId) {
         if (subscription.accepted_at) {
           subscribers.push(subscription);
         } else {
@@ -57,7 +57,7 @@ exports.invite = async (req, res, next) => {
       return res.status(400).json({ message: "Missing recipient id in body" });
     const {
       rows: [subscription],
-    } = await Subscriptions.send(res.locals.userId, req.body.recipient);
+    } = await Subscriptions.send(res.locals.accountId, req.body.recipient);
     if (!subscription)
       return res.status(500).json({ message: "Could not send invitation" });
     res.status(201).json({ status: "sent" });

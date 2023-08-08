@@ -17,15 +17,15 @@ exports.login = async (req, res, next) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       secure: process.env.NODE_ENV === "production",
     });
-    res.sendStatus(204);
+    res.status(201).json({ token, account: account.id });
   } catch (err) {
     next(err);
   }
 };
 
 exports.loginWithoutPasswd = (_req, res) => {
-  if (!res.locals.userId) return res.sendStatus(401);
-  const token = jwt.sign({ uuid: res.locals.userId });
+  if (!res.locals.accountId) return res.sendStatus(401);
+  const token = jwt.sign({ uuid: res.locals.accountId });
   res.cookie(jwt.key, token, {
     httpOnly: true,
     maxAge: jwt.maxAge,
@@ -41,7 +41,7 @@ exports.logout = async (req, res) => {
 };
 
 exports.getStatus = (_req, res) =>
-  res.locals.userId
+  res.locals.accountId
     ? res.json({ status: "authenticated" })
     : res.status(401).json({ status: "unauthenticated" });
 

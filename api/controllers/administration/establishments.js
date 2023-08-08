@@ -3,7 +3,7 @@ const { Establishments } = require("../../models");
 exports.get = async (req, res, next) => {
   try {
     const { rows: establishments } = await Establishments.getByAdmin(
-      res.locals.userId
+      res.locals.accountId
     );
     res.json({ establishments });
   } catch (err) {
@@ -15,7 +15,7 @@ exports.create = async (req, res, next) => {
   try {
     const {
       rows: [establishment],
-    } = await Establishments.create(res.locals.userId, req.body);
+    } = await Establishments.create(res.locals.accountId, req.body);
     res.json({ establishment });
   } catch (err) {
     next(err);
@@ -26,7 +26,7 @@ exports.replace = async (req, res, next) => {
   try {
     const {
       rows: [establishment],
-    } = await Establishments.replaceAsAdmin(res.locals.userId, req.params.id, {
+    } = await Establishments.replaceAsAdmin(res.locals.accountId, req.params.id, {
       ...req.body,
     });
     res.json({ establishment });
@@ -39,7 +39,7 @@ exports.close = async (req, res, next) => {
   try {
     const {
       rows: [establishment],
-    } = await Establishments.closeAsAdmin(res.locals.userId, req.params.id);
+    } = await Establishments.closeAsAdmin(res.locals.accountId, req.params.id);
     res.json({ establishment });
   } catch (err) {
     next(err);

@@ -71,7 +71,10 @@ exports.linkAccount = (user, account) =>
   db.query("UPDATE users SET account = $1 WHERE id = $2", [account, user]);
 
 exports.unlinkAccount = (user) =>
-  db.query("UPDATE SET account = NULL WHERE id = $1", [user]);
+  db.query("UPDATE users SET account = NULL WHERE id = $1", [user]);
 
 exports.getByEmail = (email) =>
-  db.query("SELECT id FROM users WHERE email = $1", [email]);
+  db.query(
+    "SELECT u.id, u.account, o.name FROM users AS u JOIN organisations AS o ON u.organisation = o.id WHERE u.email = $1",
+    [email]
+  );

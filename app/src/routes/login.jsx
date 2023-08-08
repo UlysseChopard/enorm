@@ -19,6 +19,8 @@ export async function action({ request }) {
   if (userInfos.lastname) await create(userInfos);
   const res = await login(userInfos);
   if (!res.ok) return res.status;
+  const { account } = await res.json();
+  localStorage.setItem("account", account);
   return redirect("/");
 }
 

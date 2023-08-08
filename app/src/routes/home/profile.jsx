@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, useActionData, Form } from "react-router-dom";
-import { get, update } from "@/api/accounts";
+import {
+  useLoaderData,
+  useActionData,
+  Form,
+  useSubmit,
+} from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -11,9 +15,12 @@ import SendIcon from "@mui/icons-material/Send";
 import Snackbar from "@mui/material/Snackbar";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Unstable_Grid2";
+import { get, update, join, leave } from "@/api/accounts";
+
+const account = localStorage.getItem("account");
 
 export async function loader() {
-  const res = await get();
+  const res = await get(account);
   if (!res.ok) throw Error("Could not fetch your informations");
   return res.json();
 }
@@ -22,8 +29,21 @@ export async function action({ request }) {
   const formData = await request.formData();
   if (formData.has("newPassword") && !formData.has("oldPassword"))
     return { message: "Missing old password" };
-  const objData = Object.fromEntries(formData);
-  const res = await update(objData);
+  const { type, ...objData } = Object.fromEntries(formData);
+  let res;
+  switch (type) {
+    case "update":
+      res = await update(account, objData);
+      break;
+    case "join":
+      res = await join(account, objData.user);
+      break;
+    case "leave":
+      res = await leave(account, objData.user);
+      break;
+    default:
+      throw new Error("Unknown action type");
+  }
   if (!res.ok) return res.status;
   return res.json();
 }
@@ -114,8 +134,9 @@ const SubForm = ({ name, fields, account, t, xs }) => (
 );
 
 export default function Profile() {
-  const { account } = useLoaderData();
+  const { account, users } = useLoaderData();
   const res = useActionData();
+  const submit = useSubmit();
   const { t } = useTranslation(null, { keyPrefix: "profile" });
   const [message, setMessage] = useState("");
 
@@ -164,6 +185,34 @@ export default function Profile() {
           </Grid>
         </Grid>
       </Form>
+      {users.map(({ id, name, account }) => (
+        <div key={id} style={{ display: "flex" }}>
+          <p>{name}</p>
+          {account === null ? (
+            <button
+              onClick={() => {
+                const formData = new FormData();
+                formData.append("type", "join");
+                formData.append("user", id);
+                submit(formData, { method: "PUT" });
+              }}
+            >
+              {t("join")}
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                const formData = new FormData();
+                formData.append("type", "leave");
+                formData.append("user", id);
+                submit(formData, { method: "DELETE" });
+              }}
+            >
+              {t("leave")}
+            </button>
+          )}
+        </div>
+      ))}
       <Snackbar
         open={!!message}
         autoHideDuration={4000}

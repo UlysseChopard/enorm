@@ -8,7 +8,7 @@ const {
 } = require("../controllers/accounts");
 
 const isUser = (req, res, next) =>
-  req.params.id === res.locals.userId
+  req.params.id === res.locals.accountId
     ? next()
     : res
         .status(401)
