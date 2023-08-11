@@ -186,22 +186,22 @@ export default function Administration() {
                 <td>{user.email}</td>
                 <td>
                   <FormControl fullWidth>
-                    <Select
-                      value={user.establishments}
-                      multiple
-                      onChange={(e) => {
-                        formData.append("establishment", e.target.value);
-                        formData.append(
-                          "type",
-                          user.establishments.includes(e.target.value)
-                            ? "removeUser"
-                            : "addUser"
-                        );
-                        submit(formData, { method: "PATCH" });
-                      }}
-                    >
+                    <Select value={user.establishments} multiple>
                       {establishments?.map(({ id, name }) => (
-                        <MenuItem key={id} value={id}>
+                        <MenuItem
+                          key={id}
+                          value={id}
+                          onClick={() => {
+                            formData.append(
+                              "type",
+                              user.establishments.includes(id)
+                                ? "removeUser"
+                                : "addUser"
+                            );
+                            formData.append("establishment", id);
+                            submit(formData, { method: "PATCH" });
+                          }}
+                        >
                           {name}
                         </MenuItem>
                       ))}
