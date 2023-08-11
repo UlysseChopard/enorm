@@ -29,3 +29,15 @@ export const close = (id) =>
     method: "DELETE",
     credentials: "include",
   });
+
+export const addUser = (user, establishment) =>
+  fetch(
+    `${apiUrl}api/administration/establishments/${establishment}/users/${user}`,
+    { method: "PUT", credentials: "include" }
+  );
+
+export const removeUser = (user, establishment) =>
+  fetch(
+    `${apiUrl}api/administration/establishments/${establishment}/users/${user}`,
+    { method: "DELETE", credentials: "include" }
+  );

@@ -15,15 +15,12 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
+import { get, add, unlink, allow, disallow } from "@/api/administration/users";
 import {
-  get,
-  add,
-  unlink,
-  allow,
-  disallow,
-  modify,
-} from "@/api/administration/users";
-import { get as getEstablishments } from "@/api/administration/establishments";
+  addUser,
+  removeUser,
+  get as getEstablishments,
+} from "@/api/administration/establishments";
 
 export async function loader() {
   const res = await get();
@@ -56,10 +53,14 @@ export async function action({ request }) {
     case "disallow":
       res = await disallow(formData.get("user"), formData.get("role"));
       break;
-    case "modify":
-      res = await modify(formData.get("user"), {
-        establishment: formData.get("establishment"),
-      });
+    case "removeUser":
+      res = await removeUser(
+        formData.get("user"),
+        formData.get("establishment")
+      );
+      break;
+    case "addUser":
+      res = await addUser(formData.get("user"), formData.get("establishment"));
       break;
     default:
       throw new Error("Missing type for action");
@@ -186,10 +187,16 @@ export default function Administration() {
                 <td>
                   <FormControl fullWidth>
                     <Select
-                      value={user?.establishment}
+                      value={user.establishments}
+                      multiple
                       onChange={(e) => {
                         formData.append("establishment", e.target.value);
-                        formData.append("type", "modify");
+                        formData.append(
+                          "type",
+                          user.establishments.includes(e.target.value)
+                            ? "removeUser"
+                            : "addUser"
+                        );
                         submit(formData, { method: "PATCH" });
                       }}
                     >

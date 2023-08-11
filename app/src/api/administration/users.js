@@ -41,11 +41,3 @@ export const disallow = (user, role) =>
     method: "DELETE",
     credentials: "include",
   });
-
-export const modify = (user, modification) =>
-  fetch(`${apiUrl}api/administration/users/${user}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(modification),
-    credentials: "include",
-  });

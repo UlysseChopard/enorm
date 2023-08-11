@@ -3,6 +3,8 @@ const {
   create,
   close,
   replace,
+  addUser,
+  removeUser,
 } = require("../../controllers/administration/establishments");
 
 module.exports = (router) => {
@@ -10,5 +12,7 @@ module.exports = (router) => {
   router.get("/", get);
   router.put("/:id", replace);
   router.delete("/:id", close);
+  router.put("/:id/users/:userId", addUser);
+  router.delete("/:id/users/:userId", removeUser);
   return router;
 };

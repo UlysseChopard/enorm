@@ -1,4 +1,4 @@
-const { Establishments } = require("../../models");
+const { Establishments, EstablishmentsUsers } = require("../../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -26,9 +26,13 @@ exports.replace = async (req, res, next) => {
   try {
     const {
       rows: [establishment],
-    } = await Establishments.replaceAsAdmin(res.locals.accountId, req.params.id, {
-      ...req.body,
-    });
+    } = await Establishments.replaceAsAdmin(
+      res.locals.accountId,
+      req.params.id,
+      {
+        ...req.body,
+      }
+    );
     res.json({ establishment });
   } catch (err) {
     next(err);
@@ -38,9 +42,39 @@ exports.replace = async (req, res, next) => {
 exports.close = async (req, res, next) => {
   try {
     const {
-      rows: [establishment],
+      rows: [closed],
     } = await Establishments.closeAsAdmin(res.locals.accountId, req.params.id);
-    res.json({ establishment });
+    res.json({ closed });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.addUser = async (req, res, next) => {
+  try {
+    const {
+      rows: [added],
+    } = await EstablishmentsUsers.addAsAdmin(
+      res.locals.accountId,
+      req.params.id,
+      req.params.userId
+    );
+    res.status(201).json({ added });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.removeUser = async (req, res, next) => {
+  try {
+    const {
+      rows: [removed],
+    } = await EstablishmentsUsers.removeAsAdmin(
+      res.locals.accountId,
+      req.params.id,
+      req.params.userId
+    );
+    res.json({ removed });
   } catch (err) {
     next(err);
   }

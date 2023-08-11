@@ -1,13 +1,13 @@
 const { db } = require("../utils");
 
-exports.deleteByUserAndEstablishment = (user, establishment) =>
+exports.addAsAdmin = (admin, id, user) =>
   db.query(
-    "DELETE FROM establishments_users WHERE user = $1 AND establishment = $2",
-    [user, establishment]
+    "INSERT INTO establishments_users (establishment, \"user\") SELECT $1, u.id FROM users AS u JOIN organisations AS o ON u.organisation = o.id  WHERE u.id = $2 AND o.admin = $3 RETURNING *",
+    [id, user, admin]
   );
 
-exports.modifyByIdAndOrganisation = (organisation, user, { establishment }) =>
+exports.removeAsAdmin = (admin, id, user) =>
   db.query(
-    "INSERT INTO establishments_users (establishment, \"user\") SELECT $1, id FROM users AS u WHERE u.organisation = $2 AND u.id = $3",
-    [establishment, organisation, user]
+    "DELETE FROM establishments_users WHERE establishment = $1 AND \"user\" = (SELECT u.id FROM users AS u JOIN organisations AS o ON u.organisation = o.id WHERE u.id = $2 AND o.admin = $3) RETURNING *",
+    [id, user, admin]
   );

@@ -3,7 +3,7 @@ const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
 const { regex } = require("../../utils");
-const { Organisations, Users, EstablishmentsUsers } = require("../../models");
+const { Organisations, Users } = require("../../models");
 
 exports.add = async (req, res, next) => {
   try {
@@ -72,7 +72,20 @@ exports.get = async (req, res, next) => {
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }
-    const { rows: users } = await Users.getByOrganisation(organisation.id);
+    const { rows } = await Users.getByOrganisation(organisation.id);
+    const users = Object.values(
+      rows.reduce((acc, user) => {
+        if (!acc[user.id]) {
+          acc[user.id] = {
+            ...user,
+            establishments: user?.establishment ? [user.establishment] : [],
+          };
+          return acc;
+        }
+        acc[user.id].establishments.push(user.establishment);
+        return acc;
+      }, {})
+    );
     res.json({ users });
   } catch (err) {
     next(err);
@@ -136,33 +149,6 @@ exports.disallow = async (req, res, next) => {
       { role: req.params.role, value: false }
     );
     res.json({ updated });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.modify = async (req, res, next) => {
-  try {
-    const {
-      rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
-    if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
-    }
-    const {
-      rows: [deleted],
-    } = await EstablishmentsUsers.deleteByUserAndEstablishment(
-      req.params.userId,
-      req.body.establishment
-    );
-    const {
-      rows: [created],
-    } = await EstablishmentsUsers.modifyByIdAndOrganisation(
-      organisation.id,
-      req.params.userId,
-      { establishment: req.body.establishment }
-    );
-    res.json({ deleted, created });
   } catch (err) {
     next(err);
   }
