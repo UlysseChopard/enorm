@@ -27,3 +27,14 @@ exports.get = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.close = async (req, res, next) => {
+  try {
+    const {
+      rows: [organisation],
+    } = await Organisations.closeByAdmin(res.locals.userId, req.params.id);
+    res.json({ organisation });
+  } catch (err) {
+    next(err);
+  }
+};

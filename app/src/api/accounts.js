@@ -33,17 +33,3 @@ export function close(account) {
     method: "DELETE",
   });
 }
-
-export function join(account, user) {
-  return fetch(`${apiUrl}api/accounts/${account}/users/${user}`, {
-    method: "PUT",
-    credentials: "include",
-  });
-}
-
-export function leave(account, user) {
-  return fetch(`${apiUrl}api/accounts/${account}/users/${user}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
-}

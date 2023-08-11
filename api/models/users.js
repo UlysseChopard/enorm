@@ -67,14 +67,20 @@ exports.manageRoleByIdAndOrganisation = (
   );
 };
 
-exports.linkAccount = (user, account) =>
-  db.query("UPDATE users SET account = $1 WHERE id = $2", [account, user]);
+exports.linkAccountAsUser = (account, organisation) =>
+  db.query(
+    "UPDATE users SET account = $1 WHERE organisation = $2 AND email = (SELECT email FROM accounts WHERE id = $1)",
+    [account, organisation]
+  );
 
-exports.unlinkAccount = (user) =>
-  db.query("UPDATE users SET account = NULL WHERE id = $1", [user]);
+exports.unlinkAccountAsUser = (account, organisation) =>
+  db.query(
+    "UPDATE users SET account = NULL WHERE organisation = $1 AND account = $2",
+    [organisation, account]
+  );
 
 exports.getByEmail = (email) =>
   db.query(
-    "SELECT u.id, u.account, o.name FROM users AS u JOIN organisations AS o ON u.organisation = o.id WHERE u.email = $1",
+    "SELECT u.id, u.account, o.name, o.id AS organisation_id FROM users AS u JOIN organisations AS o ON u.organisation = o.id WHERE u.email = $1",
     [email]
   );

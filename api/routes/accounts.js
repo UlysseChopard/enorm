@@ -1,13 +1,6 @@
-const {
-  get,
-  create,
-  update,
-  close,
-  join,
-  leave,
-} = require("../controllers/accounts");
+const { get, create, update, close } = require("../controllers/accounts");
 
-const isUser = (req, res, next) =>
+const isAccountOwner = (req, res, next) =>
   req.params.id === res.locals.accountId
     ? next()
     : res
@@ -16,10 +9,8 @@ const isUser = (req, res, next) =>
 
 module.exports = (router) => {
   router.post("/", create);
-  router.get("/:id", isUser, get);
-  router.patch("/:id", isUser, update);
-  router.delete("/:id", isUser, close);
-  router.put("/:id/users/:userId", isUser, join);
-  router.delete("/:id/users/:userId", isUser, leave);
+  router.get("/:id", isAccountOwner, get);
+  router.patch("/:id", isAccountOwner, update);
+  router.delete("/:id", isAccountOwner, close);
   return router;
 };

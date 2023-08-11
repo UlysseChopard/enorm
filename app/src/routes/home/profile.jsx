@@ -15,7 +15,8 @@ import SendIcon from "@mui/icons-material/Send";
 import Snackbar from "@mui/material/Snackbar";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Unstable_Grid2";
-import { get, update, join, leave } from "@/api/accounts";
+import { get, update } from "@/api/accounts";
+import { join, leave } from "@/api/organisations";
 
 const account = localStorage.getItem("account");
 
@@ -36,10 +37,10 @@ export async function action({ request }) {
       res = await update(account, objData);
       break;
     case "join":
-      res = await join(account, objData.user);
+      res = await join(objData.organisation);
       break;
     case "leave":
-      res = await leave(account, objData.user);
+      res = await leave(objData.organisation);
       break;
     default:
       throw new Error("Unknown action type");
@@ -185,7 +186,7 @@ export default function Profile() {
           </Grid>
         </Grid>
       </Form>
-      {users.map(({ id, name, account }) => (
+      {users.map(({ id, name, account, organisation_id }) => (
         <div key={id} style={{ display: "flex" }}>
           <p>{name}</p>
           {account === null ? (
@@ -193,7 +194,7 @@ export default function Profile() {
               onClick={() => {
                 const formData = new FormData();
                 formData.append("type", "join");
-                formData.append("user", id);
+                formData.append("organisation", organisation_id);
                 submit(formData, { method: "PUT" });
               }}
             >
@@ -204,7 +205,7 @@ export default function Profile() {
               onClick={() => {
                 const formData = new FormData();
                 formData.append("type", "leave");
-                formData.append("user", id);
+                formData.append("organisation", organisation_id);
                 submit(formData, { method: "DELETE" });
               }}
             >

@@ -4,6 +4,7 @@ const workingGroups = require("./working-groups");
 const subscriptions = require("./subscriptions");
 const registrations = require("./registrations");
 const administration = require("./administration");
+const organisation = require("./organisations");
 
 module.exports = (express, app) => {
   const router = express.Router;
@@ -13,4 +14,5 @@ module.exports = (express, app) => {
   app.use("/api/subscriptions", subscriptions(router()));
   app.use("/api/registrations", registrations(router()));
   app.use("/api/administration", administration(router));
+  app.use("/api/organisations", organisation(router()));
 };
