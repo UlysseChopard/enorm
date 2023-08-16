@@ -4,11 +4,9 @@
   "description": "premiere app",
   "main": "app.js",
   "scripts": {
-    "start:prod": "pm2 start app.js -i max",
     "start": "node app",
     "dev": "./start-dev.sh",
-    "migrate": "node-pg-migrate",
-    "swagger": "node swagger.js"
+    "migrate": "node-pg-migrate"
   },
   "author": "ucg",
   "license": "ISC",
@@ -28,15 +26,9 @@
     "nodemailer": "^6.8.0",
     "pg": "^8.8.0",
     "pg-format": "^1.0.4",
-    "pm2": "^4.2.3",
-    "swagger-ui-express": "^4.6.0",
-    "uuid": "^9.0.0",
-    "yamljs": "^0.3.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "csv-parse": "^5.3.1",
-    "eslint": "^8.26.0",
-    "nodemon": "^3.0.1",
-    "swagger-autogen": "^2.22.0"
+    "nodemon": "^3.0.1"
   }
 }
