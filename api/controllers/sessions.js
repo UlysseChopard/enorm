@@ -10,7 +10,7 @@ exports.login = async (req, res, next) => {
     if (!account) return res.sendStatus(401);
     if (!crypt.encrypt(req.body.password) === account.hash)
       return res.sendStatus(401);
-    const token = jwt.sign({ uuid: account.id });
+    const token = jwt.sign({ accountId: account.id });
     res.cookie(jwt.key, token, {
       httpOnly: true,
       maxAge: jwt.maxAge,
@@ -25,7 +25,7 @@ exports.login = async (req, res, next) => {
 
 exports.loginWithoutPasswd = (_req, res) => {
   if (!res.locals.accountId) return res.sendStatus(401);
-  const token = jwt.sign({ uuid: res.locals.accountId });
+  const token = jwt.sign({ accountId: res.locals.accountId });
   res.cookie(jwt.key, token, {
     httpOnly: true,
     maxAge: jwt.maxAge,
@@ -54,7 +54,7 @@ exports.sendMailAccess = async (req, res, next) => {
     } = await Accounts.getByEmail(req.body.email);
     if (!account) return res.sendStatus(401);
     const token = jwt.sign(
-      { uuid: account.id },
+      { accountId: account.id },
       process.env.JWT_RESET_PASSWD_MAX_AGE
     );
     const resetLink = `${BASE_URL}/access/${encodeURIComponent(

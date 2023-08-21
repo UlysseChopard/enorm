@@ -1,13 +1,16 @@
-import { apiUrl } from "@/api";
+import { apiUrl, organisation } from "@/api";
 
 export function search(query) {
-  return fetch(`${apiUrl}api/subscriptions?q=${query}`, {
-    credentials: "include",
-  });
+  return fetch(
+    `${apiUrl}api/organisations/${organisation}/subscriptions?q=${query}`,
+    {
+      credentials: "include",
+    }
+  );
 }
 
 export function invite(recipient) {
-  return fetch(`${apiUrl}api/subscriptions`, {
+  return fetch(`${apiUrl}api/organisations/${organisation}/subscriptions`, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -19,19 +22,27 @@ export function invite(recipient) {
 }
 
 export function getNews() {
-  return fetch(`${apiUrl}api/subscriptions`, { credentials: "include" });
+  return fetch(`${apiUrl}api/organisations/${organisation}/subscriptions`, {
+    credentials: "include",
+  });
 }
 
 export function accept(id) {
-  return fetch(`${apiUrl}api/subscriptions/${id}`, {
-    method: "POST",
-    credentials: "include",
-  });
+  return fetch(
+    `${apiUrl}api/organisations/${organisation}/subscriptions/${id}`,
+    {
+      method: "POST",
+      credentials: "include",
+    }
+  );
 }
 
 export function deny(id) {
-  return fetch(`${apiUrl}api/subscriptions/${id}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
+  return fetch(
+    `${apiUrl}api/organisations/${organisation}/subscriptions/${id}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    }
+  );
 }

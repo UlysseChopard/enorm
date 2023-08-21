@@ -84,9 +84,3 @@ exports.getByEmail = (email) =>
     "SELECT u.id, u.account, o.name, o.id AS organisation_id FROM users AS u JOIN organisations AS o ON u.organisation = o.id WHERE u.email = $1",
     [email]
   );
-
-exports.getByAccountAndOrganisation = (organisation, account) =>
-  db.query(
-    "SELECT is_manager, is_admin, is_expert FROM users WHERE account = $1 AND organisation = $2",
-    [account, organisation]
-  );

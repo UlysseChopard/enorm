@@ -1,7 +1,7 @@
-import { apiUrl } from "@/api";
+import { apiUrl, organisation } from "@/api";
 
 export const request = (body) =>
-  fetch(`${apiUrl}api/registrations`, {
+  fetch(`${apiUrl}api/organisations/${organisation}/registrations`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -11,10 +11,12 @@ export const request = (body) =>
   });
 
 export const get = () =>
-  fetch(`${apiUrl}api/registrations`, { credentials: "include" });
+  fetch(`${apiUrl}api/organisations/${organisation}/registrations`, {
+    credentials: "include",
+  });
 
 export const accept = (id, body) =>
-  fetch(`${apiUrl}api/registrations/${id}`, {
+  fetch(`${apiUrl}api/organisations/${organisation}/registrations/${id}`, {
     method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -22,10 +24,12 @@ export const accept = (id, body) =>
   });
 
 export const deny = (id) =>
-  fetch(`${apiUrl}api/registrations/${id}`, {
+  fetch(`${apiUrl}api/organisations/${organisation}/registrations/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
 
 export const find = (id) =>
-  fetch(`${apiUrl}api/registrations/${id}`, { credentials: "include" });
+  fetch(`${apiUrl}api/organisations/${organisation}/registrations/${id}`, {
+    credentials: "include",
+  });

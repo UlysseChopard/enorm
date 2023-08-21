@@ -1,7 +1,7 @@
-import { apiUrl } from "@/api";
+import { apiUrl, organisation } from "@/api";
 
 export const get = () =>
-  fetch(`${apiUrl}api/administration/users`, {
+  fetch(`${apiUrl}api/organisations/${organisation}/administration/users`, {
     method: "GET",
     credentials: "include",
     headers: { Accept: "application/json" },
@@ -18,26 +18,38 @@ export const add = (body, { separator, emailColumn, noHeader }) => {
   if (noHeader) {
     qs.set("no-header", "true");
   }
-  return fetch(`${apiUrl}api/administration/users?${qs.toString()}`, {
-    method: "PATCH",
-    body,
-  });
+  return fetch(
+    `${apiUrl}api/organisations/${organisation}/administration/users?${qs.toString()}`,
+    {
+      method: "PATCH",
+      body,
+    }
+  );
 };
 
 export const unlink = (user) =>
-  fetch(`${apiUrl}api/administration/users/${user}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
+  fetch(
+    `${apiUrl}api/organisations/${organisation}/administration/users/${user}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    }
+  );
 
 export const allow = (user, role) =>
-  fetch(`${apiUrl}api/administration/users/${user}/roles/${role}`, {
-    method: "PUT",
-    credentials: "include",
-  });
+  fetch(
+    `${apiUrl}api/organisations/${organisation}/administration/users/${user}/roles/${role}`,
+    {
+      method: "PUT",
+      credentials: "include",
+    }
+  );
 
 export const disallow = (user, role) =>
-  fetch(`${apiUrl}api/administration/users/${user}/roles/${role}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
+  fetch(
+    `${apiUrl}api/organisations/${organisation}/administration/users/${user}/roles/${role}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    }
+  );

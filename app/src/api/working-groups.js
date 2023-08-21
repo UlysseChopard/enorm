@@ -1,13 +1,17 @@
-import { apiUrl } from "@/api";
+import { apiUrl, organisation } from "@/api";
 
 export const get = () =>
-  fetch(`${apiUrl}api/working-groups`, { credentials: "include" });
+  fetch(`${apiUrl}api/organisations/${organisation}/working-groups`, {
+    credentials: "include",
+  });
 
 export const getById = (wgId) =>
-  fetch(`${apiUrl}api/working-groups/${wgId}`, { credentials: "include" });
+  fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${wgId}`, {
+    credentials: "include",
+  });
 
 export const create = (group) =>
-  fetch(`${apiUrl}api/working-groups`, {
+  fetch(`${apiUrl}api/organisations/${organisation}/working-groups`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -18,7 +22,7 @@ export const create = (group) =>
   });
 
 export const deleteById = (id) =>
-  fetch(`${apiUrl}api/working-groups/${id}`, {
+  fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${id}`, {
     method: "DELETE",
     credentials: "include",
   });

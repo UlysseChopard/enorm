@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   try {
     const decoded = jwt.verify(token);
     if (!decoded) return next();
-    res.locals.accountId = decoded.uuid;
+    res.locals = decoded;
     next();
   } catch (err) {
     if (err.expiredAt) return next();
