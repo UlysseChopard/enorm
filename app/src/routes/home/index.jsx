@@ -7,6 +7,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 import { get } from "@/api/accounts";
 import LeftNavbar from "@/components/LeftNavbar";
 
@@ -32,27 +33,34 @@ export default function Home() {
       <AppBar position="absolute">
         <Toolbar
           sx={{
-            backgroundColor: "#0a4987",
-            display: "flex",
-            justifyContent: "right",
+            backgroundColor: "#073B6E",
           }}
+          disableGutters
+          variant="dense"
         >
-          <Select
+          <FormControl
             sx={{
-              backgroundColor: "white",
-              ":hover": { backgroundColor: "white", opacity: 0.8 },
-              ":selected": { backgroundColor: "white" },
+              m: 1,
+              minWidth: 120,
+              position: "absolute",
+              right: 0,
             }}
-            value={organisation}
-            onChange={handleChange}
-            variant="filled"
+            size="small"
           >
-            {users.map(({ organisation_id, name }) => (
-              <MenuItem key={organisation_id} value={organisation_id}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
+            <Select
+              sx={{
+                backgroundColor: "#e7f1fc",
+              }}
+              value={organisation}
+              onChange={handleChange}
+            >
+              {users.map(({ organisation_id, name }) => (
+                <MenuItem key={organisation_id} value={organisation_id}>
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Toolbar>
       </AppBar>
       <Container
