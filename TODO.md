@@ -68,3 +68,5 @@
 - [x] ab4e086f43bd7b fix renaming of subscription column  
 - [x] c1417cff45b482 can delete wg  
 - [x] ce020cf39915e7 can cancel registration  
+## 17/08/2023 22:07:29 reprise  
+- [ ] f992818f11c4b8 finish roles implementation  
