@@ -11,7 +11,7 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const res = await replace(formData.get("id"), formData.get("name"));
+  const res = await replace(formData.get("name"));
   return res.ok ? res.json() : res.status;
 }
 
@@ -21,7 +21,6 @@ export default function Organisation() {
   return (
     <Form method="POST">
       <TextField name="name" defaultValue={organisation.name} />
-      <input type="hidden" name="id" value={organisation.id} />
       <Button type="submit">{t("submit")}</Button>
     </Form>
   );

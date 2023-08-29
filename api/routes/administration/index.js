@@ -4,8 +4,8 @@ const organisations = require("./organisations");
 
 module.exports = (router) => {
   const adminRouter = router();
+  adminRouter.use("/", organisations(router()));
   adminRouter.use("/users", users(router()));
   adminRouter.use("/establishments", establishments(router()));
-  adminRouter.use("/organisations", organisations(router()));
   return adminRouter;
 };
