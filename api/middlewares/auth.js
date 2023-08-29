@@ -5,9 +5,7 @@ module.exports = (req, res, next) => {
     req.cookies[jwt.key] || req.headers.authorization?.split(" ")[1];
   if (!token) return next();
   try {
-    const decoded = jwt.verify(token);
-    if (!decoded) return next();
-    res.locals = decoded;
+    res.locals = jwt.verify(token);
     next();
   } catch (err) {
     if (err.expiredAt) return next();
