@@ -3,25 +3,11 @@
 - [ ] 0ef22873f7a0c6 Page et api configuration de l'entreprise
 - [ ] c48f98d953e075 Page et api configuration des établissements
 ## 13/02/2023 21:31:54 Après visio
-- [x] d3c2a265c0012c Créer vue des abbonnements et des abonnés
-- [x] 868fbb7de57179 Permettre recherche d'un membre par nom ou email
-- [x] bf7367d469b0dc Permettre d'envoyer une demande d'abonnement
-- [x] 36544829555325 Permettre d'accepter une demande d'abonnement
-- [x] c97aefe4068ed1 utiliser l'id de connection pour annuler une demande
-- [x] e839c83942ad1d Prevent sent sub to be displayed in search results
-- [x] acb79539b0636a sender in subscription is subscribe to group provider
 - [ ] 929a3ecc406a22 invitation with managed account option
-- [x] ed13676f59578b forgot password feat
-- [x] 2ba9a88c779277 fix match password
 - [ ] d4aadbd48522c3 invite and make a member feat
 - [ ] 038fdd2e52188d update docker compose and dockerfiles
-- [x] ca6ba3956957ad propagate groups to indirect subscribers
-- [x] f0e233acb78e85 present subscriptions in 2 separated tabs
-- [x] 4332062fb2ec11 make token limited in time or for only one session
 - [ ] 4104f161aba6ef members and experts by csv
 ## 27/03/2023 22:01:14 new password front
-- [x] 152154fd1d1a4e trad
-- [x] 8d26cf15e58d70 remove double check for password update
 - [ ] 2c52199bcef786 set magic link usable only once
 - [ ] dcad2145b19077 del magic token on use
 - [ ] 001cf8d2798cf9 csv import for teams by emails
@@ -29,20 +15,13 @@
 - [ ] 46837e3690c0d7 create group and subscription folders with specifications for visibility and openness
 - [ ] 2ed37868281869 separate my groups from others
 ## 11/04/2023 21:26:39 lock target
-- [x] fabab1702202e4 register expert in a group
-- [x] f788f7c06aa54c delete openness and visibility feats for groups
-- [x] 685211abff6206 set on delete cascade where needed
-- [x] f6b9c03d98280c move regstration from groups to registrations own endpoint
 - [ ] 3d5161ed7f6f95 protect subscription add and remove routes auth
 - [ ] 0ea7bb6d585532 change propagate to accept when needed
 - [ ] 54aeca9f77b55e error handling for double organisation-groupid
 - [ ] 0f38ccb626acbf send check for email on login and modification
-- [x] d120e868c4229f unique emails
 - [ ] 54a0c5ebff0a6d cross instead of link for refuse subscription button
-- [x] 0974d597a0041d remive uniqueness on reference and organisation for wg
 - [ ] 1fa32eadb2f85e remplace join by register in group registration page
 - [ ] fde3e871b6dadf use subscribe for subscriptions
-- [x] e15d25336d54dc when only one provider, provide preselection
 - [ ] d0e008d930c8e7 replace block by reject in registrations
 - [ ] 674d14360be65c mention who in registrations + datetime
 - [ ] b370af42f82425 remove possibility to modify registration after action
@@ -51,7 +30,6 @@
 - [ ] fac0a9a4d3d926 add possibility to cancel registration sent / keep it
 - [ ] 2e31b9b60185f2 add propagated to sent registrations
 - [ ] aa628817c3c28e only a list for registrations
-- [x] 966d26809af99d wg_path deletion propagation
 - [ ] e5393c692db283 modify sent to sent in registrations page  
 - [ ] 82fa710e95e25c add button for lang  
 - [ ] b820d9073146e4 accept registration when admin  
@@ -64,9 +42,5 @@
 - [ ] 2bd8a448ea6d44 add interest category for registrations  
 - [ ] fa7633a0526d47 add represented interests  
 ## 16/06/2023 20:58:50 finitions  
-- [x] b1e3edd178dcac connect to remote db with postico  
-- [x] ab4e086f43bd7b fix renaming of subscription column  
-- [x] c1417cff45b482 can delete wg  
-- [x] ce020cf39915e7 can cancel registration  
 ## 17/08/2023 22:07:29 reprise  
 - [ ] f992818f11c4b8 finish roles implementation  
