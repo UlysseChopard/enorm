@@ -12,11 +12,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-exports.sendResetLink = ({ recipient, subject, header, body }) => {
-  return transporter.sendMail({
+exports.send = ({ recipient, subject, html, text }) =>
+  transporter.sendMail({
     from: EMAIL_FROM,
     to: recipient,
     subject,
-    text: `${header}\n\n${body}`,
+    html,
+    text,
   });
-};

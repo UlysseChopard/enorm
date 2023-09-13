@@ -1,5 +1,5 @@
 const { crypt } = require("../utils");
-const { Accounts, Users } = require("../models");
+const { Accounts, Users, Organisations } = require("../models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -39,6 +39,14 @@ exports.update = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
+    if (req.params?.token) {
+      const {
+        rows: [user],
+      } = await Users.checkToken(req.params.token);
+      if (!user) {
+        return res.status(404).json({ message: "User token does not exist" });
+      }
+    }
     const { email, password } = req.body;
     if (!password || !email) {
       return res.status(400).json({ message: "Missing property" });
@@ -48,7 +56,19 @@ exports.create = async (req, res, next) => {
       rows: [account],
     } = await Accounts.create({ ...req.body, hash });
     delete account.hash;
-    res.json({ account });
+    if (!req.params?.token) {
+      const {
+        rows: [organisation],
+      } = await Organisations.create(account.id);
+      const {
+        rows: [user],
+      } = await Users.create(organisation.id, email, account.id);
+      return res.status(201).json({ user, organisation, account });
+    }
+    const {
+      rows: [user],
+    } = await Users.join(account.id, { email, token: req.params.token });
+    res.status(201).json({ user, account });
   } catch (err) {
     next(err);
   }

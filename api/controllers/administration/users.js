@@ -2,8 +2,9 @@ const { createReadStream } = require("fs");
 const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
-const { regex } = require("../../utils");
+const { regex, mail } = require("../../utils");
 const { Organisations, Users } = require("../../models");
+const { BASE_URL } = process.env;
 
 exports.add = async (req, res, next) => {
   try {
@@ -58,6 +59,13 @@ exports.add = async (req, res, next) => {
       organisation.id,
       received
     );
+    for (const invited of inserted) {
+      await mail.send({
+        recipient: invited.email,
+        subject: `You have been invitated to join ${organisation.name} on Enorm`,
+        text: `Please click here to join ${organisation.name} on Enorm: ${BASE_URL}`,
+      });
+    }
     res.json({ inserted, received });
   } catch (err) {
     next(err);

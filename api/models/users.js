@@ -1,9 +1,9 @@
 const { db } = require("../utils");
 
-exports.create = (organisation, email) =>
+exports.create = (organisation, email, account) =>
   db.query(
-    "INSERT INTO users (organisation, email) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *",
-    [organisation, email]
+    "INSERT INTO users (organisation, email, account) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *",
+    [organisation, email, account]
   );
 
 exports.createMany = (organisation, emails) =>
@@ -90,3 +90,19 @@ exports.getByAccountAndOrganisation = (organisation, account) =>
     "SELECT is_manager, is_admin, is_expert FROM users WHERE account = $1 AND organisation = $2",
     [account, organisation]
   );
+
+exports.checkToken = (token) =>
+  db.query("SELECT * FROM users WHERE token = $1", [token]);
+
+exports.init = (account, organisation) =>
+  db.query("INSERT INTO users (account, organisation) VALUES ($1, $2)", [
+    account,
+    organisation,
+  ]);
+
+exports.join = (account, { email, token }) =>
+  db.query("UPDATE users SET account = $1 WHERE email = $2 AND token = $3", [
+    account,
+    email,
+    token,
+  ]);

@@ -1,6 +1,6 @@
 const { db } = require("../utils");
 
-exports.create = (userId, name) =>
+exports.create = (userId, name = "") =>
   db.query(
     "INSERT INTO organisations (admin, name) VALUES ($1, $2) RETURNING *",
     [userId, name]
