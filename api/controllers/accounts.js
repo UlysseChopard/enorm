@@ -39,35 +39,26 @@ exports.update = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    if (req.params?.token) {
-      const {
-        rows: [user],
-      } = await Users.checkToken(req.params.token);
-      if (!user) {
-        return res.status(404).json({ message: "User token does not exist" });
-      }
+    if (!req.body.token) {
+      return res.status(422).json({ message: "missing token" });
     }
-    const { email, password } = req.body;
-    if (!password || !email) {
-      return res.status(400).json({ message: "Missing property" });
+    if (!req.body.password) {
+      return res.status(422).json({ message: "missing password" });
     }
-    const hash = crypt.encrypt(password);
+    const {
+      rows: [verified],
+    } = await Users.checkToken(req.params.token);
+    if (!verified) {
+      return res.status(401).json({ message: "invalid token" });
+    }
+    const hash = crypt.encrypt(req.body.password);
     const {
       rows: [account],
-    } = await Accounts.create({ ...req.body, hash });
+    } = await Accounts.create({ ...req.body, email: verified.email, hash });
     delete account.hash;
-    if (!req.params?.token) {
-      const {
-        rows: [organisation],
-      } = await Organisations.create(account.id);
-      const {
-        rows: [user],
-      } = await Users.create(organisation.id, email, account.id);
-      return res.status(201).json({ user, organisation, account });
-    }
     const {
       rows: [user],
-    } = await Users.join(account.id, { email, token: req.params.token });
+    } = await Users.joinByToken(account.id, req.body.token);
     res.status(201).json({ user, account });
   } catch (err) {
     next(err);

@@ -1,5 +1,6 @@
 {
   "signup": {
+    "accessToken": "Code d'accès",
     "male": "Monsieur",
     "female": "Madame",
     "gender": "Civilité",
@@ -8,9 +9,9 @@
     "lastname": "Nom",
     "email": "Adresse mail",
     "password": "Mot de passe",
-    "submit": "S'inscrire",
-    "title": "Créez votre compte",
-    "text": "Nous avons besoin de ces quelques informations pour l'ouverture de votre compte",
+    "submit": "Valider",
+    "title": "Création du compte",
+    "useMailToken": "Veuillez utiliser le token reçu par mail",
     "login": "Déjà un compte ?"
   },
   "login": {
@@ -20,7 +21,7 @@
     "password": "Mot de passe",
     "submit": "Se connecter",
     "resetPassword": "Mot de passe oublié ?",
-    "signup": "Créer un compte"
+    "signup": "Rejoindre votre organisation"
   },
   "activate": {
     "title": "Activation du compte",

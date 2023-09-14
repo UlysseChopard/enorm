@@ -1,5 +1,6 @@
 {
   "signup": {
+    "accessToken": "Access token",
     "male": "Male",
     "female": "Female",
     "gender": "Gender",
@@ -10,7 +11,7 @@
     "password": "Password",
     "submit": "Sign up",
     "title": "Account creation",
-    "text": "Please answer these questions to open your account",
+    "useMailToken": "Please use the token received by mail",
     "login": "Already ready have an account ?"
   },
   "login": {
@@ -20,7 +21,7 @@
     "password": "Password",
     "submit": "Log in",
     "resetPassword": "Forgot your password ?",
-    "signup": "Sign up"
+    "signup": "Join your organisation"
   },
   "activate": {
     "title": "Account activation",

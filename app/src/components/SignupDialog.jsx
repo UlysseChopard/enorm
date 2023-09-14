@@ -6,19 +6,26 @@ import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
 
 const SignupDialog = ({ onClose, open = true }) => {
   const { t } = useTranslation(null, { keyPrefix: "signup" });
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
-      <Form method="post" autoComplete="on">
+      <Form method="POST" autoComplete="on">
         <DialogTitle>{t("title")}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{t("text")}</DialogContentText>
           <Stack spacing={2}>
+            <TextField
+              required
+              label={t("accessToken")}
+              name="accessToken"
+              type="text"
+              fullWidth
+            />
+            <FormHelperText>{t("useMailToken")}</FormHelperText>
             <TextField
               required
               label={t("firstname")}
@@ -30,15 +37,6 @@ const SignupDialog = ({ onClose, open = true }) => {
               autoComplete="family-name"
               label={t("lastname")}
               name="lastname"
-              fullWidth
-            />
-            <TextField
-              required
-              autoComplete="email"
-              label={t("email")}
-              name="email"
-              id="email"
-              type="email"
               fullWidth
             />
             <TextField

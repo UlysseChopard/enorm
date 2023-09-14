@@ -63,7 +63,7 @@ exports.add = async (req, res, next) => {
       await mail.send({
         recipient: invited.email,
         subject: `You have been invitated to join ${organisation.name} on Enorm`,
-        text: `Please click here to join ${organisation.name} on Enorm: ${BASE_URL}`,
+        text: `Please click here to join ${organisation.name} on Enorm: ${BASE_URL}. Your token is ${invited.token}`,
       });
     }
     res.json({ inserted, received });

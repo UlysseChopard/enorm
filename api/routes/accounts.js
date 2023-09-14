@@ -8,7 +8,7 @@ const isAccountOwner = (req, res, next) =>
         .json({ message: "Only account owner can modify its account" });
 
 module.exports = (router) => {
-  router.post("/:token", create);
+  router.post("/", create);
   router.get("/:id", isAccountOwner, get);
   router.patch("/:id", isAccountOwner, update);
   router.delete("/:id", isAccountOwner, close);
