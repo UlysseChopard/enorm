@@ -1,7 +1,8 @@
-const { join, leave } = require("../controllers/organisations");
+const { get, replace, close } = require("../controllers/organisations");
 
 module.exports = (router) => {
-  router.put("/:id", join);
-  router.delete("/:id", leave);
+  router.get("/", get);
+  router.put("/:id", replace);
+  router.delete("/:id", close);
   return router;
 };

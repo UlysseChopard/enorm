@@ -6,7 +6,7 @@ const {
   disallow,
   get,
   unlink,
-} = require("../../controllers/administration/users");
+} = require("../controllers/organisations/users");
 
 module.exports = (router) => {
   router.get("/", get);

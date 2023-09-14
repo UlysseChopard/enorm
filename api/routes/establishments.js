@@ -5,7 +5,7 @@ const {
   replace,
   addUser,
   removeUser,
-} = require("../../controllers/administration/establishments");
+} = require("../controllers/organisations/establishments");
 
 module.exports = (router) => {
   router.post("/", create);
