@@ -1,4 +1,4 @@
-const { log } = require("./utils");
+const { log } = require("utils");
 const { exec } = require("child_process");
 
 const shutdown = server => {

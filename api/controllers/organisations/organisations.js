@@ -1,4 +1,4 @@
-const { Organisations } = require("../../models");
+const { Organisations } = require("models");
 
 exports.replace = async (req, res, next) => {
   try {

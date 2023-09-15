@@ -1,4 +1,4 @@
-const { log } = require("../utils");
+const { log } = require("utils");
 
 module.exports = (err, req, res, next) => {
   const logger = log.child(null, true);

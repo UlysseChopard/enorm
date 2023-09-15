@@ -1,4 +1,4 @@
-const { db } = require("../utils");
+const { db } = require("utils");
 
 exports.getSent = (userId) =>
   db.query(

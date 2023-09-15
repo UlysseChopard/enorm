@@ -4,9 +4,10 @@ const {
   logout,
   getStatus,
   sendMailAccess,
-} = require("../controllers/sessions");
+} = require("controllers/sessions");
 
-module.exports = (router) => {
+module.exports = ({ Router }) => {
+  const router = Router();
   router.get("/", getStatus);
   router.post("/no-password", sendMailAccess);
   router.put("/no-password", loginWithoutPasswd);

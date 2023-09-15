@@ -3,9 +3,10 @@ const {
   invite,
   establish,
   close,
-} = require("../controllers/subscriptions");
+} = require("controllers/organisations/subscriptions");
 
-module.exports = (router) => {
+module.exports = ({ Router }) => {
+  const router = Router();
   router.get("/", get);
   router.put("/", invite);
   router.post("/:subscription", establish);

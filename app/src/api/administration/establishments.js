@@ -2,7 +2,7 @@ import { apiUrl, organisation } from "@/api";
 
 export const get = () =>
   fetch(
-    `${apiUrl}api/organisations/${organisation}/administration/establishments`,
+    `${apiUrl}api/organisations/${organisation}/establishments`,
     {
       credentials: "include",
     }
@@ -10,7 +10,7 @@ export const get = () =>
 
 export const create = (establishment) =>
   fetch(
-    `${apiUrl}api/organisations/${organisation}/administration/establishments`,
+    `${apiUrl}api/organisations/${organisation}/establishments`,
     {
       method: "POST",
       credentials: "include",
@@ -24,7 +24,7 @@ export const create = (establishment) =>
 
 export const replace = (id, establishment) =>
   fetch(
-    `${apiUrl}api/organisations/${organisation}/administration/establishments/${id}`,
+    `${apiUrl}api/organisations/${organisation}/establishments/${id}`,
     {
       credentials: "include",
       method: "PUT",
@@ -38,7 +38,7 @@ export const replace = (id, establishment) =>
 
 export const close = (id) =>
   fetch(
-    `${apiUrl}api/organisations/${organisation}/administration/establishments/${id}`,
+    `${apiUrl}api/organisations/${organisation}/establishments/${id}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -47,12 +47,12 @@ export const close = (id) =>
 
 export const addUser = (user, establishment) =>
   fetch(
-    `${apiUrl}api/organisations/${organisation}/administration/establishments/${establishment}/users/${user}`,
+    `${apiUrl}api/organisations/${organisation}/establishments/${establishment}/users/${user}`,
     { method: "PUT", credentials: "include" }
   );
 
 export const removeUser = (user, establishment) =>
   fetch(
-    `${apiUrl}api/organisations/${organisation}/administration/establishments/${establishment}/users/${user}`,
+    `${apiUrl}api/organisations/${organisation}/establishments/${establishment}/users/${user}`,
     { method: "DELETE", credentials: "include" }
   );

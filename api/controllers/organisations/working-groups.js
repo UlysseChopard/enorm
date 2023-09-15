@@ -1,9 +1,11 @@
-const { WorkingGroups, WGPaths } = require("../models");
-const { getDownstream } = require("../services/subscriptions");
+const { WorkingGroups, WGPaths } = require("models");
+const { getDownstream } = require("services/subscriptions");
 
 exports.get = async (_req, res, next) => {
   try {
-    const { rows: groups } = await WorkingGroups.getByUser(res.locals.accountId);
+    const { rows: groups } = await WorkingGroups.getByUser(
+      res.locals.accountId
+    );
     res.json({ groups });
   } catch (err) {
     next(err);
@@ -44,7 +46,10 @@ exports.remove = async (req, res, next) => {
   try {
     const {
       rows: [wg],
-    } = await WorkingGroups.deleteByIdAsAdmin(res.locals.accountId, req.params.id);
+    } = await WorkingGroups.deleteByIdAsAdmin(
+      res.locals.accountId,
+      req.params.id
+    );
     res.json({ wg });
   } catch (err) {
     next(err);

@@ -4,9 +4,10 @@ const {
   deny,
   get,
   find,
-} = require("../controllers/registrations");
+} = require("controllers//organisations/registrations");
 
-module.exports = (router) => {
+module.exports = ({ Router }) => {
+  const router = Router();
   router.get("/", get);
   router.post("/", request);
   router.patch("/:id", accept);

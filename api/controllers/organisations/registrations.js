@@ -1,4 +1,4 @@
-const { Registrations, WGPaths, RegistrationsStreams } = require("../models");
+const { Registrations, WGPaths, RegistrationsStreams } = require("models");
 
 exports.accept = async (req, res, next) => {
   try {

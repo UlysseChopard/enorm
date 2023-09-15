@@ -4,8 +4,8 @@
   "description": "premiere app",
   "main": "app.js",
   "scripts": {
-    "start": "node app",
-    "dev": "./start-dev.sh",
+    "start": "NODE_PATH=. node app",
+    "dev": "NODE_PATH=. ./start-dev.sh",
     "migrate": "node-pg-migrate"
   },
   "author": "ucg",

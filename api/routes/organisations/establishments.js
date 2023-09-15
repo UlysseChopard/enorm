@@ -5,9 +5,10 @@ const {
   replace,
   addUser,
   removeUser,
-} = require("../controllers/organisations/establishments");
+} = require("controllers/organisations/establishments");
 
-module.exports = (router) => {
+module.exports = ({ Router }) => {
+  const router = Router();
   router.post("/", create);
   router.get("/", get);
   router.put("/:id", replace);

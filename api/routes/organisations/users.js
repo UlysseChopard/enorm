@@ -6,9 +6,10 @@ const {
   disallow,
   get,
   unlink,
-} = require("../controllers/organisations/users");
+} = require("controllers/organisations/users");
 
-module.exports = (router) => {
+module.exports = ({ Router }) => {
+  const router = Router();
   router.get("/", get);
   router.patch("/", upload.single("file"), add);
   router.delete("/:userId", unlink);

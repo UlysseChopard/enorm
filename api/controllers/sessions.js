@@ -1,5 +1,5 @@
-const { crypt, jwt, mail } = require("../utils");
-const { Accounts } = require("../models");
+const { crypt, jwt, mail } = require("utils");
+const { Accounts } = require("models");
 const { BASE_URL } = process.env;
 
 exports.login = async (req, res, next) => {

@@ -4,8 +4,8 @@ const {
   WGPaths,
   WorkingGroups,
   Registrations,
-} = require("../models");
-const { getDownstream } = require("../services/subscriptions");
+} = require("models");
+const { getDownstream } = require("services/subscriptions");
 
 exports.get = async (req, res, next) => {
   try {

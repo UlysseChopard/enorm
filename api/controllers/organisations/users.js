@@ -2,8 +2,8 @@ const { createReadStream } = require("fs");
 const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
-const { regex, mail } = require("../../utils");
-const { Organisations, Users } = require("../../models");
+const { regex, mail } = require("utils");
+const { Organisations, Users } = require("models");
 const { BASE_URL } = process.env;
 
 exports.add = async (req, res, next) => {

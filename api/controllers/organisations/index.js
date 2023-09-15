@@ -1,4 +1,4 @@
-const { Users } = require("../../models");
+const { Users } = require("models");
 
 exports.join = async (req, res, next) => {
   try {

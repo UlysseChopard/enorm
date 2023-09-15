@@ -1,7 +1,7 @@
 const express = require("express");
-const { log } = require("./utils");
-const { preMiddlewares, postMiddlewares } = require("./middlewares");
-const routes = require("./routes");
+const { log } = require("utils");
+const { preMiddlewares, postMiddlewares } = require("middlewares");
+const routes = require("routes");
 const PORT = process.env.PORT ?? 3000;
 
 const app = express();

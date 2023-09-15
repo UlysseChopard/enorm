@@ -1,4 +1,4 @@
-const { db } = require("../utils");
+const { db } = require("utils");
 
 exports.getByUser = (userId) =>
   db.query(

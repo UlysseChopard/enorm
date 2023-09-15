@@ -1,4 +1,4 @@
-const { get, create, update, close } = require("../controllers/accounts");
+const { get, create, update, close } = require("controllers/accounts");
 
 const isAccountOwner = (req, res, next) =>
   req.params.id === res.locals.accountId
@@ -7,7 +7,8 @@ const isAccountOwner = (req, res, next) =>
         .status(401)
         .json({ message: "Only account owner can modify its account" });
 
-module.exports = (router) => {
+module.exports = ({ Router }) => {
+  const router = Router();
   router.post("/", create);
   router.get("/:id", isAccountOwner, get);
   router.patch("/:id", isAccountOwner, update);

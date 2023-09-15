@@ -1,4 +1,4 @@
-const { Subscriptions } = require("../models");
+const { Subscriptions } = require("models");
 
 const get = async (
   initialAccount,

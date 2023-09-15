@@ -1,5 +1,5 @@
 const format = require("pg-format");
-const { db } = require("../utils");
+const { db } = require("utils");
 
 exports.getByEmail = (email) =>
   db.query("SELECT * FROM accounts WHERE email = $1", [email]);

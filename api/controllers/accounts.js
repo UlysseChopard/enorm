@@ -1,5 +1,5 @@
-const { crypt } = require("../utils");
-const { Accounts, Users, Organisations } = require("../models");
+const { crypt } = require("utils");
+const { Accounts, Users, Organisations } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
