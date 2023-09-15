@@ -1,5 +1,5 @@
 const { crypt } = require("utils");
-const { Accounts, Users, Organisations } = require("models");
+const { Accounts, OrganisationsMembers, Organisations } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ exports.get = async (req, res, next) => {
     } = await Accounts.getById(res.locals.accountId);
     if (!account) return res.status(401).json({ message: "Account not found" });
     delete account.hash;
-    const { rows: users } = await Users.getByEmail(account.email);
+    const { rows: users } = await OrganisationsMembers.getByEmail(account.email);
     res.json({ account, users });
   } catch (err) {
     next(err);
@@ -47,7 +47,7 @@ exports.create = async (req, res, next) => {
     }
     const {
       rows: [verified],
-    } = await Users.checkToken(req.params.token);
+    } = await OrganisationsMembers.checkToken(req.params.token);
     if (!verified) {
       return res.status(401).json({ message: "invalid token" });
     }
@@ -58,7 +58,7 @@ exports.create = async (req, res, next) => {
     delete account.hash;
     const {
       rows: [user],
-    } = await Users.joinByToken(account.id, req.body.token);
+    } = await OrganisationsMembers.joinByToken(account.id, req.body.token);
     res.status(201).json({ user, account });
   } catch (err) {
     next(err);

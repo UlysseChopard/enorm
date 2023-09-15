@@ -14,6 +14,6 @@ exports.Establishments = require("./establishments");
 
 exports.Organisations = require("./organisations");
 
-exports.OrganisationsUsers = require("./organisations-users");
+exports.OrganisationsMembers = require("./organisations-members");
 
 exports.EstablishmentsUsers = require("./establishments-users");

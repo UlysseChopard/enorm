@@ -3,7 +3,7 @@ const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
 const { regex, mail } = require("utils");
-const { Organisations, Users } = require("models");
+const { Organisations, OrganisationsMembers } = require("models");
 const { BASE_URL } = process.env;
 
 exports.add = async (req, res, next) => {
@@ -55,7 +55,7 @@ exports.add = async (req, res, next) => {
       }
       throw err;
     }
-    const { rows: inserted } = await Users.createMany(
+    const { rows: inserted } = await OrganisationsMembers.createMany(
       organisation.id,
       received
     );
@@ -80,7 +80,7 @@ exports.get = async (req, res, next) => {
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }
-    const { rows } = await Users.getByOrganisation(organisation.id);
+    const { rows } = await OrganisationsMembers.getByOrganisation(organisation.id);
     const users = Object.values(
       rows.reduce((acc, user) => {
         if (!acc[user.id]) {
@@ -110,7 +110,7 @@ exports.unlink = async (req, res, next) => {
     }
     const {
       rows: [unlinked],
-    } = await Users.deleteByIdAndOrganisation(
+    } = await OrganisationsMembers.deleteByIdAndOrganisation(
       organisation.id,
       req.params.userId
     );
@@ -130,7 +130,7 @@ exports.allow = async (req, res, next) => {
     }
     const {
       rows: [updated],
-    } = await Users.manageRoleByIdAndOrganisation(
+    } = await OrganisationsMembers.manageRoleByIdAndOrganisation(
       organisation.id,
       req.params.userId,
       { role: req.params.role, value: true }
@@ -151,7 +151,7 @@ exports.disallow = async (req, res, next) => {
     }
     const {
       rows: [updated],
-    } = await Users.manageRoleByIdAndOrganisation(
+    } = await OrganisationsMembers.manageRoleByIdAndOrganisation(
       organisation.id,
       req.params.userId,
       { role: req.params.role, value: false }

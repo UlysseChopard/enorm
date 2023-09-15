@@ -4,7 +4,7 @@ const { PgLiteral } = require("node-pg-migrate");
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.addColumn("organisations_users", {
+  pgm.addColumn("organisations_members", {
     token: {
       type: "uuid",
       notNull: true,
@@ -14,5 +14,5 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropColumn("organisations_users", "token");
+  pgm.dropColumn("organisations_members", "token");
 };
