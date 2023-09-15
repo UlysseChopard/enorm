@@ -4,7 +4,7 @@ exports.replace = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.update(req.params.id, {
+    } = await Organisations.update(req.params.organisation, {
       name: req.body?.name,
       admin: res.locals.accountId,
     });
@@ -18,7 +18,7 @@ exports.get = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     if (!organisation) {
       return res.json({ message: "missing organisation" });
     }
@@ -32,7 +32,10 @@ exports.close = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.closeByAdmin(res.locals.userId, req.params.id);
+    } = await Organisations.closeByAdmin(
+      res.locals.userId,
+      req.params.organisation
+    );
     res.json({ organisation });
   } catch (err) {
     next(err);

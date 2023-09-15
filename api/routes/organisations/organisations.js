@@ -3,11 +3,12 @@ const {
   replace,
   close,
 } = require("controllers/organisations/organisations");
+const { hasRole } = require("middlewares/roles");
 
 module.exports = ({ Router }) => {
   const router = Router();
-  router.get("/", get);
-  router.put("/:id", replace);
-  router.delete("/:id", close);
+  router.get("/", hasRole("admin"), get);
+  router.put("/", hasRole("admin"), replace);
+  router.delete("/", hasRole("admin"), close);
   return router;
 };

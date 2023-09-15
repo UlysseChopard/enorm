@@ -1,7 +1,7 @@
 import { apiUrl, organisation } from "@/api";
 
 export const replace = (name) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/administration`, {
+  fetch(`${apiUrl}api/organisations/${organisation}`, {
     method: "PUT",
     credentials: "include",
     body: JSON.stringify({ name }),
@@ -12,8 +12,14 @@ export const replace = (name) =>
   });
 
 export const get = () =>
-  fetch(`${apiUrl}api/organisations/${organisation}/administration`, {
+  fetch(`${apiUrl}api/organisations/${organisation}`, {
     method: "GET",
     credentials: "include",
     headers: { Accept: "application/json" },
+  });
+
+export const close = () =>
+  fetch(`${apiUrl}api/organisations/${organisation}`, {
+    method: "DELETE",
+    credentials: "include",
   });

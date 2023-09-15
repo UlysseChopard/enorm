@@ -1,5 +1,5 @@
 const establishments = require("./establishments");
-const users = require("./users");
+const members = require("./members");
 const workingGroups = require("./working-groups");
 const subscriptions = require("./subscriptions");
 const registrations = require("./registrations");
@@ -9,7 +9,7 @@ module.exports = (express) => {
   const router = express.Router();
   router.use("/", organisations(express));
   router.use("/establishments", establishments(express));
-  router.use("/users", users(express));
+  router.use("/members", members(express));
   router.use("/working-groups", workingGroups(express));
   router.use("/subscriptions", subscriptions(express));
   router.use("/registrations", registrations(express));

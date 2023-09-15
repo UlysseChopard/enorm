@@ -85,7 +85,7 @@ exports.getByEmail = (email) =>
     [email]
   );
 
-exports.getByAccountAndOrganisation = (organisation, account) =>
+exports.getRoles = (organisation, account) =>
   db.query(
     "SELECT is_manager, is_admin, is_expert FROM organisations_members WHERE account = $1 AND organisation = $2",
     [account, organisation]

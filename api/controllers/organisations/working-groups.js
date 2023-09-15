@@ -31,10 +31,10 @@ exports.find = async (req, res, next) => {
   try {
     const {
       rows: [wg],
-    } = await WorkingGroups.getById(req.params.id);
+    } = await WorkingGroups.getById(req.params.wg);
     const { rows: wgPaths } = await WGPaths.find(
       res.locals.accountId,
-      req.params.id
+      req.params.wg
     );
     res.json({ wg, wgPaths });
   } catch (err) {
@@ -48,7 +48,7 @@ exports.remove = async (req, res, next) => {
       rows: [wg],
     } = await WorkingGroups.deleteByIdAsAdmin(
       res.locals.accountId,
-      req.params.id
+      req.params.wg
     );
     res.json({ wg });
   } catch (err) {

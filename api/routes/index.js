@@ -6,6 +6,6 @@ module.exports = (express) => {
   const router = express.Router();
   router.use("/api/sessions", sessions(express));
   router.use("/api/accounts", accounts(express));
-  router.use("/api/organisations", organisations(express));
+  router.use("/api/organisations/:organisation", organisations(express));
   return router;
 };

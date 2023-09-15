@@ -112,7 +112,7 @@ exports.unlink = async (req, res, next) => {
       rows: [unlinked],
     } = await OrganisationsMembers.deleteByIdAndOrganisation(
       organisation.id,
-      req.params.userId
+      req.params.member
     );
     res.json({ unlinked });
   } catch (err) {
@@ -132,7 +132,7 @@ exports.allow = async (req, res, next) => {
       rows: [updated],
     } = await OrganisationsMembers.manageRoleByIdAndOrganisation(
       organisation.id,
-      req.params.userId,
+      req.params.member,
       { role: req.params.role, value: true }
     );
     res.json({ updated });
@@ -153,7 +153,7 @@ exports.disallow = async (req, res, next) => {
       rows: [updated],
     } = await OrganisationsMembers.manageRoleByIdAndOrganisation(
       organisation.id,
-      req.params.userId,
+      req.params.member,
       { role: req.params.role, value: false }
     );
     res.json({ updated });

@@ -6,14 +6,15 @@ const {
   addUser,
   removeUser,
 } = require("controllers/organisations/establishments");
+const { hasRole } = require("middlewares/roles");
 
 module.exports = ({ Router }) => {
   const router = Router();
-  router.post("/", create);
-  router.get("/", get);
-  router.put("/:id", replace);
-  router.delete("/:id", close);
-  router.put("/:id/users/:userId", addUser);
-  router.delete("/:id/users/:userId", removeUser);
+  router.post("/", hasRole("admin"), create);
+  router.delete("/:id", hasRole("admin"), close);
+  router.get("/", hasRole("admin", "manager"), get);
+  router.put("/:id", hasRole("admin", "manager"), replace);
+  router.put("/:id/users/:userId", hasRole("admin", "manager"), addUser);
+  router.delete("/:id/users/:userId", hasRole("admin", "manager"), removeUser);
   return router;
 };

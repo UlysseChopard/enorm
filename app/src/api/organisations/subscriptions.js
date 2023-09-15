@@ -1,15 +1,6 @@
 import { apiUrl, organisation } from "@/api";
 
-export function search(query) {
-  return fetch(
-    `${apiUrl}api/organisations/${organisation}/subscriptions?q=${query}`,
-    {
-      credentials: "include",
-    }
-  );
-}
-
-export function invite(recipient) {
+export const invite = (recipient) => {
   return fetch(`${apiUrl}api/organisations/${organisation}/subscriptions`, {
     method: "PUT",
     credentials: "include",
@@ -19,15 +10,16 @@ export function invite(recipient) {
     },
     body: JSON.stringify({ recipient }),
   });
-}
+};
 
-export function getNews() {
-  return fetch(`${apiUrl}api/organisations/${organisation}/subscriptions`, {
+export const get = (query) => {
+  const url = `${apiUrl}api/organisations/${organisation}/subscriptions`;
+  return fetch(query ? url + `q=${query}` : url, {
     credentials: "include",
   });
-}
+};
 
-export function accept(id) {
+export const establish = (id) => {
   return fetch(
     `${apiUrl}api/organisations/${organisation}/subscriptions/${id}`,
     {
@@ -35,9 +27,9 @@ export function accept(id) {
       credentials: "include",
     }
   );
-}
+};
 
-export function deny(id) {
+export const close = (id) => {
   return fetch(
     `${apiUrl}api/organisations/${organisation}/subscriptions/${id}`,
     {
@@ -45,4 +37,4 @@ export function deny(id) {
       credentials: "include",
     }
   );
-}
+};

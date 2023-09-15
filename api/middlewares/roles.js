@@ -1,4 +1,10 @@
-const { Users } = require("models");
+const { OrganisationsMembers } = require("models");
+
+const dbNames = {
+  admin: "is_admin",
+  expert: "is_expert",
+  manager: "is_manager",
+};
 
 exports.hasRole =
   (...roles) =>
@@ -6,14 +12,14 @@ exports.hasRole =
     try {
       const {
         rows: [userRoles],
-      } = Users.getByAccountAndOrganisation(
+      } = OrganisationsMembers.getRoles(
         req.params.organisation,
         res.locals.accountId
       );
-      if (!roles.includes(userRoles)) {
-        return res.status(403).json({ message: `Roles in ${roles} required` });
+      for (const role of roles) {
+        if (userRoles[dbNames[role]]) return next();
       }
-      next();
+      return res.status(403).json({ message: `Roles in ${roles} required` });
     } catch (err) {
       next(err);
     }

@@ -5,7 +5,7 @@ export const get = () =>
     credentials: "include",
   });
 
-export const getById = (wgId) =>
+export const find = (wgId) =>
   fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${wgId}`, {
     credentials: "include",
   });
@@ -21,8 +21,8 @@ export const create = (group) =>
     body: JSON.stringify({ group }),
   });
 
-export const deleteById = (id) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${id}`, {
+export const remove = (wg) =>
+  fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${wg}`, {
     method: "DELETE",
     credentials: "include",
   });
