@@ -43,7 +43,8 @@
 - [ ] fa7633a0526d47 add represented interests  
 ## 16/06/2023 20:58:50 finitions  
 ## 17/08/2023 22:07:29 reprise  
-- [ ] f992818f11c4b8 finish roles implementation  
-- [ ] 50a39ff07f8bd2 create and send token by mail  
-- [ ] e3d2bb8f0f60a1 use token in front  
-- [ ] 0a95313ca8de97 create token in db  
+- [x] f992818f11c4b8 finish roles implementation  
+- [x] 50a39ff07f8bd2 create and send token by mail  
+- [x] e3d2bb8f0f60a1 use token in front  
+- [x] 0a95313ca8de97 create token in db  
+- [ ] 145fb35b44567f create admin interface ?  
