@@ -16,7 +16,6 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import TabPanel from "@/components/TabPanel";
 import {
-  search,
   invite,
   get,
   establish,
@@ -36,9 +35,7 @@ export async function action({ request }) {
     case "close":
       return await close(recipient).then((res) => res.status);
     default:
-      return await search(query).then((res) =>
-        res.ok ? res.json() : res.status
-      );
+      return await get(query).then((res) => (res.ok ? res.json() : res.status));
   }
 }
 

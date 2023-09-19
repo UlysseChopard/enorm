@@ -80,7 +80,9 @@ exports.get = async (req, res, next) => {
     if (!organisation) {
       return res.status(400).json({ message: "Missing organisation" });
     }
-    const { rows } = await OrganisationsMembers.getByOrganisation(organisation.id);
+    const { rows } = await OrganisationsMembers.getByOrganisation(
+      organisation.id
+    );
     const users = Object.values(
       rows.reduce((acc, user) => {
         if (!acc[user.id]) {
@@ -120,43 +122,15 @@ exports.unlink = async (req, res, next) => {
   }
 };
 
-exports.allow = async (req, res, next) => {
+exports.join = async (req, res, next) => {
   try {
     const {
-      rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
-    if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
-    }
-    const {
-      rows: [updated],
-    } = await OrganisationsMembers.manageRoleByIdAndOrganisation(
-      organisation.id,
-      req.params.member,
-      { role: req.params.role, value: true }
+      rows: [user],
+    } = await OrganisationsMembers.linkAccountAsUser(
+      res.locals.accountId,
+      req.params.id
     );
-    res.json({ updated });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.disallow = async (req, res, next) => {
-  try {
-    const {
-      rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
-    if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
-    }
-    const {
-      rows: [updated],
-    } = await OrganisationsMembers.manageRoleByIdAndOrganisation(
-      organisation.id,
-      req.params.member,
-      { role: req.params.role, value: false }
-    );
-    res.json({ updated });
+    res.status(201).json({ user });
   } catch (err) {
     next(err);
   }

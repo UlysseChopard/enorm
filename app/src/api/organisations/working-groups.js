@@ -1,9 +1,16 @@
 import { apiUrl, organisation } from "@/api";
 
-export const get = () =>
-  fetch(`${apiUrl}api/organisations/${organisation}/working-groups`, {
+export const get = (query) => {
+  const url = new URL(
+    `${apiUrl}api/organisations/${organisation}/working-groups`
+  );
+  if (query) {
+    url.searchParams.set("q", query);
+  }
+  return fetch(url, {
     credentials: "include",
   });
+};
 
 export const find = (wgId) =>
   fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${wgId}`, {
