@@ -13,7 +13,7 @@ import PendingIcon from "@mui/icons-material/Pending";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import TabPanel from "@/components/TabPanel";
-import { get } from "@/api/registrations";
+import { get } from "@/api/organisations/registrations";
 
 export const loader = async () => {
   const res = await get();

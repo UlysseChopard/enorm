@@ -6,15 +6,15 @@ import {
   redirect,
 } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getById, deleteById } from "@/api/working-groups";
-import { request as requestRegistration } from "@/api/registrations";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import SelectProvider from "@/components/SelectProvider";
+import { request as requestRegistration } from "@/api/organisations/registrations";
+import { find, remove } from "@/api/organisations/working-groups";
 
 export const loader = async ({ params }) => {
-  const res = await getById(params.id);
+  const res = await find(params.id);
   return res.ok ? res.json() : false;
 };
 
@@ -26,7 +26,7 @@ export const action = async ({ params, request }) => {
       res = await requestRegistration({ wgPath: formData.get("wgPath") });
       return res.ok ? res.json() : false;
     case "delete":
-      res = await deleteById(params.id);
+      res = await remove(params.id);
       return res.ok ? redirect("/groups") : false;
   }
 };

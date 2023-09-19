@@ -18,6 +18,7 @@ export const get = () =>
     headers: { Accept: "application/json" },
   });
 
+// used ?
 export const close = () =>
   fetch(`${apiUrl}api/organisations/${organisation}`, {
     method: "DELETE",

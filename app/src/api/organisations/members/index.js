@@ -33,20 +33,9 @@ export const unlink = (member) =>
     credentials: "include",
   });
 
-export const allow = (member, role) =>
-  fetch(
-    `${apiUrl}api/organisations/${organisation}/members/${member}/roles/${role}`,
-    {
-      method: "PUT",
-      credentials: "include",
-    }
-  );
-
-export const disallow = (member, role) =>
-  fetch(
-    `${apiUrl}api/organisations/${organisation}/members/${member}/roles/${role}`,
-    {
-      method: "DELETE",
-      credentials: "include",
-    }
-  );
+export const join = (organisation, member) => {
+  return fetch(`${apiUrl}api/organisations/${organisation}/members/${member}`, {
+    method: "PUT",
+    credentials: "include",
+  });
+};

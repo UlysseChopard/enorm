@@ -14,7 +14,7 @@ import {
   create,
   replace,
   close,
-} from "@/api/administration/establishments";
+} from "@/api/organisations/establishments";
 
 export async function loader() {
   const res = await get();

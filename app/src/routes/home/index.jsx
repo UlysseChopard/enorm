@@ -8,8 +8,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import { get } from "@/api/accounts";
 import LeftNavbar from "@/components/LeftNavbar";
+import { get } from "@/api/accounts";
 
 export async function loader() {
   const account = localStorage.getItem("account");

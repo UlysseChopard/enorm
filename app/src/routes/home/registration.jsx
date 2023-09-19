@@ -9,7 +9,7 @@ import {
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import SelectProvider from "@/components/SelectProvider";
-import { find, accept, deny } from "@/api/registrations";
+import { find, accept, deny } from "@/api/organisations/registrations";
 
 export const loader = async ({ params }) => {
   const res = await find(params.id);

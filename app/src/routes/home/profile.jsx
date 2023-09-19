@@ -16,7 +16,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Unstable_Grid2";
 import { get, update } from "@/api/accounts";
-import { join, leave } from "@/api/organisations";
+import { join, unlink } from "@/api/organisations/members";
 
 const account = localStorage.getItem("account");
 
@@ -40,7 +40,7 @@ export async function action({ request }) {
       res = await join(objData.organisation);
       break;
     case "leave":
-      res = await leave(objData.organisation);
+      res = await unlink(objData.organisation);
       break;
     default:
       throw new Error("Unknown action type");

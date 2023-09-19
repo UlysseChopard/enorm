@@ -15,7 +15,14 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import TabPanel from "@/components/TabPanel";
-import { search, invite, getNews, accept, deny } from "@/api/subscriptions";
+import {
+  search,
+  invite,
+  get,
+  establish,
+  close,
+} from "@/api/organisations/subscriptions";
+
 export async function action({ request }) {
   const formData = await request.formData();
   const { type, recipient, query } = Object.fromEntries(formData);
@@ -25,9 +32,9 @@ export async function action({ request }) {
         res.ok ? res.json() : res.status
       );
     case "accept":
-      return await accept(recipient).then((res) => res.status);
-    case "deny":
-      return await deny(recipient).then((res) => res.status);
+      return await establish(recipient).then((res) => res.status);
+    case "close":
+      return await close(recipient).then((res) => res.status);
     default:
       return await search(query).then((res) =>
         res.ok ? res.json() : res.status
@@ -36,7 +43,7 @@ export async function action({ request }) {
 }
 
 export async function loader() {
-  const res = await getNews();
+  const res = await get();
   if (!res.ok) return res.status;
   return res.json();
 }
@@ -118,7 +125,7 @@ export default function Subscriptions() {
     ({ id }) =>
     () => {
       const formData = new FormData();
-      formData.append("type", "deny");
+      formData.append("type", "close");
       formData.append("recipient", id);
       submit(formData, { method: "POST" });
     };

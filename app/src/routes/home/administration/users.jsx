@@ -15,12 +15,13 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { get, add, unlink, allow, disallow } from "@/api/administration/users";
+import { get, add, unlink } from "@/api/organisations/members";
+import { allow, disallow } from "@/api/organisations/members/roles";
 import {
   addUser,
   removeUser,
   get as getEstablishments,
-} from "@/api/administration/establishments";
+} from "@/api/organisations/establishments";
 
 export async function loader() {
   const res = await get();

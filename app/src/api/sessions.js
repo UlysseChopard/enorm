@@ -1,34 +1,36 @@
 import { apiUrl } from "@/api";
 
-export function getStatus() {
+// used ?
+export const getStatus = () => {
   return fetch(`${apiUrl}api/sessions`, { credentials: "include" });
-}
+};
 
-export function login(infos) {
+export const login = (infos) => {
   return fetch(`${apiUrl}api/sessions`, {
     body: JSON.stringify(infos),
     credentials: "include",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     method: "PUT",
   });
-}
+};
 
-export function logout() {
+export const logout = () => {
   return fetch(`${apiUrl}api/sessions`, {
     credentials: "include",
     method: "DELETE",
   });
-}
+};
 
-export function getMagicLink(email) {
+export const getMagicLink = (email) => {
   return fetch(`${apiUrl}api/sessions/no-password`, {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
   });
-}
+};
 
-export function requestAccess(token) {
+// used ?
+export const requestAccess = (token) => {
   return fetch(`${apiUrl}api/sessions/no-password`, {
     credentials: "include",
     method: "PUT",
@@ -38,4 +40,4 @@ export function requestAccess(token) {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};

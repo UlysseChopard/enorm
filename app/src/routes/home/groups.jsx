@@ -15,7 +15,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import { get, create } from "@/api/working-groups";
+import { get, create } from "@/api/organisations/working-groups";
 
 export async function loader() {
   const res = await get();

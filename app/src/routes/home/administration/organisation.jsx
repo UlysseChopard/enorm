@@ -2,7 +2,7 @@ import { Form, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { get, replace } from "@/api/administration/organisations";
+import { get, replace } from "@/api/organisations";
 
 export async function loader() {
   const res = await get();

@@ -1,8 +1,8 @@
 import { useActionData, useSearchParams, Form } from "react-router-dom";
-import { getMagicLink } from "@/api/sessions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Snackbar from "@/components/Snackbar";
+import { getMagicLink } from "@/api/sessions";
 
 export async function action({ request }) {
   const formData = await request.formData();
