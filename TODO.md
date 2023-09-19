@@ -48,3 +48,4 @@
 - [x] e3d2bb8f0f60a1 use token in front  
 - [x] 0a95313ca8de97 create token in db  
 - [ ] 145fb35b44567f create admin interface ?  
+- [ ] 9c1adc83d3a722 fix api calls in front  
