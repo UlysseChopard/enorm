@@ -1,5 +1,5 @@
 const { crypt } = require("utils");
-const { Accounts, OrganisationsMembers, Organisations } = require("models");
+const { Accounts, OrganisationsMembers } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -8,7 +8,9 @@ exports.get = async (req, res, next) => {
     } = await Accounts.getById(res.locals.accountId);
     if (!account) return res.status(401).json({ message: "Account not found" });
     delete account.hash;
-    const { rows: users } = await OrganisationsMembers.getByEmail(account.email);
+    const { rows: users } = await OrganisationsMembers.getByEmail(
+      account.email
+    );
     res.json({ account, users });
   } catch (err) {
     next(err);
@@ -45,20 +47,17 @@ exports.create = async (req, res, next) => {
     if (!req.body.password) {
       return res.status(422).json({ message: "missing password" });
     }
-    const {
-      rows: [verified],
-    } = await OrganisationsMembers.checkToken(req.params.token);
-    if (!verified) {
-      return res.status(401).json({ message: "invalid token" });
-    }
     const hash = crypt.encrypt(req.body.password);
     const {
       rows: [account],
-    } = await Accounts.create({ ...req.body, email: verified.email, hash });
+    } = await Accounts.create({ ...req.body, hash });
     delete account.hash;
     const {
       rows: [user],
-    } = await OrganisationsMembers.joinByToken(account.id, req.body.token);
+    } = await OrganisationsMembers.setMemberAccount(
+      account.id,
+      req.body.organisation
+    );
     res.status(201).json({ user, account });
   } catch (err) {
     next(err);

@@ -67,16 +67,10 @@ exports.manageRoleByIdAndOrganisation = (
   );
 };
 
-exports.linkAccountAsUser = (account, organisation) =>
+exports.setMemberAccount = (account, organisation) =>
   db.query(
     "UPDATE organisations_members SET account = $1 WHERE organisation = $2 AND email = (SELECT email FROM accounts WHERE id = $1)",
     [account, organisation]
-  );
-
-exports.unlinkAccountAsUser = (account, organisation) =>
-  db.query(
-    "UPDATE organisations_members SET account = NULL WHERE organisation = $1 AND account = $2",
-    [organisation, account]
   );
 
 exports.getByEmail = (email) =>
@@ -93,9 +87,3 @@ exports.getRoles = (organisation, account) =>
 
 exports.checkToken = (token) =>
   db.query("SELECT * FROM organisations_members WHERE token = $1", [token]);
-
-exports.joinByToken = (account, token) =>
-  db.query("UPDATE organisations_members SET account = $1 WHERE token = $2", [
-    account,
-    token,
-  ]);

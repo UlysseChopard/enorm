@@ -126,7 +126,7 @@ exports.join = async (req, res, next) => {
   try {
     const {
       rows: [user],
-    } = await OrganisationsMembers.linkAccountAsUser(
+    } = await OrganisationsMembers.setMemberAccount(
       res.locals.accountId,
       req.params.id
     );

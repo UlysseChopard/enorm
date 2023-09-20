@@ -49,3 +49,4 @@
 - [x] 0a95313ca8de97 create token in db  
 - [ ] 145fb35b44567f create admin interface ?  
 - [ ] 9c1adc83d3a722 fix api calls in front  
+- [ ] 47c1942d8644e1 use only code for account creation  

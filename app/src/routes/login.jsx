@@ -8,7 +8,7 @@ import Snackbar from "@/components/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { create } from "@/api/accounts";
+import { create, checkToken } from "@/api/accounts";
 import { login } from "@/api/sessions";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,26 +16,39 @@ import { useTranslation } from "react-i18next";
 export async function action({ request }) {
   const formData = await request.formData();
   const userInfos = Object.fromEntries(formData);
-  if (userInfos.lastname) await create(userInfos);
-  const res = await login(userInfos);
-  if (!res.ok) return res.status;
+  delete userInfos.type;
+  let res;
+  switch (formData.get("type")) {
+    case "login":
+      res = await login(userInfos);
+      break;
+    case "signup":
+      res = await create(userInfos);
+      break;
+    case "checkToken":
+      res = await checkToken(formData.get("token"));
+      return res.ok ? res.json() : null;
+    default:
+      throw new Error("unknown form type");
+  }
+  if (!res.ok) return null;
   const { account } = await res.json();
   localStorage.setItem("account", account);
   return redirect("/");
 }
 
 const Login = () => {
-  const status = useActionData();
+  const member = useActionData();
   const [open, setOpen] = useState(false);
   const [failure, setFailure] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "login" });
 
   useEffect(() => {
-    if (status === 401) {
+    if (!member) {
       setFailure(true);
       setTimeout(() => setFailure(false), 2000);
     }
-  }, [status]);
+  }, [member]);
 
   return (
     <Box
@@ -71,6 +84,7 @@ const Login = () => {
               <Link href="/reset-password">{t("resetPassword")}</Link>
             }
           />
+          <input type="hidden" name="type" value="login" />
           <Button variant="contained" type="submit" fullWidth>
             {t("submit")}
           </Button>
@@ -79,7 +93,11 @@ const Login = () => {
           </Button>
         </Stack>
       </Form>
-      <SignupDialog open={open} onClose={() => setOpen(false)} />
+      <SignupDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        member={member}
+      />
       <Snackbar severity="warning" msg="Could not log in" open={failure} />
     </Box>
   );

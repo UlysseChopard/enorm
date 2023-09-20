@@ -6,7 +6,7 @@ export const get = (account) => {
 
 export const update = (account, infos) => {
   return fetch(`${apiUrl}api/accounts/${account}`, {
-    body: (JSON.stringify = infos),
+    body: JSON.stringify(infos),
     credentials: "include",
     headers: {
       Accept: "application/json",
@@ -18,7 +18,7 @@ export const update = (account, infos) => {
 
 export const create = (infos) => {
   return fetch(`${apiUrl}api/accounts`, {
-    body: (JSON.stringify = infos),
+    body: JSON.stringify(infos),
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -34,6 +34,13 @@ export const close = (account) => {
     method: "DELETE",
   });
 };
+
+export const checkToken = (token) =>
+  fetch(`${apiUrl}api/accounts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ token }),
+  });
 
 // resetPassword ?
 // sendResetPasswordLink ?
