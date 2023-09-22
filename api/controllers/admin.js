@@ -1,18 +1,13 @@
 const { crypt } = require("utils");
-const {
-  Administration,
-  Accounts,
-  Organisations,
-  OrganisationsMembers,
-} = require("models");
+const { Accounts, Organisations, OrganisationsMembers } = require("models");
 
-exports.addSuperuser = async (req, res, next) => {
+exports.setSuperuser = async (req, res, next) => {
   try {
     if (!req.body.account)
       return res.status(422).json({ message: "Missing account key in body" });
     const {
       rows: [superuser],
-    } = await Administration.addSuperuser(req.body.account);
+    } = await Accounts.setSuperuser(req.params.id, true);
     if (!superuser)
       return res.status(404).json({ message: "superuser not found" });
     res.json({ superuser });
@@ -21,11 +16,11 @@ exports.addSuperuser = async (req, res, next) => {
   }
 };
 
-exports.removeSuperuser = async (req, res, next) => {
+exports.unsetSuperuser = async (req, res, next) => {
   try {
     const {
       rows: [superuser],
-    } = await Administration.removeSuperuser(req.params.id);
+    } = await Accounts.setSuperuser(req.params.id, false);
     if (!superuser)
       return res.status(404).json({ message: "superuser not found" });
     res.json({ superuser });
@@ -68,6 +63,16 @@ exports.createOrganisation = async (req, res, next) => {
       });
     }
     res.json({ account, organisation, organisationMember });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.get = async (_req, res, next) => {
+  try {
+    const { rows: superusers } = Accounts.getSuperusers();
+    const { rows: organisations } = Organisations.getAll();
+    return res.json({ superusers, organisations });
   } catch (err) {
     next(err);
   }

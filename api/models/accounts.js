@@ -29,3 +29,9 @@ exports.searchText = (query, limit = 100) =>
       limit
     )
   );
+
+exports.setSuperuser = (account, isSuperuser = false) =>
+  db.query("UPDATE accounts SET superuser = $2 WHERE id = $1", [
+    account,
+    isSuperuser,
+  ]);

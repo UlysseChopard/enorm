@@ -1,15 +1,14 @@
-const administration = require("./administration");
+const admin = require("./admin");
 const tokens = require("./tokens");
 const sessions = require("./sessions");
 const accounts = require("./accounts");
 const organisations = require("./organisations");
 
-module.exports = (express) => {
-  const router = express.Router();
-  router.use("/api/administration", administration(express));
-  router.use("/api/tokens", tokens(express));
-  router.use("/api/sessions", sessions(express));
-  router.use("/api/accounts", accounts(express));
-  router.use("/api/organisations/:organisation", organisations(express));
-  return router;
+module.exports = (express, app) => {
+  app.use("/api/admin", admin(express));
+  app.use("/api/tokens", tokens(express));
+  app.use("/api/sessions", sessions(express));
+  app.use("/api/accounts", accounts(express));
+  app.use("/api/organisations/:organisation", organisations(express));
+  return app;
 };

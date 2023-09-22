@@ -44,6 +44,10 @@ import ResetPassword, {
 import AccessToken, {
   loader as accessTokenLoader,
 } from "@/routes/access-token";
+import Admin, {
+  loader as adminLoader,
+  action as adminAction,
+} from "@/routes/admin";
 
 export default [
   {
@@ -129,6 +133,13 @@ export default [
     element: <Logout />,
     errorElement: <ErrorPage />,
     loader: logoutLoader,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+    errorElement: <ErrorPage />,
+    loader: adminLoader,
+    action: adminAction,
   },
   {
     path: "/reset-password",

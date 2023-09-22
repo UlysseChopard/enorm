@@ -14,4 +14,3 @@ app.listen(PORT, (err) => {
   if (err) return log.error(err);
   log.info(`Listening on port ${PORT}`);
 });
-

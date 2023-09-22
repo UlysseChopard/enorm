@@ -1,4 +1,4 @@
-const { OrganisationsMembers, Administration } = require("models");
+const { OrganisationsMembers, Accounts } = require("models");
 
 const dbNames = {
   admin: "is_admin",
@@ -28,10 +28,14 @@ exports.hasRole =
 exports.isSuperuser = (req, res, next) => {
   try {
     const {
-      rows: [superuser],
-    } = Administration.getByAccount(res.locals.accountId);
-    if (!superuser)
+      rows: [account],
+    } = Accounts.getById(res.locals.accountId);
+    if (!account) {
+      return res.status(404).json({ message: "account not found" });
+    }
+    if (!account.superuser) {
       return res.status(403).json({ message: "Role superuser required" });
+    }
     next();
   } catch (err) {
     next(err);
