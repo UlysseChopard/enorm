@@ -20,3 +20,6 @@ exports.closeByAdmin = (userId, id) =>
     id,
     userId,
   ]);
+
+exports.remove = (id) =>
+  db.query("DELETE FROM organisations WHERE id = $1 RETURNING *", [id]);

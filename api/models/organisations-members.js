@@ -6,6 +6,11 @@ exports.create = (organisation, email, account) =>
     [organisation, email, account]
   );
 
+exports.getAll = () =>
+  db.query(
+    "SELECT * FROM organisations_members AS om JOIN organisations AS o ON om.organisation = o.id JOIN accounts AS a on om.account = a.id"
+  );
+
 exports.createMany = (organisation, emails) =>
   db.query(
     "INSERT INTO organisations_members (organisation, email) SELECT $1, unnest FROM UNNEST(ARRAY[string_to_array($2, ',')]) ON CONFLICT DO NOTHING RETURNING *",
@@ -15,6 +20,12 @@ exports.createMany = (organisation, emails) =>
 exports.getByOrganisation = (organisation) =>
   db.query(
     "SELECT u.*, eu.establishment FROM organisations_members AS u LEFT JOIN establishments_users AS eu ON u.id = eu.user WHERE u.organisation = $1",
+    [organisation]
+  );
+
+exports.removeByOrganisation = (organisation) =>
+  db.query(
+    "DELETE FROM organisations_members WHERE organisation = $1 RETURNING *",
     [organisation]
   );
 

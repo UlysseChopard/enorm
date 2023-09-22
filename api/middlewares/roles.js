@@ -29,7 +29,7 @@ exports.isSuperuser = (req, res, next) => {
   try {
     const {
       rows: [account],
-    } = Accounts.getById(res.locals.accountId);
+    } = Accounts.get(res.locals.accountId);
     if (!account) {
       return res.status(404).json({ message: "account not found" });
     }

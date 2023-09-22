@@ -5,9 +5,8 @@ exports.get = async (req, res, next) => {
   try {
     const {
       rows: [account],
-    } = await Accounts.getById(res.locals.accountId);
+    } = await Accounts.get(res.locals.accountId);
     if (!account) return res.status(401).json({ message: "Account not found" });
-    delete account.hash;
     const { rows: users } = await OrganisationsMembers.getByEmail(
       account.email
     );
@@ -21,7 +20,7 @@ exports.update = async (req, res, next) => {
   try {
     const {
       rows: [prev],
-    } = await Accounts.getById(res.locals.accountId);
+    } = await Accounts.get(res.locals.accountId);
     const hash = req.body.password
       ? crypt.encrypt(req.body.password)
       : prev.hash;
@@ -32,7 +31,6 @@ exports.update = async (req, res, next) => {
       ...req.body,
       hash,
     });
-    delete account.hash;
     res.json({ account });
   } catch (err) {
     next(err);
@@ -51,7 +49,6 @@ exports.create = async (req, res, next) => {
     const {
       rows: [account],
     } = await Accounts.create({ ...req.body, hash });
-    delete account.hash;
     const {
       rows: [user],
     } = await OrganisationsMembers.setMemberAccount(
@@ -64,11 +61,11 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.close = async (req, res, next) => {
+exports.remove = async (req, res, next) => {
   try {
     const {
       rows: [account],
-    } = await Accounts.close(res.locals.accountId);
+    } = await Accounts.remove(res.locals.accountId);
     res.json({ account });
   } catch (err) {
     next(err);
