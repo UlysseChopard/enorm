@@ -25,11 +25,11 @@ exports.hasRole =
     }
   };
 
-exports.isSuperuser = (req, res, next) => {
+exports.isSuperuser = async (req, res, next) => {
   try {
     const {
       rows: [account],
-    } = Accounts.get(res.locals.accountId);
+    } = await Accounts.get(res.locals.accountId);
     if (!account) {
       return res.status(404).json({ message: "account not found" });
     }

@@ -8,8 +8,9 @@ exports.login = async (req, res, next) => {
       rows: [account],
     } = await Accounts.getByEmail(req.body.email);
     if (!account) return res.sendStatus(401);
-    if (!crypt.encrypt(req.body.password) === account.hash)
+    if (!crypt.encrypt(req.body.password) === account.hash) {
       return res.sendStatus(401);
+    }
     const token = jwt.sign({ accountId: account.id });
     res.cookie(jwt.key, token, {
       httpOnly: true,
@@ -17,7 +18,7 @@ exports.login = async (req, res, next) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       secure: process.env.NODE_ENV === "production",
     });
-    res.status(201).json({ token, account: account.id });
+    res.status(201).json({ session: token });
   } catch (err) {
     next(err);
   }
@@ -32,18 +33,20 @@ exports.loginWithoutPasswd = (_req, res) => {
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     secure: process.env.NODE_ENV === "production",
   });
-  res.sendStatus(204);
+  res.status(201).json({ session: token });
 };
 
 exports.logout = async (req, res) => {
   res.cookie(jwt.key, "", { maxAge: "1" });
-  res.json({ message: "logged out" });
+  res.json({ session: null });
 };
 
-exports.getStatus = (_req, res) =>
+exports.getStatus = (req, res) =>
   res.locals.accountId
-    ? res.json({ status: "authenticated" })
-    : res.status(401).json({ status: "unauthenticated" });
+    ? res.json({
+        session: req.body[jwt.key] || req.headers.authorization?.split(" ")[1],
+      })
+    : res.status(401).json({ session: null });
 
 exports.sendMailAccess = async (req, res, next) => {
   if (!req.body.email)

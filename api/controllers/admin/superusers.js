@@ -15,14 +15,17 @@ exports.create = async (req, res, next) => {
     if (!req.body.email) {
       return res.status(422).json({ message: "missing email" });
     }
-    const hash = crypt.encrypt("Bienvenue");
-    const {
-      rows: [account],
-    } = await Accounts.create({ ...req.body, hash, superuser: true });
-    if (!account) {
-      return res.status(404).json({ message: "account not found" });
+    if (!req.body.password) {
+      return res.status(422).json({ message: "missing password" });
     }
-    res.status(201).json({ account });
+    const hash = crypt.encrypt(req.body.email);
+    const {
+      rows: [superuser],
+    } = await Accounts.create({ ...req.body, hash, superuser: true });
+    if (!superuser) {
+      return res.status(404).json({ message: "superuser not found" });
+    }
+    res.status(201).json({ superuser });
   } catch (err) {
     next(err);
   }
@@ -31,12 +34,12 @@ exports.create = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
   try {
     const {
-      rows: [account],
+      rows: [superuser],
     } = await Accounts.remove(req.params.id);
-    if (!account) {
-      return res.status(404).json({ message: "account not found" });
+    if (!superuser) {
+      return res.status(404).json({ message: "superuser not found" });
     }
-    res.json({ account });
+    res.json({ superuser });
   } catch (err) {
     next(err);
   }

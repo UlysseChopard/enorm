@@ -4,7 +4,7 @@ const isAccountOwner = (req, res, next) =>
   req.params.id === res.locals.accountId
     ? next()
     : res
-        .status(401)
+        .status(403)
         .json({ message: "Only account owner can modify its account" });
 
 module.exports = ({ Router }) => {

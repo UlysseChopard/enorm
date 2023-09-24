@@ -1,16 +1,13 @@
 const { crypt } = require("utils");
-const { Accounts, OrganisationsMembers } = require("models");
+const { Accounts } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
     const {
       rows: [account],
     } = await Accounts.get(res.locals.accountId);
-    if (!account) return res.status(401).json({ message: "Account not found" });
-    const { rows: users } = await OrganisationsMembers.getByEmail(
-      account.email
-    );
-    res.json({ account, users });
+    if (!account) return res.status(404).json({ message: "Account not found" });
+    res.json({ account });
   } catch (err) {
     next(err);
   }
@@ -49,13 +46,7 @@ exports.create = async (req, res, next) => {
     const {
       rows: [account],
     } = await Accounts.create({ ...req.body, hash });
-    const {
-      rows: [user],
-    } = await OrganisationsMembers.setMemberAccount(
-      account.id,
-      req.body.organisation
-    );
-    res.status(201).json({ user, account });
+    res.status(201).json({ account });
   } catch (err) {
     next(err);
   }
