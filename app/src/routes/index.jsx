@@ -44,10 +44,15 @@ import ResetPassword, {
 import AccessToken, {
   loader as accessTokenLoader,
 } from "@/routes/access-token";
-import Admin, {
-  loader as adminLoader,
-  action as adminAction,
-} from "@/routes/admin";
+import Admin from "@/routes/admin";
+// import Superusers, {
+//   action as superusersAction,
+//   loader as superusersLoader,
+// } from "@/routes/admin/superusers";
+// import Organisations, {
+//   action as organisationsAction,
+//   loader as organisationsLoader,
+// } from "@/routes/admin/organisations";
 
 export default [
   {
@@ -138,8 +143,20 @@ export default [
     path: "/admin",
     element: <Admin />,
     errorElement: <ErrorPage />,
-    loader: adminLoader,
-    action: adminAction,
+    // children: [
+    //   {
+    //     path: "/organisations",
+    //     element: <Organisations />,
+    //     loader: organisationsLoader,
+    //     action: organisationsAction,
+    //   },
+    //   {
+    //     path: "/superusers",
+    //     element: <Superusers />,
+    //     loader: superusersLoader,
+    //     action: superusersAction,
+    //   },
+    // ],
   },
   {
     path: "/reset-password",

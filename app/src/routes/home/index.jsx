@@ -19,10 +19,11 @@ export async function loader() {
 }
 
 export default function Home() {
-  const { account, users } = useLoaderData();
-  const [organisation, setOrganisation] = useState(users[0].organisation_id);
-  if (!localStorage.getItem("organisation"))
+  const { account } = useLoaderData();
+  const [organisation, setOrganisation] = useState(account.organisations?.[0]);
+  if (organisation && !localStorage.getItem("organisation")) {
     localStorage.setItem("organisation", organisation);
+  }
   const handleChange = (e) => {
     localStorage.setItem("organisation", e.target.value);
     setOrganisation(e.target.value);
@@ -54,7 +55,7 @@ export default function Home() {
               value={organisation}
               onChange={handleChange}
             >
-              {users.map(({ organisation_id, name }) => (
+              {account.organisations.map(({ organisation_id, name }) => (
                 <MenuItem key={organisation_id} value={organisation_id}>
                   {name}
                 </MenuItem>

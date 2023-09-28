@@ -6,13 +6,13 @@ import { get, replace } from "@/api/organisations";
 
 export async function loader() {
   const res = await get();
-  return res.ok ? res.json() : res.status;
+  return res.json();
 }
 
 export async function action({ request }) {
   const formData = await request.formData();
   const res = await replace(formData.get("name"));
-  return res.ok ? res.json() : res.status;
+  return res.json();
 }
 
 export default function Organisation() {

@@ -24,16 +24,18 @@ export async function action({ request }) {
       break;
     case "signup":
       res = await create(userInfos);
+      if (!res.ok) return res.json();
+      res = await login(userInfos);
       break;
     case "checkToken":
       res = await checkToken(formData.get("token"));
-      return res.ok ? res.json() : null;
+      return res.json();
     default:
       throw new Error("unknown form type");
   }
-  if (!res.ok) return null;
-  const { account } = await res.json();
-  localStorage.setItem("account", account);
+  if (!res.ok) return res.json();
+  const { session } = await res.json();
+  localStorage.setItem("account", session.account);
   return redirect("/");
 }
 

@@ -24,14 +24,9 @@ import {
 } from "@/api/organisations/establishments";
 
 export async function loader() {
-  const res = await get();
-  const resEstablishments = await getEstablishments();
-  if (!res.ok || !resEstablishments.ok) {
-    return res.status;
-  }
-  const users = await res.json();
-  const establishments = await resEstablishments.json();
-  return { ...establishments, ...users };
+  const users = await get();
+  const establishments = await getEstablishments();
+  return { ...users.json(), ...establishments.json() };
 }
 
 export async function action({ request }) {
@@ -66,7 +61,7 @@ export async function action({ request }) {
     default:
       throw new Error("Missing type for action");
   }
-  return res.ok ? res.json() : res.status;
+  return res.json();
 }
 
 const UploadUsersDialog = ({ onClose, open }) => {

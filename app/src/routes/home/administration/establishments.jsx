@@ -18,8 +18,9 @@ import {
 
 export async function loader() {
   const res = await get();
-  return res.ok ? res.json() : false;
+  return res.json();
 }
+
 export async function action({ request }) {
   const formData = await request.formData();
   let res;
@@ -36,7 +37,7 @@ export async function action({ request }) {
     default:
       throw new Error("unmatched action type");
   }
-  return res.ok ? res.json() : false;
+  return res.json();
 }
 
 const EstablishmentDialog = ({ type, onClose, open, establishment }) => {

@@ -18,7 +18,7 @@ exports.login = async (req, res, next) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       secure: process.env.NODE_ENV === "production",
     });
-    res.status(201).json({ session: token });
+    res.status(201).json({ session: { token, account: account.id } });
   } catch (err) {
     next(err);
   }

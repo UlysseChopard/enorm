@@ -9,7 +9,7 @@ exports.getByEmail = (email) =>
 
 exports.get = (id) =>
   db.query(
-    "SELECT id, email, firstname, lastname, gender, superuser FROM accounts WHERE id = $1",
+    "SELECT a.id, a.email, a.firstname, a.lastname, a.gender, a.superuser, om.organisation, om.account FROM accounts AS a LEFT JOIN organisations_members AS om ON a.email = om.email WHERE a.id = $1",
     [id]
   );
 

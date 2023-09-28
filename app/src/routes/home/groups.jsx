@@ -19,14 +19,14 @@ import { get, create } from "@/api/organisations/working-groups";
 
 export async function loader() {
   const res = await get();
-  return res.ok ? res.json() : false;
+  return res.json();
 }
 
 export async function action({ request }) {
   const formData = await request.formData();
   const group = Object.fromEntries(formData);
   const res = await create(group);
-  return res.ok ? res.json() : res.status;
+  return res.json();
 }
 
 const CreateModal = ({ open, onClose }) => {
@@ -97,7 +97,7 @@ const createColumns = (t) => [
 
 export default function Groups() {
   const { groups } = useLoaderData();
-  const createdGroup = useActionData();
+  const { group } = useActionData();
   const [sorting, setSorting] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
@@ -114,8 +114,8 @@ export default function Groups() {
   });
 
   useEffect(() => {
-    if (createdGroup?.group) setCreateModal(false);
-  }, [createdGroup]);
+    if (group) setCreateModal(false);
+  }, [group]);
 
   return (
     <>

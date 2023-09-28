@@ -15,7 +15,7 @@ import { find, remove } from "@/api/organisations/working-groups";
 
 export const loader = async ({ params }) => {
   const res = await find(params.id);
-  return res.ok ? res.json() : false;
+  return res.json();
 };
 
 export const action = async ({ params, request }) => {
@@ -24,10 +24,10 @@ export const action = async ({ params, request }) => {
   switch (formData.get("type")) {
     case "register":
       res = await requestRegistration({ wgPath: formData.get("wgPath") });
-      return res.ok ? res.json() : false;
+      return res.json();
     case "delete":
       res = await remove(params.id);
-      return res.ok ? redirect("/groups") : false;
+      return res.ok ? redirect("/groups") : res.json();
   }
 };
 

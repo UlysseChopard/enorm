@@ -18,15 +18,15 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { get, update } from "@/api/accounts";
 import { join, unlink } from "@/api/organisations/members";
 
-const account = localStorage.getItem("account");
-
 export async function loader() {
+  const account = localStorage.getItem("account");
   const res = await get(account);
   if (!res.ok) throw Error("Could not fetch your informations");
   return res.json();
 }
 
 export async function action({ request }) {
+  const account = localStorage.getItem("account");
   const formData = await request.formData();
   if (formData.has("newPassword") && !formData.has("oldPassword"))
     return { message: "Missing old password" };
@@ -135,7 +135,7 @@ const SubForm = ({ name, fields, account, t, xs }) => (
 );
 
 export default function Profile() {
-  const { account, users } = useLoaderData();
+  const { account } = useLoaderData();
   const res = useActionData();
   const submit = useSubmit();
   const { t } = useTranslation(null, { keyPrefix: "profile" });
@@ -186,15 +186,15 @@ export default function Profile() {
           </Grid>
         </Grid>
       </Form>
-      {users.map(({ id, name, account, organisation_id }) => (
-        <div key={id} style={{ display: "flex" }}>
+      {account.organisations.map(({ organisation, toJoin }) => (
+        <div key={organisation} style={{ display: "flex" }}>
           <p>{name}</p>
-          {account === null ? (
+          {toJoin ? (
             <button
               onClick={() => {
                 const formData = new FormData();
                 formData.append("type", "join");
-                formData.append("organisation", organisation_id);
+                formData.append("organisation", organisation);
                 submit(formData, { method: "PUT" });
               }}
             >
@@ -205,7 +205,7 @@ export default function Profile() {
               onClick={() => {
                 const formData = new FormData();
                 formData.append("type", "leave");
-                formData.append("organisation", organisation_id);
+                formData.append("organisation", organisation);
                 submit(formData, { method: "DELETE" });
               }}
             >

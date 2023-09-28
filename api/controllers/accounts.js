@@ -3,10 +3,19 @@ const { Accounts } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
-    const {
-      rows: [account],
-    } = await Accounts.get(res.locals.accountId);
-    if (!account) return res.status(404).json({ message: "Account not found" });
+    const { rows: accounts } = await Accounts.get(res.locals.accountId);
+    if (!accounts.length) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+    const organisations = accounts
+      .map(({ organisation, account }) => ({
+        organisation,
+        toJoin: !account,
+      }))
+      .filter(({ organisation }) => !!organisation);
+    const account = { ...accounts[0], organisations };
+    delete account.organisation;
+    delete account.account;
     res.json({ account });
   } catch (err) {
     next(err);
