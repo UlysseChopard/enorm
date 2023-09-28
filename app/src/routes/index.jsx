@@ -45,14 +45,14 @@ import AccessToken, {
   loader as accessTokenLoader,
 } from "@/routes/access-token";
 import Admin from "@/routes/admin";
-// import Superusers, {
-//   action as superusersAction,
-//   loader as superusersLoader,
-// } from "@/routes/admin/superusers";
-// import Organisations, {
-//   action as organisationsAction,
-//   loader as organisationsLoader,
-// } from "@/routes/admin/organisations";
+import Superusers, {
+  action as superusersAction,
+  loader as superusersLoader,
+} from "@/routes/admin/superusers";
+import Organisations, {
+  action as organisationsAction,
+  loader as organisationsLoader,
+} from "@/routes/admin/organisations";
 
 export default [
   {
@@ -143,20 +143,20 @@ export default [
     path: "/admin",
     element: <Admin />,
     errorElement: <ErrorPage />,
-    // children: [
-    //   {
-    //     path: "/organisations",
-    //     element: <Organisations />,
-    //     loader: organisationsLoader,
-    //     action: organisationsAction,
-    //   },
-    //   {
-    //     path: "/superusers",
-    //     element: <Superusers />,
-    //     loader: superusersLoader,
-    //     action: superusersAction,
-    //   },
-    // ],
+    children: [
+      {
+        path: "organisations",
+        element: <Organisations />,
+        loader: organisationsLoader,
+        action: organisationsAction,
+      },
+      {
+        path: "superusers",
+        element: <Superusers />,
+        loader: superusersLoader,
+        action: superusersAction,
+      },
+    ],
   },
   {
     path: "/reset-password",
