@@ -8,17 +8,23 @@ const dbNames = {
 
 exports.hasRole =
   (...roles) =>
-  (req, res, next) => {
+  async (req, res, next) => {
     try {
       const {
         rows: [userRoles],
-      } = OrganisationsMembers.getRoles(
+      } = await OrganisationsMembers.getRoles(
         req.params.organisation,
         res.locals.accountId
       );
-      for (const role of roles) {
-        if (userRoles[dbNames[role]]) return next();
+      if (userRoles) {
+        for (const role of roles) {
+          if (userRoles[dbNames[role]]) return next();
+        }
       }
+      const {
+        rows: [account],
+      } = await Accounts.get(res.locals.accountId);
+      if (account.superuser) return next();
       return res.status(403).json({ message: `Roles in ${roles} required` });
     } catch (err) {
       next(err);
