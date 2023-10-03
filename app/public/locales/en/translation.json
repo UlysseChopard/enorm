@@ -150,5 +150,11 @@
     "admin": "Administrator",
     "manager": "Manager",
     "expert": "Expert"
+  },
+  "superusers": {
+    "create": "Add a superuser",
+    "email": "Email",
+    "name": "Name",
+    "remove": "Delete"
   }
 }
