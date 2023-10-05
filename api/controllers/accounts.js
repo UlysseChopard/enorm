@@ -81,7 +81,7 @@ exports.upsert = async (req, res, next) => {
     const {
       rows: [account],
     } = await Accounts.upsert({ ...req.body, hash });
-    res.status(201).json({ account });
+    res.status(200).json({ account });
   } catch (err) {
     next(err);
   }

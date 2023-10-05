@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 
 import { get, create, remove } from "@/api/admin/organisations";
-import { create as createAccount } from "@/api/accounts";
+import { upsert } from "@/api/accounts";
 
 export const loader = async () => {
   const res = await get();
@@ -21,8 +21,8 @@ export const loader = async () => {
 export const action = async ({ request }) => {
   const formData = await request.formData();
   if (formData.get("type") === "create") {
-    const { account } = await createAccount(Object.fromEntries(formData)).then(
-      (res) => res.json()
+    const { account } = await upsert(Object.fromEntries(formData)).then((res) =>
+      res.json()
     );
     const { organisation } = await create({ account: account.id }).then((res) =>
       res.json()
