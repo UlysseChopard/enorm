@@ -1,9 +1,4 @@
-import {
-  // useActionData,
-  useLoaderData,
-  useSubmit,
-  Form,
-} from "react-router-dom";
+import { useLoaderData, useSubmit, Form } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
@@ -43,7 +38,6 @@ const Organisations = () => {
   const submit = useSubmit();
   const [open, setOpen] = useState(false);
   const { organisations } = useLoaderData();
-  // const { organisation, account } = useActionData();
 
   return (
     <>
@@ -98,18 +92,20 @@ const Organisations = () => {
       <table>
         <thead>
           <tr>
-            <th scope="col">{t("email")}</th>
             <th scope="col">{t("name")}</th>
+            <th scope="col">{t("email")}</th>
+            <th scope="col">{t("admin")}</th>
           </tr>
         </thead>
         <tbody>
-          {organisations.map(({ id, email, firstname, lastname }) => {
+          {organisations.map(({ id, name, email, firstname, lastname }) => {
             const formData = new FormData();
             formData.append("id", id);
             formData.append("type", "remove");
             return (
               <tr key={id}>
-                <th scope="row">{email}</th>
+                <th scope="row">{name}</th>
+                <td>{email}</td>
                 <td>{`${firstname} ${lastname}`}</td>
                 <td>
                   <Button

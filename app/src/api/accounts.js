@@ -44,3 +44,11 @@ export const checkToken = (token) =>
 
 // resetPassword ?
 // sendResetPasswordLink ?
+
+export const upsert = (account) => {
+  return fetch(`${apiUrl}api/accounts`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(account),
+  });
+};

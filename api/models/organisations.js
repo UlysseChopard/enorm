@@ -23,3 +23,8 @@ exports.closeByAdmin = (userId, id) =>
 
 exports.remove = (id) =>
   db.query("DELETE FROM organisations WHERE id = $1 RETURNING *", [id]);
+
+exports.get = () =>
+  db.query(
+    "SELECT o.id, o.name, a.firstname, a.lastname, a.email FROM organisations AS o JOIN accounts AS a ON o.admin = a.id"
+  );

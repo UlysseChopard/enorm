@@ -1,8 +1,8 @@
-const { Organisations, OrganisationsMembers } = require("models");
+const { Organisations } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: organisations } = await OrganisationsMembers.getAll();
+    const { rows: organisations } = await Organisations.get();
     res.json({ organisations });
   } catch (err) {
     next(err);

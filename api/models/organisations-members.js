@@ -6,11 +6,6 @@ exports.create = (organisation, email, account) =>
     [organisation, email, account]
   );
 
-exports.getAll = () =>
-  db.query(
-    "SELECT * FROM organisations_members AS om JOIN organisations AS o ON om.organisation = o.id JOIN accounts AS a on om.account = a.id"
-  );
-
 exports.createMany = (organisation, emails) =>
   db.query(
     "INSERT INTO organisations_members (organisation, email) SELECT $1, unnest FROM UNNEST(ARRAY[string_to_array($2, ',')]) ON CONFLICT DO NOTHING RETURNING *",
