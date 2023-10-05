@@ -45,9 +45,6 @@ exports.update = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    if (!req.body.token) {
-      return res.status(422).json({ message: "missing token" });
-    }
     if (!req.body.password) {
       return res.status(422).json({ message: "missing password" });
     }
