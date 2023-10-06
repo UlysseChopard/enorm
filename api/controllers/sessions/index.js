@@ -1,6 +1,14 @@
 const { crypt, jwt, mail } = require("utils");
 const { Accounts } = require("models");
-const { BASE_URL } = process.env;
+const { BASE_URL, NODE_ENV, JWT_RESET_PASSWD_MAX_AGE } = process.env;
+
+const setCookie = (res, token) =>
+  res.cookie(jwt.key, token, {
+    httpOnly: true,
+    maxAge: jwt.maxAge,
+    sameSite: NODE_ENV === "production" ? "None" : "Lax",
+    secure: NODE_ENV === "production",
+  });
 
 exports.login = async (req, res, next) => {
   try {
@@ -12,12 +20,7 @@ exports.login = async (req, res, next) => {
       return res.sendStatus(401);
     }
     const token = jwt.sign({ accountId: account.id });
-    res.cookie(jwt.key, token, {
-      httpOnly: true,
-      maxAge: jwt.maxAge,
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-      secure: process.env.NODE_ENV === "production",
-    });
+    setCookie(res, token);
     res.status(201).json({ session: { token, account: account.id } });
   } catch (err) {
     next(err);
@@ -27,12 +30,7 @@ exports.login = async (req, res, next) => {
 exports.loginWithoutPasswd = (_req, res) => {
   if (!res.locals.accountId) return res.sendStatus(401);
   const token = jwt.sign({ accountId: res.locals.accountId });
-  res.cookie(jwt.key, token, {
-    httpOnly: true,
-    maxAge: jwt.maxAge,
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    secure: process.env.NODE_ENV === "production",
-  });
+  setCookie(res, token);
   res.status(201).json({ session: token });
 };
 
@@ -46,20 +44,18 @@ exports.getStatus = (req, res) =>
     ? res.json({
         session: req.body[jwt.key] || req.headers.authorization?.split(" ")[1],
       })
-    : res.status(401).json({ session: null });
+    : res.status(401).json({ message: "Not authenticated" });
 
 exports.sendMailAccess = async (req, res, next) => {
-  if (!req.body.email)
-    return res.status(400).json({ message: "Missing email property" });
   try {
+    if (!req.body.email) {
+      return res.status(400).json({ message: "Missing email property" });
+    }
     const {
       rows: [account],
     } = await Accounts.getByEmail(req.body.email);
     if (!account) return res.sendStatus(401);
-    const token = jwt.sign(
-      { accountId: account.id },
-      process.env.JWT_RESET_PASSWD_MAX_AGE
-    );
+    const token = jwt.sign({ accountId: account.id }, JWT_RESET_PASSWD_MAX_AGE);
     const resetLink = `${BASE_URL}/access/${encodeURIComponent(
       token
     ).replaceAll(".", "/")}`;

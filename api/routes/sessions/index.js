@@ -6,6 +6,8 @@ const {
   sendMailAccess,
 } = require("controllers/sessions");
 
+const tokens = require("./tokens");
+
 module.exports = ({ Router }) => {
   const router = Router();
   router.get("/", getStatus);
@@ -13,5 +15,6 @@ module.exports = ({ Router }) => {
   router.put("/no-password", loginWithoutPasswd);
   router.put("/", login);
   router.delete("/", logout);
+  router.use("/tokens", tokens({ Router }));
   return router;
 };
