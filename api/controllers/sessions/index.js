@@ -42,7 +42,8 @@ exports.logout = async (req, res) => {
 exports.getStatus = (req, res) =>
   res.locals.accountId
     ? res.json({
-        session: req.body[jwt.key] || req.headers.authorization?.split(" ")[1],
+        session:
+          req.cookies[jwt.key] || req.headers.authorization?.split(" ")[1],
       })
     : res.status(401).json({ message: "Not authenticated" });
 

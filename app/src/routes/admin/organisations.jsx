@@ -12,6 +12,7 @@ import Stack from "@mui/material/Stack";
 
 import { get, create, remove } from "@/api/admin/organisations";
 import { upsert } from "@/api/accounts";
+import { create as getToken } from "@/api/sessions/tokens";
 
 export const loader = async () => {
   const res = await get();
@@ -30,6 +31,9 @@ export const action = async ({ request }) => {
     return { account, organisation };
   } else if (formData.get("type") === "remove") {
     const res = await remove(formData.get("id"));
+    return res.json();
+  } else if (formData.get("type") === "getToken") {
+    const res = await getToken(formData.get("id"));
     return res.json();
   }
 };

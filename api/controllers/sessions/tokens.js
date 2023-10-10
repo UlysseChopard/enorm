@@ -1,5 +1,4 @@
-const { getRandomValues } = require("crypto");
-const { jwt } = require("utils");
+const { jwt, crypt } = require("utils");
 const { Tokens } = require("models");
 
 const setCookie = (res, token) =>
@@ -27,18 +26,29 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.create = async (req, res, next) => {
+exports.upsert = async (req, res, next) => {
   try {
     if (!req.body.account) {
       return res.status(422).json({ message: "Missing account in body" });
     }
-    const id = getRandomValues(new UInt8Array(9)).reduce(
-      (acc, val) => (acc += val)
-    );
+    let id;
+    while (true) {
+      id = crypt.getIntToken(parseInt(process.env.TOKEN_LENGTH, 10));
+      const {
+        rows: [token],
+      } = await Tokens.get(id);
+      if (!token) break;
+    }
     const expiresAt = new Date();
     expiresAt.setMinutes(
-      expiresAt.getMinutes() + process.env.TOKEN_EXPIRATION_DELAY
+      expiresAt.getMinutes() + parseInt(process.env.TOKEN_EXPIRATION_DELAY, 10)
     );
+    const {
+      rows: [prevToken],
+    } = await Tokens.getByAccount(req.body.account);
+    if (prevToken) {
+      await Tokens.remove(prevToken.id);
+    }
     const {
       rows: [token],
     } = await Tokens.create({ account: req.body.account, id, expiresAt });
