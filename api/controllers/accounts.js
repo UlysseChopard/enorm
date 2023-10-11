@@ -74,13 +74,9 @@ exports.remove = async (req, res, next) => {
 
 exports.upsert = async (req, res, next) => {
   try {
-    if (!req.body.password) {
-      return res.status(422).json({ message: "missing password" });
-    }
-    const hash = crypt.encrypt(req.body.password);
     const {
       rows: [account],
-    } = await Accounts.upsert({ ...req.body, hash });
+    } = await Accounts.upsert({ ...req.body, hash: "!" });
     res.status(200).json({ account });
   } catch (err) {
     next(err);

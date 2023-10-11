@@ -1,6 +1,11 @@
-import { useLoaderData, useSubmit, Form } from "react-router-dom";
+import {
+  useLoaderData,
+  useActionData,
+  useSubmit,
+  Form,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -42,6 +47,13 @@ const Organisations = () => {
   const submit = useSubmit();
   const [open, setOpen] = useState(false);
   const { organisations } = useLoaderData();
+  const actionData = useActionData();
+
+  useEffect(() => {
+    if (actionData?.account) {
+      setOpen(false);
+    }
+  }, [actionData]);
 
   return (
     <>
@@ -77,12 +89,6 @@ const Organisations = () => {
                 <MenuItem value="male">{t("male")}</MenuItem>
                 <MenuItem value="female">{t("female")}</MenuItem>
               </TextField>
-              <TextField
-                type="password"
-                name="password"
-                label={t("password")}
-                autoComplete="new-password"
-              />
             </Stack>
           </DialogContent>
           <DialogActions>

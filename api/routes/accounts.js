@@ -9,6 +9,7 @@ const isAccountOwner = (req, res, next) =>
 
 module.exports = ({ Router }) => {
   const router = Router();
+  // a supprimer
   router.post("/", create);
   router.put("/", upsert);
   router.get("/:id", isAccountOwner, get);
