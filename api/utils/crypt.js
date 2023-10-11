@@ -39,5 +39,5 @@ exports.decrypt = (encryptedData) => {
 
 exports.getIntToken = (len) => {
   const baseToken = crypto.randomInt(0, 10 ** len).toString();
-  return baseToken.padStart(len - baseToken.length, "0");
+  return baseToken.padStart(len, "0");
 };
