@@ -173,5 +173,9 @@
     "female": "Female",
     "cancel": "Cancel",
     "submit": "Submit"
+  },
+  "admin": {
+    "organisations": "Organisations",
+    "superusers": "Superusers"
   }
 }

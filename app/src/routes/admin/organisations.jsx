@@ -30,9 +30,9 @@ export const action = async ({ request }) => {
     const { account } = await upsert(Object.fromEntries(formData)).then((res) =>
       res.json()
     );
-    const { organisation } = await create({ account: account.id }).then((res) =>
-      res.json()
-    );
+    const { organisation } = await create({
+      account: account.id,
+    }).then((res) => res.json());
     return { account, organisation };
   } else if (formData.get("type") === "remove") {
     const res = await remove(formData.get("id"));

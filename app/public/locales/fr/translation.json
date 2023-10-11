@@ -173,5 +173,9 @@
     "female": "Femme",
     "cancel": "Annuler",
     "submit": "Envoyer"
+  },
+  "admin": {
+    "organisations": "Organisations",
+    "superusers": "Superutilisateurs"
   }
 }
