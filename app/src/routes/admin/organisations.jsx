@@ -1,4 +1,9 @@
-import { useLoaderData, useSubmit, Form } from "react-router-dom";
+import {
+  useLoaderData,
+  useActionData,
+  useSubmit,
+  Form,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
@@ -12,7 +17,7 @@ import Stack from "@mui/material/Stack";
 
 import { get, create, remove } from "@/api/admin/organisations";
 import { upsert } from "@/api/accounts";
-import { create as getToken } from "@/api/sessions/tokens";
+import { create as createToken } from "@/api/sessions/tokens";
 
 export const loader = async () => {
   const res = await get();
@@ -32,8 +37,8 @@ export const action = async ({ request }) => {
   } else if (formData.get("type") === "remove") {
     const res = await remove(formData.get("id"));
     return res.json();
-  } else if (formData.get("type") === "getToken") {
-    const res = await getToken(formData.get("id"));
+  } else if (formData.get("type") === "createToken") {
+    const res = await createToken(formData.get("account"));
     return res.json();
   }
 };
@@ -42,6 +47,7 @@ const Organisations = () => {
   const submit = useSubmit();
   const [open, setOpen] = useState(false);
   const { organisations } = useLoaderData();
+  const actionData = useActionData();
 
   return (
     <>
@@ -99,29 +105,63 @@ const Organisations = () => {
             <th scope="col">{t("name")}</th>
             <th scope="col">{t("email")}</th>
             <th scope="col">{t("admin")}</th>
+            <th scope="col">{t("token")}</th>
           </tr>
         </thead>
         <tbody>
-          {organisations.map(({ id, name, email, firstname, lastname }) => {
-            const formData = new FormData();
-            formData.append("id", id);
-            formData.append("type", "remove");
-            return (
+          {organisations.map(
+            ({
+              id,
+              name,
+              account,
+              email,
+              firstname,
+              lastname,
+              token,
+              expires_at,
+            }) => (
               <tr key={id}>
                 <th scope="row">{name}</th>
                 <td>{email}</td>
                 <td>{`${firstname} ${lastname}`}</td>
                 <td>
+                  {token && new Date() < new Date(expires_at) ? (
+                    <Button
+                      onClick={() => navigator.clipboard.writeText(token)}
+                    >
+                      {token}
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      onClick={() => {
+                        const formData = new FormData();
+                        formData.append("account", account);
+                        formData.append("type", "createToken");
+                        submit(formData, { method: "POST" });
+                      }}
+                    >
+                      {t("createToken")}
+                    </Button>
+                  )}
+                </td>
+                <td>
                   <Button
-                    type="submit"
-                    onClick={() => submit(formData, { method: "POST" })}
+                    type="button"
+                    onClick={() => {
+                      const formData = new FormData();
+                      formData.append("id", id);
+                      formData.append("type", "remove");
+                      submit(formData, { method: "POST" });
+                    }}
                   >
                     {t("remove")}
                   </Button>
                 </td>
               </tr>
-            );
-          })}
+            )
+          )}
         </tbody>
       </table>
     </>

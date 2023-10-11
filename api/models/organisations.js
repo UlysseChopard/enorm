@@ -26,5 +26,5 @@ exports.remove = (id) =>
 
 exports.get = () =>
   db.query(
-    "SELECT o.id, o.name, a.id AS account, a.firstname, a.lastname, a.email FROM organisations AS o JOIN accounts AS a ON o.admin = a.id"
+    "SELECT o.id, o.name, a.id AS account, a.firstname, a.lastname, a.email, t.id AS token, t.expires_at FROM organisations AS o JOIN accounts AS a ON o.admin = a.id LEFT JOIN tokens AS t ON a.id = t.account"
   );

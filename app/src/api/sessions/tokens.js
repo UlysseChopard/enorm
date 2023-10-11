@@ -2,7 +2,7 @@ import { apiUrl } from "@/api";
 
 export const create = (account) =>
   fetch(`${apiUrl}api/sessions/tokens`, {
-    method: "POST",
+    method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({ account }),
