@@ -52,7 +52,7 @@ exports.upsert = async (req, res, next) => {
     const {
       rows: [token],
     } = await Tokens.create({ account: req.body.account, id, expiresAt });
-    res.status(401).json({ token });
+    res.status(201).json({ token });
   } catch (err) {
     next(err);
   }
