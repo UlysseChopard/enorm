@@ -1,9 +1,4 @@
-import {
-  useLoaderData,
-  useActionData,
-  useSubmit,
-  Form,
-} from "react-router-dom";
+import { useLoaderData, useSubmit, Form } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
@@ -47,7 +42,6 @@ const Organisations = () => {
   const submit = useSubmit();
   const [open, setOpen] = useState(false);
   const { organisations } = useLoaderData();
-  const actionData = useActionData();
 
   return (
     <>
