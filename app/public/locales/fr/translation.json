@@ -156,5 +156,22 @@
     "email": "Adresse mail",
     "name": "Nom",
     "remove": "Supprimer"
+  },
+  "organisations": {
+    "create": "Créer",
+    "name": "Nom",
+    "email": "Adresse mail",
+    "admin": "Administrateur",
+    "token": "Code d'accès",
+    "remove": "Supprimer",
+    "createToken": "Créer un token",
+    "createTitle": "Création",
+    "firstname": "Prénom",
+    "lastname": "Nom",
+    "gender": "Civilité",
+    "male": "Homme",
+    "female": "Femme",
+    "cancel": "Annuler",
+    "submit": "Envoyer"
   }
 }

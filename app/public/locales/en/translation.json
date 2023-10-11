@@ -156,5 +156,22 @@
     "email": "Email",
     "name": "Name",
     "remove": "Delete"
+  },
+  "organisations": {
+    "create": "Create",
+    "name": "Name",
+    "email": "Email",
+    "admin": "Administrator",
+    "token": "Access token",
+    "remove": "Delete",
+    "createToken": "Create a token",
+    "createTitle": "Creation",
+    "firstname": "First name",
+    "lastname": "Family name",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "cancel": "Cancel",
+    "submit": "Submit"
   }
 }
