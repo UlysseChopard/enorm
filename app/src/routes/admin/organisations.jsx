@@ -16,7 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 
 import { get, create, remove } from "@/api/admin/organisations";
-import { upsert } from "@/api/accounts";
+import { create as createAccount } from "@/api/accounts";
 import { create as createToken } from "@/api/sessions/tokens";
 
 export const loader = async () => {
@@ -27,8 +27,8 @@ export const loader = async () => {
 export const action = async ({ request }) => {
   const formData = await request.formData();
   if (formData.get("type") === "create") {
-    const { account } = await upsert(Object.fromEntries(formData)).then((res) =>
-      res.json()
+    const { account } = await createAccount(Object.fromEntries(formData)).then(
+      (res) => res.json()
     );
     const { organisation } = await create({
       account: account.id,
@@ -89,6 +89,7 @@ const Organisations = () => {
                 <MenuItem value="male">{t("male")}</MenuItem>
                 <MenuItem value="female">{t("female")}</MenuItem>
               </TextField>
+              <input type="hidden" name="isAdmin" value={true} />
             </Stack>
           </DialogContent>
           <DialogActions>

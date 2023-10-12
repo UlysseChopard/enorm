@@ -14,6 +14,14 @@ export const login = (infos) => {
   });
 };
 
+export const loginToken = (token, infos) =>
+  fetch(`${apiUrl}api/sessions/${token}`, {
+    method: "POST",
+    credentials: "include",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(infos),
+  });
+
 export const logout = () => {
   return fetch(`${apiUrl}api/sessions`, {
     credentials: "include",

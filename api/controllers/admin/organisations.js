@@ -1,4 +1,4 @@
-const { Organisations } = require("models");
+const { Organisations, OrganisationsMembers, Accounts } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
@@ -15,12 +15,30 @@ exports.create = async (req, res, next) => {
       return res.status(422).json({ message: "missing account in body" });
     }
     const {
+      rows: [account],
+    } = await Accounts.get(req.body.account);
+    if (!account) {
+      return res.status(404).json({ message: "account not found" });
+    }
+    const {
       rows: [organisation],
     } = await Organisations.create(req.body.account);
     if (!organisation) {
       return res
         .status(500)
         .json({ message: "an error occurred while creating organisation" });
+    }
+    const {
+      rows: [member],
+    } = await OrganisationsMembers.create(
+      organisation.id,
+      account.email,
+      account.id
+    );
+    if (!member) {
+      return res
+        .status(500)
+        .json({ message: "could not create first member of organisation" });
     }
     res.status(201).json({ organisation });
   } catch (err) {

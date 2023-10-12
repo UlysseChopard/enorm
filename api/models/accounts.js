@@ -57,16 +57,3 @@ exports.searchText = (query, limit = 100) =>
       limit
     )
   );
-
-exports.upsert = ({
-  email,
-  hash,
-  firstname,
-  lastname,
-  gender,
-  superuser = false,
-}) =>
-  db.query(
-    "INSERT INTO accounts (email, hash, firstname, lastname, gender, superuser) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (email) DO UPDATE SET hash = excluded.hash, firstname = excluded.firstname, lastname = excluded.lastname, gender = excluded.gender, superuser = excluded.superuser RETURNING id, email, firstname, lastname, gender, superuser",
-    [email, hash, firstname, lastname, gender, superuser]
-  );

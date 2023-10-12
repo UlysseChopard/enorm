@@ -8,13 +8,6 @@ export const create = (account) =>
     body: JSON.stringify({ account }),
   });
 
-export const login = (token) =>
-  fetch(`${apiUrl}api/sessions/tokens/${token}`, {
-    method: "POST",
-    credentials: "include",
-    headers: { Accept: "application/json" },
-  });
-
 export const remove = (token) =>
   fetch(`${apiUrl}api/sessions/tokens/${token}`, {
     method: "DELETE",

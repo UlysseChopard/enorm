@@ -1,30 +1,5 @@
-const { jwt, crypt } = require("utils");
+const { crypt } = require("utils");
 const { Tokens } = require("models");
-
-const setCookie = (res, token) =>
-  res.cookie(jwt.key, token, {
-    httpOnly: true,
-    maxAge: jwt.maxAge,
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    secure: process.env.NODE_ENV === "production",
-  });
-
-exports.login = async (req, res, next) => {
-  try {
-    await Tokens.removeExpired();
-    const {
-      rows: [tokenFound],
-    } = await Tokens.remove(req.params.id);
-    if (!tokenFound) {
-      return res.status(404).json({ message: "Token not found" });
-    }
-    const token = jwt.sign({ accountId: tokenFound.account });
-    setCookie(res, token);
-    res.status(201).json({ token });
-  } catch (err) {
-    next(err);
-  }
-};
 
 exports.upsert = async (req, res, next) => {
   try {

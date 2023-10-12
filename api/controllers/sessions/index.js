@@ -1,5 +1,5 @@
 const { crypt, jwt, mail } = require("utils");
-const { Accounts } = require("models");
+const { Accounts, Tokens } = require("models");
 const { BASE_URL, NODE_ENV, JWT_RESET_PASSWD_MAX_AGE } = process.env;
 
 const setCookie = (res, token) =>
@@ -9,6 +9,29 @@ const setCookie = (res, token) =>
     sameSite: NODE_ENV === "production" ? "None" : "Lax",
     secure: NODE_ENV === "production",
   });
+
+exports.loginToken = async (req, res, next) => {
+  try {
+    await Tokens.removeExpired();
+    const {
+      rows: [tokenFound],
+    } = await Tokens.remove(req.params.id);
+    if (!tokenFound) {
+      return res.status(404).json({ message: "Token not found" });
+    }
+    const {
+      rows: [account],
+    } = await Accounts.getByEmail(req.body.email);
+    if (account.id !== tokenFound.account) {
+      return res.status(401).json({ message: "token does not match email" });
+    }
+    const token = jwt.sign({ accountId: tokenFound.account });
+    setCookie(res, token);
+    res.status(201).json({ session: { token, account: tokenFound.account } });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.login = async (req, res, next) => {
   try {

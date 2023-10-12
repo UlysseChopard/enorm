@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField";
@@ -14,24 +14,26 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 
-const SignupDialog = ({ onClose, open = true, member }) => {
+const SignupDialog = ({ onClose, open = true, account }) => {
   const { t } = useTranslation(null, { keyPrefix: "signup" });
-  const steps = [t("token"), t("informations")];
   const [activeStep, setActiveStep] = useState(0);
-  if (member) {
-    setActiveStep(1);
-  }
+  const steps = [t("token"), t("informations")];
+  useEffect(() => {
+    if (account) {
+      setActiveStep(1);
+    }
+  }, [account]);
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
-      <Form method="POST" autoComplete="on">
-        <DialogTitle>{t("title")}</DialogTitle>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, idx) => (
-            <Step key={label} completed={activeStep > idx}>
-              <StepButton>{label}</StepButton>
-            </Step>
-          ))}
-        </Stepper>
+      <DialogTitle>{t("title")}</DialogTitle>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, idx) => (
+          <Step key={label} completed={activeStep > idx}>
+            <StepButton>{label}</StepButton>
+          </Step>
+        ))}
+      </Stepper>
+      <Form autoComplete="on" method="POST">
         <DialogContent>
           <Stack spacing={2}>
             {activeStep === 0 && (
@@ -44,7 +46,14 @@ const SignupDialog = ({ onClose, open = true, member }) => {
                   fullWidth
                 />
                 <FormHelperText>{t("useMailToken")}</FormHelperText>
-                <input type="hidden" name="type" value="checkToken" />
+                <TextField
+                  required
+                  label={t("email")}
+                  name="email"
+                  type="email"
+                  fullwWidth
+                />
+                <input type="hidden" name="type" value="loginToken" />
               </>
             )}
             {activeStep === 1 && (
@@ -82,12 +91,8 @@ const SignupDialog = ({ onClose, open = true, member }) => {
                   <MenuItem value="male">{t("male")}</MenuItem>
                   <MenuItem value="female">{t("female")}</MenuItem>
                 </TextField>
-                <input type="hidden" name="type" value="signup" />
-                <input
-                  type="hidden"
-                  name="organisation"
-                  value={member.organisation}
-                />
+                <input type="hidden" name="type" value="update" />
+                <input type="hidden" name="account" value={account} />
               </>
             )}
           </Stack>

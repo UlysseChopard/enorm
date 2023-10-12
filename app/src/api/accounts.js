@@ -35,20 +35,5 @@ export const close = (account) => {
   });
 };
 
-export const checkToken = (token) =>
-  fetch(`${apiUrl}api/accounts`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ token }),
-  });
-
 // resetPassword ?
 // sendResetPasswordLink ?
-
-export const upsert = (account) => {
-  return fetch(`${apiUrl}api/accounts`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(account),
-  });
-};
