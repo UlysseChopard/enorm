@@ -18,6 +18,7 @@ import Stack from "@mui/material/Stack";
 import { get, create, remove } from "@/api/admin/organisations";
 import { create as createAccount } from "@/api/accounts";
 import { create as createToken } from "@/api/sessions/tokens";
+import { allow } from "@/api/organisations/members/roles";
 
 export const loader = async () => {
   const res = await get();
@@ -33,7 +34,8 @@ export const action = async ({ request }) => {
     const { organisation } = await create({
       account: account.id,
     }).then((res) => res.json());
-    return { account, organisation };
+    const { role } = await allow(account.id, "admin", organisation.id);
+    return { account, organisation, role };
   } else if (formData.get("type") === "remove") {
     const res = await remove(formData.get("id"));
     return res.json();
