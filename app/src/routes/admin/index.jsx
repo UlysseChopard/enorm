@@ -9,8 +9,8 @@ const Admin = () => {
   const { t } = useTranslation(null, { keyPrefix: "admin" });
   const { pathname } = useLocation();
   return (
-    <>
-      <Box>
+    <Container sx={{ margin: "10px", width: "100%" }}>
+      <Box sx={{ width: "fit-content", margin: "auto" }}>
         <Tabs value={pathname}>
           <Tab
             label={t("organisations")}
@@ -26,10 +26,10 @@ const Admin = () => {
           />
         </Tabs>
       </Box>
-      <Container>
+      <Container sx={{ margin: "10px" }}>
         <Outlet />
       </Container>
-    </>
+    </Container>
   );
 };
 
