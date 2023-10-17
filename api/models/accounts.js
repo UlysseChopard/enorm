@@ -49,6 +49,11 @@ exports.removeMany = (ids) =>
     [ids.join(",")]
   );
 
+exports.removeOrphans = () =>
+  db.query(
+    "DELETE FROM accounts WHERE NOT superuser AND id NOT IN (SELECT account FROM organisations_members)"
+  );
+
 exports.searchText = (query, limit = 100) =>
   db.query(
     format(

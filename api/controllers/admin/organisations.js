@@ -51,6 +51,7 @@ exports.remove = async (req, res, next) => {
     const {
       rows: [organisation],
     } = await Organisations.remove(req.params.id);
+    await Accounts.removeOrphans();
     res.json({ organisation });
   } catch (err) {
     next(err);
