@@ -50,3 +50,7 @@
 - [ ] 145fb35b44567f create admin interface ?  
 - [ ] 9c1adc83d3a722 fix api calls in front  
 - [ ] 47c1942d8644e1 use only code for account creation  
+- [ ] fd8ba71d907a14 create organisation-member on org creation  
+- [ ] e0eadb1e9d5454 delete users on org deletion  
+- [ ] 10998a09f1ddd4 give admin role to first org member  
+- [ ] 22b66506b3621e move tokens to their own api  
