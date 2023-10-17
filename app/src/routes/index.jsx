@@ -58,7 +58,6 @@ export default [
   {
     path: "/",
     element: <Home />,
-    shouldRevalidate: () => false,
     errorElement: <ErrorPage />,
     loader: homeLoader,
     children: [
