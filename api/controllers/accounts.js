@@ -1,21 +1,22 @@
 const { crypt } = require("utils");
-const { Accounts } = require("models");
+const { Accounts, OrganisationsMembers } = require("models");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: accounts } = await Accounts.get(res.locals.accountId);
-    if (!accounts.length) {
+    const {
+      rows: [account],
+    } = await Accounts.get(res.locals.accountId);
+    if (!account) {
       return res.status(404).json({ message: "Account not found" });
     }
-    const organisations = accounts
-      .map(({ organisation, account }) => ({
-        organisation,
-        toJoin: !account,
-      }))
-      .filter(({ organisation }) => !!organisation);
-    const account = { ...accounts[0], organisations };
-    delete account.organisation;
-    delete account.account;
+    const { rows: organisations } = await OrganisationsMembers.getByEmail(
+      account.email
+    );
+    account.organisations = organisations.map(({ id, name, account }) => ({
+      id,
+      name,
+      toJoin: !account,
+    }));
     res.json({ account });
   } catch (err) {
     next(err);
@@ -30,6 +31,9 @@ exports.update = async (req, res, next) => {
     const hash = req.body.password
       ? crypt.encrypt(req.body.password)
       : prev.hash;
+    if (!hash) {
+      return res.status(422).json({ message: "missing password" });
+    }
     const {
       rows: [account],
     } = await Accounts.update(res.locals.accountId, {

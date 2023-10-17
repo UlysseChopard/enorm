@@ -7,7 +7,7 @@ const {
 const { hasRole } = require("middlewares/roles");
 
 module.exports = ({ Router }) => {
-  const router = Router();
+  const router = Router({ mergeParams: true });
   router.get("/", hasRole("admin", "manager"), get);
   router.get("/:wg", hasRole("admin", "manager"), find);
   router.delete("/:wg", hasRole("admin", "manager"), remove);

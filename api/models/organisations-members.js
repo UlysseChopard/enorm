@@ -1,9 +1,16 @@
 const { db } = require("utils");
 
-exports.create = (organisation, email, account) =>
+exports.create = ({
+  organisation,
+  email,
+  account,
+  isAdmin = false,
+  isExpert = false,
+  isManager = false,
+}) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, email, account) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *",
-    [organisation, email, account]
+    "INSERT INTO organisations_members (organisation, email, account, is_admin, is_expert, is_manager) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT DO NOTHING RETURNING *",
+    [organisation, email, account, isAdmin, isExpert, isManager]
   );
 
 exports.createMany = (organisation, emails) =>
@@ -81,7 +88,7 @@ exports.setMemberAccount = (account, organisation) =>
 
 exports.getByEmail = (email) =>
   db.query(
-    "SELECT u.id, u.account, o.name, o.id AS organisation_id FROM organisations_members AS u JOIN organisations AS o ON u.organisation = o.id WHERE u.email = $1",
+    "SELECT o.id, o.name, om.account FROM organisations_members AS om RIGHT JOIN organisations AS o ON om.organisation = o.id WHERE om.email = $1",
     [email]
   );
 

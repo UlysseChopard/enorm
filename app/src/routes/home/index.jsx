@@ -1,5 +1,4 @@
 import { Outlet, redirect, useLoaderData } from "react-router-dom";
-import { useState } from "react";
 import Container from "@mui/material/Container";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -12,21 +11,24 @@ import LeftNavbar from "@/components/LeftNavbar";
 import { get } from "@/api/accounts";
 
 export async function loader() {
-  const account = localStorage.getItem("account");
-  const res = await get(account);
+  const storedAccount = localStorage.getItem("account");
+  const res = await get(storedAccount);
   if (!res.ok) return redirect("/login");
-  return res.json();
+  const { account } = await res.json();
+  const storedOrganisation = localStorage.getItem("organisation");
+  if (
+    !storedOrganisation ||
+    !account.organisations.includes(storedOrganisation)
+  ) {
+    localStorage.setItem("organisation", account.organisations[0].id);
+  }
+  return { account };
 }
 
 export default function Home() {
   const { account } = useLoaderData();
-  const [organisation, setOrganisation] = useState(account.organisations?.[0]);
-  if (organisation && !localStorage.getItem("organisation")) {
-    localStorage.setItem("organisation", organisation);
-  }
   const handleChange = (e) => {
     localStorage.setItem("organisation", e.target.value);
-    setOrganisation(e.target.value);
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -52,11 +54,11 @@ export default function Home() {
               sx={{
                 backgroundColor: "#e7f1fc",
               }}
-              value={organisation}
+              value={localStorage.getItem("organisation")}
               onChange={handleChange}
             >
-              {account.organisations.map(({ organisation_id, name }) => (
-                <MenuItem key={organisation_id} value={organisation_id}>
+              {account.organisations.map(({ id, name }) => (
+                <MenuItem key={id} value={id}>
                   {name}
                 </MenuItem>
               ))}

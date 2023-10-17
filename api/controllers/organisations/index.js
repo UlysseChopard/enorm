@@ -8,7 +8,7 @@ exports.replace = async (req, res, next) => {
       name: req.body?.name,
       admin: res.locals.accountId,
     });
-    res.status(201).json({ organisation });
+    res.json({ organisation });
   } catch (err) {
     next(err);
   }
