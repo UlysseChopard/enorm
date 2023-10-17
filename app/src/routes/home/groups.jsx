@@ -97,7 +97,7 @@ const createColumns = (t) => [
 
 export default function Groups() {
   const { groups } = useLoaderData();
-  const { group } = useActionData();
+  const actionData = useActionData();
   const [sorting, setSorting] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
@@ -114,8 +114,8 @@ export default function Groups() {
   });
 
   useEffect(() => {
-    if (group) setCreateModal(false);
-  }, [group]);
+    if (actionData?.group) setCreateModal(false);
+  }, [actionData]);
 
   return (
     <>
