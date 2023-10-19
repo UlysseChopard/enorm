@@ -17,8 +17,8 @@ export async function loader() {
   const { account } = await res.json();
   const storedOrganisation = localStorage.getItem("organisation");
   if (
-    !storedOrganisation ||
-    !account.organisations.includes(storedOrganisation)
+    !account.superuser &&
+    (!storedOrganisation || !account.organisations.includes(storedOrganisation))
   ) {
     localStorage.setItem("organisation", account.organisations[0].id);
   }

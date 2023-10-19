@@ -31,6 +31,12 @@ exports.create = ({
     [email, hash, firstname, lastname, gender, superuser]
   );
 
+exports.createMany = (emails, password) =>
+  db.query(
+    "INSERT INTO accounts (email, password) SELECT unnest, $1 FROM UNNEST(ARRA[string_to_array($2, ',')]) ON CONFLICT DO NOTHING RETURNING *",
+    [emails.join(","), password]
+  );
+
 exports.update = (id, { email, hash, firstname, lastname, gender }) =>
   db.query(
     "UPDATE accounts SET email = $1, hash = $2, firstname = $3, lastname = $4, gender = $5 WHERE id = $6 RETURNING id, email, firstname, lastname, gender, superuser",

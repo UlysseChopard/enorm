@@ -3,7 +3,7 @@ const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
 const { regex, mail } = require("utils");
-const { Organisations, OrganisationsMembers } = require("models");
+const { Organisations, OrganisationsMembers, Accounts } = require("models");
 const { BASE_URL } = process.env;
 
 exports.add = async (req, res, next) => {
@@ -55,9 +55,10 @@ exports.add = async (req, res, next) => {
       }
       throw err;
     }
-    const { rows: inserted } = await OrganisationsMembers.createMany(
+    const { rows: accounts } = await Accounts.createMany(received, "!");
+    const { rows: created } = await OrganisationsMembers.createMany(
       organisation.id,
-      received
+      accounts
     );
     // for (const invited of inserted) {
     //   await mail.send({
@@ -66,7 +67,7 @@ exports.add = async (req, res, next) => {
     //     text: `Please click here to join ${organisation.name} on Enorm: ${BASE_URL}. Your token is ${invited.token}`,
     //   });
     // }
-    res.json({ inserted, received });
+    res.json({ members: { created, received } });
   } catch (err) {
     next(err);
   }

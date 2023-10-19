@@ -13,10 +13,14 @@ exports.create = ({
     [organisation, email, account, isAdmin, isExpert, isManager]
   );
 
-exports.createMany = (organisation, emails) =>
+exports.createMany = (organisation, accounts) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, email) SELECT $1, unnest FROM UNNEST(ARRAY[string_to_array($2, ',')]) ON CONFLICT DO NOTHING RETURNING *",
-    [organisation, emails.join(",")]
+    "INSERT INTO organisations_members (organisation, email, account) SELECT $1, u.email, u.account FROM UNNEST(ARRAY[string_to_array($2, ',')], '{$3}'::uuid[]) AS u (email, account) ON CONFLICT DO NOTHING RETURNING *",
+    [
+      organisation,
+      accounts.map(({ email }) => email).join(","),
+      accounts.map(({ id }) => id).join(","),
+    ]
   );
 
 exports.getByOrganisation = (organisation) =>
