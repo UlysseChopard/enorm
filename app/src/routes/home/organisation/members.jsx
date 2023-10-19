@@ -143,7 +143,7 @@ const UploadUsersDialog = ({ onClose, open }) => {
   );
 };
 
-export default function Administration() {
+export default function Members() {
   const { t } = useTranslation(null, { keyPrefix: "users" });
   const { establishments, users } = useLoaderData();
   const submit = useSubmit();

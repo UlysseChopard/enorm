@@ -42,8 +42,8 @@ const MENU = [
   {
     icon: <MenuBookIcon />,
     text: "administration",
-    target: "administration",
-    menu: ["organisation", "users", "establishments"],
+    target: "organisation",
+    menu: ["organisation", "members", "establishments"],
   },
 ];
 

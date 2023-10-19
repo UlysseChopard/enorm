@@ -26,15 +26,15 @@ import Registration, {
 import Establishments, {
   loader as establishmentsLoader,
   action as establishmentsAction,
-} from "@/routes/home/administration/establishments";
-import Users, {
-  loader as usersLoader,
-  action as usersAction,
-} from "@/routes/home/administration/users";
+} from "@/routes/home/organisation/establishments";
+import Members, {
+  loader as membersLoader,
+  action as membersAction,
+} from "@/routes/home/organisation/members";
 import Organisation, {
   loader as organisationLoader,
   action as organisationAction,
-} from "@/routes/home/administration/organisation";
+} from "@/routes/home/organisation/organisation";
 import ErrorPage from "@/routes/error-page";
 import Login, { action as loginAction } from "@/routes/login";
 import Logout, { loader as logoutLoader } from "@/routes/logout";
@@ -102,7 +102,7 @@ export default [
         action: registrationAction,
       },
       {
-        path: "administration",
+        path: "organisation",
         children: [
           {
             path: "organisation",
@@ -111,10 +111,10 @@ export default [
             action: organisationAction,
           },
           {
-            path: "users",
-            element: <Users />,
-            loader: usersLoader,
-            action: usersAction,
+            path: "members",
+            element: <Members />,
+            loader: membersLoader,
+            action: membersAction,
           },
           {
             path: "establishments",
