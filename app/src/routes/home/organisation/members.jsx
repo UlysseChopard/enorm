@@ -17,6 +17,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import { get, add, unlink } from "@/api/organisations/members";
 import { allow, disallow } from "@/api/organisations/members/roles";
+import { create } from "@/api/sessions/tokens";
 import {
   addUser,
   removeUser,
@@ -57,6 +58,9 @@ export async function action({ request }) {
       break;
     case "addUser":
       res = await addUser(formData.get("user"), formData.get("establishment"));
+      break;
+    case "createToken":
+      res = await create(formData.get("account"));
       break;
     default:
       throw new Error("Missing type for action");
@@ -247,6 +251,26 @@ export default function Members() {
                     <input type="hidden" name="user" value={user.id} />
                     <Button type="submit">{t("unlink")}</Button>
                   </Form>
+                  {user.token &&
+                  new Date() < new Date(user.token_expires_at) ? (
+                    <Button
+                      onClick={() => navigator.clipboard.writeText(user.token)}
+                    >
+                      {user.token}
+                    </Button>
+                  ) : (
+                    <Form method="PUT">
+                      <input type="hidden" name="type" value="createToken" />
+                      <input
+                        type="hidden"
+                        name="account"
+                        value={user.account}
+                      />
+                      <Button type="submit" variant="contained">
+                        {t("createToken")}
+                      </Button>
+                    </Form>
+                  )}
                 </td>
               </tr>
             );

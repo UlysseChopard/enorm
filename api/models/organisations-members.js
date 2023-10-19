@@ -21,7 +21,7 @@ exports.createMany = (organisation, emails) =>
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT u.*, eu.establishment FROM organisations_members AS u LEFT JOIN establishments_users AS eu ON u.id = eu.user WHERE u.organisation = $1",
+    "SELECT om.*, a.id AS account, t.id AS token, t.expires_at AS token_expires_at, eu.establishment FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user JOIN accounts AS a ON om.account = a.id JOIN tokens AS t ON a.id = t.account WHERE om.organisation = $1",
     [organisation]
   );
 
