@@ -33,8 +33,8 @@ exports.create = ({
 
 exports.createMany = (emails, password) =>
   db.query(
-    "INSERT INTO accounts (email, password) SELECT unnest, $1 FROM UNNEST(ARRA[string_to_array($2, ',')]) ON CONFLICT DO NOTHING RETURNING *",
-    [emails.join(","), password]
+    "INSERT INTO accounts (email, hash) SELECT u.*, $1 FROM UNNEST($2::text[]) AS u ON CONFLICT DO NOTHING RETURNING *",
+    [password, emails]
   );
 
 exports.update = (id, { email, hash, firstname, lastname, gender }) =>

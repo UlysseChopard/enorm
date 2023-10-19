@@ -15,17 +15,17 @@ exports.create = ({
 
 exports.createMany = (organisation, accounts) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, email, account) SELECT $1, u.email, u.account FROM UNNEST(ARRAY[string_to_array($2, ',')], '{$3}'::uuid[]) AS u (email, account) ON CONFLICT DO NOTHING RETURNING *",
+    "INSERT INTO organisations_members (organisation, email, account) SELECT $1, u.email, u.account FROM UNNEST($2::text[], $3::uuid[]) AS u (email, account) ON CONFLICT DO NOTHING RETURNING *",
     [
       organisation,
-      accounts.map(({ email }) => email).join(","),
-      accounts.map(({ id }) => id).join(","),
+      accounts.map(({ email }) => email),
+      accounts.map(({ id }) => id),
     ]
   );
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT om.*, a.id AS account, t.id AS token, t.expires_at AS token_expires_at, eu.establishment FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user JOIN accounts AS a ON om.account = a.id JOIN tokens AS t ON a.id = t.account WHERE om.organisation = $1",
+    "SELECT om.*, a.id AS account, t.id AS token, t.expires_at AS token_expires_at, eu.establishment FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN accounts AS a ON om.account = a.id LEFT JOIN tokens AS t ON a.id = t.account WHERE om.organisation = $1",
     [organisation]
   );
 
