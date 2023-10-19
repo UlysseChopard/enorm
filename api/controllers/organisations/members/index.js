@@ -59,13 +59,13 @@ exports.add = async (req, res, next) => {
       organisation.id,
       received
     );
-    for (const invited of inserted) {
-      await mail.send({
-        recipient: invited.email,
-        subject: `You have been invitated to join ${organisation.name} on Enorm`,
-        text: `Please click here to join ${organisation.name} on Enorm: ${BASE_URL}. Your token is ${invited.token}`,
-      });
-    }
+    // for (const invited of inserted) {
+    //   await mail.send({
+    //     recipient: invited.email,
+    //     subject: `You have been invitated to join ${organisation.name} on Enorm`,
+    //     text: `Please click here to join ${organisation.name} on Enorm: ${BASE_URL}. Your token is ${invited.token}`,
+    //   });
+    // }
     res.json({ inserted, received });
   } catch (err) {
     next(err);

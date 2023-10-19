@@ -26,7 +26,7 @@ import {
 export async function loader() {
   const users = await get();
   const establishments = await getEstablishments();
-  return { ...users.json(), ...establishments.json() };
+  return { ...(await users.json()), ...(await establishments.json()) };
 }
 
 export async function action({ request }) {
