@@ -87,10 +87,11 @@ exports.get = async (req, res, next) => {
     const users = Object.values(
       rows.reduce((acc, user) => {
         if (!acc[user.id]) {
-          acc[user.id] = {
-            ...user,
-            establishments: user?.establishment ? [user.establishment] : [],
-          };
+          acc[user.id] = user;
+          acc[user.id].establishments = user.establishment
+            ? [user.establishment]
+            : [];
+          delete acc[user.id].establishment;
           return acc;
         }
         acc[user.id].establishments.push(user.establishment);

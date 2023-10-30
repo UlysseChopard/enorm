@@ -60,7 +60,7 @@ export async function action({ request }) {
       res = await addUser(formData.get("user"), formData.get("establishment"));
       break;
     case "createToken":
-      res = await create(formData.get("account"));
+      res = await create(formData.get("organisationMember"));
       break;
     default:
       throw new Error("Missing type for action");
@@ -263,8 +263,8 @@ export default function Members() {
                       <input type="hidden" name="type" value="createToken" />
                       <input
                         type="hidden"
-                        name="account"
-                        value={user.account}
+                        name="organisationMember"
+                        value={user.id}
                       />
                       <Button type="submit" variant="contained">
                         {t("createToken")}
