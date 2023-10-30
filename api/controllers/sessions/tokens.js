@@ -3,8 +3,8 @@ const { Tokens } = require("models");
 
 exports.upsert = async (req, res, next) => {
   try {
-    if (!req.body.account) {
-      return res.status(422).json({ message: "Missing account in body" });
+    if (!req.body.member) {
+      return res.status(422).json({ message: "Missing member in body" });
     }
     let id;
     while (true) {
