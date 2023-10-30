@@ -7,7 +7,7 @@ const subscriptions = require("./subscriptions");
 const registrations = require("./registrations");
 
 module.exports = (express) => {
-  const router = express.Router();
+  const router = express.Router({ mergeParams: true });
   router.get("/", hasRole("admin"), get);
   router.put("/", hasRole("admin"), replace);
   router.delete("/", hasRole("admin"), close);

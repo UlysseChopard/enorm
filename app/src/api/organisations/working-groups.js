@@ -1,15 +1,13 @@
 import { apiUrl, organisation } from "@/api";
 
 export const get = (query) => {
-  const url = new URL(
-    `${apiUrl}api/organisations/${organisation}/working-groups`
+  const qs = query ? new URLSearchParams({ q: encodeURIComponent(query) }) : "";
+  return fetch(
+    `${apiUrl}api/organisations/${organisation}/working-groups${qs}`,
+    {
+      credentials: "include",
+    }
   );
-  if (query) {
-    url.searchParams.set("q", query);
-  }
-  return fetch(url, {
-    credentials: "include",
-  });
 };
 
 export const find = (wgId) =>

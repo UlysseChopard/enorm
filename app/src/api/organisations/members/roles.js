@@ -9,9 +9,9 @@ export const disallow = (member, role) =>
     }
   );
 
-export const allow = (member, role) =>
+export const allow = (member, role, org) =>
   fetch(
-    `${apiUrl}api/organisations/${organisation}/members/${member}/roles/${role}`,
+    `${apiUrl}api/organisations/${org ? org : organisation}/members/${member}/roles/${role}`,
     {
       method: "PUT",
       credentials: "include",

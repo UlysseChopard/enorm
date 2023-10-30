@@ -9,7 +9,7 @@ exports.getByEmail = (email) =>
 
 exports.get = (id) =>
   db.query(
-    "SELECT a.id, a.email, a.firstname, a.lastname, a.gender, a.superuser, om.organisation, om.account FROM accounts AS a LEFT JOIN organisations_members AS om ON a.email = om.email WHERE a.id = $1",
+    "SELECT a.id, a.email, a.firstname, a.lastname, a.gender, a.superuser FROM accounts AS a WHERE a.id = $1",
     [id]
   );
 
@@ -31,6 +31,12 @@ exports.create = ({
     [email, hash, firstname, lastname, gender, superuser]
   );
 
+exports.createMany = (emails, password) =>
+  db.query(
+    "INSERT INTO accounts (email, hash) SELECT u.*, $1 FROM UNNEST($2::text[]) AS u ON CONFLICT DO NOTHING RETURNING *",
+    [password, emails]
+  );
+
 exports.update = (id, { email, hash, firstname, lastname, gender }) =>
   db.query(
     "UPDATE accounts SET email = $1, hash = $2, firstname = $3, lastname = $4, gender = $5 WHERE id = $6 RETURNING id, email, firstname, lastname, gender, superuser",
@@ -47,6 +53,11 @@ exports.removeMany = (ids) =>
   db.query(
     "DELETE FROM accounts WHERE id IN ($1) RETURNING id, email, firstname, lastname, gender, superuser",
     [ids.join(",")]
+  );
+
+exports.removeOrphans = () =>
+  db.query(
+    "DELETE FROM accounts WHERE NOT superuser AND id NOT IN (SELECT account FROM organisations_members)"
   );
 
 exports.searchText = (query, limit = 100) =>

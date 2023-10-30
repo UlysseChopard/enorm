@@ -12,12 +12,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-import Stack from "@mui/material/Stack";
 
 import { get, create, remove } from "@/api/admin/organisations";
 import { create as createAccount } from "@/api/accounts";
 import { create as createToken } from "@/api/sessions/tokens";
+import { allow } from "@/api/organisations/members/roles";
 
 export const loader = async () => {
   const res = await get();
@@ -27,13 +26,14 @@ export const loader = async () => {
 export const action = async ({ request }) => {
   const formData = await request.formData();
   if (formData.get("type") === "create") {
-    const { account } = await createAccount(Object.fromEntries(formData)).then(
-      (res) => res.json()
-    );
+    const { account } = await createAccount({
+      email: formData.get("email"),
+    }).then((res) => res.json());
     const { organisation } = await create({
       account: account.id,
     }).then((res) => res.json());
-    return { account, organisation };
+    const { role } = await allow(account.id, "admin", organisation.id);
+    return { account, organisation, role };
   } else if (formData.get("type") === "remove") {
     const res = await remove(formData.get("id"));
     return res.json();
@@ -62,35 +62,14 @@ const Organisations = () => {
         <DialogTitle>{t("createTitle")}</DialogTitle>
         <Form method="POST">
           <DialogContent>
-            <Stack>
-              <input type="hidden" name="type" value="create" />
-              <TextField
-                autoComplete="email"
-                name="email"
-                type="email"
-                label={t("email")}
-                required
-              />
-              <TextField name="firstname" label={t("firstname")} required />
-              <TextField
-                autoComplete="family-name"
-                name="lastname"
-                label={t("lastname")}
-                required
-              />
-              <TextField
-                name="gender"
-                label={t("gender")}
-                required
-                autoComplete="sex"
-                defaultValue="male"
-                select
-              >
-                <MenuItem value="male">{t("male")}</MenuItem>
-                <MenuItem value="female">{t("female")}</MenuItem>
-              </TextField>
-              <input type="hidden" name="isAdmin" value={true} />
-            </Stack>
+            <input type="hidden" name="type" value="create" />
+            <TextField
+              autoComplete="email"
+              name="email"
+              type="email"
+              label={t("email")}
+              required
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpen(false)}>{t("cancel")}</Button>
@@ -124,7 +103,7 @@ const Organisations = () => {
               <tr key={id}>
                 <th scope="row">{name}</th>
                 <td>{email}</td>
-                <td>{`${firstname} ${lastname}`}</td>
+                <td>{`${firstname ?? ""} ${lastname ?? ""}`}</td>
                 <td>
                   {token && new Date() < new Date(expires_at) ? (
                     <Button

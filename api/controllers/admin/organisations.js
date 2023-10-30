@@ -30,11 +30,12 @@ exports.create = async (req, res, next) => {
     }
     const {
       rows: [member],
-    } = await OrganisationsMembers.create(
-      organisation.id,
-      account.email,
-      account.id
-    );
+    } = await OrganisationsMembers.create({
+      organisation: organisation.id,
+      email: account.email,
+      account: account.id,
+      isAdmin: true,
+    });
     if (!member) {
       return res
         .status(500)
@@ -51,6 +52,7 @@ exports.remove = async (req, res, next) => {
     const {
       rows: [organisation],
     } = await Organisations.remove(req.params.id);
+    await Accounts.removeOrphans();
     res.json({ organisation });
   } catch (err) {
     next(err);

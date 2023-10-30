@@ -8,7 +8,7 @@ const {
 const { hasRole } = require("middlewares/roles");
 
 module.exports = ({ Router }) => {
-  const router = Router();
+  const router = Router({ mergeParams: true });
   router.get("/", hasRole("admin", "manager"), get);
   router.post("/", hasRole("admin", "manager"), request);
   router.patch("/:id", hasRole("admin", "manager"), accept);

@@ -1,15 +1,26 @@
 const { db } = require("utils");
 
-exports.create = (organisation, email, account) =>
+exports.create = ({
+  organisation,
+  email,
+  account,
+  isAdmin = false,
+  isExpert = false,
+  isManager = false,
+}) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, email, account) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *",
-    [organisation, email, account]
+    "INSERT INTO organisations_members (organisation, email, account, is_admin, is_expert, is_manager) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT DO NOTHING RETURNING *",
+    [organisation, email, account, isAdmin, isExpert, isManager]
   );
 
-exports.createMany = (organisation, emails) =>
+exports.createMany = (organisation, accounts) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, email) SELECT $1, unnest FROM UNNEST(ARRAY[string_to_array($2, ',')]) ON CONFLICT DO NOTHING RETURNING *",
-    [organisation, emails.join(",")]
+    "INSERT INTO organisations_members (organisation, email, account) SELECT $1, u.email, u.account FROM UNNEST($2::text[], $3::uuid[]) AS u (email, account) ON CONFLICT DO NOTHING RETURNING *",
+    [
+      organisation,
+      accounts.map(({ email }) => email),
+      accounts.map(({ id }) => id),
+    ]
   );
 
 exports.getAdminsForMember = (id) =>
@@ -20,7 +31,7 @@ exports.getAdminsForMember = (id) =>
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT u.*, eu.establishment FROM organisations_members AS u LEFT JOIN establishments_users AS eu ON u.id = eu.user WHERE u.organisation = $1",
+    "SELECT om.*, a.id AS account, t.id AS token, t.expires_at AS token_expires_at, eu.establishment FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN accounts AS a ON om.account = a.id LEFT JOIN tokens AS t ON a.id = t.account WHERE om.organisation = $1",
     [organisation]
   );
 
@@ -87,7 +98,7 @@ exports.setMemberAccount = (account, organisation) =>
 
 exports.getByEmail = (email) =>
   db.query(
-    "SELECT u.id, u.account, o.name, o.id AS organisation_id FROM organisations_members AS u JOIN organisations AS o ON u.organisation = o.id WHERE u.email = $1",
+    "SELECT o.id, o.name, om.account FROM organisations_members AS om RIGHT JOIN organisations AS o ON om.organisation = o.id WHERE om.email = $1",
     [email]
   );
 
