@@ -12,6 +12,12 @@ exports.createMany = (organisation, emails) =>
     [organisation, emails.join(",")]
   );
 
+exports.getAdminsForMember = (id) =>
+  db.query(
+    "SELECT account FROM organisations_members WHERE organisation = (SELECT organisation FROM organisations_members WHERE id = $1) AND is_admin",
+    [id]
+  );
+
 exports.getByOrganisation = (organisation) =>
   db.query(
     "SELECT u.*, eu.establishment FROM organisations_members AS u LEFT JOIN establishments_users AS eu ON u.id = eu.user WHERE u.organisation = $1",
