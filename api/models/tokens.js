@@ -2,13 +2,13 @@ const { db } = require("utils");
 
 exports.get = (id) => db.query("SELECT id FROM tokens WHERE id = $1", [id]);
 
-exports.getByAccount = (account) =>
-  db.query("SELECT id FROM tokens WHERE account = $1", [account]);
+exports.getByOrganisationMember = (om) =>
+  db.query("SELECT id FROM tokens WHERE organisation_member = $1", [om]);
 
-exports.create = ({ id, account, expiresAt }) =>
+exports.create = ({ id, organisationMember, expiresAt }) =>
   db.query(
-    "INSERT INTO tokens (id, account, expires_at) VALUES ($1, $2, $3) RETURNING *",
-    [id, account, expiresAt]
+    "INSERT INTO tokens (id, organisation_member, expires_at) VALUES ($1, $2, $3) RETURNING *",
+    [id, organisationMember, expiresAt]
   );
 
 exports.remove = (id) =>

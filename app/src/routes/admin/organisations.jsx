@@ -38,7 +38,7 @@ export const action = async ({ request }) => {
     const res = await remove(formData.get("id"));
     return res.json();
   } else if (formData.get("type") === "createToken") {
-    const res = await createToken(formData.get("account"));
+    const res = await createToken(formData.get("organisationMember"));
     return res.json();
   }
 };
@@ -93,7 +93,7 @@ const Organisations = () => {
             ({
               id,
               name,
-              account,
+              organisation_member,
               email,
               firstname,
               lastname,
@@ -117,7 +117,10 @@ const Organisations = () => {
                       variant="contained"
                       onClick={() => {
                         const formData = new FormData();
-                        formData.append("account", account);
+                        formData.append(
+                          "organisationMember",
+                          organisation_member
+                        );
                         formData.append("type", "createToken");
                         submit(formData, { method: "POST" });
                       }}

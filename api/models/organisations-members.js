@@ -31,7 +31,7 @@ exports.getAdminsForMember = (id) =>
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT om.*, a.id AS account, t.id AS token, t.expires_at AS token_expires_at, eu.establishment FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN accounts AS a ON om.account = a.id LEFT JOIN tokens AS t ON a.id = t.account WHERE om.organisation = $1",
+    "SELECT om.*, a.id AS account, t.id AS token, t.expires_at AS token_expires_at, eu.establishment FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN tokens AS t ON om.id == t.organisation_member WHERE om.organisation = $1",
     [organisation]
   );
 

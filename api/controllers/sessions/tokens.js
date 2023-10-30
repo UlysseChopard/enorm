@@ -3,8 +3,10 @@ const { Tokens } = require("models");
 
 exports.upsert = async (req, res, next) => {
   try {
-    if (!req.body.member) {
-      return res.status(422).json({ message: "Missing member in body" });
+    if (!req.body.organisationMember) {
+      return res
+        .status(422)
+        .json({ message: "Missing organisation member in body" });
     }
     let id;
     while (true) {
@@ -20,13 +22,17 @@ exports.upsert = async (req, res, next) => {
     );
     const {
       rows: [prevToken],
-    } = await Tokens.getByAccount(req.body.account);
+    } = await Tokens.getByOrganisationMember(req.body.organisationMember);
     if (prevToken) {
       await Tokens.remove(prevToken.id);
     }
     const {
       rows: [token],
-    } = await Tokens.create({ account: req.body.account, id, expiresAt });
+    } = await Tokens.create({
+      organisationMember: req.body.organisationMember,
+      id,
+      expiresAt,
+    });
     res.status(201).json({ token });
   } catch (err) {
     next(err);
