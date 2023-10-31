@@ -22,6 +22,12 @@ export async function loader() {
   ) {
     localStorage.setItem("organisation", account.organisations[0].id);
   }
+  const currentOrganisation = localStorage.getItem("organisation");
+  const roles = account.organisations.find(
+    ({ id }) => id === currentOrganisation
+  ).roles;
+  localStorage.setItem("roles", roles);
+
   return { account };
 }
 
@@ -29,6 +35,10 @@ export default function Home() {
   const { account } = useLoaderData();
   const handleChange = (e) => {
     localStorage.setItem("organisation", e.target.value);
+    localStorage.setItem(
+      "roles",
+      account.organisations.find(({ id }) => id === e.target.value).roles
+    );
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

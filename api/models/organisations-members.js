@@ -98,7 +98,7 @@ exports.setMemberAccount = (account, organisation) =>
 
 exports.getByEmail = (email) =>
   db.query(
-    "SELECT o.id, o.name, om.account FROM organisations_members AS om RIGHT JOIN organisations AS o ON om.organisation = o.id WHERE om.email = $1",
+    "SELECT o.id, o.name, om.account, om.is_admin, om.is_expert, om.is_manager FROM organisations_members AS om RIGHT JOIN organisations AS o ON om.organisation = o.id WHERE om.email = $1",
     [email]
   );
 
