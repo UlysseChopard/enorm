@@ -22,10 +22,10 @@ export async function loader() {
   ) {
     localStorage.setItem("organisation", account.organisations[0].id);
   }
-  const currentOrganisation = localStorage.getItem("organisation");
-  const roles = account.organisations.find(
-    ({ id }) => id === currentOrganisation
-  ).roles;
+  const currentOrganisation = parseInt(localStorage.getItem("organisation"));
+  const roles = JSON.stringify(
+    account.organisations.find(({ id }) => id === currentOrganisation).roles
+  );
   localStorage.setItem("roles", roles);
 
   return { account };
@@ -37,7 +37,9 @@ export default function Home() {
     localStorage.setItem("organisation", e.target.value);
     localStorage.setItem(
       "roles",
-      account.organisations.find(({ id }) => id === e.target.value).roles
+      JSON.stringify(
+        account.organisations.find(({ id }) => id === e.target.value).roles
+      )
     );
   };
   return (
