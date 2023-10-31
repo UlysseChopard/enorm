@@ -45,15 +45,7 @@ export async function loader() {
   return res.json();
 }
 
-const GroupProvider = ({
-  id,
-  firstname,
-  lastname,
-  email,
-  status,
-  action,
-  accept,
-}) => (
+const Organisation = ({ id, name, status, action, accept }) => (
   <ListItem
     key={id}
     secondaryAction={
@@ -69,7 +61,7 @@ const GroupProvider = ({
       </>
     }
   >
-    <ListItemText secondary={email}>{`${firstname} ${lastname}`}</ListItemText>
+    <ListItemText>{name}</ListItemText>
   </ListItem>
 );
 
@@ -148,16 +140,16 @@ export default function Subscriptions() {
       />
       {query ? (
         <List>
-          {search.map((recipient) => (
-            <GroupProvider
-              key={recipient.id}
-              action={handleInvite(recipient)}
+          {search.map((organisation) => (
+            <Organisation
+              key={organisation.id}
+              action={handleInvite(organisation)}
               status={
-                load.sent.map(({ id }) => id).includes(recipient.id)
+                load.sent.map(({ id }) => id).includes(organisation.id)
                   ? "sent"
                   : null
               }
-              {...recipient}
+              {...organisation}
             />
           ))}
         </List>
@@ -187,7 +179,7 @@ export default function Subscriptions() {
             <TabPanel value={tab} index={0}>
               <List>
                 {load.sent.map((subscription) => (
-                  <GroupProvider
+                  <Organisation
                     key={subscription.id}
                     action={handleDeny(subscription)}
                     status="sent"
@@ -195,7 +187,7 @@ export default function Subscriptions() {
                   />
                 ))}
                 {load.received.map((subscription) => (
-                  <GroupProvider
+                  <Organisation
                     key={subscription.id}
                     accept={handleAccept(subscription)}
                     action={handleDeny(subscription)}
@@ -211,7 +203,7 @@ export default function Subscriptions() {
           <TabPanel value={tab} index={arePending ? 1 : 0}>
             <List>
               {load.providers.map((provider) => (
-                <GroupProvider
+                <Organisation
                   key={provider.id}
                   action={handleDeny(provider)}
                   status="provided"
@@ -223,7 +215,7 @@ export default function Subscriptions() {
           <TabPanel value={tab} index={arePending ? 2 : 1}>
             <List>
               {load.subscribers.map((subscriber) => (
-                <GroupProvider
+                <Organisation
                   key={subscriber.id}
                   action={handleDeny(subscriber)}
                   status="subscribed"

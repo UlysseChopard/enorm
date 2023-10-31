@@ -1,4 +1,3 @@
-const format = require("pg-format");
 const { db } = require("utils");
 
 exports.getByEmail = (email) =>
@@ -58,13 +57,4 @@ exports.removeMany = (ids) =>
 exports.removeOrphans = () =>
   db.query(
     "DELETE FROM accounts WHERE NOT superuser AND id NOT IN (SELECT account FROM organisations_members)"
-  );
-
-exports.searchText = (query, limit = 100) =>
-  db.query(
-    format(
-      "SELECT id, email, firstname, lastname FROM accounts WHERE LOWER(firstname) LIKE '%%%1$s%%' OR LOWER(lastname) LIKE '%%%1$s%%' OR LOWER(email) LIKE '%%%1$s%%' LIMIT %L",
-      query,
-      limit
-    )
   );

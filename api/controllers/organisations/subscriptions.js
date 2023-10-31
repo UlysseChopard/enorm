@@ -1,6 +1,6 @@
 const {
   Subscriptions,
-  Accounts,
+  Organisations,
   WGPaths,
   WorkingGroups,
   Registrations,
@@ -9,19 +9,22 @@ const { getDownstream } = require("services/subscriptions");
 
 exports.get = async (req, res, next) => {
   try {
-    await Subscriptions.updateReceived(res.locals.accountId);
-    const { rows: subscriptions } = await Subscriptions.getByUser(
-      res.locals.accountId
+    await Subscriptions.updateReceived(req.params.organisation);
+    const { rows: subscriptions } = await Subscriptions.getByOrganisation(
+      req.params.organisation
     );
     if (req.query.q) {
       const existing = subscriptions.reduce(
         (acc, val) =>
-          val.recipient === res.locals.accountId ? acc : acc.add(val.recipient),
+          val.recipient === req.params.organisation
+            ? acc
+            : acc.add(val.recipient),
         new Set()
       );
-      existing.add(res.locals.accountId);
-      const results = await Accounts.searchText(req.query.q).then(({ rows }) =>
-        rows.filter(({ id }) => !existing.has(id))
+      existing.add(parseInt(req.params.organisation));
+      console.log("existing", existing);
+      const results = await Organisations.searchName(req.query.q).then(
+        ({ rows }) => rows.filter(({ id }) => !existing.has(id))
       );
       return res.json({ results });
     }
@@ -30,8 +33,7 @@ exports.get = async (req, res, next) => {
     const sent = [];
     const received = [];
     for (const subscription of subscriptions) {
-      delete subscription.hash;
-      if (subscription.recipient === res.locals.accountId) {
+      if (subscription.recipient === req.params.organisation) {
         if (subscription.accepted_at) {
           subscribers.push(subscription);
         } else {
@@ -57,7 +59,7 @@ exports.invite = async (req, res, next) => {
       return res.status(400).json({ message: "Missing recipient id in body" });
     const {
       rows: [subscription],
-    } = await Subscriptions.send(res.locals.accountId, req.body.recipient);
+    } = await Subscriptions.send(req.params.organisation, req.body.recipient);
     if (!subscription)
       return res.status(500).json({ message: "Could not send invitation" });
     res.status(201).json({ status: "sent" });

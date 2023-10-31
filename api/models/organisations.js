@@ -1,3 +1,4 @@
+const format = require("pg-format");
 const { db } = require("utils");
 
 exports.create = (userId, name = "") =>
@@ -31,3 +32,12 @@ exports.get = () =>
 
 exports.getById = (id) =>
   db.query("SELECT * FROM organisations WHERE id = $1", [id]);
+
+exports.searchName = (query, limit = 100) =>
+  db.query(
+    format(
+      "SELECT id, name FROM organisations WHERE LOWER(name) LIKE '%%%1$s%%' LIMIT %L",
+      query,
+      limit
+    )
+  );

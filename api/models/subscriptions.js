@@ -6,10 +6,10 @@ exports.send = (sender, recipient) =>
     [sender, recipient]
   );
 
-exports.getByUser = (userId) =>
+exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT *, s.id FROM subscriptions AS s JOIN accounts AS a ON s.recipient = a.id AND s.sender = $1 OR s.sender = a.id AND s.recipient = $2",
-    [userId, userId]
+    "SELECT s.*, o.name AS organisation_name FROM subscriptions AS s JOIN organisations AS o ON s.recipient = o.id AND s.sender = $1 OR s.sender = o.id AND s.recipient = $1",
+    [organisation]
   );
 
 exports.getAccepted = (userId) =>
@@ -34,6 +34,7 @@ exports.updateReceived = (userId) =>
   );
 
 exports.getSubscribers = (userId) =>
-  db.query("SELECT id, sender FROM subscriptions WHERE recipient = $1 AND accepted_at IS NOT NULL", [
-    userId,
-  ]);
+  db.query(
+    "SELECT id, sender FROM subscriptions WHERE recipient = $1 AND accepted_at IS NOT NULL",
+    [userId]
+  );

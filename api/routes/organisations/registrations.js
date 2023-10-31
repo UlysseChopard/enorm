@@ -4,7 +4,7 @@ const {
   deny,
   get,
   find,
-} = require("controllers//organisations/registrations");
+} = require("controllers/organisations/registrations");
 const { hasRole } = require("middlewares/roles");
 
 module.exports = ({ Router }) => {

@@ -14,7 +14,7 @@ export const invite = (recipient) => {
 
 export const get = (query) => {
   const url = `${apiUrl}api/organisations/${organisation}/subscriptions`;
-  return fetch(query ? url + `q=${query}` : url, {
+  return fetch(query ? url + `?q=${query}` : url, {
     credentials: "include",
   });
 };
