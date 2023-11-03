@@ -40,7 +40,7 @@ exports.get = async (req, res, next) => {
   try {
     const { rows: sent } = await Registrations.getSent(res.locals.accountId);
     const { rows: received } = await RegistrationsStreams.getReceived(
-      res.locals.accountId
+      req.params.organisation
     );
     res.json({ sent, received });
   } catch (err) {
