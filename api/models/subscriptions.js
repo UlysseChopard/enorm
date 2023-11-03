@@ -12,29 +12,23 @@ exports.getByOrganisation = (organisation) =>
     [organisation]
   );
 
-exports.getAccepted = (userId) =>
-  db.query(
-    "SELECT recipient FROM subscriptions WHERE sender = $1 AND accepted_at IS NOT NULL",
-    [userId]
-  );
-
 exports.accept = (id) =>
   db.query(
     "UPDATE subscriptions SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *",
     [id]
   );
 
-exports.close = (id) =>
+exports.remove = (id) =>
   db.query("DELETE FROM subscriptions WHERE id = $1 RETURNING *", [id]);
 
-exports.updateReceived = (userId) =>
+exports.updateReceived = (organisation) =>
   db.query(
     "UPDATE subscriptions SET received_at = CURRENT_TIMESTAMP WHERE recipient = $1 AND received_at IS NULL",
-    [userId]
+    [organisation]
   );
 
-exports.getSubscribers = (userId) =>
+exports.getSubscribers = (organisation) =>
   db.query(
     "SELECT id, sender FROM subscriptions WHERE recipient = $1 AND accepted_at IS NOT NULL",
-    [userId]
+    [organisation]
   );

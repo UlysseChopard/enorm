@@ -1,10 +1,10 @@
 const { WorkingGroups, WGPaths } = require("models");
 const { getDownstream } = require("services/subscriptions");
 
-exports.get = async (_req, res, next) => {
+exports.get = async (req, res, next) => {
   try {
-    const { rows: groups } = await WorkingGroups.getByUser(
-      res.locals.accountId
+    const { rows: groups } = await WorkingGroups.getByOrganisation(
+      req.params.organisation
     );
     res.json({ groups });
   } catch (err) {
@@ -16,7 +16,7 @@ exports.create = async (req, res, next) => {
   try {
     const {
       rows: [group],
-    } = await WorkingGroups.create(res.locals.accountId, req.body.group);
+    } = await WorkingGroups.create(req.body.group);
     const impactedSubscriptions = await getDownstream(res.locals.accountId);
     for (const subscription of impactedSubscriptions) {
       await WGPaths.add(subscription, group.id);
@@ -31,7 +31,7 @@ exports.find = async (req, res, next) => {
   try {
     const {
       rows: [wg],
-    } = await WorkingGroups.getById(req.params.wg);
+    } = await WorkingGroups.find(req.params.wg);
     const { rows: wgPaths } = await WGPaths.find(
       res.locals.accountId,
       req.params.wg
@@ -46,10 +46,7 @@ exports.remove = async (req, res, next) => {
   try {
     const {
       rows: [wg],
-    } = await WorkingGroups.deleteByIdAsAdmin(
-      res.locals.accountId,
-      req.params.wg
-    );
+    } = await WorkingGroups.remove(req.params.wg);
     res.json({ wg });
   } catch (err) {
     next(err);

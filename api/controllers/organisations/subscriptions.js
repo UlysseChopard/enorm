@@ -78,7 +78,7 @@ exports.establish = async (req, res, next) => {
         .status(400)
         .json({ message: "No subscription to be established" });
     }
-    const { rows: newWGs } = await WorkingGroups.getProvidedByRecipient(
+    const { rows: newWGs } = await WorkingGroups.getIdsByOrganisation(
       subscription.recipient
     );
     const impactedSubscriptions = await getDownstream(subscription.sender);
@@ -99,8 +99,8 @@ exports.close = async (req, res, next) => {
     await Registrations.removeBySubscription(req.params.subscription);
     const {
       rows: [subscription],
-    } = await Subscriptions.close(req.params.subscription);
-    const { rows: oldWGs } = await WorkingGroups.getProvidedByRecipient(
+    } = await Subscriptions.remove(req.params.subscription);
+    const { rows: oldWGs } = await WorkingGroups.getIdsByOrganisation(
       subscription.recipient
     );
     const impactedSubscriptions = await getDownstream(subscription.sender);
