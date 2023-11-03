@@ -2,13 +2,13 @@ const { db } = require("utils");
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT wg.* FROM working_groups AS wg WHERE wg.id IN (SELECT working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $1)) OR organisation = $1",
+    "SELECT wg.*, o.name AS organisation_name FROM working_groups AS wg LEFT JOIN organisations AS o ON wg.organisation = o.id WHERE wg.id IN (SELECT working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $1)) OR organisation = $1",
     [organisation]
   );
 
-exports.create = ({ organisation, title, reference }) =>
+exports.create = (organisation, { title, reference }) =>
   db.query(
-    "INSERT INTO working_groups (organisation, title, reference, created_at) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING *",
+    "INSERT INTO working_groups (organisation, title, reference, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *",
     [organisation, title, reference]
   );
 

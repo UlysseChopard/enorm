@@ -40,12 +40,6 @@ const CreateModal = ({ open, onClose }) => {
           <Stack spacing={2}>
             <TextField
               required
-              label={t("organisation")}
-              name="organisation"
-              fullWidth
-            />
-            <TextField
-              required
               label={t("reference")}
               name="reference"
               fullWidth
@@ -75,7 +69,7 @@ const createColumns = (t) => [
     ),
   },
   {
-    accessorKey: "organisation",
+    accessorKey: "organisation_name",
     header: t("organisation"),
     enableSorting: true,
     sortingFn: "basic",

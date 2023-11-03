@@ -16,8 +16,8 @@ exports.create = async (req, res, next) => {
   try {
     const {
       rows: [group],
-    } = await WorkingGroups.create(req.body.group);
-    const impactedSubscriptions = await getDownstream(res.locals.accountId);
+    } = await WorkingGroups.create(req.params.organisation, req.body.group);
+    const impactedSubscriptions = await getDownstream(req.params.organisation);
     for (const subscription of impactedSubscriptions) {
       await WGPaths.add(subscription, group.id);
     }
