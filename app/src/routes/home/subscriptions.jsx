@@ -168,11 +168,11 @@ export default function Subscriptions() {
                   iconPosition="start"
                   label={t("pending")}
                   id="pendings"
-                  ariaControls="tab-0"
+                  aria-controls="tab-0"
                 />
               )}
-              <Tab label={t("providers")} id="tab-1" ariaControls="tab-1" />
-              <Tab label={t("subscribers")} id="tab-2" ariaControls="tab-2" />
+              <Tab label={t("providers")} id="tab-1" aria-controls="tab-1" />
+              <Tab label={t("subscribers")} id="tab-2" aria-controls="tab-2" />
             </Tabs>
           </Box>
           {arePending ? (
