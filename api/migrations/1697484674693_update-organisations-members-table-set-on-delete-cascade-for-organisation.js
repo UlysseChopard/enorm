@@ -3,6 +3,7 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
+  pgm.dropConstraint("organisations_members", "users_organisation_fkey", { ifExists: true });
   pgm.addConstraint(
     "organisations_members",
     "users_organisation_fkey",
