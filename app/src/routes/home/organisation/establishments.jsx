@@ -97,15 +97,20 @@ export default function Establishments() {
   const { t } = useTranslation(null, { keyPrefix: "establishments" });
   const [modal, setModal] = useState(false);
   const [replacement, setReplacement] = useState("");
+  const roles = JSON.parse(localStorage.getItem("roles"));
 
   return (
     <>
-      <Button onClick={() => setModal("create")}>{t("create")}</Button>
-      <EstablishmentDialog
-        type="create"
-        onClose={() => setModal("")}
-        open={modal === "create"}
-      />
+      {roles.is_admin && (
+        <>
+          <Button onClick={() => setModal("create")}>{t("create")}</Button>
+          <EstablishmentDialog
+            type="create"
+            onClose={() => setModal("")}
+            open={modal === "create"}
+          />
+        </>
+      )}
       <EstablishmentDialog
         type="replace"
         onClose={() => setModal("")}

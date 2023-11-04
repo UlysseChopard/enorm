@@ -14,14 +14,14 @@ exports.get = async (req, res, next) => {
     );
     account.organisations = organisations.map(
       ({ id, name, account, is_manager, is_admin, is_expert }) => {
-        const roles = [];
-        if (is_admin) roles.push("admin");
-        if (is_manager) roles.push("manager");
-        if (is_expert) roles.push("expert");
         return {
           id,
           name,
-          roles,
+          roles: {
+            isAdmin: is_admin,
+            isManager: is_manager,
+            isExpert: is_expert,
+          },
           toJoin: !account,
         };
       }

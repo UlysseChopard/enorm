@@ -23,31 +23,52 @@ const MENU = [
     icon: <GridViewIcon />,
     text: "dashboard",
     target: "",
+    roles: new Set(["isAdmin", "isManager", "isExpert"]),
   },
   {
     icon: <HubIcon />,
     text: "community",
     target: "subscriptions",
+    roles: new Set(["isAdmin", "isManager"]),
   },
   {
     icon: <GroupsIcon />,
     text: "groups",
     target: "groups",
+    roles: new Set(["isAdmin", "isManager", "isExpert"]),
   },
   {
     icon: <AppRegistrationIcon />,
     text: "registrations",
     target: "registrations",
+    roles: new Set(["isAdmin", "isManager", "isExpert"]),
   },
   {
     icon: <MenuBookIcon />,
     text: "administration",
     target: "organisation",
-    menu: ["organisation", "members", "establishments"],
+    menu: [
+      {
+        target: "organisation",
+        text: "organisation",
+        roles: new Set(["isAdmin"]),
+      },
+      {
+        target: "members",
+        text: "members",
+        roles: new Set(["isAdmin"]),
+      },
+      {
+        target: "establishments",
+        text: "establishments",
+        roles: new Set(["isAdmin"]),
+      },
+    ],
+    roles: new Set(["isAdmin"]),
   },
 ];
 
-const NavBarItem = ({ text, icon, target, pathname, menu }) => {
+const NavBarItem = ({ text, icon, target, pathname, menu, userRoles }) => {
   const { t } = useTranslation(null, { keyPrefix: "navbar" });
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -103,15 +124,21 @@ const NavBarItem = ({ text, icon, target, pathname, menu }) => {
           anchorOrigin={{ horizontal: "right", vertical: "top" }}
           MenuListProps={{ "arial-labelledby": `${target}-btn` }}
         >
-          {menu.map((name) => {
-            const selected = new RegExp(`${target}/${name}`).test(pathname);
-            return (
-              <ListItem key={name} selected={selected} disablePadding>
-                <ListItemButton href={`${target}/${name}`}>
-                  {t(name)}
-                </ListItemButton>
-              </ListItem>
-            );
+          {menu.map(({ text, target: subtarget, roles }) => {
+            for (const role of roles) {
+              if (userRoles[role]) {
+                const selected = new RegExp(`${target}/${subtarget}`).test(
+                  pathname
+                );
+                return (
+                  <ListItem key={subtarget} selected={selected} disablePadding>
+                    <ListItemButton href={`${target}/${subtarget}`}>
+                      {t(text)}
+                    </ListItemButton>
+                  </ListItem>
+                );
+              }
+            }
           })}
         </Menu>
       )}
@@ -121,6 +148,7 @@ const NavBarItem = ({ text, icon, target, pathname, menu }) => {
 
 const LeftNavbar = ({ user }) => {
   const { pathname } = useResolvedPath();
+  const userRoles = JSON.parse(localStorage.getItem("roles"));
   return (
     <Drawer
       sx={{
@@ -138,17 +166,22 @@ const LeftNavbar = ({ user }) => {
       elevation={24}
     >
       <List disablePadding>
-        {MENU.map(({ text, icon, target, menu }) => {
-          return (
-            <NavBarItem
-              key={target}
-              text={text}
-              icon={icon}
-              target={target}
-              pathname={pathname}
-              menu={menu}
-            />
-          );
+        {MENU.map(({ text, icon, target, roles, menu }) => {
+          for (const role of roles) {
+            if (userRoles[role]) {
+              return (
+                <NavBarItem
+                  key={target}
+                  text={text}
+                  icon={icon}
+                  target={target}
+                  pathname={pathname}
+                  menu={menu}
+                  userRoles={userRoles}
+                />
+              );
+            }
+          }
         })}
       </List>
       <List>
