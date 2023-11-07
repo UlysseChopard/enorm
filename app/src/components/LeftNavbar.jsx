@@ -13,18 +13,18 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HubIcon from "@mui/icons-material/Hub";
 import ProfileMenu from "@/components/ProfileMenu";
 import GroupsIcon from "@mui/icons-material/Groups";
-import GridViewIcon from "@mui/icons-material/GridView";
+// import GridViewIcon from "@mui/icons-material/GridView";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 const WIDTH = 240;
 
 const MENU = [
-  {
-    icon: <GridViewIcon />,
-    text: "dashboard",
-    target: "",
-    roles: new Set(["isAdmin", "isManager", "isExpert"]),
-  },
+  //  {
+  //    icon: <GridViewIcon />,
+  //    text: "dashboard",
+  //    target: "",
+  //    roles: new Set(["isAdmin", "isManager", "isExpert"]),
+  //  },
   {
     icon: <HubIcon />,
     text: "community",

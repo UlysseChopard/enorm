@@ -61,11 +61,11 @@ export default [
     errorElement: <ErrorPage />,
     loader: homeLoader,
     children: [
-      {
-        path: "/dashboard?",
-        element: <Dashboard />,
-        index: true,
-      },
+      // {
+      //   path: "/dashboard?",
+      //   element: <Dashboard />,
+      //   index: true,
+      // },
       {
         path: "profile",
         element: <Profile />,
