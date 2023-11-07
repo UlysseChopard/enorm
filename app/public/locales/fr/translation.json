@@ -81,6 +81,14 @@
     "settings": "Paramètres",
     "logout": "Déconnection"
   },
+  "group": {
+    "back": "retour",
+    "join": "Rejoindre",
+    "delete": "Supprimer",
+    "reference": "Référence",
+    "organisationName": "Organisation",
+    "createdAt": "Création"
+  },
   "groups": {
     "create": "Créer",
     "reference": "Réference",

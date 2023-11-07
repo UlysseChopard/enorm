@@ -81,6 +81,14 @@
     "settings": "Settings",
     "logout": "Log out"
   },
+  "group": {
+    "back": "Back",
+    "join": "Join",
+    "delete": "Delete",
+    "reference": "Reference",
+    "organisationName": "Organisation",
+    "createdAt": "Creation"
+  },
   "groups": {
     "create": "Create",
     "reference": "Reference",

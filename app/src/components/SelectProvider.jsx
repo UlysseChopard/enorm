@@ -17,9 +17,6 @@ const SelectProvider = ({ wgPaths, onChange, value }) => {
         value={value}
         onChange={onChange}
       >
-        <MenuItem key="empty" value="">
-          {t("empty")}
-        </MenuItem>
         {wgPaths.map(({ id, firstname, lastname }) => (
           <MenuItem key={id} value={id}>{`${firstname} ${lastname}`}</MenuItem>
         ))}
