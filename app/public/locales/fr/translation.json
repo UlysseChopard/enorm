@@ -149,7 +149,8 @@
     "unlink": "Supprimer",
     "admin": "Administrateur",
     "manager": "Gestionnaire",
-    "expert": "Expert"
+    "expert": "Expert",
+    "createToken": "Code d'accès"
   },
   "superusers": {
     "create": "Ajouter un superutilisateur",
