@@ -1,21 +1,19 @@
 const { Subscriptions } = require("models");
 
 const get = async (
-  initialOrganisation,
-  organisation,
+  initialAccount,
+  account,
   subscription = null,
   downstream = new Set()
 ) => {
   if (downstream.has(subscription)) return;
   if (subscription) downstream.add(subscription);
-  const { rows: subscribers } = await Subscriptions.getSubscribers(
-    organisation
-  );
+  const { rows: subscribers } = await Subscriptions.getSubscribers(account);
   for (const { id, sender } of subscribers) {
-    if (sender === initialOrganisation) continue;
-    await get(initialOrganisation, sender, id, downstream);
+    if (sender === initialAccount) continue;
+    await get(initialAccount, sender, id, downstream);
   }
   return downstream;
 };
 
-exports.getDownstream = (organisation) => get(organisation, organisation);
+exports.getDownstream = (accountId) => get(accountId, accountId);

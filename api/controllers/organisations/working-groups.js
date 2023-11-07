@@ -3,7 +3,8 @@ const { getDownstream } = require("services/subscriptions");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: groups } = await WorkingGroups.getByOrganisation(
+    const { rows: groups } = await WorkingGroups.get(
+      res.locals.accountId,
       req.params.organisation
     );
     res.json({ groups });
@@ -17,7 +18,7 @@ exports.create = async (req, res, next) => {
     const {
       rows: [group],
     } = await WorkingGroups.create(req.params.organisation, req.body.group);
-    const impactedSubscriptions = await getDownstream(req.params.organisation);
+    const impactedSubscriptions = await getDownstream(req.locals.accountId);
     for (const subscription of impactedSubscriptions) {
       await WGPaths.add(subscription, group.id);
     }
