@@ -21,14 +21,14 @@ exports.accept = (id) =>
 exports.remove = (id) =>
   db.query("DELETE FROM subscriptions WHERE id = $1 RETURNING *", [id]);
 
-exports.updateReceived = (account) =>
+exports.updateReceived = (organisation) =>
   db.query(
     "UPDATE subscriptions SET received_at = CURRENT_TIMESTAMP WHERE recipient = $1 AND received_at IS NULL",
-    [account]
+    [organisation]
   );
 
-exports.getSubscribers = (account) =>
+exports.getSubscribers = (organisation) =>
   db.query(
     "SELECT id, sender FROM subscriptions WHERE recipient = $1 AND accepted_at IS NOT NULL",
-    [account]
+    [organisation]
   );
