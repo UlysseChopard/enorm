@@ -16,9 +16,12 @@ export async function loader() {
   if (!res.ok) return redirect("/login");
   const { account } = await res.json();
   const storedOrganisation = localStorage.getItem("organisation");
+  if (account.superuser) {
+    return redirect("/admin");
+  }
   if (
-    !account.superuser &&
-    (!storedOrganisation || !account.organisations.includes(storedOrganisation))
+    !storedOrganisation ||
+    !account.organisations.includes(storedOrganisation)
   ) {
     localStorage.setItem("organisation", account.organisations[0].id);
   }
