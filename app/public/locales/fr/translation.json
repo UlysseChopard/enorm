@@ -161,6 +161,15 @@
     "createToken": "Code d'accès"
   },
   "superusers": {
+    "createTitle": "Ajouter un superutilisateur",
+    "firstname": "Prénom",
+    "lastname": "Nom",
+    "gender": "Civilité",
+    "male": "Homme",
+    "female": "Femme",
+    "password": "Mot de passe",
+    "cancel": "Annuler",
+    "submit": "Envoyer",
     "create": "Ajouter un superutilisateur",
     "email": "Adresse mail",
     "name": "Nom",

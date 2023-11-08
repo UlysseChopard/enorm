@@ -161,6 +161,15 @@
     "createToken": "Access token"
   },
   "superusers": {
+    "createTitle": "Add a superuser",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "password": "Password",
+    "cancel": "Cancel",
+    "submit": "Submit",
     "create": "Add a superuser",
     "email": "Email",
     "name": "Name",
