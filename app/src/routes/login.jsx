@@ -13,22 +13,34 @@ import { loginToken } from "@/api/sessions";
 import { update } from "@/api/accounts";
 import { login } from "@/api/sessions";
 
+let authError = 0;
+
 export async function action({ request }) {
   const formData = await request.formData();
   const userInfos = Object.fromEntries(formData);
   delete userInfos.type;
   if (formData.get("type") === "login") {
     const res = await login(userInfos);
-    if (!res.ok) return res.json();
+    if (!res.ok) {
+      authError += 1;
+      return authError;
+    }
     const { session } = await res.json();
     localStorage.setItem("account", session.account);
     return redirect("/");
   } else if (formData.get("type") === "loginToken") {
     const res = await loginToken(formData.get("token"), userInfos);
+    if (!res.ok) {
+      authError += 1;
+      return authError;
+    }
     return res.json();
   } else if (formData.get("type") === "update") {
     const res = await update(formData.get("account"), userInfos);
-    if (!res.ok) return res.json();
+    if (!res.ok) {
+      authError += 1;
+      return authError;
+    }
     const { account } = await res.json();
     localStorage.setItem("account", account.id);
     return redirect("/");
@@ -42,9 +54,10 @@ const Login = () => {
   const { t } = useTranslation(null, { keyPrefix: "login" });
 
   useEffect(() => {
-    if (res?.message) {
+    if (typeof res === "number") {
       setFailure(true);
-      setTimeout(() => setFailure(false), 2000);
+      const timer = setTimeout(() => setFailure(false), 2000);
+      return () => clearTimeout(timer);
     }
   }, [res]);
 
@@ -94,7 +107,7 @@ const Login = () => {
       <SignupDialog
         open={open}
         onClose={() => setOpen(false)}
-        account={res?.session.account}
+        account={res?.session?.account}
       />
       <Snackbar severity="warning" msg="Could not log in" open={failure} />
     </Box>
