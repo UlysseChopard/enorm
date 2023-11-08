@@ -102,7 +102,7 @@ export default [
         action: registrationAction,
       },
       {
-        path: "organisation",
+        path: "administration",
         children: [
           {
             path: "organisation",
