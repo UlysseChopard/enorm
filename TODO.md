@@ -30,7 +30,6 @@
 - [ ] fac0a9a4d3d926 add possibility to cancel registration sent / keep it
 - [ ] 2e31b9b60185f2 add propagated to sent registrations
 - [ ] aa628817c3c28e only a list for registrations
-<<<<<<< HEAD
 - [ ] e5393c692db283 modify sent to sent in registrations page
 - [ ] 82fa710e95e25c add button for lang
 - [ ] b820d9073146e4 accept registration when admin
@@ -56,3 +55,5 @@
 - [x] 10998a09f1ddd4 give admin role to first org member
 - [x] 22b66506b3621e move tokens to their own api
 - [ ] b31042cb5dfb5f use token for members in front
+- [ ] b50deee9615245 verify registration vs subscription  
+- [ ] d47ff340c18671 set width of dialog contents to 500px  
