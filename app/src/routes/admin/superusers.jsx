@@ -40,14 +40,14 @@ const Superusers = () => {
   const { superusers } = useLoaderData();
   return (
     <>
-      <Button onClick={() => setOpen(true)}>{t("create")}</Button>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{t("createTitle")}</DialogTitle>
         <Form method="POST">
-          <DialogContent>
-            <Stack>
+          <DialogContent sx={{ paddingTop: 0, width: 500 }}>
+            <Stack spacing={2} useFlexGap>
               <input type="hidden" name="type" value="create" />
               <TextField
+                sx={{ marginTop: 0 }}
                 autoComplete="email"
                 name="email"
                 type="email"
@@ -88,6 +88,7 @@ const Superusers = () => {
           </DialogActions>
         </Form>
       </Dialog>
+      <Button onClick={() => setOpen(true)}>{t("create")}</Button>
       <table>
         <thead>
           <tr>
