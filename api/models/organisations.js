@@ -30,6 +30,8 @@ exports.get = () =>
     "SELECT o.id, o.name, a.id AS account, a.firstname, a.lastname, a.email, t.id AS token, t.expires_at, om.id AS organisation_member FROM organisations AS o JOIN accounts AS a ON o.admin = a.id JOIN organisations_members AS om ON a.id = om.account LEFT JOIN tokens AS t ON om.id = t.organisation_member"
   );
 
+exports.getAll = () => db.query("SELECT id, name FROM organisations");
+
 exports.getById = (id) =>
   db.query("SELECT * FROM organisations WHERE id = $1", [id]);
 

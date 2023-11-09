@@ -1,5 +1,16 @@
 const { crypt } = require("utils");
-const { Accounts, OrganisationsMembers } = require("models");
+const { Accounts, OrganisationsMembers, Organisations } = require("models");
+
+exports.findByEmail = async (req, res, next) => {
+  try {
+    const {
+      rows: [account],
+    } = await Accounts.findByEmail(req.query.email);
+    return res.json({ account });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.get = async (req, res, next) => {
   try {
@@ -8,6 +19,16 @@ exports.get = async (req, res, next) => {
     } = await Accounts.get(res.locals.accountId);
     if (!account) {
       return res.status(404).json({ message: "Account not found" });
+    }
+    if (account.superuser) {
+      const { rows: organisations } = await Organisations.getAll();
+      account.organisations = organisations.map(({ id, name }) => ({
+        id,
+        name,
+        roles: { isAdmin: true, isExpert: true, isManager: true },
+        toJoin: false,
+      }));
+      return res.json({ account });
     }
     const { rows: organisations } = await OrganisationsMembers.getByEmail(
       account.email

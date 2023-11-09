@@ -26,7 +26,7 @@ exports.create = ({
   superuser = false,
 }) =>
   db.query(
-    "INSERT INTO accounts (email, hash, firstname, lastname, gender, superuser) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, email, firstname, lastname, gender, superuser",
+    "INSERT INTO accounts (email, hash, firstname, lastname, gender, superuser) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT DO NOTHING RETURNING id, email, firstname, lastname, gender, superuser",
     [email, hash, firstname, lastname, gender, superuser]
   );
 

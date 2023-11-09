@@ -12,25 +12,23 @@ import { get } from "@/api/accounts";
 
 export async function loader() {
   const storedAccount = localStorage.getItem("account");
+  if (!storedAccount) return redirect("/login");
   const res = await get(storedAccount);
   if (!res.ok) return redirect("/login");
   const { account } = await res.json();
-  const storedOrganisation = localStorage.getItem("organisation");
-  if (account.superuser) {
-    return redirect("/admin");
-  }
-  if (
-    !storedOrganisation ||
-    !account.organisations.includes(storedOrganisation)
-  ) {
-    localStorage.setItem("organisation", account.organisations[0].id);
-  }
   const currentOrganisation = parseInt(localStorage.getItem("organisation"));
-  const roles = JSON.stringify(
-    account.organisations.find(({ id }) => id === currentOrganisation).roles
-  );
-  localStorage.setItem("roles", roles);
-
+  if (
+    !isNaN(currentOrganisation) &&
+    account.organisations.includes(currentOrganisation)
+  ) {
+    const roles = JSON.stringify(
+      account.organisations.find(({ id }) => id === currentOrganisation).roles
+    );
+    localStorage.setItem("roles", JSON.stringify(roles));
+    return { account };
+  }
+  localStorage.setItem("organisation", account.organisations[0].id);
+  localStorage.setItem("roles", JSON.stringify(account.organisations[0].roles));
   return { account };
 }
 

@@ -26,8 +26,9 @@ export const loader = async () => {
 export const action = async ({ request }) => {
   const formData = await request.formData();
   if (formData.get("type") === "create") {
+    const email = formData.get("email");
     const { account } = await createAccount({
-      email: formData.get("email"),
+      email,
     }).then((res) => res.json());
     const { organisation } = await create({
       account: account.id,
