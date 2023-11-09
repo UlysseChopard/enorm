@@ -48,12 +48,13 @@
 - [x] e3d2bb8f0f60a1 use token in front
 - [x] 0a95313ca8de97 create token in db
 - [x] 145fb35b44567f create admin interface ?
-- [ ] 9c1adc83d3a722 fix api calls in front
-- [ ] 47c1942d8644e1 use only code for account creation
+- [x] 9c1adc83d3a722 fix api calls in front
+- [x] 47c1942d8644e1 use only code for account creation
 - [x] fd8ba71d907a14 create organisation-member on org creation
 - [x] e0eadb1e9d5454 delete users on org deletion
 - [x] 10998a09f1ddd4 give admin role to first org member
 - [x] 22b66506b3621e move tokens to their own api
-- [ ] b31042cb5dfb5f use token for members in front
+- [x] b31042cb5dfb5f use token for members in front
 - [ ] b50deee9615245 verify registration vs subscription  
 - [ ] d47ff340c18671 set width of dialog contents to 500px  
+- [ ] af90cd84f8724f update prod db  
