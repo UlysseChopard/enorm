@@ -45,7 +45,7 @@ export async function loader() {
   return res.json();
 }
 
-const Organisation = ({ id, name, status, action, accept }) => (
+const Organisation = ({ id, organisation_name, status, action, accept }) => (
   <ListItem
     key={id}
     secondaryAction={
@@ -61,7 +61,7 @@ const Organisation = ({ id, name, status, action, accept }) => (
       </>
     }
   >
-    <ListItemText>{name}</ListItemText>
+    <ListItemText>{organisation_name}</ListItemText>
   </ListItem>
 );
 

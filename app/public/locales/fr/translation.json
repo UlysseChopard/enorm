@@ -141,6 +141,7 @@
     "submit": "Envoyer"
   },
   "users": {
+    "addOne": "Ajouter manuellement",
     "upload": "Télécharger",
     "name": "Nom",
     "submit": "Valider",
