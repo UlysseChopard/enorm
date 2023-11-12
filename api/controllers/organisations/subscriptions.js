@@ -35,13 +35,13 @@ exports.get = async (req, res, next) => {
     for (const subscription of subscriptions) {
       if (subscription.recipient === req.params.organisation) {
         if (subscription.accepted_at) {
-          providers.push(subscription);
+          subscribers.push(subscription);
         } else {
           sent.push(subscription);
         }
       } else {
         if (subscription.accepted_at) {
-          subscribers.push(subscription);
+          providers.push(subscription);
         } else {
           received.push(subscription);
         }
