@@ -1,5 +1,5 @@
 const { crypt, jwt, mail } = require("utils");
-const { Accounts, Tokens } = require("models");
+const { Accounts, Tokens, OrganisationsMembers } = require("models");
 const { BASE_URL, NODE_ENV, JWT_RESET_PASSWD_MAX_AGE } = process.env;
 
 const setCookie = (res, token) =>
@@ -20,14 +20,16 @@ exports.loginToken = async (req, res, next) => {
       return res.status(404).json({ message: "Token not found" });
     }
     const {
-      rows: [account],
-    } = await Accounts.getByEmail(req.body.email);
-    if (account.id !== tokenFound.account) {
+      rows: [organisationMember],
+    } = await OrganisationsMembers.find(tokenFound.organisation_member);
+    if (organisationMember.email !== req.body.email) {
       return res.status(401).json({ message: "token does not match email" });
     }
-    const token = jwt.sign({ accountId: tokenFound.account });
+    const token = jwt.sign({ accountId: organisationMember.account });
     setCookie(res, token);
-    res.status(201).json({ session: { token, account: tokenFound.account } });
+    res
+      .status(201)
+      .json({ session: { token, account: organisationMember.account } });
   } catch (err) {
     next(err);
   }

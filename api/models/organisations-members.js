@@ -96,6 +96,11 @@ exports.setMemberAccount = (account, organisation) =>
     [account, organisation]
   );
 
+exports.find = (id) =>
+  db.query(
+    "SELECT om.account, a.email FROM organisations_members AS om JOIN accounts AS a ON om.account = a.id WHERE om.id = $1",
+    [id]
+  );
 exports.getByEmail = (email) =>
   db.query(
     "SELECT o.id, o.name, om.account, om.is_admin, om.is_expert, om.is_manager FROM organisations_members AS om RIGHT JOIN organisations AS o ON om.organisation = o.id WHERE om.email = $1",
@@ -107,6 +112,3 @@ exports.getRoles = (organisation, account) =>
     "SELECT is_manager, is_admin, is_expert FROM organisations_members WHERE account = $1 AND organisation = $2",
     [account, organisation]
   );
-
-exports.checkToken = (token) =>
-  db.query("SELECT * FROM organisations_members WHERE token = $1", [token]);
