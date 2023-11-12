@@ -73,6 +73,24 @@ exports.add = async (req, res, next) => {
   }
 };
 
+exports.addOne = async (req, res, next) => {
+  try {
+    const {
+      rows: [account],
+    } = await Accounts.create({ email: req.body.email });
+    const {
+      rows: [organisationMember],
+    } = await OrganisationsMembers.create({
+      organisation: req.params.organisation,
+      email: req.body.email,
+      account: account.id,
+    });
+    res.json({ member: organisationMember });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.get = async (req, res, next) => {
   try {
     const {

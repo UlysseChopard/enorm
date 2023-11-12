@@ -27,6 +27,16 @@ export const add = (body, { separator, emailColumn, noHeader }) => {
   );
 };
 
+export const addOne = (email, roles) =>
+  fetch(`${apiUrl}api/organisations/${organisation}/members`, {
+    method: "POST",
+    body: JSON.stringify({ email, roles }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
 export const unlink = (member) =>
   fetch(`${apiUrl}api/organisations/${organisation}/members/${member}`, {
     method: "DELETE",
