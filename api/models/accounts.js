@@ -30,10 +30,10 @@ exports.create = ({
     [email, hash, firstname, lastname, gender, superuser]
   );
 
-exports.createMany = (emails, password) =>
+exports.createMany = (emails) =>
   db.query(
-    "INSERT INTO accounts (email, hash) SELECT u.*, $1 FROM UNNEST($2::text[]) AS u ON CONFLICT DO NOTHING RETURNING *",
-    [password, emails]
+    "INSERT INTO accounts (email) SELECT u.* FROM UNNEST($2::text[]) AS u ON CONFLICT DO NOTHING RETURNING *",
+    [emails]
   );
 
 exports.update = (id, { email, hash, firstname, lastname, gender }) =>
@@ -46,12 +46,6 @@ exports.remove = (id) =>
   db.query(
     "DELETE FROM accounts WHERE id = $1 RETURNING id, email, firstname, lastname, superuser",
     [id]
-  );
-
-exports.removeMany = (ids) =>
-  db.query(
-    "DELETE FROM accounts WHERE id IN ($1) RETURNING id, email, firstname, lastname, gender, superuser",
-    [ids.join(",")]
   );
 
 exports.removeOrphans = () =>

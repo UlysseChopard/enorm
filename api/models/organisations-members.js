@@ -23,9 +23,15 @@ exports.createMany = (organisation, accounts) =>
     ]
   );
 
-exports.getAdminsForMember = (id) =>
+exports.getByAccount = (id) =>
   db.query(
-    "SELECT account FROM organisations_members WHERE organisation = (SELECT organisation FROM organisations_members WHERE id = $1) AND is_admin",
+    "SELECT id, name, is_manager, is_admin, is_expert FROM organisations_members WHERE account = $1",
+    [id]
+  );
+
+exports.isAdmin = (id) =>
+  db.query(
+    "SELECT TRUE FROM organisations_members WHERE id = $1 AND is_admin",
     [id]
   );
 
@@ -35,77 +41,23 @@ exports.getByOrganisation = (organisation) =>
     [organisation]
   );
 
-exports.removeByOrganisation = (organisation) =>
-  db.query(
-    "DELETE FROM organisations_members WHERE organisation = $1 RETURNING *",
-    [organisation]
-  );
+exports.deleteById = (id) =>
+  db.query("DELETE FROM organisations_members WHERE id = $1 RETURNING *", [id]);
 
-exports.deleteByIdAndOrganisation = (organisation, user) =>
-  db.query(
-    "DELETE FROM organisations_members WHERE organisation = $1 AND id = $2::INTEGER RETURNING *",
-    [organisation, user]
-  );
+exports.grantRole = (id, role) =>
+  db.query("UPDATE organisations_members SET $1 = TRUE WHERE id = $2", [
+    role,
+    id,
+  ]);
 
-exports.setAdminByIdAndOrganisation = (organisation, user, value) =>
-  db.query(
-    "UPDATE organisations_members SET is_admin = $3 WHERE organisation = $1 AND id = $2",
-    [organisation, user, value]
-  );
-
-exports.setExpertByIdAndOrganisation = (organisation, user, value) =>
-  db.query(
-    "UPDATE organisations_members SET is_expert = $3 WHERE organisation = $1 AND id = $2",
-    [organisation, user, value]
-  );
-
-exports.setManagerByIdAndOrganisation = (organisation, user, value) =>
-  db.query(
-    "UPDATE organisations_members SET is_manager = $3 WHERE organisation = $1 AND id = $2",
-    [organisation, user, value]
-  );
-
-exports.manageRoleByIdAndOrganisation = (
-  organisation,
-  user,
-  { role, value }
-) => {
-  let colName;
-  switch (role) {
-    case "admin":
-      colName = "is_admin";
-      break;
-    case "manager":
-      colName = "is_manager";
-      break;
-    case "expert":
-      colName = "is_expert";
-      break;
-    default:
-      throw new Error("invalid role name");
-  }
-  return db.query(
-    `UPDATE organisations_members SET ${colName} = $1 WHERE organisation = $2 AND id = $3`,
-    [value, organisation, user]
-  );
-};
-
-exports.setMemberAccount = (account, organisation) =>
-  db.query(
-    "UPDATE organisations_members SET account = $1 WHERE organisation = $2 AND email = (SELECT email FROM accounts WHERE id = $1)",
-    [account, organisation]
-  );
+exports.revokeRole = (id, role) =>
+  db.query("UPDATE organisations_members SET $1 = FALSE WHERE id = $2", [
+    role,
+    id,
+  ]);
 
 exports.find = (id) =>
-  db.query(
-    "SELECT om.account, a.email FROM organisations_members AS om JOIN accounts AS a ON om.account = a.id WHERE om.id = $1",
-    [id]
-  );
-exports.getByEmail = (email) =>
-  db.query(
-    "SELECT o.id, o.name, om.account, om.is_admin, om.is_expert, om.is_manager FROM organisations_members AS om RIGHT JOIN organisations AS o ON om.organisation = o.id WHERE om.email = $1",
-    [email]
-  );
+  db.query("SELECT account FROM organisations_members WHERE id = $1", [id]);
 
 exports.getRoles = (organisation, account) =>
   db.query(

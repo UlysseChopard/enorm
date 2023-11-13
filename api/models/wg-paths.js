@@ -1,11 +1,5 @@
 const { db } = require("utils");
 
-exports.update = (subscription, recipient) =>
-  db.query(
-    "INSERT INTO wg_paths (subscription, working_group) SELECT $1::INTEGER, id FROM working_groups WHERE admin = $2 UNION SELECT $1::INTEGER, working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $2)",
-    [subscription, recipient]
-  );
-
 exports.add = (subscription, wg) =>
   db.query(
     "INSERT INTO wg_paths (subscription, working_group) VALUES ($1, $2) ON CONFLICT DO NOTHING",
@@ -25,10 +19,4 @@ exports.getByWGAndUser = (userId, wg) =>
   db.query(
     "SELECT wgp.id, s.id AS subscription_id, a.firstname, a.lastname FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE wgp.working_group = $1 AND wgp.subscription IN (SELECT id FROM subscriptions AS s WHERE s.sender = $2)",
     [wg, userId]
-  );
-
-exports.find = (userId, wg) =>
-  db.query(
-    "SELECT wg.*, wg.id AS wg_id, a.id AS user_id, a.firstname, a.lastname, p.id AS id FROM wg_paths AS p JOIN working_groups AS wg ON p.working_group = wg.id JOIN subscriptions AS s ON p.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE p.working_group = $2 AND p.subscription IN (SELECT id FROM subscriptions WHERE sender = $1)",
-    [userId, wg]
   );

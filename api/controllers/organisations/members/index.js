@@ -55,7 +55,7 @@ exports.add = async (req, res, next) => {
       }
       throw err;
     }
-    const { rows: accounts } = await Accounts.createMany(received, "!");
+    const { rows: accounts } = await Accounts.createMany(received);
     const { rows: created } = await OrganisationsMembers.createMany(
       organisation.id,
       accounts
@@ -82,7 +82,6 @@ exports.addOne = async (req, res, next) => {
       rows: [organisationMember],
     } = await OrganisationsMembers.create({
       organisation: req.params.organisation,
-      email: req.body.email,
       account: account.id,
     });
     res.json({ member: organisationMember });
@@ -131,26 +130,9 @@ exports.unlink = async (req, res, next) => {
       return res.status(400).json({ message: "Missing organisation" });
     }
     const {
-      rows: [unlinked],
-    } = await OrganisationsMembers.deleteByIdAndOrganisation(
-      organisation.id,
-      req.params.member
-    );
-    res.json({ unlinked });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.join = async (req, res, next) => {
-  try {
-    const {
-      rows: [user],
-    } = await OrganisationsMembers.setMemberAccount(
-      res.locals.accountId,
-      req.params.id
-    );
-    res.status(201).json({ user });
+      rows: [organisationMember],
+    } = await OrganisationsMembers.deleteById(req.params.member);
+    res.json({ organisationMember });
   } catch (err) {
     next(err);
   }
