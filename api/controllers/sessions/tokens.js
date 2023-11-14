@@ -8,14 +8,7 @@ exports.upsert = async (req, res, next) => {
         .status(422)
         .json({ message: "Missing organisation member in body" });
     }
-    let id;
-    while (true) {
-      id = crypt.getIntToken(parseInt(process.env.TOKEN_LENGTH, 10));
-      const {
-        rows: [token],
-      } = await Tokens.get(id);
-      if (!token) break;
-    }
+    const token = await Tokens.getOne();
     const expiresAt = new Date();
     expiresAt.setMinutes(
       expiresAt.getMinutes() + parseInt(process.env.TOKEN_EXPIRATION_DELAY, 10)

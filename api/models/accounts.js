@@ -30,12 +30,6 @@ exports.create = ({
     [email, hash, firstname, lastname, gender, superuser]
   );
 
-exports.createMany = (emails) =>
-  db.query(
-    "INSERT INTO accounts (email) SELECT u.* FROM UNNEST($2::text[]) AS u ON CONFLICT DO NOTHING RETURNING *",
-    [emails]
-  );
-
 exports.update = (id, { email, hash, firstname, lastname, gender }) =>
   db.query(
     "UPDATE accounts SET email = $1, hash = $2, firstname = $3, lastname = $4, gender = $5 WHERE id = $6 RETURNING id, email, firstname, lastname, gender, superuser",

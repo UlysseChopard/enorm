@@ -13,14 +13,10 @@ exports.create = ({
     [organisation, email, account, isAdmin, isExpert, isManager]
   );
 
-exports.createMany = (organisation, accounts) =>
+exports.createMany = (organisation, length) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, email, account) SELECT $1, u.email, u.account FROM UNNEST($2::text[], $3::uuid[]) AS u (email, account) ON CONFLICT DO NOTHING RETURNING *",
-    [
-      organisation,
-      accounts.map(({ email }) => email),
-      accounts.map(({ id }) => id),
-    ]
+    "INSERT INTO organisations_members (organisation) SELECT $1 FROM generate_series(1, $2) RETURNING id",
+    [organisation, length]
   );
 
 exports.getByAccount = (id) =>
