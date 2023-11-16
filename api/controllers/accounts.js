@@ -34,9 +34,9 @@ exports.get = async (req, res, next) => {
       account.id
     );
     account.organisations = organisations.map(
-      ({ id, name, is_manager, is_admin, is_expert }) => {
+      ({ organisation, name, is_manager, is_admin, is_expert }) => {
         return {
-          id,
+          id: organisation,
           name,
           roles: {
             isAdmin: is_admin,

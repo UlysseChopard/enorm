@@ -1,4 +1,3 @@
-const { crypt } = require("utils");
 const { Tokens } = require("models");
 
 exports.upsert = async (req, res, next) => {
@@ -8,24 +7,27 @@ exports.upsert = async (req, res, next) => {
         .status(422)
         .json({ message: "Missing organisation member in body" });
     }
-    const token = await Tokens.getOne();
-    const expiresAt = new Date();
-    expiresAt.setMinutes(
-      expiresAt.getMinutes() + parseInt(process.env.TOKEN_EXPIRATION_DELAY, 10)
-    );
     const {
       rows: [prevToken],
     } = await Tokens.getByOrganisationMember(req.body.organisationMember);
     if (prevToken) {
       await Tokens.remove(prevToken.id);
     }
+    const token = await Tokens.getOne();
+    const expiresAt = new Date();
+    expiresAt.setMinutes(
+      expiresAt.getMinutes() + parseInt(process.env.TOKEN_EXPIRATION_DELAY, 10)
+    );
     const {
-      rows: [token],
+      rows: [created],
     } = await Tokens.create({
       organisationMember: req.body.organisationMember,
-      id,
+      id: token,
       expiresAt,
     });
+    if (!created) {
+      return res.status(500).json({ message: "Could not create token" });
+    }
     res.status(201).json({ token });
   } catch (err) {
     next(err);

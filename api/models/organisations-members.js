@@ -21,7 +21,7 @@ exports.createMany = (organisation, length) =>
 
 exports.getByAccount = (id) =>
   db.query(
-    "SELECT id, name, is_manager, is_admin, is_expert FROM organisations_members WHERE account = $1",
+    "SELECT om.id, om.organisation, om.is_manager, om.is_admin, om.is_expert, o.name FROM organisations_members AS om JOIN organisations AS o ON om.organisation = o.id WHERE account = $1",
     [id]
   );
 
