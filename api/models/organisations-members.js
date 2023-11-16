@@ -2,21 +2,20 @@ const { db } = require("utils");
 
 exports.create = ({
   organisation,
-  email,
   account,
   isAdmin = false,
   isExpert = false,
   isManager = false,
 }) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, email, account, is_admin, is_expert, is_manager) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT DO NOTHING RETURNING *",
-    [organisation, email, account, isAdmin, isExpert, isManager]
+    "INSERT INTO organisations_members (organisation, account, is_admin, is_expert, is_manager) VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING RETURNING *",
+    [organisation, account, isAdmin, isExpert, isManager]
   );
 
-exports.createMany = (organisation, length) =>
+exports.createMany = (organisation, accounts) =>
   db.query(
-    "INSERT INTO organisations_members (organisation) SELECT $1 FROM generate_series(1, $2) RETURNING id",
-    [organisation, length]
+    "INSERT INTO organisations_members (organisation, account) SELECT $1, * FROM UNNEST($2::uuid[]) ON CONFLICT DO NOTHING RETURNING id",
+    [organisation, accounts]
   );
 
 exports.getByAccount = (id) =>
@@ -33,7 +32,7 @@ exports.isAdmin = (id) =>
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT om.*, t.id AS token, t.expires_at AS token_expires_at, eu.establishment FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN tokens AS t ON om.id = t.organisation_member WHERE om.organisation = $1",
+    "SELECT om.*, t.id AS token, t.expires_at AS token_expires_at, eu.establishment, a.email, a.firstname, a.lastname FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN tokens AS t ON om.id = t.organisation_member JOIN accounts AS a ON om.account = a.id WHERE om.organisation = $1",
     [organisation]
   );
 

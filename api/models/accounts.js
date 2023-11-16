@@ -17,6 +17,12 @@ exports.getSuperusers = () =>
     "SELECT id, email, firstname, lastname, gender FROM accounts WHERE superuser = TRUE"
   );
 
+exports.createMany = (emails) =>
+  db.query(
+    "INSERT INTO accounts (email) SELECT u.email FROM UNNEST($1::text[]) AS u (email) ON CONFLICT DO NOTHING RETURNING id",
+    [emails]
+  );
+
 exports.create = ({
   email,
   hash,
