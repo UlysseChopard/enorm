@@ -19,11 +19,11 @@ export async function loader() {
   const currentOrganisation = parseInt(localStorage.getItem("organisation"));
   if (
     !isNaN(currentOrganisation) &&
-    account.organisations.includes(currentOrganisation)
+    account.organisations.find(({ id }) => id === currentOrganisation)
   ) {
-    const roles = JSON.stringify(
-      account.organisations.find(({ id }) => id === currentOrganisation).roles
-    );
+    const roles = account.organisations.find(
+      ({ id }) => id === currentOrganisation
+    ).roles;
     localStorage.setItem("roles", JSON.stringify(roles));
     return { account };
   }
