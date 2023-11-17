@@ -27,10 +27,7 @@ exports.getByAccount = (id) =>
   );
 
 exports.isAdmin = (id) =>
-  db.query(
-    "SELECT TRUE FROM organisations_members WHERE id = $1 AND is_admin",
-    [id]
-  );
+  db.query("SELECT is_admin FROM organisations_members WHERE id = $1", [id]);
 
 exports.getByOrganisation = (organisation) =>
   db.query(
