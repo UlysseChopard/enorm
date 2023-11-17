@@ -15,8 +15,8 @@ exports.remove = (subscription, wg) =>
 exports.getById = (id) =>
   db.query("SELECT * FROM wg_paths WHERE id = $1", [id]);
 
-exports.getByWGAndUser = (userId, wg) =>
+exports.find = (organisation, wg) =>
   db.query(
-    "SELECT wgp.id, s.id AS subscription_id, a.firstname, a.lastname FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN accounts AS a ON s.recipient = a.id WHERE wgp.working_group = $1 AND wgp.subscription IN (SELECT id FROM subscriptions AS s WHERE s.sender = $2)",
-    [wg, userId]
+    "SELECT wgp.id, wgp.subscription, s.recipient, s.sent_at, s.received_at, s.accepted_at, o.name AS organisation_name FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN organisations AS o ON s.recipient = o.id WHERE wgp.working_group = $1 AND s.sender = $2 UNION SELECT wgp.id, wgp.subscription, s.sender, s.sent_at, s.received_at, s.accepted_at, o.name AS organisation_name FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN organisations AS o ON s.sender = o.id WHERE wgp.working_group = $1 AND s.recipient = $2",
+    [wg, organisation]
   );
