@@ -1,4 +1,6 @@
 const { db } = require("utils");
+const { Client } = require("pg");
+const { escapeIdentifier } = new Client();
 
 exports.create = ({
   organisation,
@@ -40,16 +42,20 @@ exports.deleteById = (id) =>
   db.query("DELETE FROM organisations_members WHERE id = $1 RETURNING *", [id]);
 
 exports.grantRole = (id, role) =>
-  db.query("UPDATE organisations_members SET $1 = TRUE WHERE id = $2", [
-    role,
-    id,
-  ]);
+  db.query(
+    `UPDATE organisations_members SET ${escapeIdentifier(
+      role
+    )} = TRUE WHERE id = $1`,
+    [id]
+  );
 
 exports.revokeRole = (id, role) =>
-  db.query("UPDATE organisations_members SET $1 = FALSE WHERE id = $2", [
-    role,
-    id,
-  ]);
+  db.query(
+    `UPDATE organisations_members SET ${escapeIdentifier(
+      role
+    )} = FALSE WHERE id = $1`,
+    [id]
+  );
 
 exports.find = (id) =>
   db.query("SELECT account FROM organisations_members WHERE id = $1", [id]);

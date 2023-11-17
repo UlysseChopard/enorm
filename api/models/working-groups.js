@@ -19,7 +19,10 @@ exports.getIdsByOrganisation = (organisation) =>
   );
 
 exports.find = (id) =>
-  db.query("SELECT * FROM working_groups WHERE id = $1", [id]);
+  db.query(
+    "SELECT wg.id, wg.reference, wg.title, wg.created_at, wg.organisation, o.name AS organisation_name FROM working_groups AS wg JOIN organisations AS o ON wg.organisation = o.id WHERE wg.id = $1",
+    [id]
+  );
 
 exports.remove = (id) =>
   db.query("DELETE FROM working_groups WHERE id = $1", [id]);
