@@ -33,7 +33,7 @@ exports.get = async (req, res, next) => {
     const sent = [];
     const received = [];
     for (const subscription of subscriptions) {
-      if (subscription.recipient === req.params.organisation) {
+      if (subscription.recipient == req.params.organisation) {
         if (subscription.accepted_at) {
           subscribers.push(subscription);
         } else {
