@@ -55,7 +55,10 @@ exports.revokeRole = (id, role) =>
   );
 
 exports.find = (id) =>
-  db.query("SELECT account FROM organisations_members WHERE id = $1", [id]);
+  db.query(
+    "SELECT a.email, om.account FROM organisations_members AS om JOIN accounts AS a ON om.account = a.id WHERE om.id = $1",
+    [id]
+  );
 
 exports.getRoles = (organisation, account) =>
   db.query(
