@@ -1,5 +1,7 @@
 {
   "signup": {
+    "token": "Code d'accès",
+    "informations": "Informations personnelles",
     "accessToken": "Code d'accès",
     "male": "Monsieur",
     "female": "Madame",
