@@ -3,11 +3,11 @@ const { upsert, remove } = require("controllers/sessions/tokens");
 
 const isAdmin = async (req, res, next) => {
   try {
-    const { rows: admins } = await OrganisationsMembers.getAdminsForMember(
-      req.body.organisationMember
-    );
-    for (const admin of admins) {
-      if (admin.account === res.locals.accountId) return next();
+    const {
+      rows: [admin],
+    } = await OrganisationsMembers.isAdmin(req.body.organisationMember);
+    if (admin) {
+      return next();
     }
     const {
       rows: [account],

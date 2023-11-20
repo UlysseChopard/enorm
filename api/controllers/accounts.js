@@ -30,20 +30,19 @@ exports.get = async (req, res, next) => {
       }));
       return res.json({ account });
     }
-    const { rows: organisations } = await OrganisationsMembers.getByEmail(
-      account.email
+    const { rows: organisations } = await OrganisationsMembers.getByAccount(
+      account.id
     );
     account.organisations = organisations.map(
-      ({ id, name, account, is_manager, is_admin, is_expert }) => {
+      ({ organisation, name, is_manager, is_admin, is_expert }) => {
         return {
-          id,
+          id: organisation,
           name,
           roles: {
             isAdmin: is_admin,
             isManager: is_manager,
             isExpert: is_expert,
           },
-          toJoin: !account,
         };
       }
     );

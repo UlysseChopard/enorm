@@ -58,3 +58,4 @@
 - [ ] b50deee9615245 verify registration vs subscription  
 - [ ] d47ff340c18671 set width of dialog contents to 500px  
 - [ ] af90cd84f8724f update prod db  
+- [ ] cca89d3dd8491d remove deleted migration from table  

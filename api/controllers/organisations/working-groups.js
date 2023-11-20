@@ -29,11 +29,14 @@ exports.create = async (req, res, next) => {
 
 exports.find = async (req, res, next) => {
   try {
-    const { rows: wgs } = await WorkingGroups.find(req.params.wg);
-    const wg = wgs[0];
-    wg.wgPaths = wgs.map(({ wg_path }) => wg_path).filter((v) => v !== null);
-    delete wg.wg_path;
-    res.json({ wg });
+    const {
+      rows: [wg],
+    } = await WorkingGroups.find(req.params.wg);
+    const { rows: wgPaths } = await WGPaths.find(
+      req.params.organisation,
+      req.params.wg
+    );
+    res.json({ wg: { ...wg, wgPaths } });
   } catch (err) {
     next(err);
   }

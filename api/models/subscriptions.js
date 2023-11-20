@@ -8,7 +8,7 @@ exports.send = (sender, recipient) =>
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT s.*, o.name AS organisation_name FROM subscriptions AS s JOIN organisations AS o ON s.recipient = o.id AND s.sender = $1 OR s.sender = o.id AND s.recipient = $1",
+    "SELECT s.*, o.name FROM subscriptions AS s JOIN organisations AS o ON s.recipient = o.id AND s.sender = $1 OR s.sender = o.id AND s.recipient = $1",
     [organisation]
   );
 

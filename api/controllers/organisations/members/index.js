@@ -2,9 +2,13 @@ const { createReadStream } = require("fs");
 const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
-const { regex, mail } = require("utils");
-const { Organisations, OrganisationsMembers, Accounts } = require("models");
-const { BASE_URL } = process.env;
+const { regex } = require("utils");
+const {
+  Organisations,
+  OrganisationsMembers,
+  Tokens,
+  Accounts,
+} = require("models");
 
 exports.add = async (req, res, next) => {
   try {
@@ -15,7 +19,7 @@ exports.add = async (req, res, next) => {
     const received = [];
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     const ac = new AbortController();
     const stream = createReadStream(req.file.path, {
       encoding: "utf-8",
@@ -55,19 +59,64 @@ exports.add = async (req, res, next) => {
       }
       throw err;
     }
-    const { rows: accounts } = await Accounts.createMany(received, "!");
-    const { rows: created } = await OrganisationsMembers.createMany(
+    if (!received.length) return res.json({ received });
+    const { rows: accounts } = await Accounts.createMany(received);
+    console.log(organisation, accounts);
+    const { rows: organisationMembers } = await OrganisationsMembers.createMany(
       organisation.id,
-      accounts
+      accounts.map(({ id }) => id)
     );
+    const expiresAt = new Date();
+    expiresAt.setMinutes(
+      expiresAt.getMinutes() +
+        parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY, 10)
+    );
+    const tokens = await Promise.all(
+      organisationMembers.map(async ({ id }) => ({
+        organisationMember: id,
+        id: await Tokens.getOne(),
+        expiresAt,
+      }))
+    );
+    await Tokens.createMany(tokens);
     // for (const invited of inserted) {
     //   await mail.send({
     //     recipient: invited.email,
     //     subject: `You have been invitated to join ${organisation.name} on Enorm`,
-    //     text: `Please click here to join ${organisation.name} on Enorm: ${BASE_URL}. Your token is ${invited.token}`,
+    //     text: `Please click here to join ${organisation.name} on Enorm: ${process.env.BASE_URL}. Your token is ${invited.token}`,
     //   });
     // }
-    res.json({ members: { created, received } });
+    res.status(201).json({ organisationMembers });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.addOne = async (req, res, next) => {
+  try {
+    await Accounts.create({ email: req.body.email });
+    const {
+      rows: [account],
+    } = await Accounts.getByEmail(req.body.email);
+    const {
+      rows: [organisationMember],
+    } = await OrganisationsMembers.create({
+      organisation: req.params.organisation,
+      account: account.id,
+    });
+    const id = await Tokens.getOne();
+    const expiresAt = new Date();
+    expiresAt.setMinutes(
+      expiresAt.getMinutes() +
+        parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY)
+    );
+    await Tokens.create({
+      id,
+      organisationMember: organisationMember.id,
+      expiresAt,
+    });
+    organisationMember.token = id;
+    res.json({ member: organisationMember });
   } catch (err) {
     next(err);
   }
@@ -77,9 +126,9 @@ exports.get = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
+      return res.status(404).json({ message: "Missing organisation" });
     }
     const { rows } = await OrganisationsMembers.getByOrganisation(
       organisation.id
@@ -108,31 +157,14 @@ exports.unlink = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
+      return res.status(404).json({ message: "Missing organisation" });
     }
     const {
-      rows: [unlinked],
-    } = await OrganisationsMembers.deleteByIdAndOrganisation(
-      organisation.id,
-      req.params.member
-    );
-    res.json({ unlinked });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.join = async (req, res, next) => {
-  try {
-    const {
-      rows: [user],
-    } = await OrganisationsMembers.setMemberAccount(
-      res.locals.accountId,
-      req.params.id
-    );
-    res.status(201).json({ user });
+      rows: [organisationMember],
+    } = await OrganisationsMembers.deleteById(req.params.member);
+    res.json({ organisationMember });
   } catch (err) {
     next(err);
   }

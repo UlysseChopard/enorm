@@ -73,8 +73,8 @@ exports.find = async (req, res, next) => {
     const {
       rows: [registration],
     } = await Registrations.find(req.params.id);
-    const { rows: wgPaths } = await WGPaths.getByWGAndUser(
-      res.locals.accountId,
+    const { rows: wgPaths } = await WGPaths.find(
+      req.params.organisation,
       registration.working_group
     );
     const requireAction =

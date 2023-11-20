@@ -50,10 +50,12 @@ const Organisation = ({ id, name, status, action, accept }) => (
     key={id}
     secondaryAction={
       <>
-        <IconButton edge="end" onClick={action}>
-          {status ? <LinkOffIcon /> : <AddLinkIcon />}
-        </IconButton>
-        {status === "received" && (
+        {action && (
+          <IconButton edge="end" onClick={action}>
+            {status ? <LinkOffIcon /> : <AddLinkIcon />}
+          </IconButton>
+        )}
+        {status === "received" && accept && (
           <IconButton edge="end" onClick={accept}>
             <DoneIcon />
           </IconButton>
@@ -75,13 +77,14 @@ export default function Subscriptions() {
   const [search, setSearch] = useState([]);
   const [tab, setTab] = useState(0);
   const [arePending, setArePending] = useState(false);
+  const { isAdmin } = JSON.parse(localStorage.getItem("roles"));
 
   useEffect(() => {
     setArePending(load.sent.length || load.received.length);
   }, [load]);
 
   useEffect(() => {
-    if (action?.results) setSearch(action.results);
+    if (action?.subscriptions) setSearch(action.subscriptions);
   }, [action]);
 
   useEffect(() => {
@@ -101,33 +104,36 @@ export default function Subscriptions() {
     setQuery(e.target.value.toLowerCase());
   };
 
-  const handleAccept =
-    ({ id }) =>
-    () => {
+  const handleAccept = ({ id }) => {
+    if (!isAdmin) return null;
+    return () => {
       const formData = new FormData();
       formData.append("type", "accept");
       formData.append("recipient", id);
       submit(formData, { method: "POST" });
     };
+  };
 
-  const handleDeny =
-    ({ id }) =>
-    () => {
+  const handleDeny = ({ id }) => {
+    if (!isAdmin) return null;
+    return () => {
       const formData = new FormData();
       formData.append("type", "close");
       formData.append("recipient", id);
       submit(formData, { method: "POST" });
     };
+  };
 
-  const handleInvite =
-    ({ id }) =>
-    () => {
+  const handleInvite = ({ id }) => {
+    if (!isAdmin) return null;
+    return () => {
       const formData = new FormData();
       formData.append("type", "invite");
       formData.append("recipient", id);
       submit(formData, { method: "POST" });
       setSearch(search.filter((result) => result.id !== id));
     };
+  };
 
   return (
     <Stack>

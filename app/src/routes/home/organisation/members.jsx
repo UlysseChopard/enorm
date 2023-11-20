@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { get, add, unlink } from "@/api/organisations/members";
+import { get, add, addOne, unlink } from "@/api/organisations/members";
 import { allow, disallow } from "@/api/organisations/members/roles";
 import { create } from "@/api/sessions/tokens";
 import {
@@ -44,6 +44,9 @@ export async function action({ request }) {
         noHeader: !formData.get("header"),
       });
       break;
+    case "addOne":
+      res = await addOne(formData.get("email"), formData.get("roles"));
+      break;
     case "allow":
       res = await allow(formData.get("user"), formData.get("role"));
       break;
@@ -67,6 +70,38 @@ export async function action({ request }) {
   }
   return res.json();
 }
+
+const AddOneDialog = ({ onClose, open }) => {
+  const { t } = useTranslation(null, { keyPrefix: "users" });
+  const [email, setEmail] = useState("");
+  return (
+    <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
+      <Form method="POST">
+        <DialogTitle>{t("addOne")}</DialogTitle>
+        <DialogContent>
+          <input type="hidden" name="type" value="addOne" />
+          <TextField
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>{t("cancel")}</Button>
+          <Button
+            disabled={!email}
+            variant="contained"
+            type="submit"
+            onClick={onClose}
+          >
+            {t("submit")}
+          </Button>
+        </DialogActions>
+      </Form>
+    </Dialog>
+  );
+};
 
 const UploadUsersDialog = ({ onClose, open }) => {
   const { t } = useTranslation(null, { keyPrefix: "users" });
@@ -162,10 +197,17 @@ export default function Members() {
   return (
     <>
       <div>
-        <Button type="button" onClick={() => setOpen(true)}>
+        <Button type="button" onClick={() => setOpen("upload")}>
           {t("upload")}
         </Button>
-        <UploadUsersDialog open={open} onClose={() => setOpen(false)} />
+        <UploadUsersDialog
+          open={open === "upload"}
+          onClose={() => setOpen("")}
+        />
+        <Button type="button" onClick={() => setOpen("addOne")}>
+          {t("addOne")}
+        </Button>
+        <AddOneDialog open={open === "addOne"} onClose={() => setOpen("")} />
       </div>
       <table>
         <thead>

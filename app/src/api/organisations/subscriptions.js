@@ -1,7 +1,7 @@
-import { apiUrl, organisation } from "@/api";
+import { apiUrl } from "@/api";
 
 export const invite = (recipient) => {
-  return fetch(`${apiUrl}api/organisations/${organisation}/subscriptions`, {
+  return fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/subscriptions`, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -13,7 +13,7 @@ export const invite = (recipient) => {
 };
 
 export const get = (query) => {
-  const url = `${apiUrl}api/organisations/${organisation}/subscriptions`;
+  const url = `${apiUrl}api/organisations/${localStorage.getItem("organisation")}/subscriptions`;
   return fetch(query ? url + `?q=${query}` : url, {
     credentials: "include",
   });
@@ -21,7 +21,7 @@ export const get = (query) => {
 
 export const establish = (id) => {
   return fetch(
-    `${apiUrl}api/organisations/${organisation}/subscriptions/${id}`,
+    `${apiUrl}api/organisations/${localStorage.getItem("organisation")}/subscriptions/${id}`,
     {
       method: "POST",
       credentials: "include",
@@ -31,7 +31,7 @@ export const establish = (id) => {
 
 export const close = (id) => {
   return fetch(
-    `${apiUrl}api/organisations/${organisation}/subscriptions/${id}`,
+    `${apiUrl}api/organisations/${localStorage.getItem("organisation")}/subscriptions/${id}`,
     {
       method: "DELETE",
       credentials: "include",

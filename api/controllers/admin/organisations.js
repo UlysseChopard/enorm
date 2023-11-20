@@ -32,7 +32,6 @@ exports.create = async (req, res, next) => {
       rows: [member],
     } = await OrganisationsMembers.create({
       organisation: organisation.id,
-      email: account.email,
       account: account.id,
       isAdmin: true,
     });

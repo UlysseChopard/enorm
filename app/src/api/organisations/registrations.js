@@ -1,7 +1,7 @@
-import { apiUrl, organisation } from "@/api";
+import { apiUrl } from "@/api";
 
 export const request = (body) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/registrations`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/registrations`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -11,12 +11,12 @@ export const request = (body) =>
   });
 
 export const get = () =>
-  fetch(`${apiUrl}api/organisations/${organisation}/registrations`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/registrations`, {
     credentials: "include",
   });
 
 export const accept = (id, body) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/registrations/${id}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/registrations/${id}`, {
     method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -24,12 +24,12 @@ export const accept = (id, body) =>
   });
 
 export const deny = (id) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/registrations/${id}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/registrations/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
 
 export const find = (id) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/registrations/${id}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/registrations/${id}`, {
     credentials: "include",
   });
