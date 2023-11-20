@@ -4,9 +4,9 @@ exports.allow = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
+      return res.status(404).json({ message: "Missing organisation" });
     }
     const {
       rows: [organisationMember],
@@ -24,9 +24,9 @@ exports.disallow = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
+      return res.status(404).json({ message: "Missing organisation" });
     }
     const {
       rows: [organisationMember],

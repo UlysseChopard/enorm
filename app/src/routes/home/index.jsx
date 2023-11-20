@@ -1,4 +1,5 @@
-import { Outlet, redirect, useLoaderData } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -34,7 +35,13 @@ export async function loader() {
 
 export default function Home() {
   const { account } = useLoaderData();
+  const navigate = useNavigate();
+  const [organisation, setOrganisation] = useState(
+    localStorage.getItem("organisation")
+  );
   const handleChange = (e) => {
+    navigate(0);
+    setOrganisation(e.target.value);
     localStorage.setItem("organisation", e.target.value);
     localStorage.setItem(
       "roles",
@@ -67,7 +74,7 @@ export default function Home() {
               sx={{
                 backgroundColor: "#e7f1fc",
               }}
-              value={localStorage.getItem("organisation")}
+              value={organisation}
               onChange={handleChange}
             >
               {account.organisations.map(({ id, name }) => (

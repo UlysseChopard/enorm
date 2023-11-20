@@ -19,7 +19,7 @@ exports.add = async (req, res, next) => {
     const received = [];
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     const ac = new AbortController();
     const stream = createReadStream(req.file.path, {
       encoding: "utf-8",
@@ -126,9 +126,9 @@ exports.get = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
+      return res.status(404).json({ message: "Missing organisation" });
     }
     const { rows } = await OrganisationsMembers.getByOrganisation(
       organisation.id
@@ -157,9 +157,9 @@ exports.unlink = async (req, res, next) => {
   try {
     const {
       rows: [organisation],
-    } = await Organisations.getByAdmin(res.locals.accountId);
+    } = await Organisations.getById(req.params.organisation);
     if (!organisation) {
-      return res.status(400).json({ message: "Missing organisation" });
+      return res.status(404).json({ message: "Missing organisation" });
     }
     const {
       rows: [organisationMember],
