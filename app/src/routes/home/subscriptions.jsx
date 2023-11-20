@@ -45,7 +45,7 @@ export async function loader() {
   return res.json();
 }
 
-const Organisation = ({ id, organisation_name, status, action, accept }) => (
+const Organisation = ({ id, name, status, action, accept }) => (
   <ListItem
     key={id}
     secondaryAction={
@@ -63,7 +63,7 @@ const Organisation = ({ id, organisation_name, status, action, accept }) => (
       </>
     }
   >
-    <ListItemText>{organisation_name}</ListItemText>
+    <ListItemText>{name}</ListItemText>
   </ListItem>
 );
 
@@ -84,7 +84,7 @@ export default function Subscriptions() {
   }, [load]);
 
   useEffect(() => {
-    if (action?.results) setSearch(action.results);
+    if (action?.subscriptions) setSearch(action.subscriptions);
   }, [action]);
 
   useEffect(() => {

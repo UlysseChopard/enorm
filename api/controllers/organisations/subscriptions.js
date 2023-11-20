@@ -10,29 +10,24 @@ const { getDownstream } = require("services/subscriptions");
 exports.get = async (req, res, next) => {
   try {
     await Subscriptions.updateReceived(req.params.organisation);
-    const { rows: subscriptions } = await Subscriptions.getByOrganisation(
+    const { rows: existing } = await Subscriptions.getByOrganisation(
       req.params.organisation
     );
     if (req.query.q) {
-      const existing = subscriptions.reduce(
-        (acc, val) =>
-          val.recipient === req.params.organisation
-            ? acc
-            : acc.add(val.recipient),
-        new Set()
+      const alreadySent = new Set(
+        existing.filter((s) => s.recipient !== req.params.organisation)
       );
-      existing.add(parseInt(req.params.organisation));
-      console.log("existing", existing);
-      const results = await Organisations.searchName(req.query.q).then(
-        ({ rows }) => rows.filter(({ id }) => !existing.has(id))
+      alreadySent.add(parseInt(req.params.organisation));
+      const subscriptions = await Organisations.searchName(req.query.q).then(
+        ({ rows }) => rows.filter(({ id }) => !alreadySent.has(id))
       );
-      return res.json({ results });
+      return res.json({ subscriptions });
     }
     const providers = [];
     const subscribers = [];
     const sent = [];
     const received = [];
-    for (const subscription of subscriptions) {
+    for (const subscription of existing) {
       if (subscription.recipient == req.params.organisation) {
         if (subscription.accepted_at) {
           subscribers.push(subscription);
