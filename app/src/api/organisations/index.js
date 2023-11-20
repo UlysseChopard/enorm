@@ -1,7 +1,7 @@
-import { apiUrl, organisation } from "@/api";
+import { apiUrl } from "@/api";
 
 export const replace = (name) =>
-  fetch(`${apiUrl}api/organisations/${organisation}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}`, {
     method: "PUT",
     credentials: "include",
     body: JSON.stringify({ name }),
@@ -12,7 +12,7 @@ export const replace = (name) =>
   });
 
 export const get = () =>
-  fetch(`${apiUrl}api/organisations/${organisation}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}`, {
     method: "GET",
     credentials: "include",
     headers: { Accept: "application/json" },
@@ -20,7 +20,7 @@ export const get = () =>
 
 // used ?
 export const close = () =>
-  fetch(`${apiUrl}api/organisations/${organisation}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}`, {
     method: "DELETE",
     credentials: "include",
   });

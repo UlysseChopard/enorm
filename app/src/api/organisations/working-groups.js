@@ -1,9 +1,9 @@
-import { apiUrl, organisation } from "@/api";
+import { apiUrl } from "@/api";
 
 export const get = (query) => {
   const qs = query ? new URLSearchParams({ q: encodeURIComponent(query) }) : "";
   return fetch(
-    `${apiUrl}api/organisations/${organisation}/working-groups${qs}`,
+    `${apiUrl}api/organisations/${localStorage.getItem("organisation")}/working-groups${qs}`,
     {
       credentials: "include",
     }
@@ -11,12 +11,12 @@ export const get = (query) => {
 };
 
 export const find = (wgId) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${wgId}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/working-groups/${wgId}`, {
     credentials: "include",
   });
 
 export const create = (group) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/working-groups`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/working-groups`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -27,7 +27,7 @@ export const create = (group) =>
   });
 
 export const remove = (wg) =>
-  fetch(`${apiUrl}api/organisations/${organisation}/working-groups/${wg}`, {
+  fetch(`${apiUrl}api/organisations/${localStorage.getItem("organisation")}/working-groups/${wg}`, {
     method: "DELETE",
     credentials: "include",
   });
