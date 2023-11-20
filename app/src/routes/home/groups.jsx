@@ -111,13 +111,17 @@ export default function Groups() {
     if (actionData?.group) setCreateModal(false);
   }, [actionData]);
 
+  const { isManager } = JSON.parse(localStorage.getItem("roles"));
+
   return (
     <>
-      <div style={{ margin: "0 1rem 1rem" }}>
-        <Button variant="contained" onClick={() => setCreateModal(true)}>
-          {t("create")}
-        </Button>
-      </div>
+      {isManager && (
+        <div style={{ margin: "0 1rem 1rem" }}>
+          <Button variant="contained" onClick={() => setCreateModal(true)}>
+            {t("create")}
+          </Button>
+        </div>
+      )}
       <table style={{ width: "100%" }}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
