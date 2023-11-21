@@ -1,21 +1,12 @@
 exports.Accounts = require("./accounts");
-
-exports.WorkingGroups = require("./working-groups");
-
-exports.Subscriptions = require("./subscriptions");
-
-exports.Registrations = require("./registrations");
-
-exports.WGPaths = require("./wg-paths");
-
-exports.RegistrationsStreams = require("./registrations-streams");
-
 exports.Establishments = require("./establishments");
-
-exports.Organisations = require("./organisations");
-
-exports.OrganisationsMembers = require("./organisations-members");
-
 exports.EstablishmentsUsers = require("./establishments-users");
-
+exports.Organisations = require("./organisations");
+exports.OrganisationsMembers = require("./organisations-members");
+exports.Registrations = require("./registrations");
+exports.RegistrationsStreams = require("./registrations-streams");
+exports.Subscriptions = require("./subscriptions");
+exports.SubscriptionsManagers = require("./subscriptions-managers");
 exports.Tokens = require("./tokens");
+exports.WGPaths = require("./wg-paths");
+exports.WorkingGroups = require("./working-groups");

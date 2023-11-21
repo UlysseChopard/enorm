@@ -3,15 +3,15 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("subscriptions_organisations_members", {
+  pgm.createTable("subscriptions_managers", {
     id: "id",
     subscription: {
-      type: "id",
+      type: "integer",
       references: "subscriptions",
       notNull: true,
     },
-    organisation_member: {
-      type: "id",
+    manager: {
+      type: "integer",
       references: "organisations_members",
       notNull: true,
     },
@@ -19,5 +19,5 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("subscriptions_organisations_members");
+  pgm.dropTable("subscriptions_managers");
 };

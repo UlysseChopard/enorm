@@ -4,6 +4,7 @@ const {
   WGPaths,
   WorkingGroups,
   Registrations,
+  SubscriptionsManagers,
 } = require("models");
 const { getDownstream } = require("services/subscriptions");
 
@@ -53,6 +54,10 @@ exports.find = async (req, res, next) => {
     const {
       rows: [subscription],
     } = await Subscriptions.find(req.params.subscription);
+    const { rows: managers } = await SubscriptionsManagers.getBySubscription(
+      req.params.subscription
+    );
+    subscription.managers = managers;
     return res.json({ subscription });
   } catch (err) {
     next(err);
