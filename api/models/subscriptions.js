@@ -32,3 +32,6 @@ exports.getSubscribers = (organisation) =>
     "SELECT id, sender FROM subscriptions WHERE recipient = $1 AND accepted_at IS NOT NULL",
     [organisation]
   );
+
+exports.find = (id) =>
+  db.query("SELECT * FROM subscriptions WHERE id = $1", [id]);

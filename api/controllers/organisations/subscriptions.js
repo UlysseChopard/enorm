@@ -48,6 +48,17 @@ exports.get = async (req, res, next) => {
   }
 };
 
+exports.find = async (req, res, next) => {
+  try {
+    const {
+      rows: [subscription],
+    } = await Subscriptions.find(req.params.subscription);
+    return res.json({ subscription });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.invite = async (req, res, next) => {
   try {
     if (!req.body.recipient)

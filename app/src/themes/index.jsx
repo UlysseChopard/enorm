@@ -26,5 +26,10 @@ export default createTheme({
         component: LinkBehaviour,
       },
     },
+    MuiListItem: {
+      defaultProps: {
+        component: LinkBehaviour,
+      },
+    },
   },
 });

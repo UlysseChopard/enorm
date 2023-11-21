@@ -3,7 +3,11 @@ import Subscriptions, {
   loader as subscriptionsLoader,
   action as subscriptionsAction,
 } from "@/routes/home/subscriptions";
-import Dashboard from "@/routes/home/dashboard";
+import Subscription, {
+  loader as subscriptionLoader,
+  action as subscriptionAction,
+} from "@/routes/home/subscription";
+// import Dashboard from "@/routes/home/dashboard";
 import Groups, {
   loader as groupsLoader,
   action as groupsAction,
@@ -77,6 +81,12 @@ export default [
         element: <Subscriptions />,
         loader: subscriptionsLoader,
         action: subscriptionsAction,
+      },
+      {
+        path: "subscriptions/:id",
+        element: <Subscription />,
+        loader: subscriptionLoader,
+        action: subscriptionAction,
       },
       {
         path: "groups",

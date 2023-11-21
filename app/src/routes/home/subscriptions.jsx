@@ -48,6 +48,7 @@ export async function loader() {
 const Organisation = ({ id, name, status, action, accept }) => (
   <ListItem
     key={id}
+    href={id.toString()}
     secondaryAction={
       <>
         {action && (
