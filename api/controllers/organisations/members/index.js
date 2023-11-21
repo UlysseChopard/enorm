@@ -130,8 +130,10 @@ exports.get = async (req, res, next) => {
     if (!organisation) {
       return res.status(404).json({ message: "Missing organisation" });
     }
+
     const { rows } = await OrganisationsMembers.getByOrganisation(
-      organisation.id
+      organisation.id,
+      req.query
     );
     const members = Object.values(
       rows.reduce((acc, user) => {

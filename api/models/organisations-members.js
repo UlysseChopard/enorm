@@ -29,11 +29,26 @@ exports.getByAccount = (id) =>
 exports.isAdmin = (id) =>
   db.query("SELECT is_admin FROM organisations_members WHERE id = $1", [id]);
 
-exports.getByOrganisation = (organisation) =>
-  db.query(
-    "SELECT om.*, t.id AS token, t.expires_at AS token_expires_at, eu.establishment, a.email, a.firstname, a.lastname FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN tokens AS t ON om.id = t.organisation_member JOIN accounts AS a ON om.account = a.id WHERE om.organisation = $1",
-    [organisation]
+exports.getByOrganisation = (organisation, query) => {
+  const dbNames = {
+    isManager: "is_manager",
+    isExpert: "is_expert",
+    isAdmin: "is_admin",
+  };
+  let rolesFilter = "";
+  const values = [];
+  let i = 2;
+  for (const [k, v] of Object.entries(query)) {
+    rolesFilter += ` AND ${dbNames[k]} = $${i}`;
+    values.push(v);
+    i++;
+  }
+
+  return db.query(
+    `SELECT om.*, t.id AS token, t.expires_at AS token_expires_at, eu.establishment, a.email, a.firstname, a.lastname FROM organisations_members AS om LEFT JOIN establishments_users AS eu ON om.id = eu.user LEFT JOIN tokens AS t ON om.id = t.organisation_member JOIN accounts AS a ON om.account = a.id WHERE om.organisation = $1${rolesFilter}`,
+    [organisation, ...values]
   );
+};
 
 exports.deleteById = (id) =>
   db.query("DELETE FROM organisations_members WHERE id = $1 RETURNING *", [id]);
