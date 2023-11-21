@@ -62,7 +62,7 @@ exports.add = async (req, res, next) => {
     if (!received.length) return res.json({ received });
     const { rows: accounts } = await Accounts.createMany(received);
     console.log(organisation, accounts);
-    const { rows: organisationMembers } = await OrganisationsMembers.createMany(
+    const { rows: members } = await OrganisationsMembers.createMany(
       organisation.id,
       accounts.map(({ id }) => id)
     );
@@ -72,7 +72,7 @@ exports.add = async (req, res, next) => {
         parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY, 10)
     );
     const tokens = await Promise.all(
-      organisationMembers.map(async ({ id }) => ({
+      members.map(async ({ id }) => ({
         organisationMember: id,
         id: await Tokens.getOne(),
         expiresAt,
@@ -86,7 +86,7 @@ exports.add = async (req, res, next) => {
     //     text: `Please click here to join ${organisation.name} on Enorm: ${process.env.BASE_URL}. Your token is ${invited.token}`,
     //   });
     // }
-    res.status(201).json({ organisationMembers });
+    res.status(201).json({ members });
   } catch (err) {
     next(err);
   }
@@ -133,7 +133,7 @@ exports.get = async (req, res, next) => {
     const { rows } = await OrganisationsMembers.getByOrganisation(
       organisation.id
     );
-    const users = Object.values(
+    const members = Object.values(
       rows.reduce((acc, user) => {
         if (!acc[user.id]) {
           acc[user.id] = user;
@@ -147,7 +147,7 @@ exports.get = async (req, res, next) => {
         return acc;
       }, {})
     );
-    res.json({ users });
+    res.json({ members });
   } catch (err) {
     next(err);
   }
@@ -162,9 +162,9 @@ exports.unlink = async (req, res, next) => {
       return res.status(404).json({ message: "Missing organisation" });
     }
     const {
-      rows: [organisationMember],
+      rows: [member],
     } = await OrganisationsMembers.deleteById(req.params.member);
-    res.json({ organisationMember });
+    res.json({ member });
   } catch (err) {
     next(err);
   }

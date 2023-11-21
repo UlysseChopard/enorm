@@ -142,7 +142,7 @@
   "organisation": {
     "submit": "Envoyer"
   },
-  "users": {
+  "members": {
     "addOne": "Ajouter manuellement",
     "upload": "Télécharger",
     "name": "Nom",

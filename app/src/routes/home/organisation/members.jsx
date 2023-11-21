@@ -25,9 +25,11 @@ import {
 } from "@/api/organisations/establishments";
 
 export async function loader() {
-  const users = await get();
-  const establishments = await getEstablishments();
-  return { ...(await users.json()), ...(await establishments.json()) };
+  const resOm = await get();
+  const resE = await getEstablishments();
+  const { members } = await resOm.json();
+  const { establishments } = await resE.json();
+  return { members, establishments };
 }
 
 export async function action({ request }) {
@@ -35,7 +37,7 @@ export async function action({ request }) {
   let res;
   switch (formData.get("type")) {
     case "unlink":
-      res = await unlink(formData.get("user"));
+      res = await unlink(formData.get("member"));
       break;
     case "add":
       res = await add(formData, {
@@ -48,19 +50,19 @@ export async function action({ request }) {
       res = await addOne(formData.get("email"), formData.get("roles"));
       break;
     case "allow":
-      res = await allow(formData.get("user"), formData.get("role"));
+      res = await allow(formData.get("member"), formData.get("role"));
       break;
     case "disallow":
-      res = await disallow(formData.get("user"), formData.get("role"));
+      res = await disallow(formData.get("member"), formData.get("role"));
       break;
     case "removeUser":
       res = await removeUser(
-        formData.get("user"),
+        formData.get("member"),
         formData.get("establishment")
       );
       break;
     case "addUser":
-      res = await addUser(formData.get("user"), formData.get("establishment"));
+      res = await addUser(formData.get("member"), formData.get("establishment"));
       break;
     case "createToken":
       res = await create(formData.get("organisationMember"));
@@ -72,7 +74,7 @@ export async function action({ request }) {
 }
 
 const AddOneDialog = ({ onClose, open }) => {
-  const { t } = useTranslation(null, { keyPrefix: "users" });
+  const { t } = useTranslation(null, { keyPrefix: "members" });
   const [email, setEmail] = useState("");
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
@@ -104,7 +106,7 @@ const AddOneDialog = ({ onClose, open }) => {
 };
 
 const UploadUsersDialog = ({ onClose, open }) => {
-  const { t } = useTranslation(null, { keyPrefix: "users" });
+  const { t } = useTranslation(null, { keyPrefix: "members" });
   const [filename, setFilename] = useState(null);
   const [hasHeader, setHasHeader] = useState(true);
   const inputFile = useRef();
@@ -118,14 +120,14 @@ const UploadUsersDialog = ({ onClose, open }) => {
             <Box>
               <Button
                 component="label"
-                htmlFor="users"
+                htmlFor="members"
                 variant="contained"
                 startIcon={<AttachmentIcon />}
               >
                 {t("file")}
                 <input
                   type="file"
-                  id="users"
+                  id="members"
                   name="file"
                   hidden
                   accept=".csv, .txt, text/csv, text/tab-separated-value"
@@ -183,8 +185,8 @@ const UploadUsersDialog = ({ onClose, open }) => {
 };
 
 export default function Members() {
-  const { t } = useTranslation(null, { keyPrefix: "users" });
-  const { establishments, users } = useLoaderData();
+  const { t } = useTranslation(null, { keyPrefix: "members" });
+  const { establishments, members } = useLoaderData();
   const submit = useSubmit();
   const [open, setOpen] = useState(false);
   const getRoles = useCallback(({ is_manager, is_admin, is_expert }) => {
@@ -219,16 +221,16 @@ export default function Members() {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user) => {
-            const roles = getRoles(user);
+          {members?.map((member) => {
+            const roles = getRoles(member);
             const formData = new FormData();
-            formData.append("user", user.id);
+            formData.append("member", member.id);
             return (
-              <tr key={user.id}>
-                <td>{user.email}</td>
+              <tr key={member.id}>
+                <td>{member.email}</td>
                 <td>
                   <FormControl fullWidth>
-                    <Select value={user.establishments} multiple>
+                    <Select value={member.establishments} multiple>
                       {establishments?.map(({ id, name }) => (
                         <MenuItem
                           key={id}
@@ -236,7 +238,7 @@ export default function Members() {
                           onClick={() => {
                             formData.append(
                               "type",
-                              user.establishments.includes(id)
+                              member.establishments.includes(id)
                                 ? "removeUser"
                                 : "addUser"
                             );
@@ -290,15 +292,15 @@ export default function Members() {
                 <td>
                   <Form method="DELETE">
                     <input type="hidden" name="type" value="unlink" />
-                    <input type="hidden" name="user" value={user.id} />
+                    <input type="hidden" name="member" value={member.id} />
                     <Button type="submit">{t("unlink")}</Button>
                   </Form>
-                  {user.token &&
-                  new Date() < new Date(user.token_expires_at) ? (
+                  {member.token &&
+                  new Date() < new Date(member.token_expires_at) ? (
                     <Button
-                      onClick={() => navigator.clipboard.writeText(user.token)}
+                      onClick={() => navigator.clipboard.writeText(member.token)}
                     >
-                      {user.token}
+                      {member.token}
                     </Button>
                   ) : (
                     <Form method="PUT">
@@ -306,7 +308,7 @@ export default function Members() {
                       <input
                         type="hidden"
                         name="organisationMember"
-                        value={user.id}
+                        value={member.id}
                       />
                       <Button type="submit" variant="contained">
                         {t("createToken")}
