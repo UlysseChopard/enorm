@@ -34,4 +34,7 @@ exports.getSubscribers = (organisation) =>
   );
 
 exports.find = (id) =>
-  db.query("SELECT * FROM subscriptions WHERE id = $1", [id]);
+  db.query(
+    "SELECT s.*, o1.name AS sender_name, o2.name AS recipient_name FROM subscriptions AS s LEFT JOIN organisations AS o1 ON s.sender = o1.id LEFT JOIN organisations AS o2 ON s.recipient = o2.id WHERE s.id = $1",
+    [id]
+  );
