@@ -87,7 +87,7 @@ const NavBarItem = ({ text, icon, target, pathname, menu, userRoles }) => {
     : { href: target };
 
   return (
-    <ListItem disablePadding>
+    <ListItem component="li" disablePadding>
       <ListItemButton
         sx={{
           "&.Mui-selected, &.Mui-selected:hover": {
@@ -131,7 +131,12 @@ const NavBarItem = ({ text, icon, target, pathname, menu, userRoles }) => {
                   pathname
                 );
                 return (
-                  <ListItem key={subtarget} selected={selected} disablePadding>
+                  <ListItem
+                    component="li"
+                    key={subtarget}
+                    selected={selected}
+                    disablePadding
+                  >
                     <ListItemButton href={`${target}/${subtarget}`}>
                       {t(text)}
                     </ListItemButton>
