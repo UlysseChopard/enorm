@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import Home, { loader as homeLoader } from "@/routes/home";
 import Subscriptions, {
   loader as subscriptionsLoader,
@@ -77,6 +78,12 @@ export default [
         action: profileAction,
       },
       {
+        element: <Subscriptions />,
+        loader: subscriptionsLoader,
+        action: subscriptionsAction,
+        index: true,
+      },
+      {
         path: "subscriptions",
         element: <Subscriptions />,
         loader: subscriptionsLoader,
@@ -133,6 +140,10 @@ export default [
             action: establishmentsAction,
           },
         ],
+      },
+      {
+        path: "*",
+        element: <Navigate to="/subscriptions" />,
       },
     ],
   },
