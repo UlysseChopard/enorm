@@ -1,11 +1,12 @@
 import { apiUrl } from "@/api";
 
 export const get = (query) => {
-  const qs = new URLSearchParams(Object.entries(query));
   return fetch(
     `${apiUrl}api/organisations/${localStorage.getItem(
       "organisation"
-    )}/members${qs.size ? "?" + qs.toString() : ""}`,
+    )}/members${
+      query ? "?" + new URLSearchParams(Object.entries(query)).toString() : ""
+    }`,
     {
       method: "GET",
       credentials: "include",

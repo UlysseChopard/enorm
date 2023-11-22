@@ -88,10 +88,10 @@ export default function Home() {
       </AppBar>
       <Container
         sx={{
-          left: 240,
+          left: 230,
           position: "absolute",
           right: 0,
-          top: "100px",
+          top: 80,
           width: "initial",
         }}
       >
