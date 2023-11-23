@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { create } from "@/api/organisations/subscriptions/managers";
+import { add } from "@/api/organisations/subscriptions/managers";
 import { find } from "@/api/organisations/subscriptions";
 import { get } from "@/api/organisations/members";
 
@@ -28,7 +28,7 @@ export async function action({ params, request }) {
   const formData = await request.formData();
   switch (formData.get("type")) {
     case "addManager":
-      return await create(params.id, formData.get("member")).then((r) =>
+      return await add(params.id, formData.get("member")).then((r) =>
         r.ok ? r.json() : r.status
       );
   }
@@ -69,6 +69,7 @@ export default function Subscription() {
           <InputLabel id="select-label">{t("newManager")}</InputLabel>
           <Select
             label={t("newManager")}
+            value=""
             labelId="select-label"
             onChange={(e) => {
               const formData = new FormData();
@@ -78,7 +79,12 @@ export default function Subscription() {
             }}
           >
             {members
-              .filter((m) => !subscription.managers.includes(m))
+              .filter(
+                ({ id }) =>
+                  !subscription.managers
+                    .map(({ manager }) => manager)
+                    .includes(id)
+              )
               .map(({ id, firstname, lastname }) => (
                 <MenuItem
                   key={id}

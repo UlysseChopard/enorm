@@ -1,12 +1,12 @@
 import { apiUrl } from "@/api";
 
-export const create = (subscription, manager) =>
+export const add = (subscription, manager) =>
   fetch(
     `${apiUrl}api/organisations/${localStorage.getItem(
       "organisation"
     )}/subscriptions/${subscription}/managers/${manager}`,
     {
-      method: "POST",
+      method: "PUT",
       credentials: "include",
       headers: { Accept: "application/json" },
     }

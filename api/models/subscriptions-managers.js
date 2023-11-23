@@ -1,8 +1,8 @@
 const { db } = require("utils");
 
-exports.create = (subscription, manager) =>
+exports.add = (subscription, manager) =>
   db.query(
-    "INSERT INTO subscriptions_managers (subscription, manager) VALUES ($1, $2) RETURNING *",
+    "INSERT INTO subscriptions_managers (subscription, manager) VALUES ($1, $2) ON CONFlICT DO NOTHING RETURNING *",
     [subscription, manager]
   );
 
