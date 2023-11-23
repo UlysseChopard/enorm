@@ -1,11 +1,16 @@
 import { useTranslation } from "react-i18next";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import FormControl from "@mui/material/FormControl";
 import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { create } from "@/api/organisations/subscriptions/managers";
 import { find } from "@/api/organisations/subscriptions";
 import { get } from "@/api/organisations/members";
 
@@ -19,13 +24,20 @@ export async function loader({ params }) {
   return { subscription, members };
 }
 
-export async function action({ request }) {
-  const formData = await request.FormData();
+export async function action({ params, request }) {
+  const formData = await request.formData();
+  switch (formData.get("type")) {
+    case "addManager":
+      return await create(params.id, formData.get("member")).then((r) =>
+        r.ok ? r.json() : r.status
+      );
+  }
   return null;
 }
 
 export default function Subscription() {
   const { subscription, members } = useLoaderData();
+  const submit = useSubmit();
   const { t } = useTranslation(null, { keyPrefix: "subscription" });
   return (
     <Container>
@@ -52,6 +64,36 @@ export default function Subscription() {
           <ListItem>{`${t("acceptedAt")}: ${new Date(
             subscription.accepted_at
           ).toLocaleString()}`}</ListItem>
+        </List>
+        <FormControl sx={{ ml: 2, width: "35%" }}>
+          <InputLabel id="select-label">{t("newManager")}</InputLabel>
+          <Select
+            label={t("newManager")}
+            labelId="select-label"
+            onChange={(e) => {
+              const formData = new FormData();
+              formData.append("type", "addManager");
+              formData.append("member", e.target.value);
+              submit(formData, { method: "POST" });
+            }}
+          >
+            {members
+              .filter((m) => !subscription.managers.includes(m))
+              .map(({ id, firstname, lastname }) => (
+                <MenuItem
+                  key={id}
+                  value={id}
+                >{`${firstname} ${lastname}`}</MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        {!!subscription.managers.length && (
+          <Typography variant="h3">{t("managers")}</Typography>
+        )}
+        <List>
+          {subscription.managers.map(({ firstname, lastname, id }) => (
+            <ListItem key={id}>{`${firstname} ${lastname}`}</ListItem>
+          ))}
         </List>
       </Paper>
       <p>{JSON.stringify(subscription)}</p>
