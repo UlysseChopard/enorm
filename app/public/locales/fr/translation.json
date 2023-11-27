@@ -108,7 +108,8 @@
     "receivedAt": "Reçu le ",
     "acceptedAt": "Accepté le ",
     "newManager": "Ajouter un gestionnaire",
-    "managers": "En charge de l'abonnement"
+    "managers": "En charge de l'abonnement",
+    "removeManager": "Retirer"
   },
   "subscriptions": {
     "search": "Recherche de fournisseurs de groupes de travail",

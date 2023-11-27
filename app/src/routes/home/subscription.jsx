@@ -3,6 +3,8 @@ import { useLoaderData, useSubmit } from "react-router-dom";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 import FormControl from "@mui/material/FormControl";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
@@ -11,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { add } from "@/api/organisations/subscriptions/managers";
+import { add, remove } from "@/api/organisations/subscriptions/managers";
 import { find } from "@/api/organisations/subscriptions";
 import { get } from "@/api/organisations/members";
 
@@ -32,6 +34,10 @@ export async function action({ params, request }) {
       return await add(params.id, formData.get("member")).then((r) =>
         r.ok ? r.json() : r.status
       );
+    case "removeManager":
+      return await remove(params.id, formData.get("subscriptionManager")).then(
+        (r) => (r.ok ? r.json() : r.status)
+      );
   }
   return null;
 }
@@ -40,6 +46,12 @@ export default function Subscription() {
   const { subscription, members } = useLoaderData();
   const submit = useSubmit();
   const { t } = useTranslation(null, { keyPrefix: "subscription" });
+  const handleRmManagerClick = (id) => () => {
+    const formData = new FormData();
+    formData.append("type", "removeManager");
+    formData.append("subscriptionManager", id);
+    submit(formData, { method: "DELETE" });
+  };
   return (
     <Container>
       <Button
@@ -104,12 +116,15 @@ export default function Subscription() {
         )}
         <List>
           {subscription.managers.map(({ firstname, lastname, id }) => (
-            <ListItem key={id}>{`${firstname} ${lastname}`}</ListItem>
+            <ListItem key={id}>
+              <ListItemText>{`${firstname} ${lastname}`}</ListItemText>
+              <ListItemButton onClick={handleRmManagerClick(id)}>
+                {t("removeManager")}
+              </ListItemButton>
+            </ListItem>
           ))}
         </List>
       </Paper>
-      <p>{JSON.stringify(subscription)}</p>
-      <p>{JSON.stringify(members)}</p>
     </Container>
   );
 }
