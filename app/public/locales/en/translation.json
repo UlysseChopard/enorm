@@ -103,6 +103,13 @@
     "submit": "Submit",
     "label": "Title"
   },
+  "subscription": {
+    "sentAt": "Sent at",
+    "receivedAt": "Received at",
+    "acceptedAt": "Accepted at",
+    "newManager": "Add manager",
+    "managers": "Managers"
+  },
   "subscriptions": {
     "search": "Search groups providers",
     "pending": "Pending",

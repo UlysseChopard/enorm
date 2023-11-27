@@ -103,6 +103,13 @@
     "submit": "Envoyer",
     "label": "Titre"
   },
+  "subscription": {
+    "sentAt": "Envoyé le ",
+    "receivedAt": "Reçu le ",
+    "acceptedAt": "Accepté le ",
+    "newManager": "Ajouter un gestionnaire",
+    "managers": "En charge de l'abonnement"
+  },
   "subscriptions": {
     "search": "Recherche de fournisseurs de groupes de travail",
     "pending": "En attente",

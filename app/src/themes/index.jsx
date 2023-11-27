@@ -4,8 +4,10 @@ import { createTheme } from "@mui/material/styles";
 
 const LinkBehaviour = forwardRef((props, ref) => {
   const { href, ...other } = props;
-  return (
+  return href ? (
     <RouterLink ref={ref} to={href} style={{ color: "initial" }} {...other} />
+  ) : (
+    <a ref={ref} style={{ color: "initial" }} {...other} />
   );
 });
 

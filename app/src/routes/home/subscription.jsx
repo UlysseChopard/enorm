@@ -5,6 +5,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import FormControl from "@mui/material/FormControl";
 import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
@@ -53,7 +54,7 @@ export default function Subscription() {
           ? subscription.recipient_name
           : subscription.sender_name}
       </Typography>
-      <Paper>
+      <Paper sx={{ p: 2 }}>
         <List>
           <ListItem>{`${t("sentAt")}: ${new Date(
             subscription.sent_at
@@ -94,7 +95,12 @@ export default function Subscription() {
           </Select>
         </FormControl>
         {!!subscription.managers.length && (
-          <Typography variant="h3">{t("managers")}</Typography>
+          <>
+            <Divider sx={{ mt: 4 }} />
+            <Typography sx={{ ml: 2, mt: 2 }} variant="h5">
+              {t("managers")}
+            </Typography>
+          </>
         )}
         <List>
           {subscription.managers.map(({ firstname, lastname, id }) => (
