@@ -83,7 +83,7 @@ export default function ProfileMenu({ pathname, name, avatar }) {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <ListItem selected={pathname === "/profile"} disablePadding>
-          <ListItemButton href="profile">
+          <ListItemButton to="profile">
             <ListItemIcon>
               <Avatar />
             </ListItemIcon>
@@ -92,7 +92,7 @@ export default function ProfileMenu({ pathname, name, avatar }) {
         </ListItem>
         <Divider />
         <ListItem selected={pathname === "/"} disablePadding>
-          <ListItemButton href="">
+          <ListItemButton to="">
             <ListItemIcon>
               <Settings fontSize="small" />
             </ListItemIcon>
@@ -100,7 +100,7 @@ export default function ProfileMenu({ pathname, name, avatar }) {
           </ListItemButton>
         </ListItem>
         <ListItem selected={pathname === "/logout"} disablePadding>
-          <ListItemButton href="logout">
+          <ListItemButton to="logout">
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>

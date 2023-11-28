@@ -48,21 +48,15 @@ exports.get = async (req, res, next) => {
   }
 };
 
-exports.request = async (req, res, next) => {
+exports.create = async (req, res, next) => {
   try {
-    const {
-      rows: [wgPath],
-    } = await WGPaths.getById(req.body.wgPath);
     const {
       rows: [registration],
     } = await Registrations.create({
-      beneficiary: res.locals.accountId,
-      workingGroup: wgPath.working_group,
+      beneficiary: req.body.account,
+      workingGroup: req.body.workingGroup,
     });
-    const {
-      rows: [registrationStream],
-    } = await RegistrationsStreams.forward(registration.id, req.body.wgPath);
-    res.status(201).json({ registration, registrationStream });
+    res.status(201).json({ registration });
   } catch (err) {
     next(err);
   }

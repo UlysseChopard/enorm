@@ -92,7 +92,7 @@ const Login = () => {
             fullWidth
             required
             helperText={
-              <Link href="/reset-password">{t("resetPassword")}</Link>
+              <Link to="/reset-password">{t("resetPassword")}</Link>
             }
           />
           <input type="hidden" name="type" value="login" />

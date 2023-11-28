@@ -23,6 +23,7 @@ import Profile, {
 } from "@/routes/home/profile";
 import Registrations, {
   loader as registrationsLoader,
+  action as registrationsAction,
 } from "@/routes/home/registrations";
 import Registration, {
   loader as registrationLoader,
@@ -111,6 +112,7 @@ export default [
         path: "registrations",
         element: <Registrations />,
         loader: registrationsLoader,
+        action: registrationsAction,
       },
       {
         path: "registrations/:id",

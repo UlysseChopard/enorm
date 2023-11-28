@@ -33,7 +33,7 @@ const CreateModal = ({ open, onClose }) => {
   const { t } = useTranslation(null, { keyPrefix: "groups" });
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
-      <Form method="post" autoComplete="on">
+      <Form method="post" autoComplete="on" onSubmit={onClose}>
         <DialogTitle>{t("title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t("text")}</DialogContentText>

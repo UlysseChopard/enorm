@@ -48,7 +48,7 @@ const ResetPassword = () => {
           margin: "2rem 0",
         }}
       >
-        <Button variant="text" href="/login">
+        <Button variant="text" to="/login">
           Cancel
         </Button>
         <Button variant="contained" type="submit">

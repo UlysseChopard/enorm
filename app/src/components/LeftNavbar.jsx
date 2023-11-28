@@ -82,9 +82,9 @@ const NavBarItem = ({ text, icon, target, pathname, menu, userRoles }) => {
         "aria-controls": open ? `${target}-menu` : null,
         "aria-haspopup": true,
         "aria-expanded": open ?? null,
-        href: pathname,
+        to: pathname,
       }
-    : { href: target };
+    : { to: target };
 
   return (
     <ListItem component="li" disablePadding>
@@ -137,7 +137,7 @@ const NavBarItem = ({ text, icon, target, pathname, menu, userRoles }) => {
                     selected={selected}
                     disablePadding
                   >
-                    <ListItemButton href={`${target}/${subtarget}`}>
+                    <ListItemButton to={`${target}/${subtarget}`}>
                       {t(text)}
                     </ListItemButton>
                   </ListItem>
