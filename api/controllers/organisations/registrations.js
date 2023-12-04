@@ -38,11 +38,9 @@ exports.deny = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: sent } = await Registrations.getSent(res.locals.accountId);
-    const { rows: received } = await RegistrationsStreams.getReceived(
-      req.params.organisation
-    );
-    res.json({ sent, received });
+    const { rows: registrations } =
+      await Registrations.getFromManagedSubscriptions(res.locals.accountId);
+    res.json({ registrations });
   } catch (err) {
     next(err);
   }

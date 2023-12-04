@@ -1,11 +1,5 @@
 const { db } = require("utils");
 
-exports.getSent = (userId) =>
-  db.query(
-    "SELECT *, r.id AS id, wg.id AS working_group_id, a.id AS account_id, a.firstname, a.lastname FROM registrations AS r JOIN accounts AS a ON r.beneficiary = a.id JOIN working_groups AS wg ON r.working_group = wg.id WHERE r.beneficiary = $1",
-    [userId]
-  );
-
 exports.create = ({ beneficiary, wgPath }) =>
   db.query(
     "INSERT INTO registrations AS r (beneficiary, working_group) SELECT $1, wgp.working_group FROM wg_paths AS wgp WHERE wgp.id = $2 RETURNING r.*",
@@ -47,3 +41,9 @@ exports.remove = (beneficiary, id) =>
     id,
     beneficiary,
   ]);
+
+exports.getFromManagedSubscriptions = (account) =>
+  db.query(
+    "SELECT r.*, rs.wg_path, wgp.subscription FROM registrations AS r LEFT JOIN registrations_streams AS rs ON r.id = rs.registration LEFT JOIN wg_paths AS wgp ON rs.wg_path = wgp.id WHERE wgp.subscription IN (SELECT wgp.subscription FROM wg_paths AS wgp WHERE wgp.subscription IN (SELECT sm.subscription FROM subscriptions_managers AS sm WHERE sm.manager IN (SELECT om.id FROM organisations_members AS om WHERE om.account = $1)))",
+    [account]
+  );
