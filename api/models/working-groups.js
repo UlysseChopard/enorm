@@ -2,7 +2,7 @@ const { db } = require("utils");
 
 exports.getByOrganisation = (organisation) =>
   db.query(
-    "SELECT wg.*, o.name AS organisation_name FROM working_groups AS wg LEFT JOIN organisations AS o ON wg.organisation = o.id WHERE wg.id IN (SELECT working_group FROM wg_paths WHERE subscription IN (SELECT id FROM subscriptions WHERE sender = $1)) OR organisation = $1",
+    "SELECT wg.*, o.name AS organisation_name, wgp.id AS wg_path FROM working_groups AS wg LEFT JOIN organisations AS o ON wg.organisation = o.id LEFT JOIN wg_paths AS wgp ON wg.id = wgp.working_group WHERE wgp.subscription IN (SELECT s.id FROM subscriptions AS s WHERE s.sender = $1) UNION SELECT wg2.*, o2.name AS organisation_name, NULL FROM working_groups AS wg2 LEFT JOIN organisations AS o2 ON wg2.organisation = o2.id WHERE wg2.organisation = $1",
     [organisation]
   );
 

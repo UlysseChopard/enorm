@@ -54,8 +54,16 @@ exports.create = async (req, res, next) => {
       rows: [registration],
     } = await Registrations.create({
       beneficiary: req.body.account,
-      workingGroup: req.body.workingGroup,
+      wgPath: req.body.wgPath,
     });
+    const {
+      rows: [registrationStream],
+    } = await RegistrationsStreams.forward(registration.id, req.body.wgPath);
+    if (!registrationStream) {
+      return res
+        .status(500)
+        .json({ message: "Could not create registration stream" });
+    }
     res.status(201).json({ registration });
   } catch (err) {
     next(err);

@@ -85,13 +85,15 @@ const RequestModal = ({ open, onClose, members, workingGroups }) => {
             <Select
               labelId="workingGroup"
               label={t("workingGroup")}
-              name="workingGroup"
+              name="wgPath"
             >
-              {workingGroups.map(({ id, title }) => (
-                <MenuItem key={id} value={id}>
-                  {title}
-                </MenuItem>
-              ))}
+              {workingGroups
+                .filter(({ wg_path }) => !!wg_path)
+                .map(({ title, wg_path }) => (
+                  <MenuItem key={wg_path} value={wg_path}>
+                    {title}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </DialogContent>

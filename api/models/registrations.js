@@ -6,10 +6,10 @@ exports.getSent = (userId) =>
     [userId]
   );
 
-exports.create = ({ beneficiary, workingGroup }) =>
+exports.create = ({ beneficiary, wgPath }) =>
   db.query(
-    "INSERT INTO registrations (beneficiary, working_group) VALUES ($1, $2) RETURNING *",
-    [beneficiary, workingGroup]
+    "INSERT INTO registrations AS r (beneficiary, working_group) SELECT $1, wgp.working_group FROM wg_paths AS wgp WHERE wgp.id = $2 RETURNING r.*",
+    [beneficiary, wgPath]
   );
 
 exports.accept = (id) =>
