@@ -30,14 +30,14 @@ import { get as getOm } from "@/api/organisations/members";
 export const loader = async () => {
   const res = await get();
   if (!res.ok) return res.status;
-  const { sent, received } = await res.json();
+  const { registrations } = await res.json();
   const wgRes = await getWGs();
   if (!wgRes.ok) return wgRes.status;
   const { groups } = await wgRes.json();
   const omRes = await getOm();
   if (!omRes.ok) return omRes.status;
   const { members } = await omRes.json();
-  return { sent, received, groups, members };
+  return { registrations, groups, members };
 };
 
 export const action = async ({ request }) => {
@@ -122,7 +122,7 @@ const RegistrationItem = (r) => (
 );
 
 const Registrations = () => {
-  const { sent, received, groups: workingGroups, members } = useLoaderData();
+  const { registrations, groups: workingGroups, members } = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const [tab, setTab] = useState(0);
   const [modal, setModal] = useState(false);
