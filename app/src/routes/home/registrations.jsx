@@ -24,20 +24,17 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { get, create, accept, deny } from "@/api/organisations/registrations";
-import { get as getWGs } from "@/api/organisations/working-groups";
-import { get as getOm } from "@/api/organisations/members";
+import { get as getGroups } from "@/api/organisations/working-groups";
+import { get as getMembers } from "@/api/organisations/members";
 
 export const loader = async () => {
-  const res = await get();
-  if (!res.ok) return res.status;
-  const { registrations } = await res.json();
-  const wgRes = await getWGs();
-  if (!wgRes.ok) return wgRes.status;
-  const { groups } = await wgRes.json();
-  const omRes = await getOm();
-  if (!omRes.ok) return omRes.status;
-  const { members } = await omRes.json();
-  return { registrations, groups, members };
+  const responses = await Promise.all([get(), getGroups(), getMembers()]);
+  for (const response of responses) {
+    if (!response.ok) {
+      return response.status;
+    }
+  }
+  return Promise.all(responses.map((r) => r.json()));
 };
 
 export const action = async ({ request }) => {
@@ -60,7 +57,7 @@ export const action = async ({ request }) => {
   }
 };
 
-const RequestModal = ({ open, onClose, members, workingGroups }) => {
+const RequestModal = ({ open, onClose, members, groups }) => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
@@ -69,7 +66,7 @@ const RequestModal = ({ open, onClose, members, workingGroups }) => {
         <DialogTitle>{t("requestTitle")}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t("text")}</DialogContentText>
-          <FormControl fullWidth>
+          <FormControl sx={{ mt: 2 }} fullWidth>
             <InputLabel id="member">{t("member")}</InputLabel>
             <Select labelId="member" label={t("member")} name="account">
               {members.map(({ account, firstname, lastname }) => (
@@ -80,14 +77,10 @@ const RequestModal = ({ open, onClose, members, workingGroups }) => {
               ))}
             </Select>
           </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="workingGroup">{t("workingGroup")}</InputLabel>
-            <Select
-              labelId="workingGroup"
-              label={t("workingGroup")}
-              name="wgPath"
-            >
-              {workingGroups
+          <FormControl sx={{ mt: 2 }} fullWidth>
+            <InputLabel id="group">{t("group")}</InputLabel>
+            <Select labelId="group" label={t("group")} name="wgPath">
+              {groups
                 .filter(({ wg_path }) => !!wg_path)
                 .map(({ title, wg_path }) => (
                   <MenuItem key={wg_path} value={wg_path}>
@@ -122,7 +115,7 @@ const RegistrationItem = (r) => (
 );
 
 const Registrations = () => {
-  const { registrations, groups: workingGroups, members } = useLoaderData();
+  const [{ registrations }, { groups }, { members }] = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const [tab, setTab] = useState(0);
   const [modal, setModal] = useState(false);
@@ -145,16 +138,16 @@ const Registrations = () => {
         </Tabs>
       </Box>
       <TabPanel value={tab} index={0}>
-        <List>{sent.map(RegistrationItem)}</List>
+        <List>{registrations.map(RegistrationItem)}</List>
       </TabPanel>
       <TabPanel value={tab} index={1}>
-        <List>{received.map(RegistrationItem)}</List>
+        <List>{registrations.map(RegistrationItem)}</List>
       </TabPanel>
       <RequestModal
         open={modal}
         onClose={() => setModal(false)}
         members={members}
-        workingGroups={workingGroups}
+        groups={groups}
       />
     </>
   );

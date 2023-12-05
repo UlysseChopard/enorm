@@ -118,6 +118,13 @@
     "subscribers": "Subscribers"
   },
   "registrations": {
+    "request": "Request",
+    "requestTitle": "Request a registration",
+    "text": "All fields needed",
+    "member": "Member",
+    "group": "Working group",
+    "cancel": "Cancel",
+    "submit": "Submit",
     "sent": "Sent",
     "received": "Received"
   },
