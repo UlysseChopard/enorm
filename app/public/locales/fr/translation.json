@@ -118,6 +118,10 @@
     "subscribers": "Abonnés"
   },
   "registrations": {
+    "createdAt": "Créé le",
+    "acceptedAt": "Accepté le",
+    "deniedAt": "Refusé le",
+    "status": "Statut",
     "request": "Nouvelle demande",
     "requestTitle": "Créer une nouvelle demande d'inscription",
     "text": "Tous les champs sont requis",

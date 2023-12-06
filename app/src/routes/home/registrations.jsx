@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, Form } from "react-router-dom";
+import { useLoaderData, Form, useNavigate } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -31,7 +31,7 @@ export const loader = async () => {
   const responses = await Promise.all([get(), getGroups(), getMembers()]);
   for (const response of responses) {
     if (!response.ok) {
-      return response.status;
+      throw new Error(response.status);
     }
   }
   return Promise.all(responses.map((r) => r.json()));
@@ -101,19 +101,56 @@ const RequestModal = ({ open, onClose, members, groups }) => {
   );
 };
 
-const RegistrationItem = (r) => (
-  <ListItem component={Link} key={r.id} to={`/registrations/${r.id}`}>
-    <ListItemText>
-      {`${r.organisation} ${r.reference} ${r.title}`} &mdash;
-      {` ${r.firstname} ${r.lastname}`}
-    </ListItemText>
-    <ListItemIcon>
-      {(r.denied_at && <CancelIcon />) ||
-        (r.accepted_at && <CheckCircleIcon />) || <PendingIcon />}
-    </ListItemIcon>
-  </ListItem>
-);
-
+const RegistrationsTable = ({ registrations }) => {
+  const { t } = useTranslation(null, { keyPrefix: "registrations" });
+  const navigate = useNavigate();
+  return (
+    <table style={{ marginTop: 20 }}>
+      <thead>
+        <tr>
+          <th>{t("group")}</th>
+          <th>{t("member")}</th>
+          <th>{t("createdAt")}</th>
+          <th>{t("acceptedAt")}</th>
+          <th>{t("deniedAt")}</th>
+          <th>{t("status")}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {registrations.map(
+          ({
+            id,
+            reference,
+            title,
+            firstname,
+            lastname,
+            created_at,
+            accepted_at,
+            denied_at,
+          }) => (
+            <tr
+              style={{ cursor: "default" }}
+              onClick={() => navigate(`/registrations/${id}`)}
+              key={id}
+            >
+              <td>{`${reference} ${title}`}</td>
+              <td>{`${firstname} ${lastname}`}</td>
+              <td>{new Date(created_at).toLocaleString()}</td>
+              <td>
+                {accepted_at ? new Date(accepted_at).toLocaleString() : ""}
+              </td>
+              <td>{denied_at ? new Date(denied_at).toLocaleString() : ""}</td>
+              <td>
+                {(denied_at && <CancelIcon />) ||
+                  (accepted_at && <CheckCircleIcon />) || <PendingIcon />}
+              </td>
+            </tr>
+          )
+        )}
+      </tbody>
+    </table>
+  );
+};
 const Registrations = () => {
   const [{ registrations }, { groups }, { members }] = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
@@ -138,10 +175,18 @@ const Registrations = () => {
         </Tabs>
       </Box>
       <TabPanel value={tab} index={0}>
-        <List>{registrations.map(RegistrationItem)}</List>
+        <RegistrationsTable
+          registrations={registrations.filter(
+            ({ sender }) => sender == localStorage.getItem("organisation")
+          )}
+        />
       </TabPanel>
       <TabPanel value={tab} index={1}>
-        <List>{registrations.map(RegistrationItem)}</List>
+        <RegistrationsTable
+          registrations={registrations.filter(
+            ({ recipient }) => recipient == localStorage.getItem("organisation")
+          )}
+        />
       </TabPanel>
       <RequestModal
         open={modal}

@@ -118,6 +118,10 @@
     "subscribers": "Subscribers"
   },
   "registrations": {
+    "createdAt": "Created at",
+    "acceptedAt": "Accepted at",
+    "deniedAt": "Denied at",
+    "status": "Status",
     "request": "Request",
     "requestTitle": "Request a registration",
     "text": "All fields needed",
