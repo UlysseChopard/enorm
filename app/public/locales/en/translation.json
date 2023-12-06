@@ -133,6 +133,10 @@
     "received": "Received"
   },
   "registration": {
+    "status": "Status",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "denied": "Denied",
     "back": "Back",
     "deny": "Deny",
     "forward": "Forward",

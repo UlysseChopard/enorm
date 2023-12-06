@@ -7,7 +7,11 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
 import SelectProvider from "@/components/SelectProvider";
 import { find, accept, deny } from "@/api/organisations/registrations";
 
@@ -51,29 +55,43 @@ const Registration = () => {
       <Button variant="outlined" to="/registrations">
         {t("back")}
       </Button>
-      <p>{JSON.stringify(registration)}</p>
-      <p>{JSON.stringify(actionData)}</p>
-      <Grid container spacing={2}>
-        <Grid item>
-          <Button variant="contained" onClick={handleClick("deny")}>
-            {t("deny")}
-          </Button>
-        </Grid>
-        {requireAction && (
-          <Grid item>
-            {wgPaths.length && (
+      <Card sx={{ mt: 2 }}>
+        <CardContent>
+          <Typography variant="h4" gutterBottom>
+            {`${registration.firstname} ${registration.lastname}`} &rarr;{" "}
+            {` ${registration.title}`}
+          </Typography>
+          {t("status")}:{" "}
+          {(registration.denied_at && t("denied")) ||
+            (registration.accepted_at && t("accepted")) ||
+            t("pending")}
+        </CardContent>
+        <CardActions>
+          <div
+            style={{ display: "flex", flexDirection: "column", width: "max" }}
+          >
+            {requireAction && wgPaths.length && (
               <SelectProvider
                 wgPaths={wgPaths}
                 onChange={(e) => setWgPath(e.target.value)}
                 value={wgPath}
               />
             )}
-            <Button variant="contained" onClick={handleClick("accept")}>
-              {wgPaths.length ? t("forward") : t("accept")}
-            </Button>
-          </Grid>
-        )}
-      </Grid>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              {!registration.denied_at && (
+                <Button variant="contained" onClick={handleClick("deny")}>
+                  {t("deny")}
+                </Button>
+              )}
+              {requireAction && (
+                <Button variant="contained" onClick={handleClick("accept")}>
+                  {wgPaths.length ? t("forward") : t("accept")}
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardActions>
+      </Card>
     </>
   );
 };
