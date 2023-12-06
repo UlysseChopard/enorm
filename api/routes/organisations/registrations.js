@@ -9,10 +9,14 @@ const {
 const { hasRole } = require("middlewares/roles");
 const isSubscriptionManager = async (req, res, next) => {
   try {
-    const {
-      rows: [subscriptionManager],
-    } = await SubscriptionsManagers.findByWGPath(req.body.wgPath);
-    if (res.locals.accountId !== subscriptionManager.account) {
+    const { rows: subscriptionManagers } = req.params.id
+      ? await SubscriptionsManagers.getByRegistration(req.params.id)
+      : await SubscriptionsManagers.getByWgPath(req.body.wgPath);
+    if (
+      !subscriptionManagers.find(
+        ({ account }) => account === res.locals.accountId
+      )
+    ) {
       return res
         .status(403)
         .json({ message: "Only allowed to subscription managers" });
