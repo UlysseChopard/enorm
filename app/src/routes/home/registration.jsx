@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -66,9 +65,15 @@ const Registration = () => {
             (registration.accepted_at && t("accepted")) ||
             t("pending")}
         </CardContent>
-        <CardActions>
+        <CardActions
+          sx={{ display: "block", maxWidth: "45%", ml: 1, mr: "auto" }}
+        >
           <div
-            style={{ display: "flex", flexDirection: "column", width: "max" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "max",
+            }}
           >
             {requireAction && wgPaths.length && (
               <SelectProvider
@@ -77,14 +82,28 @@ const Registration = () => {
                 value={wgPath}
               />
             )}
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "left",
+              }}
+            >
               {!registration.denied_at && (
-                <Button variant="contained" onClick={handleClick("deny")}>
+                <Button
+                  sx={{ my: 2, mr: 2 }}
+                  variant="contained"
+                  onClick={handleClick("deny")}
+                >
                   {t("deny")}
                 </Button>
               )}
               {requireAction && (
-                <Button variant="contained" onClick={handleClick("accept")}>
+                <Button
+                  sx={{ m: 2 }}
+                  variant="contained"
+                  onClick={handleClick("accept")}
+                >
                   {wgPaths.length ? t("forward") : t("accept")}
                 </Button>
               )}
