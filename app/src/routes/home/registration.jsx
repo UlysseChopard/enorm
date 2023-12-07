@@ -36,7 +36,7 @@ export const action = async ({ request, params }) => {
 const Registration = () => {
   const submit = useSubmit();
   const navigate = useNavigate();
-  const { wgPaths, registration, requireAction } = useLoaderData();
+  const { registration } = useLoaderData();
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
   const [wgPath, setWgPath] = useState("");
@@ -75,9 +75,9 @@ const Registration = () => {
               width: "max",
             }}
           >
-            {requireAction && wgPaths.length && (
+            {registration.requireAction && registration.wgPaths.length && (
               <SelectProvider
-                wgPaths={wgPaths}
+                wgPaths={registration.wgPaths}
                 onChange={(e) => setWgPath(e.target.value)}
                 value={wgPath}
               />
@@ -98,13 +98,13 @@ const Registration = () => {
                   {t("deny")}
                 </Button>
               )}
-              {requireAction && (
+              {registration.requireAction && (
                 <Button
                   sx={{ m: 2 }}
                   variant="contained"
                   onClick={handleClick("accept")}
                 >
-                  {wgPaths.length ? t("forward") : t("accept")}
+                  {registration.wgPaths.length ? t("forward") : t("accept")}
                 </Button>
               )}
             </div>

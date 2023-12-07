@@ -26,7 +26,7 @@ exports.getWG = (registration) =>
 
 exports.find = (id) =>
   db.query(
-    "SELECT r.*, a.firstname, a.lastname FROM registrations AS r JOIN accounts AS a ON r.beneficiary = a.id WHERE r.id = $1",
+    "SELECT r.*, a.firstname, a.lastname, wg.title FROM registrations AS r JOIN accounts AS a ON r.beneficiary = a.id JOIN working_groups AS wg ON r.working_group = wg.id WHERE r.id = $1",
     [id]
   );
 

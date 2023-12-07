@@ -77,11 +77,12 @@ exports.find = async (req, res, next) => {
       req.params.organisation,
       registration.working_group
     );
-    const requireAction =
+    registration.wgPaths = wgPaths;
+    registration.requireAction =
       registration.beneficiary !== res.locals.accountId &&
       !registration.denied_at &&
       !registration.accepted_at;
-    res.json({ registration, wgPaths, requireAction });
+    res.json({ registration });
   } catch (err) {
     next(err);
   }
