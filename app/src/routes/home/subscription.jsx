@@ -52,6 +52,7 @@ export default function Subscription() {
     formData.append("subscriptionManager", id);
     submit(formData, { method: "DELETE" });
   };
+  const { isAdmin } = JSON.parse(localStorage.getItem("roles"));
   return (
     <Container>
       <Button
@@ -78,34 +79,36 @@ export default function Subscription() {
             subscription.accepted_at
           ).toLocaleString()}`}</ListItem>
         </List>
-        <FormControl sx={{ ml: 2, width: "35%" }}>
-          <InputLabel id="select-label">{t("newManager")}</InputLabel>
-          <Select
-            label={t("newManager")}
-            value=""
-            labelId="select-label"
-            onChange={(e) => {
-              const formData = new FormData();
-              formData.append("type", "addManager");
-              formData.append("member", e.target.value);
-              submit(formData, { method: "POST" });
-            }}
-          >
-            {members
-              .filter(
-                ({ id }) =>
-                  !subscription.managers
-                    .map(({ manager }) => manager)
-                    .includes(id)
-              )
-              .map(({ id, firstname, lastname }) => (
-                <MenuItem
-                  key={id}
-                  value={id}
-                >{`${firstname} ${lastname}`}</MenuItem>
-              ))}
-          </Select>
-        </FormControl>
+        {isAdmin && (
+          <FormControl sx={{ ml: 2, width: "35%" }}>
+            <InputLabel id="select-label">{t("newManager")}</InputLabel>
+            <Select
+              label={t("newManager")}
+              value=""
+              labelId="select-label"
+              onChange={(e) => {
+                const formData = new FormData();
+                formData.append("type", "addManager");
+                formData.append("member", e.target.value);
+                submit(formData, { method: "POST" });
+              }}
+            >
+              {members
+                .filter(
+                  ({ id }) =>
+                    !subscription.managers
+                      .map(({ manager }) => manager)
+                      .includes(id)
+                )
+                .map(({ id, firstname, lastname }) => (
+                  <MenuItem
+                    key={id}
+                    value={id}
+                  >{`${firstname} ${lastname}`}</MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        )}
         {!!subscription.managers.length && (
           <>
             <Divider sx={{ mt: 4 }} />
@@ -118,9 +121,11 @@ export default function Subscription() {
           {subscription.managers.map(({ firstname, lastname, id }) => (
             <ListItem key={id}>
               <ListItemText>{`${firstname} ${lastname}`}</ListItemText>
-              <ListItemButton onClick={handleRmManagerClick(id)}>
-                {t("removeManager")}
-              </ListItemButton>
+              {isAdmin && (
+                <ListItemButton onClick={handleRmManagerClick(id)}>
+                  {t("removeManager")}
+                </ListItemButton>
+              )}
             </ListItem>
           ))}
         </List>
