@@ -2,20 +2,34 @@ const { Registrations, WGPaths, RegistrationsStreams } = require("models");
 
 exports.accept = async (req, res, next) => {
   try {
-    const {
-      rows: [wg],
-    } = await Registrations.getWG(req.params.id);
-    if (wg.admin === res.locals.accountId) {
-      await Registrations.accept(req.params.id);
-      return res.json({ message: `Registration ${req.params.id} created` });
-    }
     if (!req.body.wgPath) {
       return res.status(422).json({ message: "Missing wgPath in body" });
     }
+    const { rows: managers } = await RegistrationsStreams.managers(
+      req.params.id
+    );
+    const manager = managers.find(
+      ({ account }) => account === res.locals.accountId
+    );
+    if (!manager) {
+      return res
+        .status(403)
+        .json({ message: "Not a subscription manager for this registration" });
+    }
+    if (manager.organisation === manager.end_organisation) {
+      const {
+        row: [registration],
+      } = await Registrations.accept(req.params.id);
+      return res.status(201).json({ registration });
+    }
     const {
-      rows: [registrationStream],
+      rows: [stream],
     } = await RegistrationsStreams.forward(req.params.id, req.body.wgPath);
-    res.status(201).json({ registrationStream });
+    const {
+      rows: [registration],
+    } = await Registrations.find(req.params.id);
+    registration.stream = stream;
+    res.status(201).json({ registration });
   } catch (err) {
     next(err);
   }
@@ -23,12 +37,23 @@ exports.accept = async (req, res, next) => {
 
 exports.deny = async (req, res, next) => {
   try {
+    const { rows: managers } = await RegistrationsStreams.managers(
+      req.params.id
+    );
+    const manager = managers.find(
+      ({ account }) => account === res.locals.accountId
+    );
+    if (!manager) {
+      return res
+        .status(403)
+        .json({ message: "Not a subscription manager for this registration" });
+    }
     const {
       rows: [registration],
     } = await Registrations.deny(req.params.id);
     if (registration.beneficiary === res.locals.accountId) {
       await Registrations.remove(res.locals.accountId, req.params.id);
-      return res.json({ registration, deleted: true });
+      return res.json({ registration: null });
     }
     res.json({ registration });
   } catch (err) {

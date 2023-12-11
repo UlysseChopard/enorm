@@ -8,7 +8,7 @@ exports.create = ({ beneficiary, wgPath }) =>
 
 exports.accept = (id) =>
   db.query(
-    "UPDATE registrations SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1",
+    "UPDATE registrations SET accepted_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *",
     [id]
   );
 
@@ -16,12 +16,6 @@ exports.deny = (id) =>
   db.query(
     "UPDATE registrations SET denied_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *",
     [id]
-  );
-
-exports.getWG = (registration) =>
-  db.query(
-    "SELECT wg.admin FROM registrations AS r JOIN working_groups AS wg ON r.working_group = wg.id WHERE r.id = $1",
-    [registration]
   );
 
 exports.find = (id) =>
