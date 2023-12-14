@@ -82,7 +82,6 @@ export default [
         element: <Subscriptions />,
         loader: subscriptionsLoader,
         action: subscriptionsAction,
-        index: true,
       },
       {
         path: "subscriptions",

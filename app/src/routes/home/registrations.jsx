@@ -4,11 +4,6 @@ import { useLoaderData, Form, useNavigate } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import PendingIcon from "@mui/icons-material/Pending";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -28,13 +23,19 @@ import { get as getGroups } from "@/api/organisations/working-groups";
 import { get as getMembers } from "@/api/organisations/members";
 
 export const loader = async () => {
+  if (!JSON.parse(localStorage.getItem("roles")).isManager) {
+    return await get().then((r) => (r.ok ? r.json() : r.status));
+  }
   const responses = await Promise.all([get(), getGroups(), getMembers()]);
   for (const response of responses) {
     if (!response.ok) {
       throw new Error(response.status);
     }
   }
-  return Promise.all(responses.map((r) => r.json()));
+  const [{ registrations }, { groups }, { members }] = await Promise.all(
+    responses.map((r) => r.json())
+  );
+  return { registrations, groups, members };
 };
 
 export const action = async ({ request }) => {
@@ -152,10 +153,11 @@ const RegistrationsTable = ({ registrations }) => {
   );
 };
 const Registrations = () => {
-  const [{ registrations }, { groups }, { members }] = useLoaderData();
+  const { registrations, groups, members } = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const [tab, setTab] = useState(0);
   const [modal, setModal] = useState(false);
+  const { isManager } = JSON.parse(localStorage.getItem("roles"));
   return (
     <>
       <div style={{ margin: "0 1rem 1rem" }}>
@@ -188,12 +190,14 @@ const Registrations = () => {
           )}
         />
       </TabPanel>
-      <RequestModal
-        open={modal}
-        onClose={() => setModal(false)}
-        members={members}
-        groups={groups}
-      />
+      {isManager && (
+        <RequestModal
+          open={modal}
+          onClose={() => setModal(false)}
+          members={members}
+          groups={groups}
+        />
+      )}
     </>
   );
 };
