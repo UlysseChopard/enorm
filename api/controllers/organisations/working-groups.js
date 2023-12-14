@@ -6,7 +6,18 @@ exports.get = async (req, res, next) => {
     const { rows: groups } = await WorkingGroups.getByOrganisation(
       req.params.organisation
     );
-    res.json({ groups });
+    const unique = groups.reduce((acc, val) => {
+      if (!acc[val.id]) {
+        acc[val.id] = val;
+        acc[val.id].wg_paths = [];
+      }
+      if (val.wg_path) {
+        acc[val.id].wg_paths.push(val.wg_path);
+      }
+      delete acc[val.id].wg_path;
+      return acc;
+    }, {});
+    res.json({ groups: Object.values(unique) });
   } catch (err) {
     next(err);
   }
