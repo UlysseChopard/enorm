@@ -163,6 +163,7 @@ export default function Profile() {
               xs={6}
             />
           ))}
+          <input type="hidden" name="type" value="update" />
           <Grid xsOffset="auto">
             <Button variant="contained" endIcon={<SendIcon />} type="submit">
               {t("submit")}

@@ -32,6 +32,7 @@ export const add = (body, { separator, emailColumn, noHeader }) => {
     )}/members?${qs.toString()}`,
     {
       method: "PATCH",
+      credentials: "include",
       body,
     }
   );
@@ -45,6 +46,7 @@ export const addOne = (email, roles) =>
     {
       method: "POST",
       body: JSON.stringify({ email, roles }),
+      credentials: "include",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
