@@ -59,3 +59,6 @@
 - [ ] d47ff340c18671 set width of dialog contents to 500px  
 - [ ] af90cd84f8724f update prod db  
 - [ ] cca89d3dd8491d remove deleted migration from table  
+- [ ] e25cba9d14cc15 permettre de choisir le chemin à la création de la demande d'enregistrement  
+- [ ] 5e8fd06d8e2505 empêcher de modifier la demande une fois créée  
+- [ ] 209630dee40d7c remplace beneficiary account by member id  

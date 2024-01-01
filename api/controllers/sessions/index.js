@@ -89,9 +89,10 @@ exports.sendMailAccess = async (req, res, next) => {
     const header = "Hi";
     const body = `Please click on the link after to connect to Enorm without a password: ${resetLink}`;
     await mail.send({
-      recipient: account.email,
-      subject,
-      text: `${header}\n\n${body}`,
+      From: process.env.EMAIL_ADDRESS_LOGIN,
+      To: account.email,
+      Subject: subject,
+      TextBody: `${header}\n\n${body}`,
     });
     res.sendStatus(204);
   } catch (err) {

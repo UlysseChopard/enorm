@@ -82,9 +82,11 @@ exports.add = async (req, res, next) => {
     await Promise.all(
       tokens.map(({ email, id: token }) =>
         mail.send({
-          recipient: email,
-          subject: `You have been invitated to join ${organisation.name} on Enorm`,
-          text: `Please click here to join ${organisation.name} on Enorm: ${process.env.BASE_URL}. Your token is ${token}`,
+          From: process.env.EMAIL_ADDRESS_LOGIN,
+          To: email,
+          Subject: `Join ${organisation.name} on Enorm`,
+          TextBody: `Please click here to join ${organisation.name} on Enorm: ${process.env.BASE_URL}. Your token is ${token}`,
+          MessageStream: "outbound",
         })
       )
     );
