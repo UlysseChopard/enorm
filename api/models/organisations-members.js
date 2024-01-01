@@ -16,7 +16,7 @@ exports.create = ({
 
 exports.createMany = (organisation, accounts) =>
   db.query(
-    "INSERT INTO organisations_members (organisation, account) SELECT $1, * FROM UNNEST($2::uuid[]) ON CONFLICT DO NOTHING RETURNING id",
+    "INSERT INTO organisations_members (organisation, account) SELECT $1, * FROM UNNEST($2::uuid[]) ON CONFLICT DO NOTHING RETURNING id, account",
     [organisation, accounts]
   );
 

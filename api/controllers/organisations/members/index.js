@@ -2,7 +2,7 @@ const { createReadStream } = require("fs");
 const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
 const csvParser = require("csv-parser");
-const { regex } = require("utils");
+const { regex, mail } = require("utils");
 const {
   Organisations,
   OrganisationsMembers,
@@ -61,7 +61,6 @@ exports.add = async (req, res, next) => {
     }
     if (!received.length) return res.json({ received });
     const { rows: accounts } = await Accounts.createMany(received);
-    console.log(organisation, accounts);
     const { rows: members } = await OrganisationsMembers.createMany(
       organisation.id,
       accounts.map(({ id }) => id)
@@ -72,20 +71,23 @@ exports.add = async (req, res, next) => {
         parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY, 10)
     );
     const tokens = await Promise.all(
-      members.map(async ({ id }) => ({
+      members.map(async ({ id, account }) => ({
+        email: account,
         organisationMember: id,
         id: await Tokens.getOne(),
         expiresAt,
       }))
     );
     await Tokens.createMany(tokens);
-    // for (const invited of inserted) {
-    //   await mail.send({
-    //     recipient: invited.email,
-    //     subject: `You have been invitated to join ${organisation.name} on Enorm`,
-    //     text: `Please click here to join ${organisation.name} on Enorm: ${process.env.BASE_URL}. Your token is ${invited.token}`,
-    //   });
-    // }
+    await Promise.all(
+      tokens.map(({ email, id: token }) =>
+        mail.send({
+          recipient: email,
+          subject: `You have been invitated to join ${organisation.name} on Enorm`,
+          text: `Please click here to join ${organisation.name} on Enorm: ${process.env.BASE_URL}. Your token is ${token}`,
+        })
+      )
+    );
     res.status(201).json({ members });
   } catch (err) {
     next(err);
