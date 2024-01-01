@@ -60,6 +60,7 @@ export const action = async ({ request }) => {
 
 const RequestModal = ({ open, onClose, members, groups }) => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
+  const userOrganisation = JSON.parse(localStorage.getItem("organisation"));
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <Form method="POST" onSubmit={onClose}>
@@ -82,7 +83,10 @@ const RequestModal = ({ open, onClose, members, groups }) => {
             <InputLabel id="group">{t("group")}</InputLabel>
             <Select labelId="group" label={t("group")} name="wgPath">
               {groups
-                .filter(({ wg_path }) => !!wg_path)
+                .filter(
+                  ({ wg_path, organisation }) =>
+                    !!wg_path && organisation !== userOrganisation
+                )
                 .map(({ title, wg_path }) => (
                   <MenuItem key={wg_path} value={wg_path}>
                     {title}
