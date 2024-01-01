@@ -19,6 +19,7 @@ export const update = (account, infos) => {
 export const create = (infos) => {
   return fetch(`${apiUrl}api/accounts`, {
     body: JSON.stringify(infos),
+    credentials: "include",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

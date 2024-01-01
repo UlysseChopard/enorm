@@ -27,9 +27,13 @@ export async function loader() {
     ).roles;
     localStorage.setItem("roles", JSON.stringify(roles));
     return { account };
+  } else if (account.organisations.length) {
+    localStorage.setItem("organisation", account.organisations[0].id);
+    localStorage.setItem(
+      "roles",
+      JSON.stringify(account.organisations[0].roles)
+    );
   }
-  localStorage.setItem("organisation", account.organisations[0].id);
-  localStorage.setItem("roles", JSON.stringify(account.organisations[0].roles));
   return { account };
 }
 
