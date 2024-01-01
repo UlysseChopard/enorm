@@ -119,6 +119,16 @@ exports.addOne = async (req, res, next) => {
       organisationMember: organisationMember.id,
       expiresAt,
     });
+    const {
+      rows: [organisation],
+    } = await Organisations.getById(req.params.organisation);
+    mail.sendEmail({
+      From: process.env.EMAIL_ADDRESS_LOGIN,
+      To: req.body.email,
+      Subject: `Join ${organisation.name} on Jadoube`,
+      TextBody: `Please click here to join ${organisation.name} on Jadoube: ${process.env.BASE_URL}. Your token is ${id}`,
+      MessageStream: "outbound",
+    });
     organisationMember.token = id;
     res.json({ member: organisationMember });
   } catch (err) {
