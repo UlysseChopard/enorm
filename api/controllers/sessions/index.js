@@ -88,7 +88,7 @@ exports.sendMailAccess = async (req, res, next) => {
     const subject = "Connect to Jadoube without password";
     const header = "Hi";
     const body = `Please click on the link after to connect to Jadoube without a password: ${resetLink}`;
-    await mail.send({
+    await mail.sendEmail({
       From: process.env.EMAIL_ADDRESS_LOGIN,
       To: account.email,
       Subject: subject,

@@ -81,7 +81,7 @@ exports.add = async (req, res, next) => {
     await Tokens.createMany(tokens);
     await Promise.all(
       tokens.map(({ email, id: token }) =>
-        mail.send({
+        mail.sendEmail({
           From: process.env.EMAIL_ADDRESS_LOGIN,
           To: email,
           Subject: `Join ${organisation.name} on Jadoube`,
