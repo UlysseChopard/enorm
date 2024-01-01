@@ -84,8 +84,8 @@ exports.add = async (req, res, next) => {
         mail.send({
           From: process.env.EMAIL_ADDRESS_LOGIN,
           To: email,
-          Subject: `Join ${organisation.name} on Enorm`,
-          TextBody: `Please click here to join ${organisation.name} on Enorm: ${process.env.BASE_URL}. Your token is ${token}`,
+          Subject: `Join ${organisation.name} on Jadoube`,
+          TextBody: `Please click here to join ${organisation.name} on Jadoube: ${process.env.BASE_URL}. Your token is ${token}`,
           MessageStream: "outbound",
         })
       )

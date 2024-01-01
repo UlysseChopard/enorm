@@ -38,7 +38,7 @@ const ResetPassword = () => {
         variant="filled"
         value={searchParams.email}
         onChange={(e) => setSearchParams({ email: e.target.value })}
-        helperText="Please enter your email adress and a link will be sent to allow you to connect to Enorm"
+        helperText="Please enter your email adress and a link will be sent to allow you to connect to Jadoube"
       />
       <div
         style={{
