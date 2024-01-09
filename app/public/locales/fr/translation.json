@@ -60,6 +60,10 @@
     "subtitle": "Pleins d'informations passionnantes"
   },
   "profile": {
+    "roles": "Rôles",
+    "isAdmin": "Administrateur",
+    "isManager": "Gestionnaire",
+    "isExpert": "Expert",
     "id": "Identité",
     "firstname": "Prénom",
     "lastname": "Nom de famille",

@@ -14,6 +14,8 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Snackbar from "@mui/material/Snackbar";
 import MenuItem from "@mui/material/MenuItem";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import Grid from "@mui/material/Unstable_Grid2";
 import { get, update } from "@/api/accounts";
 import { join, unlink } from "@/api/organisations/members";
@@ -150,7 +152,20 @@ export default function Profile() {
 
   return (
     <>
-      <Grid container spacing={2}></Grid>
+      <Grid container spacing={2}>
+        <Grid xs={12}>
+          <Paper variant="outlined" sx={{ padding: 2, marginY: 2 }}>
+            <Typography variant="h5" gutterBottom>
+              {t("roles")}
+            </Typography>
+            <List>
+              {Object.entries(JSON.parse(localStorage.getItem("roles"))).map(
+                ([k, v]) => (v ? <ListItem key={k}>{t(k)}</ListItem> : "")
+              )}
+            </List>
+          </Paper>
+        </Grid>
+      </Grid>
       <Form method="post">
         <Grid container spacing={2}>
           {PROFILE.map(({ name, fields }) => (

@@ -60,6 +60,10 @@
     "subtitle": "Many interesting informations"
   },
   "profile": {
+    "roles": "Roles",
+    "isAdmin": "Administrator",
+    "isManager": "Manager",
+    "isExpert": "Expert",
     "id": "Identity",
     "firstname": "First name",
     "lastname": "Last name",
