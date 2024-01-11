@@ -33,7 +33,7 @@ export const action = async ({ request }) => {
     const { organisation } = await create({
       account: account.id,
     }).then((res) => res.json());
-    const { role } = await allow(account.id, "admin", organisation.id);
+    const { role } = await allow(organisation.member, "admin", organisation.id);
     return { account, organisation, role };
   } else if (formData.get("type") === "remove") {
     const res = await remove(formData.get("id"));
@@ -90,62 +90,64 @@ const Organisations = () => {
           </tr>
         </thead>
         <tbody>
-          {organisations.map(
-            ({
-              id,
-              name,
-              organisation_member,
-              email,
-              firstname,
-              lastname,
-              token,
-              expires_at,
-            }) => (
-              <tr key={id}>
-                <th scope="row">{name}</th>
-                <td>{email}</td>
-                <td>{`${firstname ?? ""} ${lastname ?? ""}`}</td>
-                <td>
-                  {token && new Date() < new Date(expires_at) ? (
-                    <Button
-                      onClick={() => navigator.clipboard.writeText(token)}
-                    >
-                      {token}
-                    </Button>
-                  ) : (
+          {organisations
+            .sort((a, b) => a.id - b.id)
+            .map(
+              ({
+                id,
+                name,
+                organisation_member,
+                email,
+                firstname,
+                lastname,
+                token,
+                expires_at,
+              }) => (
+                <tr key={id}>
+                  <th scope="row">{name}</th>
+                  <td>{email}</td>
+                  <td>{`${firstname ?? ""} ${lastname ?? ""}`}</td>
+                  <td>
+                    {token && new Date() < new Date(expires_at) ? (
+                      <Button
+                        onClick={() => navigator.clipboard.writeText(token)}
+                      >
+                        {token}
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        onClick={() => {
+                          const formData = new FormData();
+                          formData.append(
+                            "organisationMember",
+                            organisation_member
+                          );
+                          formData.append("type", "createToken");
+                          submit(formData, { method: "POST" });
+                        }}
+                      >
+                        {t("createToken")}
+                      </Button>
+                    )}
+                  </td>
+                  <td>
                     <Button
                       type="button"
-                      variant="contained"
                       onClick={() => {
                         const formData = new FormData();
-                        formData.append(
-                          "organisationMember",
-                          organisation_member
-                        );
-                        formData.append("type", "createToken");
+                        formData.append("id", id);
+                        formData.append("type", "remove");
                         submit(formData, { method: "POST" });
                       }}
                     >
-                      {t("createToken")}
+                      {t("remove")}
                     </Button>
-                  )}
-                </td>
-                <td>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      const formData = new FormData();
-                      formData.append("id", id);
-                      formData.append("type", "remove");
-                      submit(formData, { method: "POST" });
-                    }}
-                  >
-                    {t("remove")}
-                  </Button>
-                </td>
-              </tr>
-            )
-          )}
+                  </td>
+                </tr>
+              )
+            )}
         </tbody>
       </table>
     </>

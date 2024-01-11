@@ -82,6 +82,9 @@ exports.create = async (req, res, next) => {
     const {
       rows: [account],
     } = await Accounts.create({ ...req.body, hash });
+    if (!account.id) {
+      return res.status(409).json({ message: "Probably email already exists" });
+    }
     res.status(201).json({ account });
   } catch (err) {
     next(err);

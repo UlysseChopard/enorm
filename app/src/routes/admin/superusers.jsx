@@ -97,25 +97,27 @@ const Superusers = () => {
           </tr>
         </thead>
         <tbody>
-          {superusers.map(({ id, email, firstname, lastname }) => {
-            const formData = new FormData();
-            formData.append("id", id);
-            formData.append("type", "remove");
-            return (
-              <tr key={id}>
-                <th scope="row">{email}</th>
-                <td>{`${firstname} ${lastname}`}</td>
-                <td>
-                  <Button
-                    type="submit"
-                    onClick={() => submit(formData, { method: "POST" })}
-                  >
-                    {t("remove")}
-                  </Button>
-                </td>
-              </tr>
-            );
-          })}
+          {superusers
+            .sort((a, b) => a.id - b.id)
+            .map(({ id, email, firstname, lastname }) => {
+              const formData = new FormData();
+              formData.append("id", id);
+              formData.append("type", "remove");
+              return (
+                <tr key={id}>
+                  <th scope="row">{email}</th>
+                  <td>{`${firstname} ${lastname}`}</td>
+                  <td>
+                    <Button
+                      type="submit"
+                      onClick={() => submit(formData, { method: "POST" })}
+                    >
+                      {t("remove")}
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </>
