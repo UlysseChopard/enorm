@@ -97,7 +97,7 @@ const Superusers = () => {
           </tr>
         </thead>
         <tbody>
-          {superusers.map(({ id, email, firstname, lastname }) => {
+          {superusers.sort().map(({ id, email, firstname, lastname }) => {
             const formData = new FormData();
             formData.append("id", id);
             formData.append("type", "remove");

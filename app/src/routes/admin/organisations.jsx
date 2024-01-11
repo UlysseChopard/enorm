@@ -33,7 +33,7 @@ export const action = async ({ request }) => {
     const { organisation } = await create({
       account: account.id,
     }).then((res) => res.json());
-    const { role } = await allow(account.id, "admin", organisation.id);
+    const { role } = await allow(organisation.member, "admin", organisation.id);
     return { account, organisation, role };
   } else if (formData.get("type") === "remove") {
     const res = await remove(formData.get("id"));

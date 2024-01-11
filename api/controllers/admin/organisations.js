@@ -40,6 +40,7 @@ exports.create = async (req, res, next) => {
         .status(500)
         .json({ message: "could not create first member of organisation" });
     }
+    organisation.member = member.id;
     res.status(201).json({ organisation });
   } catch (err) {
     next(err);
