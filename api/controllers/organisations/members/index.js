@@ -1,3 +1,4 @@
+const { InvalidEmailRequestError } = require("postmark");
 const { createReadStream } = require("fs");
 const { pipeline } = require("stream/promises");
 const { unlink } = require("fs/promises");
@@ -79,16 +80,25 @@ exports.add = async (req, res, next) => {
       }))
     );
     await Tokens.createMany(tokens);
+    const mailErrors = [];
     await Promise.all(
-      tokens.map(({ email, id: token }) =>
-        mail.sendEmail({
-          From: process.env.EMAIL_ADDRESS_LOGIN,
-          To: email,
-          Subject: `Join ${organisation.name} on Jadoube`,
-          TextBody: `Please click here to join ${organisation.name} on Jadoube: ${process.env.BASE_URL}. Your token is ${token}`,
-          MessageStream: "outbound",
-        })
-      )
+      tokens.map(async ({ email, id: token }) => {
+        try {
+          await mail.sendEmail({
+            From: process.env.EMAIL_ADDRESS_LOGIN,
+            To: email,
+            Subject: `Join ${organisation.name} on Jadoube`,
+            TextBody: `Please click here to join ${organisation.name} on Jadoube: ${process.env.BASE_URL}. Your token is ${token}`,
+            MessageStream: "outbound",
+          });
+        } catch (e) {
+          if (e instanceof InvalidEmailRequestError) {
+            mailErrors.push(e);
+          } else {
+            throw e;
+          }
+        }
+      })
     );
     res.status(201).json({ members });
   } catch (err) {
@@ -122,13 +132,20 @@ exports.addOne = async (req, res, next) => {
     const {
       rows: [organisation],
     } = await Organisations.getById(req.params.organisation);
-    mail.sendEmail({
-      From: process.env.EMAIL_ADDRESS_LOGIN,
-      To: req.body.email,
-      Subject: `Join ${organisation.name} on Jadoube`,
-      TextBody: `Please click here to join ${organisation.name} on Jadoube: ${process.env.BASE_URL}. Your token is ${id}`,
-      MessageStream: "outbound",
-    });
+    try {
+      await mail.sendEmail({
+        From: process.env.EMAIL_ADDRESS_LOGIN,
+        To: req.body.email,
+        Subject: `Join ${organisation.name} on Jadoube`,
+        TextBody: `Please click here to join ${organisation.name} on Jadoube: ${process.env.BASE_URL}. Your token is ${id}`,
+        MessageStream: "outbound",
+      });
+    } catch (e) {
+      if (e instanceof InvalidEmailRequestError) {
+        return res.status(422).json({ message: e.message });
+      }
+      throw e;
+    }
     organisationMember.token = id;
     res.json({ member: organisationMember });
   } catch (err) {

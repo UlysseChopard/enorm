@@ -1,3 +1,4 @@
+const { InvalidEmailRequestError } = require("postmark");
 const { crypt, jwt, mail } = require("utils");
 const { Accounts, Tokens, OrganisationsMembers } = require("models");
 const { BASE_URL, NODE_ENV, JWT_RESET_PASSWD_MAX_AGE } = process.env;
@@ -88,12 +89,20 @@ exports.sendMailAccess = async (req, res, next) => {
     const subject = "Connect to Jadoube without password";
     const header = "Hi";
     const body = `Please click on the link after to connect to Jadoube without a password: ${resetLink}`;
-    await mail.sendEmail({
-      From: process.env.EMAIL_ADDRESS_LOGIN,
-      To: account.email,
-      Subject: subject,
-      TextBody: `${header}\n\n${body}`,
-    });
+    try {
+      await mail.sendEmail({
+        From: process.env.EMAIL_ADDRESS_LOGIN,
+        To: account.email,
+        Subject: subject,
+        TextBody: `${header}\n\n${body}`,
+      });
+    } catch (e) {
+      if (e instanceof InvalidEmailRequestError) {
+        return res.sendStatus(422).json({ message: e.message });
+      }
+      throw e;
+    }
+
     res.sendStatus(204);
   } catch (err) {
     next(err);
