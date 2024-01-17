@@ -4,7 +4,7 @@ const { getDownstream } = require("services/subscriptions");
 exports.get = async (req, res, next) => {
   try {
     const { rows: groups } = await WorkingGroups.getByOrganisation(
-      req.params.organisation
+      req.params.organisation,
     );
     const unique = groups.reduce((acc, val) => {
       if (!acc[val.id]) {
@@ -27,7 +27,7 @@ exports.create = async (req, res, next) => {
   try {
     const {
       rows: [group],
-    } = await WorkingGroups.create(req.params.organisation, req.body.group);
+    } = await WorkingGroups.create(req.params.organisation, req.body);
     const impactedSubscriptions = await getDownstream(req.params.organisation);
     for (const subscription of impactedSubscriptions) {
       await WGPaths.add(subscription, group.id);
@@ -45,7 +45,7 @@ exports.find = async (req, res, next) => {
     } = await WorkingGroups.find(req.params.wg);
     const { rows: wgPaths } = await WGPaths.find(
       req.params.organisation,
-      req.params.wg
+      req.params.wg,
     );
     res.json({ wg: { ...wg, wgPaths } });
   } catch (err) {

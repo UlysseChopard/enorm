@@ -33,7 +33,7 @@ export const loader = async () => {
     }
   }
   const [{ registrations }, { groups }, { members }] = await Promise.all(
-    responses.map((r) => r.json())
+    responses.map((r) => r.json()),
   );
   return { registrations, groups, members };
 };
@@ -43,15 +43,15 @@ export const action = async ({ request }) => {
   switch (formData.get("type")) {
     case "create":
       return create(Object.fromEntries(formData)).then((r) =>
-        r.ok ? r.json() : r.status
+        r.ok ? r.json() : r.status,
       );
     case "accept":
       return accept(formData.get("registration"), formData.get("wgPath")).then(
-        (r) => (r.ok ? r.json() : r.status)
+        (r) => (r.ok ? r.json() : r.status),
       );
     case "deny":
       return deny(formData.get("registration")).then((r) =>
-        r.ok ? r.json() : r.status
+        r.ok ? r.json() : r.status,
       );
     default:
       throw new Error("Unknown type for action");
@@ -60,7 +60,6 @@ export const action = async ({ request }) => {
 
 const RequestModal = ({ open, onClose, members, groups }) => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
-  const userOrganisation = JSON.parse(localStorage.getItem("organisation"));
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <Form method="POST" onSubmit={onClose}>
@@ -83,12 +82,21 @@ const RequestModal = ({ open, onClose, members, groups }) => {
             <InputLabel id="group">{t("group")}</InputLabel>
             <Select labelId="group" label={t("group")} name="wgPath">
               {groups
-                .filter(
-                  ({ wg_path, organisation }) =>
-                    !!wg_path && organisation !== userOrganisation
-                )
+                .filter(({ wg_path }) => !!wg_path)
                 .map(({ title, wg_path }) => (
                   <MenuItem key={wg_path} value={wg_path}>
+                    {title}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 2 }} fullWidth>
+            <InputLabel id="group">{t("ownGroup")}</InputLabel>
+            <Select labelId="group" label={t("ownGroup")} name="ownWG">
+              {groups
+                .filter(({ wg_path }) => !wg_path)
+                .map(({ id, title }) => (
+                  <MenuItem key={id} value={id}>
                     {title}
                   </MenuItem>
                 ))}
@@ -150,7 +158,7 @@ const RegistrationsTable = ({ registrations }) => {
                   (accepted_at && <CheckCircleIcon />) || <PendingIcon />}
               </td>
             </tr>
-          )
+          ),
         )}
       </tbody>
     </table>
@@ -183,14 +191,15 @@ const Registrations = () => {
       <TabPanel value={tab} index={0}>
         <RegistrationsTable
           registrations={registrations.filter(
-            ({ sender }) => sender == localStorage.getItem("organisation")
+            ({ sender }) => sender == localStorage.getItem("organisation"),
           )}
         />
       </TabPanel>
       <TabPanel value={tab} index={1}>
         <RegistrationsTable
           registrations={registrations.filter(
-            ({ recipient }) => recipient == localStorage.getItem("organisation")
+            ({ recipient }) =>
+              recipient == localStorage.getItem("organisation") || !recipient,
           )}
         />
       </TabPanel>

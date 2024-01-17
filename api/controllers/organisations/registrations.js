@@ -1,16 +1,16 @@
 const { Registrations, WGPaths, RegistrationsStreams } = require("models");
 
+const findManager = async (registration, user) => {
+  const { rows: managers } = await RegistrationsStreams.managers(registration);
+  return managers.find(({ account }) => account === user);
+};
+
 exports.accept = async (req, res, next) => {
   try {
     if (!req.body.wgPath) {
       return res.status(422).json({ message: "Missing wgPath in body" });
     }
-    const { rows: managers } = await RegistrationsStreams.managers(
-      req.params.id
-    );
-    const manager = managers.find(
-      ({ account }) => account === res.locals.accountId
-    );
+    const manager = await findManager(req.params.id, res.locals.userId);
     if (!manager) {
       return res
         .status(403)
@@ -37,12 +37,7 @@ exports.accept = async (req, res, next) => {
 
 exports.deny = async (req, res, next) => {
   try {
-    const { rows: managers } = await RegistrationsStreams.managers(
-      req.params.id
-    );
-    const manager = managers.find(
-      ({ account }) => account === res.locals.accountId
-    );
+    const manager = await findManager(req.params.id, res.locals.accountId);
     if (!manager) {
       return res
         .status(403)
@@ -65,7 +60,10 @@ exports.get = async (req, res, next) => {
   try {
     const { rows: registrations } =
       await Registrations.getFromManagedSubscriptions(res.locals.accountId);
-    res.json({ registrations });
+    const { rows: owned } = await Registrations.getOwned(
+      req.params.organisation,
+    );
+    res.json({ registrations: [...registrations, ...owned] });
   } catch (err) {
     next(err);
   }
@@ -73,6 +71,15 @@ exports.get = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
+    if (req.body.ownWG) {
+      const {
+        rows: [registration],
+      } = await Registrations.createOwned({
+        beneficiary: req.body.account,
+        wg: req.body.ownWG,
+      });
+      return res.status(201).json({ registration });
+    }
     const {
       rows: [registration],
     } = await Registrations.create({
@@ -100,7 +107,7 @@ exports.find = async (req, res, next) => {
     } = await Registrations.find(req.params.id);
     const { rows: wgPaths } = await WGPaths.find(
       req.params.organisation,
-      registration.working_group
+      registration.working_group,
     );
     registration.wgPaths = wgPaths;
     registration.requireAction =
