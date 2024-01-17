@@ -23,13 +23,13 @@
   ],
   "devDependencies": {
     "eslint": "^8.32.0",
-    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.32.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^2.8.3"
+    "prettier": "^3.2.4"
   },
   "engines": {
-    "node": "v20.10.0",
+    "node": "v20.11.0",
     "npm": "10.3.0"
   }
 }
