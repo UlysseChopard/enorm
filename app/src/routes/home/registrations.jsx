@@ -60,6 +60,16 @@ export const action = async ({ request }) => {
 
 const RequestModal = ({ open, onClose, members, groups }) => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
+  const userOrganisation = localStorage.getItem("organisation");
+  const userOrganisationGroups = groups.filter(
+    ({ organisation }) => organisation === userOrganisation,
+  );
+  const registrationsGroups = groups
+    .filter(({ organisation }) => organisation !== userOrganisation)
+    .reduce((acc, { title, wg_paths }) => {
+      wg_paths.forEach((wgPath) => acc.push({ title, wgPath }));
+      return acc;
+    }, []);
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <Form method="POST" onSubmit={onClose}>
@@ -69,7 +79,12 @@ const RequestModal = ({ open, onClose, members, groups }) => {
           <DialogContentText>{t("text")}</DialogContentText>
           <FormControl sx={{ mt: 2 }} fullWidth>
             <InputLabel id="member">{t("member")}</InputLabel>
-            <Select labelId="member" label={t("member")} name="account">
+            <Select
+              labelId="member"
+              label={t("member")}
+              defaultValue=""
+              name="account"
+            >
               {members.map(({ account, firstname, lastname }) => (
                 <MenuItem
                   key={account}
@@ -78,30 +93,30 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               ))}
             </Select>
           </FormControl>
-          <FormControl sx={{ mt: 2 }} fullWidth>
-            <InputLabel id="group">{t("group")}</InputLabel>
-            <Select labelId="group" label={t("group")} name="wgPath">
-              {groups
-                .filter(({ wg_path }) => !!wg_path)
-                .map(({ title, wg_path }) => (
-                  <MenuItem key={wg_path} value={wg_path}>
+          {!!registrationsGroups.length && (
+            <FormControl sx={{ mt: 2 }} fullWidth>
+              <InputLabel id="group">{t("group")}</InputLabel>
+              <Select labelId="group" label={t("group")} name="wgPath">
+                {registrationsGroups.map(({ title, wgPath }) => (
+                  <MenuItem key={wgPath} value={wgPath}>
                     {title}
                   </MenuItem>
                 ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ mt: 2 }} fullWidth>
-            <InputLabel id="group">{t("ownGroup")}</InputLabel>
-            <Select labelId="group" label={t("ownGroup")} name="ownWG">
-              {groups
-                .filter(({ wg_path }) => !wg_path)
-                .map(({ id, title }) => (
+              </Select>
+            </FormControl>
+          )}
+          {!!userOrganisationGroups.length && (
+            <FormControl sx={{ mt: 2 }} fullWidth>
+              <InputLabel id="group">{t("ownGroup")}</InputLabel>
+              <Select labelId="group" label={t("ownGroup")} name="ownWG">
+                {userOrganisationGroups.map(({ id, title }) => (
                   <MenuItem key={id} value={id}>
                     {title}
                   </MenuItem>
                 ))}
-            </Select>
-          </FormControl>
+              </Select>
+            </FormControl>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>{t("cancel")}</Button>
@@ -203,7 +218,7 @@ const Registrations = () => {
           )}
         />
       </TabPanel>
-      {isManager && (
+      {isManager && !!groups.length && (
         <RequestModal
           open={modal}
           onClose={() => setModal(false)}
