@@ -14,7 +14,7 @@ const isSubscriptionManager = async (req, res, next) => {
       : await SubscriptionsManagers.getByWgPath(req.body.wgPath);
     if (
       !subscriptionManagers.find(
-        ({ account }) => account === res.locals.accountId
+        ({ account }) => account === res.locals.accountId,
       )
     ) {
       return res
@@ -30,19 +30,19 @@ const isSubscriptionManager = async (req, res, next) => {
 module.exports = ({ Router }) => {
   const router = Router({ mergeParams: true });
   router.get("/", hasRole("admin", "manager", "expert"), get);
-  router.post("/", hasRole("admin", "manager", "expert"), create);
   router.get("/:id", hasRole("admin", "manager", "expert"), find);
+  router.post("/", hasRole("admin", "manager"), create);
   router.patch(
     "/:id",
     hasRole("admin", "manager"),
     isSubscriptionManager,
-    accept
+    accept,
   );
   router.delete(
     "/:id",
     hasRole("admin", "manager"),
     isSubscriptionManager,
-    deny
+    deny,
   );
   return router;
 };

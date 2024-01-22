@@ -58,12 +58,13 @@ exports.deny = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: registrations } =
-      await Registrations.getFromManagedSubscriptions(res.locals.accountId);
-    const { rows: owned } = await Registrations.getOwned(
+    const { rows: received } = await Registrations.getFromManagedSubscriptions(
+      res.locals.accountId,
+    );
+    const { rows: sent } = await Registrations.getOwn(
       req.params.organisation,
     );
-    res.json({ registrations: [...registrations, ...owned] });
+    res.json({ registrations: { received, sent } });
   } catch (err) {
     next(err);
   }
@@ -74,7 +75,7 @@ exports.create = async (req, res, next) => {
     if (req.body.ownWG) {
       const {
         rows: [registration],
-      } = await Registrations.createOwned({
+      } = await Registrations.createOwn({
         beneficiary: req.body.account,
         wg: req.body.ownWG,
       });

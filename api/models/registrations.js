@@ -6,7 +6,7 @@ exports.create = ({ beneficiary, wgPath }) =>
     [beneficiary, wgPath],
   );
 
-exports.createOwned = ({ beneficiary, wg }) =>
+exports.createOwn = ({ beneficiary, wg }) =>
   db.query(
     "INSERT INTO registrations (beneficiary, working_group, accepted_at) VALUES ($1, $2, CURRENT_TIMESTAMP) RETURNING *",
     [beneficiary, wg],
@@ -42,7 +42,7 @@ exports.remove = (beneficiary, id) =>
     beneficiary,
   ]);
 
-exports.getOwned = (wg) =>
+exports.getOwn = (wg) =>
   db.query(
     "SELECT r.*, a.firstname, a.lastname, wg.reference, wg.title FROM registrations AS r LEFT JOIN working_groups AS wg ON r.working_group = wg.id LEFT JOIN accounts AS a ON r.beneficiary = a.id WHERE wg.organisation = $1",
     [wg],

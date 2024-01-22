@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLoaderData, Form, useNavigate } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
@@ -60,16 +60,26 @@ export const action = async ({ request }) => {
 
 const RequestModal = ({ open, onClose, members, groups }) => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
-  const userOrganisation = localStorage.getItem("organisation");
-  const userOrganisationGroups = groups.filter(
-    ({ organisation }) => organisation === userOrganisation,
+  const ownedGroups = useMemo(
+    () =>
+      Object.values(groups.owned).map(({ id, title }) => (
+        <MenuItem key={id} value={id}>
+          {title}
+        </MenuItem>
+      )),
+    [groups.owned],
   );
-  const registrationsGroups = groups
-    .filter(({ organisation }) => organisation !== userOrganisation)
-    .reduce((acc, { title, wg_paths }) => {
-      wg_paths.forEach((wgPath) => acc.push({ title, wgPath }));
-      return acc;
-    }, []);
+  const receivedGroups = useMemo(
+    () =>
+      Object.values(groups.received).map(({ title, wg_paths }) =>
+        wg_paths.map((wgPath) => (
+          <MenuItem key={wgPath} value={wgPath}>
+            {title}
+          </MenuItem>
+        )),
+      ),
+    [groups.received],
+  );
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <Form method="POST" onSubmit={onClose}>
@@ -93,27 +103,19 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               ))}
             </Select>
           </FormControl>
-          {!!registrationsGroups.length && (
+          {!!Object.hasOwn(groups, "received") && (
             <FormControl sx={{ mt: 2 }} fullWidth>
               <InputLabel id="group">{t("group")}</InputLabel>
               <Select labelId="group" label={t("group")} name="wgPath">
-                {registrationsGroups.map(({ title, wgPath }) => (
-                  <MenuItem key={wgPath} value={wgPath}>
-                    {title}
-                  </MenuItem>
-                ))}
+                {receivedGroups}
               </Select>
             </FormControl>
           )}
-          {!!userOrganisationGroups.length && (
+          {!!Object.hasOwn(groups, "owned") && (
             <FormControl sx={{ mt: 2 }} fullWidth>
               <InputLabel id="group">{t("ownGroup")}</InputLabel>
               <Select labelId="group" label={t("ownGroup")} name="ownWG">
-                {userOrganisationGroups.map(({ id, title }) => (
-                  <MenuItem key={id} value={id}>
-                    {title}
-                  </MenuItem>
-                ))}
+                {ownedGroups}
               </Select>
             </FormControl>
           )}
@@ -203,29 +205,26 @@ const Registrations = () => {
           <Tab label={t("received")} id="tab-1" aria-controls="tab-1" />
         </Tabs>
       </Box>
-      <TabPanel value={tab} index={0}>
-        <RegistrationsTable
-          registrations={registrations.filter(
-            ({ sender }) => sender == localStorage.getItem("organisation"),
-          )}
-        />
-      </TabPanel>
-      <TabPanel value={tab} index={1}>
-        <RegistrationsTable
-          registrations={registrations.filter(
-            ({ recipient }) =>
-              recipient == localStorage.getItem("organisation") || !recipient,
-          )}
-        />
-      </TabPanel>
-      {isManager && !!groups.length && (
-        <RequestModal
-          open={modal}
-          onClose={() => setModal(false)}
-          members={members}
-          groups={groups}
-        />
+      {!!registrations.sent.length && (
+        <TabPanel value={tab} index={0}>
+          <RegistrationsTable registrations={registrations.sent} />
+        </TabPanel>
       )}
+      {!!registrations.received && (
+        <TabPanel value={tab} index={1}>
+          <RegistrationsTable registrations={registrations.received} />
+        </TabPanel>
+      )}
+      {isManager &&
+        (!!Object.hasOwn(groups, "owned") ||
+          !!Object.hasOwn(groups, "received")) && (
+          <RequestModal
+            open={modal}
+            onClose={() => setModal(false)}
+            members={members}
+            groups={groups}
+          />
+        )}
     </>
   );
 };

@@ -3,21 +3,26 @@ const { getDownstream } = require("services/subscriptions");
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: groups } = await WorkingGroups.getByOrganisation(
+    const { rows: rawGroups } = await WorkingGroups.getByOrganisation(
       req.params.organisation,
     );
-    const unique = groups.reduce((acc, val) => {
-      if (!acc[val.id]) {
-        acc[val.id] = val;
-        acc[val.id].wg_paths = [];
+    const groups = rawGroups.reduce((acc, val) => {
+      const ownership =
+        val.organisation === parseInt(req.params.organisation, 10)
+          ? "owned"
+          : "received";
+      if (!acc[ownership]) acc[ownership] = {};
+      if (!acc[ownership][val.id]) {
+        acc[ownership][val.id] = val;
+        acc[ownership][val.id].wg_paths = [];
       }
       if (val.wg_path) {
-        acc[val.id].wg_paths.push(val.wg_path);
+        acc[ownership][val.id].wg_paths.push(val.wg_path);
       }
-      delete acc[val.id].wg_path;
+      delete acc[ownership][val.id].wg_path;
       return acc;
     }, {});
-    res.json({ groups: Object.values(unique) });
+    res.json({ groups });
   } catch (err) {
     next(err);
   }
