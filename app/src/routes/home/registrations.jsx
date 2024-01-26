@@ -103,7 +103,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               ))}
             </Select>
           </FormControl>
-          {!!Object.hasOwn(groups, "received") && (
+          {Object.hasOwn(groups, "received") && (
             <FormControl sx={{ mt: 2 }} fullWidth>
               <InputLabel id="group">{t("group")}</InputLabel>
               <Select labelId="group" label={t("group")} name="wgPath">
@@ -111,7 +111,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               </Select>
             </FormControl>
           )}
-          {!!Object.hasOwn(groups, "owned") && (
+          {Object.hasOwn(groups, "owned") && (
             <FormControl sx={{ mt: 2 }} fullWidth>
               <InputLabel id="group">{t("ownGroup")}</InputLabel>
               <Select labelId="group" label={t("ownGroup")} name="ownWG">
@@ -186,14 +186,18 @@ const Registrations = () => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const [tab, setTab] = useState(0);
   const [modal, setModal] = useState(false);
-  const { isManager } = JSON.parse(localStorage.getItem("roles"));
+  const groupsExist =
+    groups &&
+    (Object.hasOwn(groups, "owned") || Object.hasOwn(groups, "received"));
   return (
     <>
-      <div style={{ margin: "0 1rem 1rem" }}>
-        <Button variant="contained" onClick={() => setModal(true)}>
-          {t("request")}
-        </Button>
-      </div>
+      {groupsExist && (
+        <div style={{ margin: "0 1rem 1rem" }}>
+          <Button variant="contained" onClick={() => setModal(true)}>
+            {t("request")}
+          </Button>
+        </div>
+      )}
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={tab}
@@ -215,16 +219,14 @@ const Registrations = () => {
           <RegistrationsTable registrations={registrations.received} />
         </TabPanel>
       )}
-      {isManager &&
-        (!!Object.hasOwn(groups, "owned") ||
-          !!Object.hasOwn(groups, "received")) && (
-          <RequestModal
-            open={modal}
-            onClose={() => setModal(false)}
-            members={members}
-            groups={groups}
-          />
-        )}
+      {groupsExist && (
+        <RequestModal
+          open={modal}
+          onClose={() => setModal(false)}
+          members={members}
+          groups={groups}
+        />
+      )}
     </>
   );
 };
