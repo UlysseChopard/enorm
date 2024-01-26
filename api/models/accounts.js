@@ -2,25 +2,25 @@ const { db } = require("utils");
 
 exports.getByEmail = (email) =>
   db.query(
-    "SELECT id, email, firstname, lastname, gender, superuser FROM accounts WHERE email = $1",
-    [email]
+    "SELECT id, email, firstname, lastname, gender, superuser, hash FROM accounts WHERE email = $1",
+    [email],
   );
 
 exports.get = (id) =>
   db.query(
     "SELECT a.id, a.email, a.firstname, a.lastname, a.gender, a.superuser FROM accounts AS a WHERE a.id = $1",
-    [id]
+    [id],
   );
 
 exports.getSuperusers = () =>
   db.query(
-    "SELECT id, email, firstname, lastname, gender FROM accounts WHERE superuser = TRUE"
+    "SELECT id, email, firstname, lastname, gender FROM accounts WHERE superuser = TRUE",
   );
 
 exports.createMany = (emails) =>
   db.query(
     "INSERT INTO accounts (email) SELECT u.email FROM UNNEST($1::text[]) AS u (email) ON CONFLICT DO NOTHING RETURNING id",
-    [emails]
+    [emails],
   );
 
 exports.create = ({
@@ -33,22 +33,22 @@ exports.create = ({
 }) =>
   db.query(
     "INSERT INTO accounts (email, hash, firstname, lastname, gender, superuser) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT DO NOTHING RETURNING id, email, firstname, lastname, gender, superuser",
-    [email, hash, firstname, lastname, gender, superuser]
+    [email, hash, firstname, lastname, gender, superuser],
   );
 
 exports.update = (id, { email, hash, firstname, lastname, gender }) =>
   db.query(
     "UPDATE accounts SET email = $1, hash = $2, firstname = $3, lastname = $4, gender = $5 WHERE id = $6 RETURNING id, email, firstname, lastname, gender, superuser",
-    [email, hash, firstname, lastname, gender, id]
+    [email, hash, firstname, lastname, gender, id],
   );
 
 exports.remove = (id) =>
   db.query(
     "DELETE FROM accounts WHERE id = $1 RETURNING id, email, firstname, lastname, superuser",
-    [id]
+    [id],
   );
 
 exports.removeOrphans = () =>
   db.query(
-    "DELETE FROM accounts WHERE NOT superuser AND id NOT IN (SELECT account FROM organisations_members)"
+    "DELETE FROM accounts WHERE NOT superuser AND id NOT IN (SELECT account FROM organisations_members)",
   );

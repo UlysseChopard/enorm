@@ -3,13 +3,12 @@ const { crypt, jwt, mail } = require("utils");
 const { Accounts, Tokens, OrganisationsMembers } = require("models");
 const { BASE_URL, NODE_ENV, JWT_RESET_PASSWD_MAX_AGE } = process.env;
 
-const setCookie = (res, token) =>
-  res.cookie(jwt.key, token, {
-    httpOnly: true,
-    maxAge: jwt.maxAge,
-    sameSite: NODE_ENV === "production" ? "None" : "Lax",
-    secure: NODE_ENV === "production",
-  });
+const cookieOptions = {
+  httpOnly: true,
+  maxAge: jwt.maxAge,
+  sameSite: NODE_ENV === "production" ? "None" : "Lax",
+  secure: NODE_ENV === "production",
+};
 
 exports.loginToken = async (req, res, next) => {
   try {
@@ -27,7 +26,7 @@ exports.loginToken = async (req, res, next) => {
       return res.status(401).json({ message: "token does not match email" });
     }
     const token = jwt.sign({ accountId: organisationMember.account });
-    setCookie(res, token);
+    res.cookie(jwt.key, token, cookieOptions);
     res
       .status(201)
       .json({ session: { token, account: organisationMember.account } });
@@ -42,11 +41,12 @@ exports.login = async (req, res, next) => {
       rows: [account],
     } = await Accounts.getByEmail(req.body.email);
     if (!account) return res.sendStatus(401);
-    if (!crypt.encrypt(req.body.password) === account.hash) {
+    if (crypt.encrypt(req.body.password) !== account.hash) {
+      console.log(crypt.encrypt(req.body.password), account.hash);
       return res.sendStatus(401);
     }
     const token = jwt.sign({ accountId: account.id });
-    setCookie(res, token);
+    res.cookie(jwt.key, token, cookieOptions);
     res.status(201).json({ session: { token, account: account.id } });
   } catch (err) {
     next(err);
@@ -56,12 +56,12 @@ exports.login = async (req, res, next) => {
 exports.loginWithoutPasswd = (_req, res) => {
   if (!res.locals.accountId) return res.sendStatus(401);
   const token = jwt.sign({ accountId: res.locals.accountId });
-  setCookie(res, token);
+  res.cookie(jwt.key, token, cookieOptions);
   res.status(201).json({ session: token });
 };
 
-exports.logout = async (req, res) => {
-  res.cookie(jwt.key, "", { maxAge: "1" });
+exports.logout = (req, res) => {
+  res.clearCookie(jwt.key);
   res.json({ session: null });
 };
 
@@ -84,7 +84,7 @@ exports.sendMailAccess = async (req, res, next) => {
     if (!account) return res.sendStatus(401);
     const token = jwt.sign({ accountId: account.id }, JWT_RESET_PASSWD_MAX_AGE);
     const resetLink = `${BASE_URL}/access/${encodeURIComponent(
-      token
+      token,
     ).replaceAll(".", "/")}`;
     const subject = "Connect to Jadoube without password";
     const header = "Hi";
