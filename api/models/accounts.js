@@ -1,8 +1,8 @@
 const { db } = require("utils");
 
-exports.getByEmail = (email) =>
+exports.getByEmailWithHash = (email) =>
   db.query(
-    "SELECT id, email, firstname, lastname, gender, superuser, hash FROM accounts WHERE email = $1",
+    "SELECT a.*, om.organisations FROM accounts AS a, LATERAL (SELECT ARRAY (SELECT om.organisation FROM organisations_members AS om WHERE om.account = a.id) AS organisations) om WHERE a.email = $1",
     [email],
   );
 

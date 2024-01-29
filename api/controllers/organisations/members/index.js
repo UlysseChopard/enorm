@@ -64,12 +64,12 @@ exports.add = async (req, res, next) => {
     const { rows: accounts } = await Accounts.createMany(received);
     const { rows: members } = await OrganisationsMembers.createMany(
       organisation.id,
-      accounts.map(({ id }) => id)
+      accounts.map(({ id }) => id),
     );
     const expiresAt = new Date();
     expiresAt.setMinutes(
       expiresAt.getMinutes() +
-        parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY, 10)
+        parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY, 10),
     );
     const tokens = await Promise.all(
       members.map(async ({ id, account }) => ({
@@ -77,7 +77,7 @@ exports.add = async (req, res, next) => {
         organisationMember: id,
         id: await Tokens.getOne(),
         expiresAt,
-      }))
+      })),
     );
     await Tokens.createMany(tokens);
     const mailErrors = [];
@@ -98,7 +98,7 @@ exports.add = async (req, res, next) => {
             throw e;
           }
         }
-      })
+      }),
     );
     res.status(201).json({ members });
   } catch (err) {
@@ -111,7 +111,7 @@ exports.addOne = async (req, res, next) => {
     await Accounts.create({ email: req.body.email });
     const {
       rows: [account],
-    } = await Accounts.getByEmail(req.body.email);
+    } = await Accounts.getByEmailWithHash(req.body.email);
     const {
       rows: [organisationMember],
     } = await OrganisationsMembers.create({
@@ -122,7 +122,7 @@ exports.addOne = async (req, res, next) => {
     const expiresAt = new Date();
     expiresAt.setMinutes(
       expiresAt.getMinutes() +
-        parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY)
+        parseInt(process.env.TOKEN_NEW_MEMBER_EXPIRATION_DELAY),
     );
     await Tokens.create({
       id,
@@ -164,7 +164,7 @@ exports.get = async (req, res, next) => {
 
     const { rows } = await OrganisationsMembers.getByOrganisation(
       organisation.id,
-      req.query
+      req.query,
     );
     const members = Object.values(
       rows.reduce((acc, user) => {
@@ -178,7 +178,7 @@ exports.get = async (req, res, next) => {
         }
         acc[user.id].establishments.push(user.establishment);
         return acc;
-      }, {})
+      }, {}),
     );
     res.json({ members });
   } catch (err) {

@@ -39,11 +39,15 @@ exports.login = async (req, res, next) => {
   try {
     const {
       rows: [account],
-    } = await Accounts.getByEmail(req.body.email);
+    } = await Accounts.getByEmailWithHash(req.body.email);
     if (!account) return res.sendStatus(401);
     if (crypt.encrypt(req.body.password) !== account.hash) {
-      console.log(crypt.encrypt(req.body.password), account.hash);
       return res.sendStatus(401);
+    }
+    if (!account.organisations.length && !account.superuser) {
+      return res
+        .status(403)
+        .json({ message: "Account without any organisations" });
     }
     const token = jwt.sign({ accountId: account.id });
     res.cookie(jwt.key, token, cookieOptions);
