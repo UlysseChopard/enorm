@@ -60,6 +60,7 @@
     "subtitle": "Many interesting informations"
   },
   "profile": {
+    "success": "Saved",
     "roles": "Roles",
     "isAdmin": "Administrator",
     "isManager": "Manager",

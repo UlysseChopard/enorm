@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  useLoaderData,
-  useActionData,
-  Form,
-  useSubmit,
-} from "react-router-dom";
+import { useLoaderData, useActionData, Form } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -18,7 +13,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Grid from "@mui/material/Unstable_Grid2";
 import { get, update } from "@/api/accounts";
-import { join, unlink } from "@/api/organisations/members";
 
 export async function loader() {
   const account = localStorage.getItem("account");
@@ -30,19 +24,11 @@ export async function loader() {
 export async function action({ request }) {
   const account = localStorage.getItem("account");
   const formData = await request.formData();
-  if (formData.has("newPassword") && !formData.has("oldPassword"))
-    return { message: "Missing old password" };
   const { type, ...objData } = Object.fromEntries(formData);
   let res;
   switch (type) {
     case "update":
       res = await update(account, objData);
-      break;
-    case "join":
-      res = await join(objData.organisation);
-      break;
-    case "leave":
-      res = await unlink(objData.organisation);
       break;
     default:
       throw new Error("Unknown action type");
@@ -65,6 +51,7 @@ const PROFILE = [
       },
       {
         name: "gender",
+        required: true,
         select: true,
         options: ["male", "female"],
       },
@@ -87,6 +74,7 @@ const PASSWORD = {
   fields: [
     {
       name: "password",
+      required: true,
       type: "password",
     },
   ],
@@ -129,7 +117,7 @@ const SubForm = ({ name, fields, account, t, xs }) => (
                   </MenuItem>
                 ))}
             </TextField>
-          )
+          ),
         )}
       </Stack>
     </Paper>
@@ -139,7 +127,6 @@ const SubForm = ({ name, fields, account, t, xs }) => (
 export default function Profile() {
   const { account } = useLoaderData();
   const res = useActionData();
-  const submit = useSubmit();
   const { t } = useTranslation(null, { keyPrefix: "profile" });
   const [message, setMessage] = useState("");
 
@@ -160,7 +147,7 @@ export default function Profile() {
             </Typography>
             <List>
               {Object.entries(JSON.parse(localStorage.getItem("roles"))).map(
-                ([k, v]) => (v ? <ListItem key={k}>{t(k)}</ListItem> : "")
+                ([k, v]) => (v ? <ListItem key={k}>{t(k)}</ListItem> : ""),
               )}
             </List>
           </Paper>
@@ -178,6 +165,13 @@ export default function Profile() {
               xs={6}
             />
           ))}
+          <SubForm
+            name={PASSWORD.name}
+            fields={PASSWORD.fields}
+            account={account}
+            t={t}
+            xs={12}
+          />
           <input type="hidden" name="type" value="update" />
           <Grid xsOffset="auto">
             <Button variant="contained" endIcon={<SendIcon />} type="submit">
@@ -186,50 +180,6 @@ export default function Profile() {
           </Grid>
         </Grid>
       </Form>
-      <Form method="post">
-        <Grid container spacing={2}>
-          <SubForm
-            name={PASSWORD.name}
-            fields={PASSWORD.fields}
-            account={account}
-            t={t}
-            xs={12}
-          />
-          <Grid xsOffset="auto">
-            <Button variant="contained" endIcon={<SendIcon />} type="submit">
-              {t("submit")}
-            </Button>
-          </Grid>
-        </Grid>
-      </Form>
-      {account.organisations.map(({ organisation, toJoin }) => (
-        <div key={organisation} style={{ display: "flex" }}>
-          <p>{name}</p>
-          {toJoin ? (
-            <button
-              onClick={() => {
-                const formData = new FormData();
-                formData.append("type", "join");
-                formData.append("organisation", organisation);
-                submit(formData, { method: "PUT" });
-              }}
-            >
-              {t("join")}
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                const formData = new FormData();
-                formData.append("type", "leave");
-                formData.append("organisation", organisation);
-                submit(formData, { method: "DELETE" });
-              }}
-            >
-              {t("leave")}
-            </button>
-          )}
-        </div>
-      ))}
       <Snackbar
         open={!!message}
         autoHideDuration={4000}

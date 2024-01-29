@@ -60,6 +60,7 @@
     "subtitle": "Pleins d'informations passionnantes"
   },
   "profile": {
+    "success": "Enregistré",
     "roles": "Rôles",
     "isAdmin": "Administrateur",
     "isManager": "Gestionnaire",
