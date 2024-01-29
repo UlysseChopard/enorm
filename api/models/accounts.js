@@ -8,7 +8,13 @@ exports.getByEmail = (email) =>
 
 exports.get = (id) =>
   db.query(
-    "SELECT a.id, a.email, a.firstname, a.lastname, a.gender, a.superuser FROM accounts AS a WHERE a.id = $1",
+    "SELECT id, email, firstname, lastname, gender, superuser FROM accounts WHERE id = $1",
+    [id],
+  );
+
+exports.getWithHash = (id) =>
+  db.query(
+    "SELECT id, email, firstname, lastname, gender, superuser, hash FROM accounts WHERE id = $1",
     [id],
   );
 

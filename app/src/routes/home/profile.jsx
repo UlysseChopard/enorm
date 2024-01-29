@@ -74,7 +74,6 @@ const PASSWORD = {
   fields: [
     {
       name: "password",
-      required: true,
       type: "password",
     },
   ],

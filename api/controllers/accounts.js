@@ -31,7 +31,7 @@ exports.get = async (req, res, next) => {
       return res.json({ account });
     }
     const { rows: organisations } = await OrganisationsMembers.getByAccount(
-      account.id
+      account.id,
     );
     account.organisations = organisations.map(
       ({ organisation, name, is_manager, is_admin, is_expert }) => {
@@ -44,7 +44,7 @@ exports.get = async (req, res, next) => {
             isExpert: is_expert,
           },
         };
-      }
+      },
     );
     res.json({ account });
   } catch (err) {
@@ -56,7 +56,7 @@ exports.update = async (req, res, next) => {
   try {
     const {
       rows: [prev],
-    } = await Accounts.get(res.locals.accountId);
+    } = await Accounts.getWithHash(res.locals.accountId);
     const hash = req.body.password
       ? crypt.encrypt(req.body.password)
       : prev.hash;
