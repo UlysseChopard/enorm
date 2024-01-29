@@ -62,23 +62,27 @@ const RequestModal = ({ open, onClose, members, groups }) => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const ownedGroups = useMemo(
     () =>
-      Object.values(groups.owned).map(({ id, title }) => (
-        <MenuItem key={id} value={id}>
-          {title}
-        </MenuItem>
-      )),
-    [groups.owned],
+      Object.hasOwn(groups, "owned")
+        ? Object.values(groups?.owned).map(({ id, title }) => (
+            <MenuItem key={id} value={id}>
+              {title}
+            </MenuItem>
+          ))
+        : [],
+    [groups],
   );
   const receivedGroups = useMemo(
     () =>
-      Object.values(groups.received).map(({ title, wg_paths }) =>
-        wg_paths.map((wgPath) => (
-          <MenuItem key={wgPath} value={wgPath}>
-            {title}
-          </MenuItem>
-        )),
-      ),
-    [groups.received],
+      Object.hasOwn(groups, "received")
+        ? Object.values(groups.received).map(({ title, wg_paths }) =>
+            wg_paths.map((wgPath) => (
+              <MenuItem key={wgPath} value={wgPath}>
+                {title}
+              </MenuItem>
+            )),
+          )
+        : [],
+    [groups],
   );
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
