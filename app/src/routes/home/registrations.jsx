@@ -90,7 +90,6 @@ const RequestModal = ({ open, onClose, members, groups }) => {
         <input type="hidden" name="type" value="create" />
         <DialogTitle>{t("requestTitle")}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{t("text")}</DialogContentText>
           <FormControl sx={{ mt: 2 }} fullWidth>
             <InputLabel id="member">{t("member")}</InputLabel>
             <Select
@@ -98,6 +97,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               label={t("member")}
               defaultValue=""
               name="account"
+              required
             >
               {members.map(({ account, firstname, lastname }) => (
                 <MenuItem
