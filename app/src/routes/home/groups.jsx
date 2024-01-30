@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, useLoaderData, useActionData } from "react-router-dom";
+import { Form, useLoaderData, useActionData, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -87,7 +87,9 @@ export default function Groups() {
             Object.values(groups.owned).map(
               ({ id, title, organisation_name, reference, created_at }) => (
                 <tr key={id}>
-                  <td>{title}</td>
+                  <td>
+                    <Link to={`/groups/${id}`}>{title}</Link>
+                  </td>
                   <td>{organisation_name}</td>
                   <td>{reference}</td>
                   <td>{new Date(created_at).toLocaleString()}</td>
