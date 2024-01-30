@@ -1,10 +1,4 @@
 import { useState, useEffect } from "react";
-import {
-  getSortedRowModel,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import { Form, useLoaderData, useActionData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Dialog from "@mui/material/Dialog";
@@ -58,54 +52,11 @@ const CreateModal = ({ open, onClose }) => {
   );
 };
 
-const createColumns = (t) => [
-  {
-    accessorKey: "title",
-    header: t("label"),
-    enableSorting: true,
-    sortingFn: "basic",
-    cell: (props) => (
-      <Button to={`/groups/${props.row.id}`}>{props.row.original.title}</Button>
-    ),
-  },
-  {
-    accessorKey: "organisation_name",
-    header: t("organisation"),
-    enableSorting: true,
-    sortingFn: "basic",
-  },
-  {
-    accessorKey: "reference",
-    header: t("reference"),
-    enableSorting: true,
-    sortingFn: "basic",
-  },
-  {
-    id: "created_at",
-    accessorFn: (row) => new Date(row.created_at).toLocaleDateString(),
-    header: t("creation"),
-    enableSorting: true,
-    sortingFn: "basic",
-  },
-];
-
 export default function Groups() {
   const { groups } = useLoaderData();
   const actionData = useActionData();
-  const [sorting, setSorting] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const { t } = useTranslation(null, { keyPrefix: "groups" });
-
-  const table = useReactTable({
-    data: groups,
-    columns: createColumns(t),
-    getRowId: (originalRow) => originalRow.id,
-    getCoreRowModel: getCoreRowModel(),
-    enableSorting: true,
-    state: { sorting },
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-  });
 
   useEffect(() => {
     if (actionData?.group) setCreateModal(false);
@@ -124,59 +75,26 @@ export default function Groups() {
       )}
       <table style={{ width: "100%" }}>
         <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder ? null : (
-                    <div
-                      {...{
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
-                    >
-                      {" "}
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{
-                        asc: " 🔼",
-                        desc: " 🔽",
-                      }[header.column.getIsSorted()] ?? null}
-                    </div>
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
+          <tr>
+            <th>{t("title")}</th>
+            <th>{t("organisation")}</th>
+            <th>{t("reference")}</th>
+            <th>{t("creation")}</th>
+          </tr>
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {!!groups.owned &&
+            Object.values(groups.owned).map(
+              ({ id, title, organisation_name, reference, created_at }) => (
+                <tr key={id}>
+                  <td>{title}</td>
+                  <td>{organisation_name}</td>
+                  <td>{reference}</td>
+                  <td>{new Date(created_at).toLocaleString()}</td>
+                </tr>
+              ),
+            )}
         </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
       <CreateModal open={createModal} onClose={() => setCreateModal(false)} />
     </>
