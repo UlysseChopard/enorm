@@ -103,7 +103,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
                 <MenuItem
                   key={account}
                   value={account}
-                >{`${firstname} ${lastname} (${email})`}</MenuItem>
+                >{`${firstname ? firstname : ""} ${lastname ? lastname : ""} (${email})`}</MenuItem>
               ))}
             </Select>
           </FormControl>
