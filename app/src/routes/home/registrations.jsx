@@ -99,11 +99,11 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               name="account"
               required
             >
-              {members.map(({ account, firstname, lastname }) => (
+              {members.map(({ account, firstname, lastname, email }) => (
                 <MenuItem
                   key={account}
                   value={account}
-                >{`${firstname} ${lastname}`}</MenuItem>
+                >{`${firstname} ${lastname} (${email})`}</MenuItem>
               ))}
             </Select>
           </FormControl>
