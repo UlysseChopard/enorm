@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import IconButton from "@mui/material/IconButton";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -28,7 +29,7 @@ export async function action({ request }) {
   switch (type) {
     case "invite":
       return await invite(recipient).then((res) =>
-        res.ok ? res.json() : res.status
+        res.ok ? res.json() : res.status,
       );
     case "accept":
       return await establish(recipient).then((res) => res.status);
@@ -46,10 +47,9 @@ export async function loader() {
 }
 
 const Organisation = ({ id, name, status, action, accept }) => (
-  <ListItem
-    key={id}
-    href={`/subscriptions/${id}`}
-    secondaryAction={
+  <ListItem key={id} href={`/subscriptions/${id}`}>
+    <ListItemText>{name}</ListItemText>
+    <ListItemSecondaryAction>
       <>
         {action && (
           <IconButton edge="end" onClick={action}>
@@ -62,9 +62,7 @@ const Organisation = ({ id, name, status, action, accept }) => (
           </IconButton>
         )}
       </>
-    }
-  >
-    <ListItemText>{name}</ListItemText>
+    </ListItemSecondaryAction>
   </ListItem>
 );
 
@@ -94,7 +92,7 @@ export default function Subscriptions() {
       timeoutId.current = setTimeout(() => {
         const formData = new FormData();
         formData.append("query", query);
-        submit(formData, { method: "post" });
+        submit(formData, { method: "POST" });
       }, 400);
     } else {
       submit();
