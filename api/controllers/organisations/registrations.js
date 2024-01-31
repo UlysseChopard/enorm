@@ -61,9 +61,7 @@ exports.get = async (req, res, next) => {
     const { rows: received } = await Registrations.getFromManagedSubscriptions(
       res.locals.accountId,
     );
-    const { rows: sent } = await Registrations.getOwn(
-      req.params.organisation,
-    );
+    const { rows: sent } = await Registrations.getOwn(req.params.organisation);
     res.json({ registrations: { received, sent } });
   } catch (err) {
     next(err);
@@ -72,6 +70,14 @@ exports.get = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
+    if (!req.body.account) {
+      return res.status(422).json({ message: "missing account in body" });
+    }
+    if (!req.body.ownWG && !req.body.wgPath) {
+      return res
+        .status(422)
+        .json({ message: "missing ownWG or wgPath in body" });
+    }
     if (req.body.ownWG) {
       const {
         rows: [registration],
