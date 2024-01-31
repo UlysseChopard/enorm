@@ -123,6 +123,7 @@
     "subscribers": "Abonnés"
   },
   "registrations": {
+    "ownGroup": "Groupes de mon organisation",
     "createdAt": "Créé le",
     "acceptedAt": "Accepté le",
     "deniedAt": "Refusé le",

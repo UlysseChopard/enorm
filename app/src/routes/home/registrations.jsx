@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -23,18 +22,17 @@ import { get as getGroups } from "@/api/organisations/working-groups";
 import { get as getMembers } from "@/api/organisations/members";
 
 export const loader = async () => {
-  if (!JSON.parse(localStorage.getItem("roles")).isManager) {
-    return await get().then((r) => (r.ok ? r.json() : r.status));
+  const responses = await Promise.all([get(), getGroups()]);
+  if (!JSON.parse(localStorage.getItem("roles")).isExpert) {
+    responses.push(getMembers());
   }
-  const responses = await Promise.all([get(), getGroups(), getMembers()]);
   for (const response of responses) {
     if (!response.ok) {
       throw new Error(response.status);
     }
   }
-  const [{ registrations }, { groups }, { members }] = await Promise.all(
-    responses.map((r) => r.json()),
-  );
+  const [{ registrations }, { groups }, { members } = { members: null }] =
+    await Promise.all(responses.map((r) => r.json()));
   return { registrations, groups, members };
 };
 
@@ -90,23 +88,31 @@ const RequestModal = ({ open, onClose, members, groups }) => {
         <input type="hidden" name="type" value="create" />
         <DialogTitle>{t("requestTitle")}</DialogTitle>
         <DialogContent>
-          <FormControl sx={{ mt: 2 }} fullWidth>
-            <InputLabel id="member">{t("member")}</InputLabel>
-            <Select
-              labelId="member"
-              label={t("member")}
-              defaultValue=""
+          {members ? (
+            <FormControl sx={{ mt: 2 }} fullWidth>
+              <InputLabel id="member">{t("member")}</InputLabel>
+              <Select
+                labelId="member"
+                label={t("member")}
+                defaultValue=""
+                name="account"
+                required
+              >
+                {members.map(({ account, firstname, lastname, email }) => (
+                  <MenuItem
+                    key={account}
+                    value={account}
+                  >{`${firstname ? firstname : ""} ${lastname ? lastname : ""} (${email})`}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : (
+            <input
+              type="hidden"
               name="account"
-              required
-            >
-              {members.map(({ account, firstname, lastname, email }) => (
-                <MenuItem
-                  key={account}
-                  value={account}
-                >{`${firstname ? firstname : ""} ${lastname ? lastname : ""} (${email})`}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              value={localStorage.getItem("account")}
+            />
+          )}
           {Object.hasOwn(groups, "received") && (
             <FormControl sx={{ mt: 2 }} fullWidth>
               <InputLabel id="group">{t("group")}</InputLabel>
