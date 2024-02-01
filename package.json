@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run start -w api",
-    "dev": "node ./start-dev.js"
+    "dev": "node ./tools/start-dev.js"
   },
   "repository": {
     "type": "git",
