@@ -1,6 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, Form, useNavigate } from "react-router-dom";
+import {
+  useActionData,
+  useLoaderData,
+  Form,
+  useNavigate,
+} from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -41,6 +46,10 @@ export const action = async ({ request }) => {
   const formData = await request.formData();
   switch (formData.get("type")) {
     case "create":
+      if (!formData.get("wgPath") && !formData.get("ownWG")) {
+        console.log("erro");
+        return { message: "missing wgPath or ownWG" };
+      }
       return create(Object.fromEntries(formData)).then((r) =>
         r.ok ? r.json() : r.status,
       );
@@ -58,6 +67,7 @@ export const action = async ({ request }) => {
 };
 
 const RequestModal = ({ open, onClose, members, groups }) => {
+  const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const ownedGroups = useMemo(
     () =>
@@ -83,9 +93,14 @@ const RequestModal = ({ open, onClose, members, groups }) => {
         : [],
     [groups],
   );
+  useEffect(() => {
+    if (!actionData) return;
+    if (actionData.message) return;
+    onClose();
+  }, [onClose, actionData]);
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
-      <Form method="POST" onSubmit={onClose}>
+      <Form method="POST">
         <input type="hidden" name="type" value="create" />
         <DialogTitle>{t("requestTitle")}</DialogTitle>
         <DialogContent>
