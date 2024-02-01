@@ -93,6 +93,9 @@ const Group = () => {
                 <Typography>{`${t("createdAt")}: ${new Date(
                   wg.created_at,
                 ).toLocaleDateString()}`}</Typography>
+                {!!wg.description && (
+                  <Typography>{`${t("description")}: ${wg.description}`}</Typography>
+                )}
               </Stack>
             </CardContent>
             {isAdmin && wg.organisation === organisation && (
