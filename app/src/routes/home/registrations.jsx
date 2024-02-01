@@ -22,10 +22,11 @@ import { get as getGroups } from "@/api/organisations/working-groups";
 import { get as getMembers } from "@/api/organisations/members";
 
 export const loader = async () => {
-  const responses = await Promise.all([get(), getGroups()]);
+  const requests = [get(), getGroups()];
   if (!JSON.parse(localStorage.getItem("roles")).isExpert) {
-    responses.push(getMembers());
+    requests.push(getMembers());
   }
+  const responses = await Promise.all(requests);
   for (const response of responses) {
     if (!response.ok) {
       throw new Error(response.status);
