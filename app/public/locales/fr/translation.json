@@ -89,6 +89,11 @@
     "logout": "Déconnexion"
   },
   "group": {
+    "cancel": "Annuler",
+    "modify": "Modifier",
+    "description": "Description",
+    "title": "Titre",
+    "edition": "Édition",
     "back": "retour",
     "join": "Rejoindre",
     "delete": "Supprimer",

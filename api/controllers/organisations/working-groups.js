@@ -68,3 +68,17 @@ exports.remove = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.update = async (req, res, next) => {
+  try {
+    const {
+      rows: [wg],
+    } = await WorkingGroups.update(req.params.wg, req.body);
+    if (!wg) {
+      return res.status(500).json({ message: "could not update wg" });
+    }
+    res.json({ wg });
+  } catch (err) {
+    next(err);
+  }
+};

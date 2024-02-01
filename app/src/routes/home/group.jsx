@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { useSubmit, useLoaderData, redirect, Form } from "react-router-dom";
+import { useState, useEffect } from "react";
+import {
+  useActionData,
+  useSubmit,
+  useLoaderData,
+  redirect,
+  Form,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -12,7 +18,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import EditOffIcon from "@mui/icons-material/EditOff";
-import { find, remove } from "@/api/organisations/working-groups";
+import { find, remove, update } from "@/api/organisations/working-groups";
 
 export const loader = async ({ params }) => {
   const res = await find(params.id);
@@ -27,19 +33,31 @@ export const action = async ({ params, request }) => {
       res = await remove(params.id);
       return res.ok ? redirect("/groups") : res.json();
     case "update":
-      console.log(formData);
-      return true;
+      res = await update(params.id, Object.fromEntries(formData));
+      return res.ok ? res.json() : res.status;
     default:
       throw new Error(`type ${formData.get("type")} does not exist`);
   }
 };
 
 const Group = () => {
+  const actionData = useActionData();
   const { wg } = useLoaderData();
   const submit = useSubmit();
   const { t } = useTranslation(null, { keyPrefix: "group" });
   const [editing, setEditing] = useState(false);
-  const { isAdmin } = JSON.parse(localStorage.getItem("roles"));
+  const { isAdmin, isManager } = JSON.parse(localStorage.getItem("roles"));
+  useEffect(() => {
+    if (!actionData?.wg) {
+      return;
+    }
+    for (const k of Object.keys(actionData.wg)) {
+      if (actionData.wg[k] !== wg[k]) {
+        setEditing(false);
+        break;
+      }
+    }
+  }, [actionData, wg, setEditing]);
   const organisation = parseInt(localStorage.getItem("organisation"));
   const handleClick = () => {
     const formData = new FormData();
@@ -59,9 +77,11 @@ const Group = () => {
             <CardHeader
               title={wg.title}
               action={
-                <IconButton onClick={() => setEditing(true)}>
-                  <ModeEditIcon />
-                </IconButton>
+                (isAdmin || isManager) && (
+                  <IconButton onClick={() => setEditing(true)}>
+                    <ModeEditIcon />
+                  </IconButton>
+                )
               }
             />
             <CardContent>

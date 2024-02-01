@@ -40,3 +40,17 @@ export const remove = (wg) =>
       credentials: "include",
     },
   );
+
+export const update = (id, wg) =>
+  fetch(
+    `${apiUrl}api/organisations/${localStorage.getItem("organisation")}/working-groups/${id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(wg),
+    },
+  );

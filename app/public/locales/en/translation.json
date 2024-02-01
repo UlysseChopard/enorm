@@ -89,6 +89,11 @@
     "logout": "Log out"
   },
   "group": {
+    "cancel": "Cancel",
+    "modify": "Modify",
+    "description": "Description",
+    "title": "Title",
+    "edition": "Edition",
     "back": "Back",
     "join": "Join",
     "delete": "Delete",

@@ -1,8 +1,9 @@
 const {
-  get,
   create,
   find,
+  get,
   remove,
+  update,
 } = require("controllers/organisations/working-groups");
 const { hasRole } = require("middlewares/roles");
 
@@ -12,5 +13,6 @@ module.exports = ({ Router }) => {
   router.get("/:wg", hasRole("admin", "manager", "expert"), find);
   router.delete("/:wg", hasRole("admin", "manager"), remove);
   router.post("/", hasRole("admin", "manager"), create);
+  router.put("/:wg", hasRole("admin", "manager"), update);
   return router;
 };
