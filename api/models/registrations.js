@@ -44,7 +44,7 @@ exports.remove = (beneficiary, id) =>
 
 exports.getOwn = (wg) =>
   db.query(
-    "SELECT r.*, a.firstname, a.lastname, wg.reference, wg.title FROM registrations AS r LEFT JOIN working_groups AS wg ON r.working_group = wg.id LEFT JOIN accounts AS a ON r.beneficiary = a.id WHERE wg.organisation = $1",
+    "SELECT r.*, wg.reference, wg.title, a.firstname, a.lastname FROM registrations AS r LEFT JOIN working_groups AS wg ON r.working_group = wg.id LEFT JOIN organisations_members om ON om.account = r.beneficiary LEFT JOIN accounts a ON r.beneficiary = a.id WHERE om.organisation = $1",
     [wg],
   );
 
