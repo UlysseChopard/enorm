@@ -128,7 +128,7 @@
     "subscribers": "Subscribers"
   },
   "registrations": {
-    "ownGroup": "My organisation's groups",
+    "wgPath": "Subscription",
     "createdAt": "Created at",
     "acceptedAt": "Accepted at",
     "deniedAt": "Denied at",

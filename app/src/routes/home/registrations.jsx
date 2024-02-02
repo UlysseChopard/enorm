@@ -1,9 +1,9 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   useActionData,
   useLoaderData,
-  Form,
+  useSubmit,
   useNavigate,
 } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
@@ -69,90 +69,95 @@ export const action = async ({ request }) => {
 const RequestModal = ({ open, onClose, members, groups }) => {
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
-  const ownedGroups = useMemo(
-    () =>
-      Object.hasOwn(groups, "owned")
-        ? Object.values(groups?.owned).map(({ id, title }) => (
-            <MenuItem key={id} value={id}>
-              {title}
-            </MenuItem>
-          ))
-        : [],
-    [groups],
-  );
-  const receivedGroups = useMemo(
-    () =>
-      Object.hasOwn(groups, "received")
-        ? Object.values(groups.received).map(({ title, wg_paths }) =>
-            wg_paths.map((wgPath) => (
-              <MenuItem key={wgPath} value={wgPath}>
-                {title}
-              </MenuItem>
-            )),
-          )
-        : [],
-    [groups],
-  );
+  const [member, setMember] = useState();
+  const [group, setGroup] = useState();
+  const [wgPath, setWgPath] = useState();
+  const submit = useSubmit();
   useEffect(() => {
-    if (!actionData) return;
-    if (actionData.message) return;
+    if (!actionData || actionData.message) return;
     onClose();
-  }, [onClose, actionData]);
+  }, [actionData, onClose]);
+
+  const onClick = () => {
+    const formData = new FormData();
+    formData.set("type", "create");
+    formData.set("wg", group);
+    if (member) {
+      formData.set("account", member);
+    } else {
+      formData.set("account", localStorage.getItem("account"));
+    }
+    if (wgPath) {
+      formData.set("wgPath", wgPath);
+    }
+    submit(formData, { method: "POST" });
+  };
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
-      <Form method="POST">
-        <input type="hidden" name="type" value="create" />
-        <DialogTitle>{t("requestTitle")}</DialogTitle>
-        <DialogContent>
-          {members ? (
-            <FormControl sx={{ mt: 2 }} fullWidth>
-              <InputLabel id="member">{t("member")}</InputLabel>
-              <Select
-                labelId="member"
-                label={t("member")}
-                defaultValue=""
-                name="account"
-                required
-              >
-                {members.map(({ account, firstname, lastname, email }) => (
-                  <MenuItem
-                    key={account}
-                    value={account}
-                  >{`${firstname ? firstname : ""} ${lastname ? lastname : ""} (${email})`}</MenuItem>
+      <DialogTitle>{t("requestTitle")}</DialogTitle>
+      <DialogContent>
+        {!!members && (
+          <FormControl sx={{ mt: 2 }} fullWidth>
+            <InputLabel id="member">{t("member")}</InputLabel>
+            <Select
+              labelId="member"
+              label={t("member")}
+              value={member}
+              onChange={(e) => setMember(e.target.value)}
+              required
+            >
+              {members.map(({ account, firstname, lastname, email }) => (
+                <MenuItem
+                  key={account}
+                  value={account}
+                >{`${firstname ? firstname : ""} ${lastname ? lastname : ""} (${email})`}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+        <FormControl sx={{ mt: 2 }} fullWidth>
+          <InputLabel id="group">{t("group")}</InputLabel>
+          <Select
+            labelId="group"
+            label={t("group")}
+            value={group}
+            onChange={(e) => setGroup(e.target.value)}
+            required
+          >
+            {groups.map(({ title, id }) => (
+              <MenuItem key={id} value={id}>
+                {title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {!!group && (
+          <FormControl sx={{ mt: 2 }} fullWidth>
+            <InputLabel id="wgPath">{t("wgPath")}</InputLabel>
+            <Select
+              labelId="wgPath"
+              label={t("wgPath")}
+              value={wgPath}
+              onChange={(e) => setWgPath(e.target.value)}
+              required
+            >
+              {groups
+                .find((g) => parseInt(g.id) === parseInt(group))
+                .wg_paths.map(({ id, organisation }) => (
+                  <MenuItem key={id} value={id}>
+                    {organisation}
+                  </MenuItem>
                 ))}
-              </Select>
-            </FormControl>
-          ) : (
-            <input
-              type="hidden"
-              name="account"
-              value={localStorage.getItem("account")}
-            />
-          )}
-          {Object.hasOwn(groups, "received") && (
-            <FormControl sx={{ mt: 2 }} fullWidth>
-              <InputLabel id="group">{t("group")}</InputLabel>
-              <Select labelId="group" label={t("group")} name="wgPath">
-                {receivedGroups}
-              </Select>
-            </FormControl>
-          )}
-          {Object.hasOwn(groups, "owned") && (
-            <FormControl sx={{ mt: 2 }} fullWidth>
-              <InputLabel id="group">{t("ownGroup")}</InputLabel>
-              <Select labelId="group" label={t("ownGroup")} name="ownWG">
-                {ownedGroups}
-              </Select>
-            </FormControl>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>{t("cancel")}</Button>
-          <Button variant="contained" type="submit">
-            {t("submit")}
-          </Button>
-        </DialogActions>
-      </Form>
+            </Select>
+          </FormControl>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>{t("cancel")}</Button>
+        <Button variant="contained" onClick={onClick}>
+          {t("submit")}
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };
@@ -212,12 +217,9 @@ const Registrations = () => {
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
   const [tab, setTab] = useState(0);
   const [modal, setModal] = useState(false);
-  const groupsExist =
-    groups &&
-    (Object.hasOwn(groups, "owned") || Object.hasOwn(groups, "received"));
   return (
     <>
-      {groupsExist && (
+      {!!groups && (
         <div style={{ margin: "0 1rem 1rem" }}>
           <Button variant="contained" onClick={() => setModal(true)}>
             {t("request")}
@@ -245,7 +247,7 @@ const Registrations = () => {
           <RegistrationsTable registrations={registrations.received} />
         </TabPanel>
       )}
-      {groupsExist && (
+      {!!groups && (
         <RequestModal
           open={modal}
           onClose={() => setModal(false)}

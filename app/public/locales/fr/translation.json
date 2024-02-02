@@ -128,7 +128,7 @@
     "subscribers": "Abonnés"
   },
   "registrations": {
-    "ownGroup": "Groupes de mon organisation",
+    "wgPath": "Abonnement",
     "createdAt": "Créé le",
     "acceptedAt": "Accepté le",
     "deniedAt": "Refusé le",
