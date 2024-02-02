@@ -104,14 +104,14 @@
   "groups": {
     "create": "Créer",
     "reference": "Réference",
-    "title": "Création d'un groupe",
+    "groupCreation": "Création d'un groupe",
+    "title": "Titre",
     "text": "Veuillez entrer ces informations pour créer un groupe",
     "creation": "Création",
     "disbanding": "Dissolution",
     "organisation": "Organisation",
     "cancel": "Annuler",
-    "submit": "Envoyer",
-    "label": "Titre"
+    "submit": "Envoyer"
   },
   "subscription": {
     "sentAt": "Envoyé le ",

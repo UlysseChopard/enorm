@@ -28,7 +28,7 @@ const CreateModal = ({ open, onClose }) => {
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <Form method="post" autoComplete="on" onSubmit={onClose}>
-        <DialogTitle>{t("title")}</DialogTitle>
+        <DialogTitle>{t("groupCreation")}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t("text")}</DialogContentText>
           <Stack spacing={2}>
@@ -38,7 +38,7 @@ const CreateModal = ({ open, onClose }) => {
               name="reference"
               fullWidth
             />
-            <TextField required label={t("label")} name="title" fullWidth />
+            <TextField required label={t("title")} name="title" fullWidth />
           </Stack>
         </DialogContent>
         <DialogActions>
