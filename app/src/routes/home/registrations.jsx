@@ -46,9 +46,8 @@ export const action = async ({ request }) => {
   const formData = await request.formData();
   switch (formData.get("type")) {
     case "create":
-      if (!formData.get("wgPath") && !formData.get("ownWG")) {
-        console.log("erro");
-        return { message: "missing wgPath or ownWG" };
+      if (!formData.get("wgPath") && !formData.get("wg")) {
+        return { message: "missing wgPath or wg" };
       }
       return create(Object.fromEntries(formData)).then((r) =>
         r.ok ? r.json() : r.status,
@@ -72,6 +71,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
   const [member, setMember] = useState();
   const [group, setGroup] = useState();
   const [wgPath, setWgPath] = useState();
+  const [wgPaths, setWgPaths] = useState();
   const submit = useSubmit();
   useEffect(() => {
     if (!actionData || actionData.message) return;
@@ -90,7 +90,11 @@ const RequestModal = ({ open, onClose, members, groups }) => {
     if (wgPath) {
       formData.set("wgPath", wgPath);
     }
+    console.log(wgPath);
     submit(formData, { method: "POST" });
+    if (actionData && !actionData.message) {
+      onClose();
+    }
   };
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
@@ -121,7 +125,16 @@ const RequestModal = ({ open, onClose, members, groups }) => {
             labelId="group"
             label={t("group")}
             value={group}
-            onChange={(e) => setGroup(e.target.value)}
+            onChange={(e) => {
+              setGroup(e.target.value);
+              const newWgPaths = groups.find(
+                ({ id }) => parseInt(id) === parseInt(e.target.value),
+              )?.wg_paths;
+              setWgPaths(newWgPaths);
+              if (newWgPaths) {
+                setWgPath(newWgPaths[0].id);
+              }
+            }}
             required
           >
             {groups.map(({ title, id }) => (
@@ -131,7 +144,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
             ))}
           </Select>
         </FormControl>
-        {!!group && (
+        {wgPaths && (
           <FormControl sx={{ mt: 2 }} fullWidth>
             <InputLabel id="wgPath">{t("wgPath")}</InputLabel>
             <Select
@@ -141,13 +154,11 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               onChange={(e) => setWgPath(e.target.value)}
               required
             >
-              {groups
-                .find((g) => parseInt(g.id) === parseInt(group))
-                .wg_paths.map(({ id, organisation }) => (
-                  <MenuItem key={id} value={id}>
-                    {organisation}
-                  </MenuItem>
-                ))}
+              {wgPaths.map(({ id, organisation }) => (
+                <MenuItem key={id} value={id}>
+                  {organisation}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         )}
