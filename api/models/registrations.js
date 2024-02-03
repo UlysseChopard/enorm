@@ -1,9 +1,9 @@
 const { db } = require("utils");
 
-exports.create = ({ beneficiary, wgPath }) =>
+exports.create = ({ beneficiary, wgPath, wg }) =>
   db.query(
-    "INSERT INTO registrations AS r (beneficiary, working_group) SELECT $1, wgp.working_group FROM wg_paths AS wgp WHERE wgp.id = $2 RETURNING r.*",
-    [beneficiary, wgPath],
+    "INSERT INTO registrations AS r (beneficiary, working_group) SELECT $1, wgp.working_group FROM wg_paths AS wgp WHERE wgp.id = $2 AND wgp.working_group = $3 RETURNING r.*",
+    [beneficiary, wgPath, wg],
   );
 
 exports.createOwn = ({ beneficiary, wg }) =>

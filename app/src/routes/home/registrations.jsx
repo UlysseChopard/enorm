@@ -46,9 +46,6 @@ export const action = async ({ request }) => {
   const formData = await request.formData();
   switch (formData.get("type")) {
     case "create":
-      if (!formData.get("wgPath") && !formData.get("wg")) {
-        return { message: "missing wgPath or wg" };
-      }
       return create(Object.fromEntries(formData)).then((r) =>
         r.ok ? r.json() : r.status,
       );
@@ -66,35 +63,30 @@ export const action = async ({ request }) => {
 };
 
 const RequestModal = ({ open, onClose, members, groups }) => {
-  const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
-  const [member, setMember] = useState();
-  const [group, setGroup] = useState();
-  const [wgPath, setWgPath] = useState();
-  const [wgPaths, setWgPaths] = useState();
+  const [member, setMember] = useState(null);
+  const [group, setGroup] = useState(null);
+  const [wgPath, setWgPath] = useState(null);
+  const [wgPaths, setWgPaths] = useState(null);
   const submit = useSubmit();
-  useEffect(() => {
-    if (!actionData || actionData.message) return;
-    onClose();
-  }, [actionData, onClose]);
 
   const onClick = () => {
     const formData = new FormData();
     formData.set("type", "create");
+    if (!group) return;
     formData.set("wg", group);
-    if (member) {
-      formData.set("account", member);
+    if (!members) {
+      formData.set("beneficiary", localStorage.getItem("account"));
+    } else if (member) {
+      formData.set("beneficiary", member);
     } else {
-      formData.set("account", localStorage.getItem("account"));
+      return;
     }
     if (wgPath) {
       formData.set("wgPath", wgPath);
     }
-    console.log(wgPath);
     submit(formData, { method: "POST" });
-    if (actionData && !actionData.message) {
-      onClose();
-    }
+    onClose();
   };
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">

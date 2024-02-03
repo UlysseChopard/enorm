@@ -70,29 +70,23 @@ exports.get = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    if (!req.body.account) {
-      return res.status(422).json({ message: "missing account in body" });
+    if (!req.body.beneficiary) {
+      return res.status(422).json({ message: "missing beneficiary in body" });
     }
-    if (!req.body.ownWG && !req.body.wgPath) {
+    if (!req.body.wg && !req.body.wgPath) {
       return res
         .status(422)
         .json({ message: "missing ownWG or wgPath in body" });
     }
-    if (req.body.ownWG) {
+    if (!req.body.wgPath) {
       const {
         rows: [registration],
-      } = await Registrations.createOwn({
-        beneficiary: req.body.account,
-        wg: req.body.ownWG,
-      });
+      } = await Registrations.createOwn(req.body);
       return res.status(201).json({ registration });
     }
     const {
       rows: [registration],
-    } = await Registrations.create({
-      beneficiary: req.body.account,
-      wgPath: req.body.wgPath,
-    });
+    } = await Registrations.create(req.body);
     const {
       rows: [registrationStream],
     } = await RegistrationsStreams.forward(registration.id, req.body.wgPath);
