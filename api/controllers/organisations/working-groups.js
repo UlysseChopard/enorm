@@ -6,22 +6,24 @@ exports.get = async (req, res, next) => {
     const { rows: rawGroups } = await WorkingGroups.getByOrganisation(
       req.params.organisation,
     );
-    const withWgPaths = rawGroups.reduce((acc, val) => {
-      if (!acc[val.id]) {
-        acc[val.id] = val;
-        acc[val.id].wg_paths = [];
-      }
-      if (val.wg_path) {
-        acc[val.id].wg_paths.push({
-          id: val.wg_path,
-          organisation: val.wg_path_organisation,
-        });
-      }
-      delete acc[val.id].wg_path;
-      delete acc[val.id].wg_path_organisation;
-      return acc;
-    }, {});
-    res.json({ groups: Object.values(withWgPaths) });
+    const groups = Object.values(
+      rawGroups.reduce((acc, val) => {
+        if (!acc[val.id]) {
+          acc[val.id] = val;
+          acc[val.id].wg_paths = [];
+        }
+        if (val.wg_path) {
+          acc[val.id].wg_paths.push({
+            id: val.wg_path,
+            organisation: val.wg_path_organisation,
+          });
+        }
+        delete acc[val.id].wg_path;
+        delete acc[val.id].wg_path_organisation;
+        return acc;
+      }, {}),
+    );
+    res.json({ groups });
   } catch (err) {
     next(err);
   }
