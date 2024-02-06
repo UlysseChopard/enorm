@@ -17,8 +17,8 @@ const SelectProvider = ({ wgPaths, onChange, value }) => {
         value={value}
         onChange={onChange}
       >
-        {wgPaths.map(({ recipient, organisation_name }) => (
-          <MenuItem key={recipient} value={recipient}>
+        {wgPaths.map(({ id, organisation_name }) => (
+          <MenuItem key={id} value={id}>
             {organisation_name}
           </MenuItem>
         ))}
