@@ -9,6 +9,11 @@ const {
 const { hasRole } = require("middlewares/roles");
 const isSubscriptionManager = async (req, res, next) => {
   try {
+    if (!req.params.id || !req.body.wgPath) {
+      return res
+        .status(400)
+        .json({ message: "Missing params id or body wgPath" });
+    }
     const { rows: subscriptionManagers } = req.params.id
       ? await SubscriptionsManagers.getByRegistration(req.params.id)
       : await SubscriptionsManagers.getByWgPath(req.body.wgPath);

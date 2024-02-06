@@ -1,22 +1,14 @@
 const { Registrations, WGPaths, RegistrationsStreams } = require("models");
 
-const findManager = async (registration, user) => {
-  const { rows: managers } = await RegistrationsStreams.managers(registration);
-  return managers.find(({ account }) => account === user);
-};
-
 exports.accept = async (req, res, next) => {
   try {
     if (!req.body.wgPath) {
       return res.status(422).json({ message: "Missing wgPath in body" });
     }
-    const manager = await findManager(req.params.id, res.locals.userId);
-    if (!manager) {
-      return res
-        .status(403)
-        .json({ message: "Not a subscription manager for this registration" });
-    }
-    if (manager.organisation === manager.end_organisation) {
+    const {
+      rows: [wgPath],
+    } = await WGPaths.getWGOrganisation(req.body.wgPath);
+    if (wgPath.organisation === req.params.organisation) {
       const {
         row: [registration],
       } = await Registrations.accept(req.params.id);
@@ -37,12 +29,6 @@ exports.accept = async (req, res, next) => {
 
 exports.deny = async (req, res, next) => {
   try {
-    const manager = await findManager(req.params.id, res.locals.accountId);
-    if (!manager) {
-      return res
-        .status(403)
-        .json({ message: "Not a subscription manager for this registration" });
-    }
     const {
       rows: [registration],
     } = await Registrations.deny(req.params.id);
