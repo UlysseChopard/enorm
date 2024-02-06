@@ -12,7 +12,7 @@ exports.accept = async (req, res, next) => {
       const {
         row: [registration],
       } = await Registrations.accept(req.params.id);
-      return res.status(201).json({ registration });
+      return res.status(200).json({ registration });
     }
     const {
       rows: [stream],
@@ -21,7 +21,7 @@ exports.accept = async (req, res, next) => {
       rows: [registration],
     } = await Registrations.find(req.params.id);
     registration.stream = stream;
-    res.status(201).json({ registration });
+    res.status(200).json({ registration });
   } catch (err) {
     next(err);
   }
