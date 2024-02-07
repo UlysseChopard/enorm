@@ -48,7 +48,7 @@ exports.get = async (req, res, next) => {
       res.locals.accountId,
     );
     const { rows: sent } = await Registrations.getOwn(req.params.organisation);
-    res.json({ registrations: { received, sent } });
+    res.json({ registrations: received.concat(sent) });
   } catch (err) {
     next(err);
   }

@@ -129,18 +129,18 @@
   },
   "registrations": {
     "wgPath": "Abonnement",
-    "createdAt": "Créé le",
-    "acceptedAt": "Accepté le",
-    "deniedAt": "Refusé le",
+    "createdAt": "Créée le",
+    "acceptedAt": "Acceptée le",
+    "deniedAt": "Refusée le",
     "status": "Statut",
     "request": "Nouvelle demande",
     "requestTitle": "Créer une nouvelle demande d'inscription",
-    "member": "Membre",
+    "member": "Bénéficiaire",
     "group": "Groupe de travail",
     "cancel": "Annuler",
     "submit": "Envoyer",
-    "sent": "Envoyées",
-    "received": "Reçues"
+    "inProgress": "En cours",
+    "memberOrganisation": "Organisation du bénéficiaire"
   },
   "registration": {
     "status": "Statut",

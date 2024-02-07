@@ -136,12 +136,12 @@
     "request": "Request",
     "requestTitle": "Request a registration",
     "text": "All fields needed",
-    "member": "Member",
+    "member": "Beneficiary",
     "group": "Working group",
     "cancel": "Cancel",
     "submit": "Submit",
-    "sent": "Sent",
-    "received": "Received"
+    "inProgress": "In progress",
+    "memberOrganisation": "Beneficiary organisation"
   },
   "registration": {
     "status": "Status",

@@ -42,14 +42,14 @@ exports.remove = (beneficiary, id) =>
     beneficiary,
   ]);
 
-exports.getOwn = (wg) =>
+exports.getOwn = (organisation) =>
   db.query(
-    "SELECT r.*, wg.reference, wg.title, a.firstname, a.lastname FROM registrations AS r LEFT JOIN working_groups AS wg ON r.working_group = wg.id LEFT JOIN organisations_members om ON om.account = r.beneficiary LEFT JOIN accounts a ON r.beneficiary = a.id WHERE om.organisation = $1",
-    [wg],
+    "SELECT r.*, wg.reference, wg.title, a.firstname, a.lastname, o.id AS organisation, o.name AS organisation_name FROM registrations AS r LEFT JOIN working_groups AS wg ON r.working_group = wg.id LEFT JOIN organisations_members om ON om.account = r.beneficiary LEFT JOIN organisations o ON om.organisation = o.id LEFT JOIN accounts a ON r.beneficiary = a.id WHERE om.organisation = $1",
+    [organisation],
   );
 
 exports.getFromManagedSubscriptions = (account) =>
   db.query(
-    "SELECT r.*, s.recipient, s.sender, rs.wg_path, wgp.subscription, a.firstname, a.lastname, wg.reference, wg.title FROM registrations_streams rs LEFT JOIN wg_paths wgp ON rs.wg_path = wgp.id LEFT JOIN working_groups wg ON wgp.working_group = wg.id LEFT JOIN subscriptions_managers sm ON wgp.subscription = sm.subscription LEFT JOIN subscriptions s ON wgp.subscription = s.id LEFT JOIN registrations r ON rs.registration = r.id LEFT JOIN accounts a ON r.beneficiary = a.id LEFT JOIN organisations_members om ON sm.manager = om.id WHERE om.account = $1",
+    "SELECT r.*, s.recipient, s.sender, rs.wg_path, wgp.subscription, a.firstname, a.lastname, wg.reference, wg.title, o.id AS organisation, o.name AS organisation_name FROM registrations_streams rs LEFT JOIN wg_paths wgp ON rs.wg_path = wgp.id LEFT JOIN working_groups wg ON wgp.working_group = wg.id LEFT JOIN subscriptions_managers sm ON wgp.subscription = sm.subscription LEFT JOIN subscriptions s ON wgp.subscription = s.id LEFT JOIN registrations r ON rs.registration = r.id LEFT JOIN accounts a ON r.beneficiary = a.id LEFT JOIN organisations_members om ON sm.manager = om.id LEFT JOIN organisations o ON om.organisation = o.id WHERE om.account = $1",
     [account],
   );

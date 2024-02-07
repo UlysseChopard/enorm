@@ -1,18 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  useActionData,
-  useLoaderData,
-  useSubmit,
-  useNavigate,
-} from "react-router-dom";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
+import { useLoaderData, useSubmit, useNavigate } from "react-router-dom";
 import PendingIcon from "@mui/icons-material/Pending";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import TabPanel from "@/components/TabPanel";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -22,9 +13,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Tooltip from "@mui/material/Tooltip";
 import { get, create, accept, deny } from "@/api/organisations/registrations";
 import { get as getGroups } from "@/api/organisations/working-groups";
 import { get as getMembers } from "@/api/organisations/members";
+import "./registrations.module.css";
 
 export const loader = async () => {
   const requests = [get(), getGroups()];
@@ -174,9 +167,8 @@ const RegistrationsTable = ({ registrations }) => {
         <tr>
           <th>{t("group")}</th>
           <th>{t("member")}</th>
+          <th>{t("memberOrganisation")}</th>
           <th>{t("createdAt")}</th>
-          <th>{t("acceptedAt")}</th>
-          <th>{t("deniedAt")}</th>
           <th>{t("status")}</th>
         </tr>
       </thead>
@@ -191,6 +183,7 @@ const RegistrationsTable = ({ registrations }) => {
             created_at,
             accepted_at,
             denied_at,
+            organisation_name,
           }) => (
             <tr
               style={{ cursor: "default" }}
@@ -199,14 +192,21 @@ const RegistrationsTable = ({ registrations }) => {
             >
               <td>{`${reference} ${title}`}</td>
               <td>{`${firstname} ${lastname}`}</td>
+              <td>{organisation_name}</td>
               <td>{new Date(created_at).toLocaleString()}</td>
-              <td>
-                {accepted_at ? new Date(accepted_at).toLocaleString() : ""}
-              </td>
-              <td>{denied_at ? new Date(denied_at).toLocaleString() : ""}</td>
-              <td>
-                {(denied_at && <CancelIcon />) ||
-                  (accepted_at && <CheckCircleIcon />) || <PendingIcon />}
+              <td style={{ textAlign: "center" }}>
+                <Tooltip
+                  title={
+                    (denied_at &&
+                      `${t("deniedAt")} ${new Date(denied_at).toLocaleString()}`) ||
+                    (accepted_at &&
+                      `${t("acceptedAt")} ${new Date(accepted_at).toLocaleString()}`) ||
+                    t("inProgress")
+                  }
+                >
+                  {(denied_at && <CancelIcon />) ||
+                    (accepted_at && <CheckCircleIcon />) || <PendingIcon />}
+                </Tooltip>
               </td>
             </tr>
           ),
@@ -218,7 +218,6 @@ const RegistrationsTable = ({ registrations }) => {
 const Registrations = () => {
   const { registrations, groups, members } = useLoaderData();
   const { t } = useTranslation(null, { keyPrefix: "registrations" });
-  const [tab, setTab] = useState(0);
   const [modal, setModal] = useState(false);
   return (
     <>
@@ -229,27 +228,7 @@ const Registrations = () => {
           </Button>
         </div>
       )}
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={tab}
-          onChange={(_, val) => setTab(val)}
-          aria-controls="tab-0"
-          centered
-        >
-          <Tab label={t("sent")} id="tab-0" aria-controls="tab-0" />
-          <Tab label={t("received")} id="tab-1" aria-controls="tab-1" />
-        </Tabs>
-      </Box>
-      {!!registrations.sent.length && (
-        <TabPanel value={tab} index={0}>
-          <RegistrationsTable registrations={registrations.sent} />
-        </TabPanel>
-      )}
-      {!!registrations.received && (
-        <TabPanel value={tab} index={1}>
-          <RegistrationsTable registrations={registrations.received} />
-        </TabPanel>
-      )}
+      <RegistrationsTable registrations={registrations} />
       {!!groups && (
         <RequestModal
           open={modal}
