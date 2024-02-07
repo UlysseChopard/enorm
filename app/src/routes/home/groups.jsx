@@ -83,19 +83,18 @@ export default function Groups() {
           </tr>
         </thead>
         <tbody>
-          {!!groups.owned &&
-            Object.values(groups.owned).map(
-              ({ id, title, organisation_name, reference, created_at }) => (
-                <tr key={id}>
-                  <td>
-                    <Link to={`/groups/${id}`}>{title}</Link>
-                  </td>
-                  <td>{organisation_name}</td>
-                  <td>{reference}</td>
-                  <td>{new Date(created_at).toLocaleString()}</td>
-                </tr>
-              ),
-            )}
+          {groups.map(
+            ({ id, title, organisation_name, reference, created_at }) => (
+              <tr key={id}>
+                <td>
+                  <Link to={`/groups/${id}`}>{title}</Link>
+                </td>
+                <td>{organisation_name}</td>
+                <td>{reference}</td>
+                <td>{new Date(created_at).toLocaleString()}</td>
+              </tr>
+            ),
+          )}
         </tbody>
       </table>
       <CreateModal open={createModal} onClose={() => setCreateModal(false)} />
