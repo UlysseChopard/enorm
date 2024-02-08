@@ -12,15 +12,15 @@ exports.get = async (req, res, next) => {
   try {
     await Subscriptions.updateReceived(req.params.organisation);
     const { rows: existing } = await Subscriptions.getByOrganisation(
-      req.params.organisation
+      req.params.organisation,
     );
     if (req.query.q) {
       const alreadySent = new Set(
-        existing.filter((s) => s.recipient !== req.params.organisation)
+        existing.filter((s) => s.recipient !== req.params.organisation),
       );
       alreadySent.add(parseInt(req.params.organisation));
       const subscriptions = await Organisations.searchName(req.query.q).then(
-        ({ rows }) => rows.filter(({ id }) => !alreadySent.has(id))
+        ({ rows }) => rows.filter(({ id }) => !alreadySent.has(id)),
       );
       return res.json({ subscriptions });
     }
@@ -55,7 +55,8 @@ exports.find = async (req, res, next) => {
       rows: [subscription],
     } = await Subscriptions.find(req.params.subscription);
     const { rows: managers } = await SubscriptionsManagers.getBySubscription(
-      req.params.subscription
+      req.params.subscription,
+      req.params.organisation,
     );
     subscription.managers = managers;
     return res.json({ subscription });
@@ -90,7 +91,7 @@ exports.establish = async (req, res, next) => {
         .json({ message: "No subscription to be established" });
     }
     const { rows: newWGs } = await WorkingGroups.getIdsByOrganisation(
-      subscription.recipient
+      subscription.recipient,
     );
     const impactedSubscriptions = await getDownstream(subscription.sender);
     impactedSubscriptions.add(subscription.id);
@@ -112,7 +113,7 @@ exports.close = async (req, res, next) => {
       rows: [subscription],
     } = await Subscriptions.remove(req.params.subscription);
     const { rows: oldWGs } = await WorkingGroups.getIdsByOrganisation(
-      subscription.recipient
+      subscription.recipient,
     );
     const impactedSubscriptions = await getDownstream(subscription.sender);
     for (const subscription of impactedSubscriptions) {

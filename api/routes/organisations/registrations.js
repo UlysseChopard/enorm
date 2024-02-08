@@ -15,8 +15,14 @@ const isSubscriptionManager = async (req, res, next) => {
         .json({ message: "Missing params id or body wgPath" });
     }
     const { rows: subscriptionManagers } = req.params.id
-      ? await SubscriptionsManagers.getByRegistration(req.params.id)
-      : await SubscriptionsManagers.getByWgPath(req.body.wgPath);
+      ? await SubscriptionsManagers.getByRegistration(
+          req.params.id,
+          req.params.organisation,
+        )
+      : await SubscriptionsManagers.getByWgPath(
+          req.body.wgPath,
+          req.params.organisation,
+        );
     if (
       !subscriptionManagers.find(
         ({ account }) => account === res.locals.accountId,
