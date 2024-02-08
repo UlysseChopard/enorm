@@ -151,7 +151,7 @@
     "back": "Back",
     "deny": "Deny",
     "forward": "Forward",
-    "accept": "Accept"
+    "accept": "Register"
   },
   "selectProvider": {
     "provider": "Provider",

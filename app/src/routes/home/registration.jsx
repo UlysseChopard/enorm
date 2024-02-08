@@ -12,7 +12,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import SelectProvider from "@/components/SelectProvider";
-import { find, accept, deny } from "@/api/organisations/registrations";
+import { find, accept, deny, forward } from "@/api/organisations/registrations";
 
 export const loader = async ({ params }) => {
   const res = await find(params.id);
@@ -26,8 +26,11 @@ export const action = async ({ request, params }) => {
     case "deny":
       res = await deny(params.id);
       break;
+    case "forward":
+      res = await forward(params.id, { wgPath: formData.get("wgPath") });
+      break;
     case "accept":
-      res = await accept(params.id, { wgPath: formData.get("wgPath") });
+      res = await accept(params.id);
       break;
   }
   return res.ok ? res.json() : res.status;
@@ -39,7 +42,7 @@ const Registration = () => {
   const { registration } = useLoaderData();
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
-  const [wgPath, setWgPath] = useState(registration.wgPaths[0]?.id);
+  const [wgPath, setWgPath] = useState(registration.wgPaths?.[0].id);
   if (actionData?.deleted) {
     navigate("/registrations");
   }
@@ -63,6 +66,7 @@ const Registration = () => {
           {t("status")}:{" "}
           {(registration.denied_at && t("denied")) ||
             (registration.accepted_at && t("accepted")) ||
+            (registration.forwarded && t("forwarded")) ||
             t("pending")}
         </CardContent>
         <CardActions
@@ -75,7 +79,7 @@ const Registration = () => {
               width: "max",
             }}
           >
-            {registration.requireAction && registration.wgPaths.length && (
+            {registration.requireAction && !!registration.wgPaths?.length && (
               <SelectProvider
                 wgPaths={registration.wgPaths}
                 onChange={(e) => setWgPath(e.target.value)}
@@ -102,9 +106,13 @@ const Registration = () => {
                 <Button
                   sx={{ m: 2 }}
                   variant="contained"
-                  onClick={handleClick("accept")}
+                  onClick={
+                    registration.wgPaths?.length
+                      ? handleClick("forward")
+                      : handleClick("accept")
+                  }
                 >
-                  {registration.wgPaths.length ? t("forward") : t("accept")}
+                  {registration.wgPaths?.length ? t("forward") : t("accept")}
                 </Button>
               )}
             </div>

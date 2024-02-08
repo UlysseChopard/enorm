@@ -1,7 +1,8 @@
-const { SubscriptionsManagers } = require("models");
+const { Registrations, SubscriptionsManagers } = require("models");
 const {
   create,
   accept,
+  forward,
   deny,
   get,
   find,
@@ -9,7 +10,7 @@ const {
 const { hasRole } = require("middlewares/roles");
 const isSubscriptionManager = async (req, res, next) => {
   try {
-    if (!req.params.id || !req.body.wgPath) {
+    if (!req.params.id && !req.body.wgPath) {
       return res
         .status(400)
         .json({ message: "Missing params id or body wgPath" });
@@ -23,14 +24,22 @@ const isSubscriptionManager = async (req, res, next) => {
           req.body.wgPath,
           req.params.organisation,
         );
+    console.log(subscriptionManagers);
     if (
       !subscriptionManagers.find(
         ({ account }) => account === res.locals.accountId,
       )
     ) {
-      return res
-        .status(403)
-        .json({ message: "Only allowed to subscription managers" });
+      if (req.params.id) {
+        const { rows } = await Registrations.isOrganisationManager(
+          req.params.organisation,
+          res.locals.accountId,
+          req.params.id,
+        );
+        if (rows) next();
+      }
+      const message = "Only allowed to subscription managers";
+      return res.status(403).json({ message });
     }
     next();
   } catch (err) {
@@ -47,13 +56,19 @@ module.exports = ({ Router }) => {
     "/:id",
     hasRole("admin", "manager"),
     isSubscriptionManager,
-    accept,
+    forward,
   );
   router.delete(
     "/:id",
     hasRole("admin", "manager"),
     isSubscriptionManager,
     deny,
+  );
+  router.post(
+    "/:id",
+    hasRole("admin", "manager"),
+    isSubscriptionManager,
+    accept,
   );
   return router;
 };

@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Tooltip from "@mui/material/Tooltip";
-import { get, create, accept, deny } from "@/api/organisations/registrations";
+import { get, create } from "@/api/organisations/registrations";
 import { get as getGroups } from "@/api/organisations/working-groups";
 import { get as getMembers } from "@/api/organisations/members";
 import "./registrations.module.css";
@@ -40,14 +40,6 @@ export const action = async ({ request }) => {
   switch (formData.get("type")) {
     case "create":
       return create(Object.fromEntries(formData)).then((r) =>
-        r.ok ? r.json() : r.status,
-      );
-    case "accept":
-      return accept(formData.get("registration"), formData.get("wgPath")).then(
-        (r) => (r.ok ? r.json() : r.status),
-      );
-    case "deny":
-      return deny(formData.get("registration")).then((r) =>
         r.ok ? r.json() : r.status,
       );
     default:

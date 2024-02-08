@@ -83,7 +83,7 @@ export default function Subscription() {
             subscription.accepted_at,
           ).toLocaleString()}`}</ListItem>
         </List>
-        {isAdmin && possibleManagers.length && (
+        {isAdmin && !!possibleManagers.length && (
           <FormControl sx={{ ml: 2, width: "35%" }}>
             <InputLabel id="select-label">{t("newManager")}</InputLabel>
             <Select

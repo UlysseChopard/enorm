@@ -1,19 +1,7 @@
 const { Registrations, WGPaths, RegistrationsStreams } = require("models");
 
-exports.accept = async (req, res, next) => {
+exports.forward = async (req, res, next) => {
   try {
-    if (!req.body.wgPath) {
-      return res.status(422).json({ message: "Missing wgPath in body" });
-    }
-    const {
-      rows: [wgPath],
-    } = await WGPaths.getWGOrganisation(req.body.wgPath);
-    if (wgPath.organisation === req.params.organisation) {
-      const {
-        row: [registration],
-      } = await Registrations.accept(req.params.id);
-      return res.status(200).json({ registration });
-    }
     const {
       rows: [stream],
     } = await RegistrationsStreams.forward(req.params.id, req.body.wgPath);
@@ -22,6 +10,17 @@ exports.accept = async (req, res, next) => {
     } = await Registrations.find(req.params.id);
     registration.stream = stream;
     res.status(200).json({ registration });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.accept = async (req, res, next) => {
+  try {
+    const {
+      row: [registration],
+    } = await Registrations.accept(req.params.id);
+    return res.status(201).json({ registration });
   } catch (err) {
     next(err);
   }
@@ -96,11 +95,18 @@ exports.find = async (req, res, next) => {
       req.params.organisation,
       registration.working_group,
     );
-    registration.wgPaths = wgPaths;
+    if (wgPaths.length) {
+      registration.wgPaths = wgPaths;
+    } else {
+      registration.lastStep = true;
+    }
+    registration.forwarded =
+      registration.last_forwarded === req.params.organisation;
     registration.requireAction =
       registration.beneficiary !== res.locals.accountId &&
       !registration.denied_at &&
-      !registration.accepted_at;
+      !registration.accepted_at &&
+      !registration.forwarded;
     res.json({ registration });
   } catch (err) {
     next(err);
