@@ -32,11 +32,11 @@ export async function action({ params, request }) {
   switch (formData.get("type")) {
     case "addManager":
       return await add(params.id, formData.get("member")).then((r) =>
-        r.ok ? r.json() : r.status
+        r.ok ? r.json() : r.status,
       );
     case "removeManager":
       return await remove(params.id, formData.get("subscriptionManager")).then(
-        (r) => (r.ok ? r.json() : r.status)
+        (r) => (r.ok ? r.json() : r.status),
       );
   }
   return null;
@@ -53,6 +53,10 @@ export default function Subscription() {
     submit(formData, { method: "DELETE" });
   };
   const { isAdmin } = JSON.parse(localStorage.getItem("roles"));
+  const possibleManagers = members.filter(
+    ({ id }) =>
+      !subscription.managers.map(({ manager }) => manager).includes(id),
+  );
   return (
     <Container>
       <Button
@@ -70,16 +74,16 @@ export default function Subscription() {
       <Paper sx={{ p: 2 }}>
         <List>
           <ListItem>{`${t("sentAt")}: ${new Date(
-            subscription.sent_at
+            subscription.sent_at,
           ).toLocaleString()}`}</ListItem>
           <ListItem>{`${t("receivedAt")}: ${new Date(
-            subscription.received_at
+            subscription.received_at,
           ).toLocaleString()}`}</ListItem>
           <ListItem>{`${t("acceptedAt")}: ${new Date(
-            subscription.accepted_at
+            subscription.accepted_at,
           ).toLocaleString()}`}</ListItem>
         </List>
-        {isAdmin && (
+        {isAdmin && possibleManagers.length && (
           <FormControl sx={{ ml: 2, width: "35%" }}>
             <InputLabel id="select-label">{t("newManager")}</InputLabel>
             <Select
@@ -93,19 +97,12 @@ export default function Subscription() {
                 submit(formData, { method: "POST" });
               }}
             >
-              {members
-                .filter(
-                  ({ id }) =>
-                    !subscription.managers
-                      .map(({ manager }) => manager)
-                      .includes(id)
-                )
-                .map(({ id, firstname, lastname }) => (
-                  <MenuItem
-                    key={id}
-                    value={id}
-                  >{`${firstname} ${lastname}`}</MenuItem>
-                ))}
+              {possibleManagers.map(({ id, firstname, lastname }) => (
+                <MenuItem
+                  key={id}
+                  value={id}
+                >{`${firstname} ${lastname}`}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         )}

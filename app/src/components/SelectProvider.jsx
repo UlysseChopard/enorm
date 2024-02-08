@@ -16,6 +16,7 @@ const SelectProvider = ({ wgPaths, onChange, value }) => {
         label={t("options")}
         value={value}
         onChange={onChange}
+        disabled={wgPaths.length <= 1}
       >
         {wgPaths.map(({ id, organisation_name }) => (
           <MenuItem key={id} value={id}>
