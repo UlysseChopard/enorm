@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLoaderData, useSubmit, useNavigate } from "react-router-dom";
+import ForwardIcon from "@mui/icons-material/Forward";
 import PendingIcon from "@mui/icons-material/Pending";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -173,6 +174,7 @@ const RegistrationsTable = ({ registrations }) => {
             firstname,
             lastname,
             created_at,
+            forwarded,
             accepted_at,
             denied_at,
             organisation_name,
@@ -193,11 +195,13 @@ const RegistrationsTable = ({ registrations }) => {
                       `${t("deniedAt")} ${new Date(denied_at).toLocaleString()}`) ||
                     (accepted_at &&
                       `${t("acceptedAt")} ${new Date(accepted_at).toLocaleString()}`) ||
+                    (forwarded && t("forwarded")) ||
                     t("inProgress")
                   }
                 >
                   {(denied_at && <CancelIcon />) ||
-                    (accepted_at && <CheckCircleIcon />) || <PendingIcon />}
+                    (accepted_at && <CheckCircleIcon />) ||
+                    (forwarded && <ForwardIcon />) || <PendingIcon />}
                 </Tooltip>
               </td>
             </tr>

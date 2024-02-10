@@ -42,6 +42,11 @@ exports.get = async (req, res, next) => {
     const { rows: received } = await Registrations.getFromManagedSubscriptions(
       res.locals.accountId,
     );
+    received.forEach((r) => {
+      if (r.sender === req.params.organisation) {
+        r.forwarded = true;
+      }
+    });
     const { rows: sent } = await Registrations.getOwn(req.params.organisation);
     res.json({ registrations: received.concat(sent) });
   } catch (err) {
