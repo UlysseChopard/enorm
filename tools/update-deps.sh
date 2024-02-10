@@ -1,6 +1,6 @@
-#! /usr/bin/env zsh
+#! /usr/bin/env bash
 
-source ~/.zshrc
+source $HOME/.nvm/nvm.sh
 if [ $(nvm version-remote --lts) != $(nvm current) ]; then
   nvm install --reinstall-packages-from=current --latest-npm --lts
   npm pkg set engines.node=$(nvm current) engines.npm=$(echo v$(npm --version))
