@@ -32,7 +32,7 @@ const isSubscriptionManager =
           ({ account }) => account === res.locals.accountId,
         )
       ) {
-        next();
+        return next();
       }
       if (req.params.id) {
         const { rows } = await Registrations.isOrganisationManager(
@@ -40,12 +40,12 @@ const isSubscriptionManager =
           res.locals.accountId,
           req.params.id,
         );
-        if (rows) next();
+        if (rows) return next();
         if (allowSelfManagement) {
           const {
             rows: [registration],
           } = await Registrations.find(req.params.id);
-          if (registration.beneficiary === res.locals.accountId) next();
+          if (registration.beneficiary === res.locals.accountId) return next();
         }
       }
       if (allowSelfManagement) {

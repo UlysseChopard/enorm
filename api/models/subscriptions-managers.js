@@ -17,7 +17,7 @@ exports.getBySubscription = (subscription, organisation) =>
 
 exports.getByRegistration = (registration, organisation) =>
   db.query(
-    "SELECT om.account FROM registrations_streams AS rs LEFT JOIN wg_paths AS wgp ON rs.wg_path = wgp.id LEFT JOIN subscriptions_managers AS sm ON wgp.subscription = sm.subscription LEFT JOIN organisations_members AS om ON sm.manager = om.id LEFT JOIN organisations AS o ON om.organisation = o.id WHERE rs.registration = $1 AND o.id = $2",
+    "SELECT DISTINCT om.account FROM registrations_streams AS rs LEFT JOIN wg_paths AS wgp ON rs.wg_path = wgp.id LEFT JOIN subscriptions_managers AS sm ON wgp.subscription = sm.subscription LEFT JOIN organisations_members AS om ON sm.manager = om.id LEFT JOIN organisations AS o ON om.organisation = o.id WHERE rs.registration = $1 AND o.id = $2",
     [registration, organisation],
   );
 
