@@ -43,7 +43,7 @@ exports.get = async (req, res, next) => {
       res.locals.accountId,
     );
     received.forEach((r) => {
-      if (r.sender === req.params.organisation) {
+      if (parseInt(r.sender, 10) === parseInt(req.params.organisation, 10)) {
         r.forwarded = true;
       }
     });
