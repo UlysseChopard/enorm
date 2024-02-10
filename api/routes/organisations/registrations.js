@@ -34,21 +34,12 @@ const isSubscriptionManager =
       ) {
         return next();
       }
-      if (req.params.id) {
-        const { rows } = await Registrations.isOrganisationManager(
-          req.params.organisation,
-          res.locals.accountId,
-          req.params.id,
-        );
-        if (rows) return next();
-        if (allowSelfManagement) {
-          const {
-            rows: [registration],
-          } = await Registrations.find(req.params.id);
-          if (registration.beneficiary === res.locals.accountId) return next();
-        }
-      }
-      if (allowSelfManagement) {
+      if (req.params.id && allowSelfManagement) {
+        const {
+          rows: [registration],
+        } = await Registrations.find(req.params.id);
+        if (registration.beneficiary === res.locals.accountId) return next();
+      } else if (allowSelfManagement) {
         throw new Error("allowSelfManagement must be used with req.params.id");
       }
       const message = "Only allowed to subscription managers";
