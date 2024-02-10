@@ -114,6 +114,7 @@
     "submit": "Envoyer"
   },
   "subscription": {
+    "back": "retour",
     "sentAt": "Envoyé le ",
     "receivedAt": "Reçu le ",
     "acceptedAt": "Accepté le ",

@@ -64,7 +64,7 @@ export default function Subscription() {
         href="/subscriptions"
         sx={{ position: "relative", top: 50 }}
       >
-        Back
+        {t("back")}
       </Button>
       <Typography variant="h2" sx={{ textAlign: "center" }}>
         {localStorage.getItem("organisation") == subscription.sender
