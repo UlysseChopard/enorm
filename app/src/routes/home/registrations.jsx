@@ -121,7 +121,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
             ))}
           </Select>
         </FormControl>
-        {wgPaths && (
+        {!!wgPaths?.length && (
           <FormControl sx={{ mt: 2 }} fullWidth>
             <InputLabel id="wgPath">{t("wgPath")}</InputLabel>
             <Select
