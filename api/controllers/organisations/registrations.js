@@ -31,10 +31,6 @@ exports.deny = async (req, res, next) => {
     const {
       rows: [registration],
     } = await Registrations.deny(req.params.id);
-    if (registration.beneficiary === res.locals.accountId) {
-      await Registrations.remove(res.locals.accountId, req.params.id);
-      return res.json({ registration: null });
-    }
     res.json({ registration });
   } catch (err) {
     next(err);
