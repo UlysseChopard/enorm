@@ -19,4 +19,9 @@ if [ $(git diff --name-only | wc -l) -ne 0 ]; then
   git add package*.json
   git commit -m "chore: update deps"
 fi
-npm outdated
+npm outdated -p -w api | awk '{ print $(NF - 1) }' | sed 's/@[^@]*$/@latest' | xargs -I{} npm install -w api {}
+npm outdated -p -w app | awk '{ print $(NF - 1) }' | sed 's/@[^@]*$/@latest' | xargs -I{} npm install -w api {}
+if [ $(git status --porcelain | awk '{ print $2 }') = 'package.json' ]; then
+  git add package.json
+  git commit -m "chore: upgrade deps"
+fi
