@@ -10,7 +10,7 @@ const {
 const { hasRole } = require("middlewares/roles");
 
 const isSubscriptionManager =
-  ({ allowSelfManagement = false }) =>
+  ({ allowSelfManagement } = { allowSelfManagement: false }) =>
   async (req, res, next) => {
     try {
       if (!req.params.id && !req.body.wgPath) {
