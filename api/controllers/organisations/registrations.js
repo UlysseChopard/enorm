@@ -102,7 +102,8 @@ exports.find = async (req, res, next) => {
       registration.lastStep = true;
     }
     registration.forwarded =
-      registration.last_forwarder === req.params.organisation;
+      parseInt(registration.last_forwarder, 10) ===
+      parseInt(req.params.organisation, 10);
     registration.requireAction =
       registration.beneficiary !== res.locals.accountId &&
       !registration.denied_at &&
