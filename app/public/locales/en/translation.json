@@ -129,6 +129,7 @@
     "subscribers": "Subscribers"
   },
   "registrations": {
+    "forwarded": "Sent",
     "wgPath": "Subscription",
     "createdAt": "Created at",
     "acceptedAt": "Accepted at",
@@ -145,6 +146,7 @@
     "memberOrganisation": "Beneficiary organisation"
   },
   "registration": {
+    "forwarded": "Forwarded",
     "status": "Status",
     "pending": "Pending",
     "accepted": "Accepted",
