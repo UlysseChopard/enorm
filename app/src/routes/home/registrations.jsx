@@ -123,14 +123,13 @@ const RequestModal = ({ open, onClose, members, groups }) => {
           </Select>
         </FormControl>
         {!!wgPaths?.length && (
-          <FormControl sx={{ mt: 2 }} fullWidth>
+          <FormControl sx={{ mt: 2 }} fullWidth disabled={wgPath.length === 1}>
             <InputLabel id="wgPath">{t("wgPath")}</InputLabel>
             <Select
               labelId="wgPath"
               label={t("wgPath")}
               value={wgPath}
               onChange={(e) => setWgPath(e.target.value)}
-              disabled={wgPath.length === 1}
               required
             >
               {wgPaths.map(({ id, organisation }) => (
