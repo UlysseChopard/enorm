@@ -130,6 +130,7 @@ const RequestModal = ({ open, onClose, members, groups }) => {
               label={t("wgPath")}
               value={wgPath}
               onChange={(e) => setWgPath(e.target.value)}
+              disabled={wgPath.length === 1}
               required
             >
               {wgPaths.map(({ id, organisation }) => (
