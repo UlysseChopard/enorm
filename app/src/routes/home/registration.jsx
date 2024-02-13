@@ -42,7 +42,13 @@ const Registration = () => {
   const { registration } = useLoaderData();
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
-  const [wgPath, setWgPath] = useState(registration.wgPaths?.[0].id);
+  const [wgPath, setWgPath] = useState();
+  if (registration.wgPaths?.length) {
+    const wgPathsUpward = registration.wgPaths.filter(
+      ({ recipient }) => !!recipient,
+    );
+    setWgPath(wgPathsUpward?.[0].id);
+  }
   if (actionData?.deleted) {
     navigate("/registrations");
   }
@@ -79,9 +85,9 @@ const Registration = () => {
               width: "max",
             }}
           >
-            {registration.requireAction && !!registration.wgPaths?.length && (
+            {registration.requireAction && !!wgPathsUpward.length && (
               <SelectProvider
-                wgPaths={registration.wgPaths}
+                wgPaths={wgPathsUpward}
                 onChange={(e) => setWgPath(e.target.value)}
                 value={wgPath}
               />
@@ -112,7 +118,7 @@ const Registration = () => {
                       : handleClick("accept")
                   }
                 >
-                  {registration.wgPaths?.length ? t("forward") : t("accept")}
+                  {wgPathsUpward ? t("forward") : t("accept")}
                 </Button>
               )}
             </div>
