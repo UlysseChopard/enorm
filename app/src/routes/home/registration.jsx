@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   useLoaderData,
@@ -43,9 +43,13 @@ const Registration = () => {
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
   const [wgPath, setWgPath] = useState();
-  const wgPathsUpward = registration.wgPaths?.length
-    ? registration.wgPaths.filter(({ recipient }) => !!recipient)
-    : [];
+  const wgPathsUpward = useMemo(
+    () =>
+      registration.wgPaths?.length
+        ? registration.wgPaths.filter(({ recipient }) => !!recipient)
+        : [],
+    [registration.wgPaths],
+  );
   if (wgPathsUpward.length) {
     setWgPath(wgPathsUpward[0].id);
   } else {
