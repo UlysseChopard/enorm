@@ -113,7 +113,7 @@ const Registration = () => {
                   variant="contained"
                   onClick={handleClick("deny")}
                 >
-                  {t("deny")}
+                  {registration.accepted_at ? t("revoke") : t("deny")}
                 </Button>
               )}
               {registration.requireAction && (

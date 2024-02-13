@@ -146,6 +146,7 @@
     "memberOrganisation": "Beneficiary organisation"
   },
   "registration": {
+    "revoke": "Revoke",
     "forwarded": "Forwarded",
     "status": "Status",
     "pending": "Pending",
