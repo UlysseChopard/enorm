@@ -43,7 +43,7 @@ const Registration = () => {
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
   const [wgPath, setWgPath] = useState();
-  const wgPathsUpward = registration.wgPaths.length
+  const wgPathsUpward = registration.wgPaths?.length
     ? registration.wgPaths.filter(({ recipient }) => !!recipient)
     : [];
   if (wgPathsUpward.length) {
@@ -115,7 +115,7 @@ const Registration = () => {
                   sx={{ m: 2 }}
                   variant="contained"
                   onClick={
-                    registration.wgPaths?.length
+                    wgPathsUpward.length
                       ? handleClick("forward")
                       : handleClick("accept")
                   }
