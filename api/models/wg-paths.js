@@ -17,7 +17,7 @@ exports.getById = (id) =>
 
 exports.find = (organisation, wg) =>
   db.query(
-    "SELECT wgp.id, wgp.subscription, s.recipient, s.sent_at, s.received_at, s.accepted_at, o.name AS organisation_name FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN organisations AS o ON s.recipient = o.id WHERE wgp.working_group = $1 AND s.sender = $2 UNION SELECT wgp.id, wgp.subscription, s.sender, s.sent_at, s.received_at, s.accepted_at, o.name AS organisation_name FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN organisations AS o ON s.sender = o.id WHERE wgp.working_group = $1 AND s.recipient = $2",
+    "SELECT wgp.id, wgp.subscription, NULL AS sender, s.recipient, s.sent_at, s.received_at, s.accepted_at, o.name AS organisation_name FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN organisations AS o ON s.recipient = o.id WHERE wgp.working_group = $1 AND s.sender = $2 UNION SELECT wgp.id, wgp.subscription, s.sender, NULL, s.sent_at, s.received_at, s.accepted_at, o.name AS organisation_name FROM wg_paths AS wgp JOIN subscriptions AS s ON wgp.subscription = s.id JOIN organisations AS o ON s.sender = o.id WHERE wgp.working_group = $1 AND s.recipient = $2",
     [wg, organisation],
   );
 

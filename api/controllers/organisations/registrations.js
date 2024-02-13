@@ -98,8 +98,9 @@ exports.find = async (req, res, next) => {
     );
     if (wgPaths.length) {
       registration.wgPaths = wgPaths;
-    } else {
-      registration.lastStep = true;
+      if (wgPaths.filter(({ recipient }) => !!recipient).length > 0) {
+        registration.lastStep = true;
+      }
     }
     registration.forwarded =
       parseInt(registration.last_forwarder, 10) ===
