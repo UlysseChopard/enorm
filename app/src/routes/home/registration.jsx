@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   useLoaderData,
@@ -50,11 +50,13 @@ const Registration = () => {
         : [],
     [registration.wgPaths],
   );
-  if (wgPathsUpward.length) {
-    setWgPath(wgPathsUpward[0].id);
-  } else {
-    setWgPath(null);
-  }
+  useEffect(() => {
+    if (wgPathsUpward.length) {
+      setWgPath(wgPathsUpward[0].id);
+    } else {
+      setWgPath(null);
+    }
+  }, [wgPathsUpward]);
   if (actionData?.deleted) {
     navigate("/registrations");
   }
