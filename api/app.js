@@ -10,7 +10,7 @@ preMiddlewares(express, app);
 routes(express, app);
 postMiddlewares(express, app);
 
-app.listen(PORT, (err) => {
+module.exports = app.listen(PORT, (err) => {
   if (err) return log.error(err);
   log.info(`Listening on port ${PORT}`);
 });
