@@ -1,4 +1,9 @@
-const { Registrations, WGPaths, RegistrationsStreams } = require("models");
+const {
+  Registrations,
+  WGPaths,
+  RegistrationsStreams,
+  SubscriptionsManagers,
+} = require("models");
 
 exports.forward = async (req, res, next) => {
   try {
@@ -18,7 +23,7 @@ exports.forward = async (req, res, next) => {
 exports.accept = async (req, res, next) => {
   try {
     const {
-      row: [registration],
+      rows: [registration],
     } = await Registrations.accept(req.params.id);
     return res.status(201).json({ registration });
   } catch (err) {
@@ -70,12 +75,19 @@ exports.create = async (req, res, next) => {
       } = await Registrations.createOwn(req.body);
       return res.status(201).json({ registration });
     }
+    if (!req.body.tint) {
+      return res.status(422).json({ message: "missing tint organisation" });
+    }
     const {
       rows: [registration],
     } = await Registrations.create(req.body);
     const {
       rows: [registrationStream],
-    } = await RegistrationsStreams.forward(registration.id, req.body.wgPath);
+    } = await RegistrationsStreams.forward(
+      registration.id,
+      req.body.wgPath,
+      req.body.tint,
+    );
     if (!registrationStream) {
       return res
         .status(500)
@@ -96,17 +108,20 @@ exports.find = async (req, res, next) => {
       req.params.organisation,
       registration.working_group,
     );
-    if (wgPaths.length) {
-      registration.wgPaths = wgPaths;
-      if (wgPaths.filter(({ recipient }) => !!recipient).length > 0) {
-        registration.lastStep = true;
-      }
-    }
+    registration.wgPaths = wgPaths;
+    registration.lastStep = wgPaths.some(({ recipient }) => !!recipient);
     registration.forwarded =
       parseInt(registration.last_forwarder, 10) ===
       parseInt(req.params.organisation, 10);
+    const { rowCount: isSubscriptionManager } =
+      await SubscriptionsManagers.isRegistrationManager(
+        req.params.id,
+        req.params.organisation,
+        res.locals.accountId,
+      );
     registration.requireAction =
       registration.beneficiary !== res.locals.accountId &&
+      !!isSubscriptionManager &&
       !registration.denied_at &&
       !registration.accepted_at &&
       !registration.forwarded;

@@ -1,9 +1,9 @@
 const { db } = require("utils");
 
-exports.forward = (registration, wgPath) =>
+exports.forward = (registration, wgPath, organisation) =>
   db.query(
-    "INSERT INTO registrations_streams (wg_path, registration) VALUES ($1, $2) RETURNING *",
-    [wgPath, registration],
+    "INSERT INTO registrations_streams (wg_path, registration, organisation) VALUES ($1, $2, $3) RETURNING *",
+    [wgPath, registration, organisation],
   );
 
 exports.managers = (registration) =>
