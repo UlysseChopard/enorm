@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   useLoaderData,
@@ -74,22 +74,8 @@ const Registration = () => {
   const { registration } = useLoaderData();
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
-  const [wgPath, setWgPath] = useState();
+  const [wgPath, setWgPath] = useState(registration.wgPaths?.[0].id);
   const [tint, setTint] = useState(registration.tint);
-  const wgPathsUpward = useMemo(
-    () =>
-      registration.wgPaths?.length
-        ? registration.wgPaths.filter(({ recipient }) => !!recipient)
-        : [],
-    [registration.wgPaths],
-  );
-  useEffect(() => {
-    if (wgPathsUpward.length) {
-      setWgPath(wgPathsUpward[0].id);
-    } else {
-      setWgPath(null);
-    }
-  }, [wgPathsUpward]);
   if (actionData?.deleted) {
     navigate("/registrations");
   }
@@ -127,9 +113,9 @@ const Registration = () => {
               width: "max",
             }}
           >
-            {registration.requireAction && !!wgPathsUpward.length && (
+            {registration.requireAction && (
               <SelectProvider
-                wgPaths={wgPathsUpward}
+                wgPaths={registration.wgPaths}
                 onChange={(e) => setWgPath(e.target.value)}
                 value={wgPath}
               />
