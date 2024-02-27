@@ -9,7 +9,11 @@ exports.forward = async (req, res, next) => {
   try {
     const {
       rows: [stream],
-    } = await RegistrationsStreams.forward(req.params.id, req.body.wgPath);
+    } = await RegistrationsStreams.forward(
+      req.params.id,
+      req.body.wgPath,
+      req.body.tint,
+    );
     const {
       rows: [registration],
     } = await Registrations.find(req.params.id);
@@ -75,9 +79,6 @@ exports.create = async (req, res, next) => {
       } = await Registrations.createOwn(req.body);
       return res.status(201).json({ registration });
     }
-    if (!req.body.tint) {
-      return res.status(422).json({ message: "missing tint organisation" });
-    }
     const {
       rows: [registration],
     } = await Registrations.create(req.body);
@@ -86,7 +87,7 @@ exports.create = async (req, res, next) => {
     } = await RegistrationsStreams.forward(
       registration.id,
       req.body.wgPath,
-      req.body.tint,
+      req.params.organisation,
     );
     if (!registrationStream) {
       return res

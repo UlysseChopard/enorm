@@ -26,7 +26,7 @@ exports.deny = (id) =>
 
 exports.find = (id) =>
   db.query(
-    "SELECT DISTINCT r.*, a.firstname, a.lastname, wg.title, s.sender AS last_forwarder FROM registrations AS r JOIN accounts AS a ON r.beneficiary = a.id JOIN working_groups AS wg ON r.working_group = wg.id LEFT JOIN registrations_streams rs ON r.id = rs.registration LEFT JOIN wg_paths wgp ON rs.wg_path = wgp.id LEFT JOIN subscriptions s ON wgp.subscription = s.id WHERE r.id = $1",
+    "SELECT DISTINCT r.*, rs.tint, a.firstname, a.lastname, wg.title, s.sender AS last_forwarder FROM registrations AS r JOIN accounts AS a ON r.beneficiary = a.id JOIN working_groups AS wg ON r.working_group = wg.id LEFT JOIN registrations_streams rs ON r.id = rs.registration LEFT JOIN wg_paths wgp ON rs.wg_path = wgp.id LEFT JOIN subscriptions s ON wgp.subscription = s.id WHERE r.id = $1",
     [id],
   );
 
