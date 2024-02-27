@@ -1,9 +1,19 @@
 #! /usr/bin/env bash
 
+function commit_package_files() {
+  git add package*.json
+  if [ $(git diff --name-only --staged | wc -l) -ge 1 ]; then
+    git commit -m "$1"
+  fi
+}
+
+function update_version() {
+  npm outdated -p -w "$1" | awk '{ print $(NF - 1) }' | sed 's/@[^@]*$/@latest/g' | npm install -w "$1"
+}
+
 source $HOME/.nvm/nvm.sh
-if [ $(nvm version-remote --lts) != $(nvm current) ]; then
+if [ $(nvm version-remote --lts) != $(npm pkg get engines.node) ]; then
   nvm install --reinstall-packages-from=current --latest-npm --lts
-  echo $(nvm current)
   npm pkg set engines.node=$(nvm current) engines.npm=$(echo v$(npm --version))
   git add package.json
   git commit -m "chore: update node and npm"
@@ -16,16 +26,7 @@ else
   fi
 fi
 npm update
-if [ $(git diff --name-only | wc -l) -ne 0 ]; then
-  git add package*.json
-  git commit -m "chore: update deps"
-fi
-function update_version() {
-  npm outdated -p -w $1 | awk '{ print $(NF - 1) }' | sed 's/@[^@]*$/@latest/g' | npm install -w $1
-}
+commit_package_files 'chore: update deps'
 update_version api
 update_version app
-if [ $(git status --porcelain | awk '{ print $2 }') = 'package.json' ]; then
-  git add package*.json
-  git commit -m "chore: upgrade deps"
-fi
+commit_package_files 'chore: upgrade deps'
