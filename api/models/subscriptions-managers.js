@@ -26,3 +26,9 @@ exports.getByWgPath = (wgPath, organisation) =>
     "SELECT om.account FROM wg_paths AS wgp LEFT JOIN subscriptions_managers AS sm ON wgp.subscription = sm.subscription LEFT JOIN organisations_members AS om ON sm.manager = om.id LEFT JOIN organisations AS o ON om.organisation = o.id WHERE wgp.id = $1 AND o.id = $2",
     [wgPath, organisation],
   );
+
+exports.isRegistrationManager = (registration, organisation, account) =>
+  db.query(
+    "SELECT DISTINCT om.account FROM registrations_streams AS rs LEFT JOIN wg_paths AS wgp ON rs.wg_path = wgp.id LEFT JOIN subscriptions_managers AS sm ON wgp.subscription = sm.subscription LEFT JOIN organisations_members AS om ON sm.manager = om.id LEFT JOIN organisations AS o ON om.organisation = o.id WHERE rs.registration = $1 AND o.id = $2 AND om.account = $3",
+    [registration, organisation, account],
+  );

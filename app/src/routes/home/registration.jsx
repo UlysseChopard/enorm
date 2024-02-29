@@ -7,11 +7,16 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import SelectProvider from "@/components/SelectProvider";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 import { find, accept, deny, forward } from "@/api/organisations/registrations";
 
 export const loader = async ({ params }) => {
@@ -27,13 +32,40 @@ export const action = async ({ request, params }) => {
       res = await deny(params.id);
       break;
     case "forward":
-      res = await forward(params.id, { wgPath: formData.get("wgPath") });
+      res = await forward(params.id, {
+        wgPath: formData.get("wgPath"),
+        tint: formData.get("tint"),
+      });
       break;
     case "accept":
       res = await accept(params.id);
       break;
   }
   return res.ok ? res.json() : res.status;
+};
+
+const SelectProvider = ({ wgPaths, onChange, value }) => {
+  const { t } = useTranslation(null, { keyPrefix: "selectProvider" });
+  return (
+    <FormControl required fullWidth>
+      <InputLabel id="wg-path-label">{t("provider")}</InputLabel>
+      <Select
+        displayEmpty
+        id="wg-path"
+        labelId="wg-path-label"
+        label={t("options")}
+        value={value}
+        onChange={onChange}
+        disabled={wgPaths.length <= 1}
+      >
+        {wgPaths.map(({ id, organisation_name }) => (
+          <MenuItem key={id} value={id}>
+            {organisation_name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
 };
 
 const Registration = () => {
@@ -43,6 +75,7 @@ const Registration = () => {
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
   const [wgPath, setWgPath] = useState();
+  const [tint, setTint] = useState(registration.tint);
   const wgPathsUpward = useMemo(
     () =>
       registration.wgPaths?.length
@@ -64,6 +97,7 @@ const Registration = () => {
     const formData = new FormData();
     formData.append("type", type);
     formData.append("wgPath", wgPath);
+    formData.append("tint", tint);
     submit(formData, { method: "POST" });
   };
   return (
@@ -100,6 +134,22 @@ const Registration = () => {
                 value={wgPath}
               />
             )}
+            {registration.requireAction && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={tint === localStorage.getItem("organisation")}
+                    onChange={() =>
+                      tint === registration.tint
+                        ? setTint(localStorage.getItem("organisation"))
+                        : setTint(registration.tint)
+                    }
+                    inputProps={{ "aria-label": "controlled" }}
+                  />
+                }
+                label={t("tint")}
+              />
+            )}
             <div
               style={{
                 display: "flex",
@@ -121,12 +171,12 @@ const Registration = () => {
                   sx={{ m: 2 }}
                   variant="contained"
                   onClick={
-                    wgPathsUpward.length
-                      ? handleClick("forward")
-                      : handleClick("accept")
+                    registration.lastStep
+                      ? handleClick("accept")
+                      : handleClick("forward")
                   }
                 >
-                  {wgPathsUpward.length ? t("forward") : t("accept")}
+                  {registration.lastStep ? t("accept") : t("forward")}
                 </Button>
               )}
             </div>
