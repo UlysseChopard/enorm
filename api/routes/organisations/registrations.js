@@ -42,8 +42,9 @@ const isSubscriptionManager =
       } else if (allowSelfManagement) {
         throw new Error("allowSelfManagement must be used with req.params.id");
       }
-      const message = "Only allowed to subscription managers";
-      return res.status(403).json({ message });
+      return res
+        .status(403)
+        .json({ message: "Only allowed to subscription managers" });
     } catch (err) {
       next(err);
     }
@@ -53,7 +54,12 @@ module.exports = ({ Router }) => {
   const router = Router({ mergeParams: true });
   router.get("/", hasRole("admin", "manager", "expert"), get);
   router.get("/:id", hasRole("admin", "manager", "expert"), find);
-  router.post("/", hasRole("admin", "manager", "expert"), create);
+  router.post(
+    "/",
+    hasRole("admin", "manager", "expert"),
+    isSubscriptionManager({ allowSelfManagement: true }),
+    create,
+  );
   router.patch(
     "/:id",
     hasRole("admin", "manager"),
