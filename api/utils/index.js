@@ -9,3 +9,5 @@ exports.log = require("./log");
 exports.crypt = require("./crypt");
 
 exports.regex = require("./regex");
+
+exports.test = require("./test");

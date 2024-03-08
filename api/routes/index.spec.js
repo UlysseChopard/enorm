@@ -1,30 +1,20 @@
 const express = require("express");
 const chai = require("chai");
-const chaiHTTP = require("chai-http");
 const sinon = require("sinon").createSandbox();
+const { test } = require("utils");
 const middlewares = require("middlewares");
 const accounts = require("routes/accounts");
 
 const expect = chai.expect;
 
-chai.use(chaiHTTP);
+const getApp = test.getApp("routes");
 
-const getApp = (stubs = {}) => {
-  delete require.cache[require.resolve("routes")];
-  Object.entries(stubs).forEach(([path, exports]) => {
-    require.cache[require.resolve(path)] = { exports };
+describe("Routes: index", () => {
+  afterEach(() => {
+    sinon.restore();
   });
-  const routes = require("routes");
-  const app = express();
-  return routes(express, app);
-};
 
-afterEach(() => {
-  sinon.restore();
-});
-
-describe("Test routes root", () => {
-  describe("Test admin routes", () => {
+  describe("Admin", () => {
     it("should return 401 when unauthenticated", async () => {
       const app = getApp();
       const res = await chai.request(app).get("/api/admin");
@@ -34,32 +24,32 @@ describe("Test routes root", () => {
     it("should return 403 when not superuser", async () => {
       const isAuthenticatedStub = sinon
         .stub(middlewares, "isAuthenticated")
-        .callsFake((_req, _res, next) => next());
+        .callsFake(test.neutralMiddleware());
       const isSuperuserStub = sinon
         .stub(middlewares, "isSuperuser")
-        .callsFake((_req, res) => res.sendStatus(403));
+        .callsFake(test.neutralResponse(403));
       const app = getApp();
       const res = await chai.request(app).get("/api/admin");
       expect(res).to.have.status(403);
-      sinon.assert.calledOnce(isAuthenticatedStub);
-      sinon.assert.calledOnce(isSuperuserStub);
+      expect(isAuthenticatedStub).to.have.been.calledOnce;
+      expect(isSuperuserStub).to.have.been.calledOnce;
     });
 
     it("should call admin router when authenticated as superuser", async () => {
       const isAuthenticatedStub = sinon
         .stub(middlewares, "isAuthenticated")
-        .callsFake((_req, _res, next) => next());
+        .callsFake(test.neutralMiddleware());
       const isSuperuserStub = sinon
         .stub(middlewares, "isSuperuser")
-        .callsFake((_req, _res, next) => next());
+        .callsFake(test.neutralMiddleware());
       const accountsStub = sinon.stub().callsFake(() => express.Router());
       const app = getApp({ "routes/accounts": accountsStub });
       await chai.request(app).get("/api/admin");
-      sinon.assert.calledOnce(accountsStub);
+      expect(accountsStub).to.have.been.calledOnce;
     });
   });
 
-  describe("Test sessions routes", () => {
+  describe("Sessions", () => {
     it("should return 401 when unauthenticated", async () => {
       const app = getApp();
       const res = await chai.request(app).get("/api/sessions");
@@ -67,7 +57,7 @@ describe("Test routes root", () => {
     });
   });
 
-  describe("Test accounts routes", () => {
+  describe("Accounts", () => {
     it("should return 401 when unauthenticated", async () => {
       const app = getApp();
       const res = await chai.request(app).get("/api/accounts");
@@ -75,7 +65,7 @@ describe("Test routes root", () => {
     });
   });
 
-  describe("Test organisations routes", () => {
+  describe("Organisations", () => {
     it("should return 404 without organisation id", async () => {
       const app = getApp();
       const res = await chai.request(app).get("/api/organisations");

@@ -1,17 +1,6 @@
 const { crypt } = require("utils");
 const { Accounts, OrganisationsMembers, Organisations } = require("models");
 
-exports.findByEmail = async (req, res, next) => {
-  try {
-    const {
-      rows: [account],
-    } = await Accounts.findByEmail(req.query.email);
-    return res.json({ account });
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.get = async (req, res, next) => {
   try {
     const {
