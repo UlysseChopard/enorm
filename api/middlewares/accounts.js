@@ -1,7 +1,3 @@
-const { isSuperuser } = require("middlewares");
-
-exports.isSuperuser = isSuperuser;
-
 exports.isAccountOwner = (req, res, next) =>
   req.params.id === res.locals.accountId
     ? next()
