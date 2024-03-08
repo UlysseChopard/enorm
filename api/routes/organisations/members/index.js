@@ -6,7 +6,7 @@ const {
   unlink,
   addOne,
 } = require("controllers/organisations/members");
-const { hasRole } = require("middlewares/roles");
+const { hasRole } = require("middlewares");
 
 const roles = require("./roles");
 

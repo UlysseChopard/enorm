@@ -1,28 +1,54 @@
-const compression = require("compression");
-const helmet = require("helmet");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const logger = require("./logger");
-const errorHandler = require("./error-handler");
-const authenticate = require("./auth");
+const { OrganisationsMembers, Accounts } = require("models");
 
-const CORS_OPTIONS = {
-  origin: (origin, cb) => cb(null, true),
-  credentials: true,
+exports.isAuthenticated = (req, res, next) =>
+  res.locals.accountId
+    ? next()
+    : res.status(401).json({ message: "Require authentification" });
+
+const dbNames = {
+  admin: "is_admin",
+  expert: "is_expert",
+  manager: "is_manager",
 };
 
-exports.preMiddlewares = (express, app) => {
-  app.use(compression());
-  app.use(helmet());
-  app.use(cookieParser());
-  app.use(cors(CORS_OPTIONS));
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.use(logger);
-  app.use(authenticate);
-  app.options("*", cors(CORS_OPTIONS));
-};
+exports.hasRole =
+  (...roles) =>
+  async (req, res, next) => {
+    try {
+      const {
+        rows: [userRoles],
+      } = await OrganisationsMembers.getRoles(
+        req.params.organisation,
+        res.locals.accountId,
+      );
+      if (userRoles) {
+        for (const role of roles) {
+          if (userRoles[dbNames[role]]) return next();
+        }
+      }
+      const {
+        rows: [account],
+      } = await Accounts.get(res.locals.accountId);
+      if (account.superuser) return next();
+      return res.status(403).json({ message: `Roles in ${roles} required` });
+    } catch (err) {
+      next(err);
+    }
+  };
 
-exports.postMiddlewares = (_express, app) => {
-  app.use(errorHandler);
+exports.isSuperuser = async (req, res, next) => {
+  try {
+    const {
+      rows: [account],
+    } = await Accounts.get(res.locals.accountId);
+    if (!account) {
+      return res.status(404).json({ message: "account not found" });
+    }
+    if (!account.superuser) {
+      return res.status(403).json({ message: "Role superuser required" });
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
 };

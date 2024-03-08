@@ -6,7 +6,7 @@ const {
   addUser,
   removeUser,
 } = require("controllers/organisations/establishments");
-const { hasRole } = require("middlewares/roles");
+const { hasRole } = require("middlewares");
 
 module.exports = ({ Router }) => {
   const router = Router({ mergeParams: true });

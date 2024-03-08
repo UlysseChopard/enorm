@@ -1,5 +1,5 @@
 const { get, replace, close } = require("controllers/organisations");
-const { hasRole } = require("middlewares/roles");
+const { hasRole } = require("middlewares");
 const establishments = require("./establishments");
 const members = require("./members");
 const workingGroups = require("./working-groups");

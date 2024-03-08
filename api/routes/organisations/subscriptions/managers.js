@@ -2,7 +2,7 @@ const {
   add,
   remove,
 } = require("controllers/organisations/subscriptions/managers");
-const { hasRole } = require("middlewares/roles");
+const { hasRole } = require("middlewares");
 
 module.exports = (express) => {
   const router = express.Router({ mergeParams: true });

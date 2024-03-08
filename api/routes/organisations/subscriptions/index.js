@@ -5,7 +5,7 @@ const {
   establish,
   close,
 } = require("controllers/organisations/subscriptions");
-const { hasRole } = require("middlewares/roles");
+const { hasRole } = require("middlewares");
 const managers = require("./managers");
 
 module.exports = (express) => {

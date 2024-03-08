@@ -7,7 +7,7 @@ const {
   get,
   find,
 } = require("controllers/organisations/registrations");
-const { hasRole } = require("middlewares/roles");
+const { hasRole } = require("middlewares");
 
 const isSubscriptionManager =
   ({ allowSelfManagement } = { allowSelfManagement: false }) =>

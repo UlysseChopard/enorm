@@ -1,5 +1,5 @@
 const { allow, disallow } = require("controllers/organisations/members/roles");
-const { hasRole } = require("middlewares/roles");
+const { hasRole } = require("middlewares");
 
 module.exports = ({ Router }) => {
   const router = Router({ mergeParams: true });
