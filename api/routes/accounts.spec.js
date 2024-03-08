@@ -4,6 +4,7 @@ const chaiHTTP = require("chai-http");
 const sinon = require("sinon").createSandbox();
 const middlewares = require("middlewares");
 const accountsMiddlewares = require("middlewares/accounts");
+const accountsControllers = require("controllers/accounts");
 
 const expect = chai.expect;
 
@@ -15,11 +16,6 @@ const getApp = () => {
   const app = express();
   app.use("/", accounts(express));
   return app;
-};
-
-const neutralMiddleware = (_req, _res, next) => {
-  console.log("NEUTRAL");
-  next();
 };
 
 afterEach(() => {
@@ -40,14 +36,18 @@ describe("Test /accounts", () => {
       expect(res).to.have.status(403);
     });
 
-    it("should call get when account owner", async () => {
-      const stub = sinon
+    it("should return 200 when authenticated as account owner", async () => {
+      const isAccountOwnerStub = sinon
         .stub(accountsMiddlewares, "isAccountOwner")
-        .callsFake((_req, res) => res.sendStatus(204));
+        .callsFake((_req, _res, next) => next());
+      const getStub = sinon
+        .stub(accountsControllers, "get")
+        .callsFake((_req, res) => res.sendStatus(200));
       const app = getApp();
       const res = await chai.request(app).get("/fake-id");
-      sinon.assert.calledOnce(stub);
-      expect(res).to.have.status(204);
+      sinon.assert.calledOnce(isAccountOwnerStub);
+      sinon.assert.calledOnce(getStub);
+      expect(res).to.have.status(200);
     });
   });
 });
