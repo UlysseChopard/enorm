@@ -31,7 +31,7 @@
   },
   "engines": {
     "node": "v20.11.1",
-    "npm": "v10.4.0"
+    "npm": "v10.5.0"
   },
   "dependencies": {
     "dotenv": "^16.4.5"
