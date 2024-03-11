@@ -28,9 +28,9 @@ exports.get = async (req, res, next) => {
           id: organisation,
           name,
           roles: {
-            isAdmin: is_admin,
-            isManager: is_manager,
-            isExpert: is_expert,
+            isAdmin: !!is_admin,
+            isManager: !!is_manager,
+            isExpert: !!is_expert,
           },
         };
       },

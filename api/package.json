@@ -7,8 +7,8 @@
     "start": "NODE_PATH=. node app",
     "dev": "NODE_PATH=. ./start-dev.sh",
     "migrate": "node-pg-migrate",
-    "test": "NODE_ENV=test NODE_PATH=. DOTENV_CONFIG_PATH=.env.test mocha -r dotenv/config  **/*.spec.js",
-    "test:watch": "NODE_ENV=test NODE_PATH=. DOTENV_CONFIG_PATH=.env.test mocha -r dotenv/config --watch **/*.spec.js"
+    "test": "NODE_ENV=test NODE_PATH=. DOTENV_CONFIG_PATH=.env.test mocha -r spec.js -r dotenv/config  **/*.spec.js",
+    "test:watch": "NODE_ENV=test NODE_PATH=. DOTENV_CONFIG_PATH=.env.test mocha -r spec.js -r dotenv/config --watch **/*.spec.js"
   },
   "author": "ucg",
   "license": "ISC",
