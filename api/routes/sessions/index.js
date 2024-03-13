@@ -6,6 +6,7 @@ const {
   getStatus,
   sendMailAccess,
 } = require("controllers/sessions");
+const { isAuthenticated } = require("middlewares");
 
 const tokens = require("./tokens");
 
@@ -16,7 +17,7 @@ module.exports = ({ Router }) => {
   router.put("/no-password", loginWithoutPasswd);
   router.put("/", login);
   router.post("/:id", loginToken);
-  router.delete("/", logout);
+  router.delete("/", isAuthenticated, logout);
   router.use("/tokens", tokens({ Router }));
   return router;
 };
