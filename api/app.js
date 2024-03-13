@@ -15,5 +15,4 @@ app.listen(port, (err) => {
   log.info(`Listening on port ${port}`);
 });
 
-console.log(process.env);
 module.exports = app;
