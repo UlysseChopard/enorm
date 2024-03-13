@@ -3,7 +3,7 @@ const { OrganisationsMembers, Accounts } = require("models");
 exports.isAuthenticated = (req, res, next) =>
   res.locals.accountId
     ? next()
-    : res.status(401).json({ message: "Require authentification" });
+    : res.status(401).json({ message: "Require authentication" });
 
 const dbNames = {
   admin: "is_admin",
