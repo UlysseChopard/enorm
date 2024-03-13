@@ -105,9 +105,9 @@ const RequestModal = ({ open, onClose, members, groups }) => {
             value={group}
             onChange={(e) => {
               setGroup(e.target.value);
-              const newWgPaths = groups
-                .find(({ id }) => parseInt(id) === parseInt(e.target.value))
-                ?.wg_paths.filter(({ recipient }) => !!recipient);
+              const newWgPaths = groups.find(
+                ({ id }) => parseInt(id) === parseInt(e.target.value),
+              )?.wg_paths;
               setWgPaths(newWgPaths);
               if (newWgPaths.length) {
                 setWgPath(newWgPaths[0].id);
