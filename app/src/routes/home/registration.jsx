@@ -133,7 +133,7 @@ const Registration = () => {
                     inputProps={{ "aria-label": "controlled" }}
                   />
                 }
-                label={t("tint")}
+                label={<p style={{ paddingY: 2 }}>{t("tint")}</p>}
               />
             )}
             <div

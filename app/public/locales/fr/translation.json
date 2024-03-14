@@ -145,6 +145,7 @@
     "memberOrganisation": "Organisation du bénéficiaire"
   },
   "registration": {
+    "tint": "A partir de maintenant, cette demande se fait sous le nom de notre organisation",
     "revoke": "Révoquer",
     "forwarded": "Transmise",
     "status": "Statut",

@@ -146,6 +146,7 @@
     "memberOrganisation": "Beneficiary organisation"
   },
   "registration": {
+    "tint": "From now, this request is made in the name of our organisation",
     "revoke": "Revoke",
     "forwarded": "Forwarded",
     "status": "Status",
