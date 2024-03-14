@@ -74,7 +74,7 @@ const Registration = () => {
   const { registration } = useLoaderData();
   const actionData = useActionData();
   const { t } = useTranslation(null, { keyPrefix: "registration" });
-  const [wgPath, setWgPath] = useState(registration.wgPaths?.[0].id);
+  const [wgPath, setWgPath] = useState(registration.wgPaths?.[0]?.id);
   const [tint, setTint] = useState(registration.tint);
   if (actionData?.deleted) {
     navigate("/registrations");
