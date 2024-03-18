@@ -54,6 +54,9 @@ exports.find = async (req, res, next) => {
     const {
       rows: [subscription],
     } = await Subscriptions.find(req.params.subscription);
+    if (!subscription) {
+      return res.status(404).json({ message: "Subscription not found" });
+    }
     const { rows: managers } = await SubscriptionsManagers.getBySubscription(
       req.params.subscription,
       req.params.organisation,
