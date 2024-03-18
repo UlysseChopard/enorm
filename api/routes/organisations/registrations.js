@@ -50,6 +50,23 @@ const isSubscriptionManager =
     }
   };
 
+const isLastStep = async (req, res, next) => {
+  try {
+    const {
+      rows: [registration],
+    } = await Registrations.getWgOrganisation(req.params.id);
+    if (registration.organisation !== req.params.organisation) {
+      return res.status(403).json({
+        message:
+          "Should be accepted by a member of the working_group organisation",
+      });
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = ({ Router }) => {
   const router = Router({ mergeParams: true });
   router.get("/", hasRole("admin", "manager", "expert"), get);
@@ -76,6 +93,7 @@ module.exports = ({ Router }) => {
     "/:id",
     hasRole("admin", "manager"),
     isSubscriptionManager(),
+    isLastStep,
     accept,
   );
   return router;

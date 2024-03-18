@@ -53,3 +53,9 @@ exports.getFromManagedSubscriptions = (account) =>
     "SELECT r.*, s.recipient, s.sender, rs.wg_path, wgp.subscription, a.firstname, a.lastname, wg.reference, wg.title, o.id AS organisation, o.name AS organisation_name FROM registrations_streams rs LEFT JOIN wg_paths wgp ON rs.wg_path = wgp.id LEFT JOIN working_groups wg ON wgp.working_group = wg.id LEFT JOIN subscriptions_managers sm ON wgp.subscription = sm.subscription LEFT JOIN subscriptions s ON wgp.subscription = s.id LEFT JOIN registrations r ON rs.registration = r.id LEFT JOIN accounts a ON r.beneficiary = a.id LEFT JOIN organisations_members om ON r.beneficiary = om.account LEFT JOIN organisations o ON om.organisation = o.id LEFT JOIN organisations_members om2 ON sm.manager = om2.id WHERE om2.account = $1",
     [account],
   );
+
+exports.getWgOrganisation = (id) =>
+  db.query(
+    "SELECT wg.organisation FROM registrations r JOIN working_groups wg ON r.working_group = wg.id WHERE r.id = $1",
+    [id],
+  );
