@@ -105,7 +105,8 @@ export default function Subscriptions() {
 
   const handleAccept = ({ id }) => {
     if (!isAdmin) return null;
-    return () => {
+    return (e) => {
+      e.preventDefault();
       const formData = new FormData();
       formData.append("type", "accept");
       formData.append("recipient", id);
@@ -115,7 +116,8 @@ export default function Subscriptions() {
 
   const handleDeny = ({ id }) => {
     if (!isAdmin) return null;
-    return () => {
+    return (e) => {
+      e.preventDefault();
       const formData = new FormData();
       formData.append("type", "close");
       formData.append("recipient", id);
@@ -125,7 +127,8 @@ export default function Subscriptions() {
 
   const handleInvite = ({ id }) => {
     if (!isAdmin) return null;
-    return () => {
+    return (e) => {
+      e.preventDefault();
       const formData = new FormData();
       formData.append("type", "invite");
       formData.append("recipient", id);
