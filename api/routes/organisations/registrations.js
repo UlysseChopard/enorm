@@ -55,7 +55,9 @@ const isLastStep = async (req, res, next) => {
     const {
       rows: [registration],
     } = await Registrations.getWgOrganisation(req.params.id);
-    if (registration.organisation !== req.params.organisation) {
+    if (
+      parseInt(registration.organisation) !== parseInt(req.params.organisation)
+    ) {
       return res.status(403).json({
         message:
           "Should be accepted by a member of the working_group organisation",
