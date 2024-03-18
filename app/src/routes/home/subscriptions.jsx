@@ -6,7 +6,6 @@ import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import IconButton from "@mui/material/IconButton";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -46,23 +45,38 @@ export async function loader() {
   return res.json();
 }
 
-const Organisation = ({ id, name, status, action, accept }) => (
-  <ListItem key={id} href={`/subscriptions/${id}`}>
-    <ListItemText>{name}</ListItemText>
-    <ListItemSecondaryAction>
-      <>
-        {!!action && (
-          <IconButton edge="end" onClick={action}>
+const Organisation = ({ id, isAdmin, name, status, action, accept }) => (
+  <ListItem
+    key={id}
+    href={`/subscriptions/${id}`}
+    secondaryAction={
+      isAdmin && (
+        <>
+          <IconButton
+            edge="end"
+            onClick={(e) => {
+              e.preventDefault();
+              action();
+            }}
+          >
             {status ? <LinkOffIcon /> : <AddLinkIcon />}
           </IconButton>
-        )}
-        {status === "received" && !!accept && (
-          <IconButton edge="end" onClick={accept}>
-            <DoneIcon />
-          </IconButton>
-        )}
-      </>
-    </ListItemSecondaryAction>
+          {status === "received" && !!accept && (
+            <IconButton
+              edge="end"
+              onClick={(e) => {
+                e.preventDefault();
+                accept();
+              }}
+            >
+              <DoneIcon />
+            </IconButton>
+          )}
+        </>
+      )
+    }
+  >
+    <ListItemText>{name}</ListItemText>
   </ListItem>
 );
 
@@ -105,8 +119,7 @@ export default function Subscriptions() {
 
   const handleAccept = ({ id }) => {
     if (!isAdmin) return null;
-    return (e) => {
-      e.preventDefault();
+    return () => {
       const formData = new FormData();
       formData.append("type", "accept");
       formData.append("recipient", id);
@@ -116,8 +129,7 @@ export default function Subscriptions() {
 
   const handleDeny = ({ id }) => {
     if (!isAdmin) return null;
-    return (e) => {
-      e.preventDefault();
+    return () => {
       const formData = new FormData();
       formData.append("type", "close");
       formData.append("recipient", id);
@@ -127,8 +139,7 @@ export default function Subscriptions() {
 
   const handleInvite = ({ id }) => {
     if (!isAdmin) return null;
-    return (e) => {
-      e.preventDefault();
+    return () => {
       const formData = new FormData();
       formData.append("type", "invite");
       formData.append("recipient", id);
@@ -157,6 +168,7 @@ export default function Subscriptions() {
                   ? "sent"
                   : null
               }
+              isAdmin={isAdmin}
               {...organisation}
             />
           ))}
@@ -191,6 +203,7 @@ export default function Subscriptions() {
                     key={subscription.id}
                     action={handleDeny(subscription)}
                     status="sent"
+                    isAdmin={isAdmin}
                     {...subscription}
                   />
                 ))}
@@ -200,6 +213,7 @@ export default function Subscriptions() {
                     accept={handleAccept(subscription)}
                     action={handleDeny(subscription)}
                     status="received"
+                    isAdmin={isAdmin}
                     {...subscription}
                   />
                 ))}
