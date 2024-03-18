@@ -51,12 +51,12 @@ const Organisation = ({ id, name, status, action, accept }) => (
     <ListItemText>{name}</ListItemText>
     <ListItemSecondaryAction>
       <>
-        {action && (
+        {!!action && (
           <IconButton edge="end" onClick={action}>
             {status ? <LinkOffIcon /> : <AddLinkIcon />}
           </IconButton>
         )}
-        {status === "received" && accept && (
+        {status === "received" && !!accept && (
           <IconButton edge="end" onClick={accept}>
             <DoneIcon />
           </IconButton>
