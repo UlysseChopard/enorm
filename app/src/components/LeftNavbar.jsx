@@ -4,6 +4,7 @@ import { useResolvedPath } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Menu from "@mui/material/Menu";
+import Badge from "@mui/material/Badge";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -13,20 +14,17 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HubIcon from "@mui/icons-material/Hub";
 import ProfileMenu from "@/components/ProfileMenu";
 import GroupsIcon from "@mui/icons-material/Groups";
-// import GridViewIcon from "@mui/icons-material/GridView";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 const WIDTH = 240;
 
 const MENU = [
-  //  {
-  //    icon: <GridViewIcon />,
-  //    text: "dashboard",
-  //    target: "",
-  //    roles: new Set(["isAdmin", "isManager", "isExpert"]),
-  //  },
   {
-    icon: <HubIcon />,
+    icon: ({ actionNb }) => (
+      <Badge badgeContent={actionNb}>
+        <HubIcon />
+      </Badge>
+    ),
     text: "community",
     target: "subscriptions",
     roles: new Set(["isAdmin", "isManager"]),
@@ -38,7 +36,11 @@ const MENU = [
     roles: new Set(["isAdmin", "isManager", "isExpert"]),
   },
   {
-    icon: <AppRegistrationIcon />,
+    icon: ({ actionNb }) => (
+      <Badge badgeContent={actionNb}>
+        <AppRegistrationIcon />
+      </Badge>
+    ),
     text: "registrations",
     target: "registrations",
     roles: new Set(["isAdmin", "isManager", "isExpert"]),
@@ -128,7 +130,7 @@ const NavBarItem = ({ text, icon, target, pathname, menu, userRoles }) => {
             for (const role of roles) {
               if (userRoles[role]) {
                 const selected = new RegExp(`${target}/${subtarget}`).test(
-                  pathname
+                  pathname,
                 );
                 return (
                   <ListItem
@@ -151,7 +153,7 @@ const NavBarItem = ({ text, icon, target, pathname, menu, userRoles }) => {
   );
 };
 
-const LeftNavbar = ({ user }) => {
+const LeftNavbar = ({ user, actionNb: { subscriptions, registrations } }) => {
   const { pathname } = useResolvedPath();
   const userRoles = JSON.parse(localStorage.getItem("roles"));
   return (
@@ -174,6 +176,11 @@ const LeftNavbar = ({ user }) => {
         {MENU.map(({ text, icon, target, roles, menu }) => {
           for (const role of roles) {
             if (userRoles[role]) {
+              if (target === "subscriptions") {
+                icon = icon({ actionNb: subscriptions });
+              } else if (target === "registrations") {
+                icon = icon({ actionNb: registrations });
+              }
               return (
                 <NavBarItem
                   key={target}
