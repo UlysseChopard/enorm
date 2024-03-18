@@ -113,7 +113,7 @@ const Registration = () => {
               width: "max",
             }}
           >
-            {registration.requireAction && (
+            {registration.requireAction && !registration.lastStep && (
               <SelectProvider
                 wgPaths={registration.wgPaths}
                 onChange={(e) => setWgPath(e.target.value)}
