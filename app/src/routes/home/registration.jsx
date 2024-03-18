@@ -120,7 +120,7 @@ const Registration = () => {
                 value={wgPath}
               />
             )}
-            {registration.requireAction && (
+            {registration.requireAction && !registration.lastStep && (
               <FormControlLabel
                 control={
                   <Checkbox
