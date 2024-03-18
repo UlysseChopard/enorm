@@ -109,8 +109,11 @@ exports.find = async (req, res, next) => {
       req.params.organisation,
       registration.working_group,
     );
-    registration.wgPaths = wgPaths;
-    registration.lastStep = wgPaths.some(({ recipient }) => !!recipient);
+    if (wgPaths.length) {
+      registration.wgPaths = wgPaths;
+    } else {
+      registration.lastStep = true;
+    }
     registration.forwarded =
       parseInt(registration.last_forwarder, 10) ===
       parseInt(req.params.organisation, 10);
