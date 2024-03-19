@@ -45,7 +45,14 @@ export async function loader() {
   return res.json();
 }
 
-const Organisation = ({ id, isAdmin, name, status, action, accept }) => (
+const Organisation = ({
+  id,
+  isAdmin,
+  name,
+  relationStatus,
+  action,
+  accept,
+}) => (
   <ListItem
     key={id}
     href={`/subscriptions/${id}`}
@@ -59,9 +66,9 @@ const Organisation = ({ id, isAdmin, name, status, action, accept }) => (
               action();
             }}
           >
-            {status ? <LinkOffIcon /> : <AddLinkIcon />}
+            {relationStatus ? <LinkOffIcon /> : <AddLinkIcon />}
           </IconButton>
-          {status === "received" && !!accept && (
+          {relationStatus === "received" && (
             <IconButton
               edge="end"
               onClick={(e) => {
@@ -163,7 +170,7 @@ export default function Subscriptions() {
             <Organisation
               key={organisation.id}
               action={handleInvite(organisation)}
-              status={
+              relationStatus={
                 load.sent.map(({ id }) => id).includes(organisation.id)
                   ? "sent"
                   : null
@@ -202,7 +209,7 @@ export default function Subscriptions() {
                   <Organisation
                     key={subscription.id}
                     action={handleDeny(subscription)}
-                    status="sent"
+                    relationStatus="sent"
                     isAdmin={isAdmin}
                     {...subscription}
                   />
@@ -212,7 +219,7 @@ export default function Subscriptions() {
                     key={subscription.id}
                     accept={handleAccept(subscription)}
                     action={handleDeny(subscription)}
-                    status="received"
+                    relationStatus="received"
                     isAdmin={isAdmin}
                     {...subscription}
                   />
@@ -228,7 +235,8 @@ export default function Subscriptions() {
                 <Organisation
                   key={provider.id}
                   action={handleDeny(provider)}
-                  status="provided"
+                  isAdmin={isAdmin}
+                  relationStatus="provided"
                   {...provider}
                 />
               ))}
@@ -240,7 +248,8 @@ export default function Subscriptions() {
                 <Organisation
                   key={subscriber.id}
                   action={handleDeny(subscriber)}
-                  status="subscribed"
+                  isAdmin={isAdmin}
+                  relationStatus="subscribed"
                   {...subscriber}
                 />
               ))}
