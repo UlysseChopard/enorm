@@ -30,7 +30,7 @@ export async function loader() {
     localStorage.setItem("organisation", account.organisations[0].id);
     localStorage.setItem(
       "roles",
-      JSON.stringify(account.organisation[0].roles),
+      JSON.stringify(account.organisations[0].roles),
     );
   } else {
     localStorage.setItem("roles", JSON.stringify(accountOrganisation.roles));
