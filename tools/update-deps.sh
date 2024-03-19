@@ -28,5 +28,4 @@ else
 fi
 npm update
 commit_package_files 'chore: update deps'
-update_version api
-update_version app
+npm outdated
