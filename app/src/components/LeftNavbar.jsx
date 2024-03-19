@@ -21,7 +21,7 @@ const WIDTH = 240;
 const MENU = [
   {
     icon: ({ actionNb }) => (
-      <Badge badgeContent={actionNb}>
+      <Badge badgeContent={actionNb} color="warning">
         <HubIcon />
       </Badge>
     ),
@@ -37,7 +37,7 @@ const MENU = [
   },
   {
     icon: ({ actionNb }) => (
-      <Badge badgeContent={actionNb}>
+      <Badge badgeContent={actionNb} color="warning">
         <AppRegistrationIcon />
       </Badge>
     ),

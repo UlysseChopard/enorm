@@ -10,6 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import LeftNavbar from "@/components/LeftNavbar";
 import { get } from "@/api/accounts";
+import { get as getSubscriptions } from "@/api/organisations/subscriptions";
+import { get as getRegistrations } from "@/api/organisations/registrations";
 
 export async function loader() {
   const storedAccount = localStorage.getItem("account");
@@ -17,31 +19,40 @@ export async function loader() {
   const res = await get(storedAccount);
   if (!res.ok) return redirect("/login");
   const { account } = await res.json();
+  if (!account.organisations.length) {
+    throw new Error("Missing organisations for account");
+  }
   const currentOrganisation = parseInt(localStorage.getItem("organisation"));
-  if (
-    !isNaN(currentOrganisation) &&
-    account.organisations.find(({ id }) => id === currentOrganisation)
-  ) {
-    const roles = account.organisations.find(
-      ({ id }) => id === currentOrganisation
-    ).roles;
-    localStorage.setItem("roles", JSON.stringify(roles));
-    return { account };
-  } else if (account.organisations.length) {
+  const accountOrganisation = account.organisations.find(
+    ({ id }) => id === currentOrganisation,
+  );
+  if (isNaN(currentOrganisation) || !accountOrganisation) {
     localStorage.setItem("organisation", account.organisations[0].id);
     localStorage.setItem(
       "roles",
-      JSON.stringify(account.organisations[0].roles)
+      JSON.stringify(account.organisation[0].roles),
     );
+  } else {
+    localStorage.setItem("roles", JSON.stringify(accountOrganisation.roles));
   }
-  return { account };
+  const requests = await Promise.all([getSubscriptions(), getRegistrations()]);
+  const [{ sent, received }, { registrations }] = await Promise.all(
+    requests.map((r) => r.json()),
+  );
+  const actionNb = {
+    subscriptions: sent.length + received.length,
+    registrations: registrations.filter(
+      (r) => !r.denied_at && !r.accepted_at && !r.forwarded,
+    ).length,
+  };
+  return { account, actionNb };
 }
 
 export default function Home() {
-  const { account } = useLoaderData();
+  const { account, actionNb } = useLoaderData();
   const navigate = useNavigate();
   const [organisation, setOrganisation] = useState(
-    localStorage.getItem("organisation")
+    localStorage.getItem("organisation"),
   );
   const handleChange = (e) => {
     navigate(0);
@@ -50,13 +61,13 @@ export default function Home() {
     localStorage.setItem(
       "roles",
       JSON.stringify(
-        account.organisations.find(({ id }) => id === e.target.value).roles
-      )
+        account.organisations.find(({ id }) => id === e.target.value).roles,
+      ),
     );
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <LeftNavbar user={account} />
+      <LeftNavbar user={account} actionNb={actionNb} />
       <AppBar position="absolute">
         <Toolbar
           sx={{
