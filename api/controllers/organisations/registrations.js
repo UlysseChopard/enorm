@@ -57,7 +57,9 @@ exports.get = async (req, res, next) => {
       }
     });
     const { rows: sent } = await Registrations.getOwn(req.params.organisation);
-    res.json({ registrations: received.concat(sent) });
+    res.json({
+      registrations: received.concat(sent.map((r) => (r.forwarded = true))),
+    });
   } catch (err) {
     next(err);
   }
