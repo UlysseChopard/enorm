@@ -160,6 +160,7 @@ const RegistrationsTable = ({ registrations }) => {
         <tr>
           <th>{t("group")}</th>
           <th>{t("member")}</th>
+          <th>{t("representedOrganisation")}</th>
           <th>{t("memberOrganisation")}</th>
           <th>{t("createdAt")}</th>
           <th>{t("status")}</th>
@@ -177,7 +178,8 @@ const RegistrationsTable = ({ registrations }) => {
             forwarded,
             accepted_at,
             denied_at,
-            organisation_name,
+            represented_organisation_name,
+            beneficiary_organisation_name,
           }) => (
             <tr
               style={{ cursor: "default" }}
@@ -186,7 +188,8 @@ const RegistrationsTable = ({ registrations }) => {
             >
               <td>{`${reference} ${title}`}</td>
               <td>{`${firstname} ${lastname}`}</td>
-              <td>{organisation_name}</td>
+              <td>{represented_organisation_name}</td>
+              <td>{beneficiary_organisation_name}</td>
               <td>{new Date(created_at).toLocaleString()}</td>
               <td style={{ textAlign: "center" }}>
                 <Tooltip

@@ -129,6 +129,7 @@
     "subscribers": "Subscribers"
   },
   "registrations": {
+    "representedOrganisation": "Represented organisation",
     "forwarded": "Sent",
     "wgPath": "Subscription",
     "createdAt": "Created at",

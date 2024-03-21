@@ -44,17 +44,19 @@ exports.remove = (beneficiary, id) =>
 
 exports.getBySubscriptionManager = (organisation, account) =>
   db.query(
-    `SELECT DISTINCT r.id, r.created_at, r.accepted_at, r.denied_at, (s.sender = $1) forwarded, (s.recipient = $1) received, a.firstname, a.lastname, wg.title, wg.reference, o.name organisation_name
+    `SELECT DISTINCT r.id, r.created_at, r.accepted_at, r.denied_at, (s.sender = $1) forwarded, (s.recipient = $1) received, a.firstname, a.lastname, wg.title, wg.reference, o0.name represented_organisation_name, o1.name beneficiary_organisation_name
     FROM registrations r
     LEFT JOIN registrations_streams rs ON r.id = rs.registration
     LEFT JOIN wg_paths wgp ON rs.wg_path = wgp.id
     LEFT JOIN subscriptions_managers sm ON wgp.subscription = sm.subscription
-    LEFT JOIN organisations_members om ON sm.manager = om.id
+    LEFT JOIN organisations_members om0 ON sm.manager = om0.id
     LEFT JOIN subscriptions s ON sm.subscription = s.id
     LEFT JOIN accounts a ON r.beneficiary = a.id
     LEFT JOIN working_groups wg ON wgp.working_group = wg.id
-    LEFT JOIN organisations o ON wg.organisation = o.id
-    WHERE om.account = $2
+    LEFT JOIN organisations o0 ON rs.tint = o0.id
+    LEFT JOIN organisations_members om1 ON r.beneficiary = om1.account
+    LEFT JOIN organisations o1 ON om1.organisation = o1.id
+    WHERE om0.account = $2
     ORDER BY r.created_at DESC`,
     [organisation, account],
   );
