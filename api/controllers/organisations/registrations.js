@@ -48,18 +48,13 @@ exports.deny = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
   try {
-    const { rows: received } = await Registrations.getFromManagedSubscriptions(
-      res.locals.accountId,
-    );
-    received.forEach((r) => {
-      if (parseInt(r.sender, 10) === parseInt(req.params.organisation, 10)) {
-        r.forwarded = true;
-      }
-    });
-    const { rows: sent } = await Registrations.getOwn(req.params.organisation);
-    res.json({
-      registrations: received.concat(sent.map((r) => (r.forwarded = true))),
-    });
+    const { rows: registrations } =
+      await Registrations.getBySubscriptionManager(
+        req.params.organisation,
+        res.locals.accountId,
+      );
+    console.log(req.params.organisation, res.locals.accountId);
+    res.json({ registrations });
   } catch (err) {
     next(err);
   }
